@@ -100,7 +100,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull final String text) {
         this(
-            new DomParser(text).document().getDocumentElement(),
+            new DomParser(text).document(),
             new XPathContext()
         );
     }
