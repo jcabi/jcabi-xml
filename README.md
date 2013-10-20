@@ -8,7 +8,7 @@ easy and simple, for example:
 ```java
 XML xml = new XMLDocument("<orders><order id="4">Coffee to go</order></orders>");
 String id = xml.xpath("//order/@id").get(0);
-String name = xml.xpath("//order[@id=4]/text()");
+String name = xml.xpath("//order[@id=4]/text()").get(0);
 System.out.println(xml.toString());
 ```
 
