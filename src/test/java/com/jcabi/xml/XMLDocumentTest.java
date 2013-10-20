@@ -198,4 +198,16 @@ public final class XMLDocumentTest {
         new XMLDocument("<root-99/>").xpath("invalid xpath query");
     }
 
+    /**
+     * XMLDocument can preserve processing instructions.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void preservesProcessingInstructions() throws Exception {
+        MatcherAssert.assertThat(
+            new XMLDocument("<?xml version='1.0'?><?x test?><a/>"),
+            Matchers.hasToString(Matchers.containsString("<?x test?>"))
+        );
+    }
+
 }
