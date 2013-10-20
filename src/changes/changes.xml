@@ -31,19 +31,11 @@
  -->
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
     <body>
-        <release version="0.8.1" date="19 Sep 2013" description="jcabi-xmldb-maven-plugin added">
+        <release version="0.1" date="20 Oct 2013" description="migrated from rexsl-test">
             <action dev="yegor" issue="-" type="add">
-                Integration testing with jcabi-xmldb-maven-plugin
-                implemented successfully
+                Most of the code migrated from ReXSL project's
+                rexsl-test artifact
             </action>
         </release>
-        <release version="0.8" date="4 Sep 2013" description="migrated to its own Github repo"/>
-        <release version="0.7.21" date="24 Jul 2013" description="valves">
-            <action dev="yegor" issue="270" type="add">
-                QueryValve and ScanValve introduced into
-                item iterators
-            </action>
-        </release>
-        <release version="0.7.20" date="14 Jul 2013" description="first release"/>
     </body>
 </document>

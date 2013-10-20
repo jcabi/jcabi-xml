@@ -1,9 +1,9 @@
  ------
- Amazon SimpleDB Object Layer
+ XML Parsing, Printing and Transforming
  ------
  Yegor Bugayenko
  ------
- 2013-06-09
+ 2013-10-20
  ------
 
 ~~
@@ -36,44 +36,23 @@
 ~~ OF THE POSSIBILITY OF SUCH DAMAGE.
 ~~
 
-Amazon SimpleDB Object Layer
+XML Parsing, Printing and Transforming
 
   Set of classes in
   {{{./apidocs-${project.version}/com/jcabi/xml/index.html}<<<com.jcabi.xml>>>}}
-  is an object layer on top of
-  {{{http://aws.amazon.com/sdkforjava/}AWS SDK for SimpleDB}}.
-  For example, to read an item from your Dynamo table:
+  is an extra layer on top of DOM that allows simple
+  parsing, printing, and transforming of XML documents and nodes:
 
 +--
 public class Main {
   public static void main(String[] args) {
-    Credentials credentials = new Credentials.Simple("AWS key", "AWS secret");
-    Region region = new Region.Simple(credentials);
-    Domain domain = region.domain("foo");
-    Collection<Item> items = domain.select(
-      new SelectRequest().withSelectExpression("SELECT * FROM foo")
-    );
-    for (Item item : items) {
-      System.out.println(item.get("name"));
-    }
+    XML xml = new XMLDocument("<orders><order id="4">Coffee to go</order></orders>");
+    String id = xml.xpath("//order/@id").get(0);
+    String name = xml.xpath("//order[@id=4]/text()");
+    System.out.println(xml.toString());
   }
 }
 +--
-
-  You can put an item using
-  {{{./apidocs-${project.version}/com/jcabi/xml/Item.html}<<<Item#put()>>>}} method:
-
-+--
-public class Main {
-  public static void main(String[] args) {
-    Domain domain = region.domain("foo");
-    domain.put("id", "234");
-  }
-}
-+--
-
-  Read {{{./apidocs-${project.version}/com/jcabi/xml/index.html}JavaDoc}}
-  for more information and examples.
 
   The only dependency you need is
   (you can also download
