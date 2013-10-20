@@ -1,5 +1,5 @@
  ------
- XML Parsing, Printing and Transforming
+ XML Parsing and Printing
  ------
  Yegor Bugayenko
  ------
@@ -36,7 +36,7 @@
 ~~ OF THE POSSIBILITY OF SUCH DAMAGE.
 ~~
 
-XML Parsing, Printing and Transforming
+XML Parsing and Printing
 
   Set of classes in
   {{{./apidocs-${project.version}/com/jcabi/xml/index.html}<<<com.jcabi.xml>>>}}

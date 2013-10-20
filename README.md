@@ -2,8 +2,8 @@
 
 More details are here: [www.jcabi.com/jcabi-xml](http://www.jcabi.com/jcabi-xml/index.html)
 
-It's a simple wrapper around DOM that makes parsing, printing,
-and transforming easy and simple, for example:
+It's a simple wrapper around DOM that makes XML parsing and printing
+easy and simple, for example:
 
 ```java
 XML xml = new XMLDocument("<orders><order id="4">Coffee to go</order></orders>");
