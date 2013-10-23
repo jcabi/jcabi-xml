@@ -87,19 +87,20 @@ public final class XMLDocument implements XML {
         TransformerFactory.newInstance();
 
     /**
-     * Document Factory.
+     * DOM document builder factory.
      */
     private static final DocumentBuilderFactory DFACTORY =
         DocumentBuilderFactory.newInstance();
 
     /**
-     * Namespace context to use.
+     * Namespace context to use for {@link #xpath(String)}
+     * and {@link #nodes(String)} methods.
      */
     @NotNull
     private final transient XPathContext context;
 
     /**
-     * Cached document.
+     * Encapsulated DOM node.
      */
     @NotNull
     private final transient Node dom;
@@ -123,7 +124,7 @@ public final class XMLDocument implements XML {
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
      * passed is not in XML format.
      *
-     * @param text Body
+     * @param text XML document body
      */
     public XMLDocument(@NotNull final String text) {
         this(
@@ -133,7 +134,21 @@ public final class XMLDocument implements XML {
     }
 
     /**
-     * Public ctor, from a DOM source.
+     * Public ctor, from a DOM node.
+     *
+     * <p>The object is created with a default implementation of
+     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     *
+     * @param node DOM source
+     * @since 0.2
+     */
+    public XMLDocument(@NotNull final Node node) {
+        this(node, new XPathContext());
+    }
+
+    /**
+     * Public ctor, from a source.
      *
      * <p>The object is created with a default implementation of
      * {@link javax.xml.namespace.NamespaceContext}, which already defines a
@@ -142,7 +157,7 @@ public final class XMLDocument implements XML {
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
      * passed is not in XML format.
      *
-     * @param source DOM source
+     * @param source Source of XML document
      */
     public XMLDocument(@NotNull final Source source) {
         this(XMLDocument.transform(source), new XPathContext());
@@ -159,7 +174,7 @@ public final class XMLDocument implements XML {
      * passed is not in XML format.
      *
      * @param file XML file
-     * @throws IOException In case of I/O problem
+     * @throws IOException In case of I/O problems
      */
     public XMLDocument(@NotNull final File file) throws IOException {
         this(FileUtils.readFileToString(file, CharEncoding.UTF_8));
@@ -176,7 +191,7 @@ public final class XMLDocument implements XML {
      * passed is not in XML format.
      *
      * @param url The URL to load from
-     * @throws IOException In case of I/O problem
+     * @throws IOException In case of I/O problems
      */
     public XMLDocument(@NotNull final URL url) throws IOException {
         this(IOUtils.toString(url, CharEncoding.UTF_8));
@@ -193,7 +208,7 @@ public final class XMLDocument implements XML {
      * passed is not in XML format.
      *
      * @param uri The URI to load from
-     * @throws IOException In case of I/O problem
+     * @throws IOException In case of I/O problems
      */
     public XMLDocument(@NotNull final URI uri) throws IOException {
         this(IOUtils.toString(uri, CharEncoding.UTF_8));
