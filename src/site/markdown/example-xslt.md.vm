@@ -1,0 +1,26 @@
+# How to apply XSL to XML
+
+The only class you need is
+[`XMLDocument`](./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html),
+which implements
+[`XML`](./apidocs-${project.version}/com/jcabi/xml/XML.html)
+interface and works with your default DOM implementation:
+
+```java
+XML first = new XMLDocument(
+  "<orders><order id="4">Coffee to go</order></orders>"
+);
+String xsl =  "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='2.0'>",
+  + "<xsl:template match='/'>"
+  + "  <name><xsl:value-of select='/orders/order[@id=4]'/></name>",
+  + "</xsl:template>"
+  + "</xsl:stylesheet>";
+XML second = first.xslt(new StreamSource(new StringReader(xsl)));
+System.out.println(second.toString());
+```
+
+Prints:
+
+```xml
+<name>Coffee to go</name>
+```
