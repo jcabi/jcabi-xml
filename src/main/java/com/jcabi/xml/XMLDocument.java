@@ -39,11 +39,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -52,6 +56,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -66,7 +71,26 @@ import org.w3c.dom.NodeList;
  */
 @EqualsAndHashCode(of = "dom")
 @Loggable(Loggable.DEBUG)
+@SuppressWarnings("PMD.ExcessiveImports")
 public final class XMLDocument implements XML {
+
+    /**
+     * XPath factory.
+     */
+    private static final XPathFactory XFACTORY =
+        XPathFactory.newInstance();
+
+    /**
+     * Transformer factory.
+     */
+    private static final TransformerFactory TFACTORY =
+        TransformerFactory.newInstance();
+
+    /**
+     * Document Factory.
+     */
+    private static final DocumentBuilderFactory DFACTORY =
+        DocumentBuilderFactory.newInstance();
 
     /**
      * Namespace context to use.
@@ -219,11 +243,25 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull
+    public XML xslt(final Source xsl) throws TransformerException {
+        final Transformer trans = XMLDocument.TFACTORY.newTransformer(xsl);
+        final Document target;
+        try {
+            target = XMLDocument.DFACTORY.newDocumentBuilder().newDocument();
+        } catch (ParserConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        }
+        trans.transform(new DOMSource(this.dom), new DOMResult(target));
+        return new XMLDocument(target, this.context);
+    }
+
+    @Override
+    @NotNull
     public List<String> xpath(@NotNull final String query) {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final short type = nodes.item(idx).getNodeType();
+            final int type = (int) nodes.item(idx).getNodeType();
             if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
                 && type != Node.CDATA_SECTION_NODE) {
                 throw new IllegalArgumentException(
@@ -277,7 +315,7 @@ public final class XMLDocument implements XML {
     private NodeList nodelist(final String query) {
         final NodeList nodes;
         try {
-            final XPath xpath = XPathFactory.newInstance().newXPath();
+            final XPath xpath = XMLDocument.XFACTORY.newXPath();
             xpath.setNamespaceContext(this.context);
             nodes = (NodeList) xpath.evaluate(
                 query,
@@ -301,9 +339,7 @@ public final class XMLDocument implements XML {
     private static Node transform(final Source source) {
         final DOMResult result = new DOMResult();
         try {
-            TransformerFactory.newInstance()
-                .newTransformer()
-                .transform(source, result);
+            XMLDocument.TFACTORY.newTransformer().transform(source, result);
         } catch (TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
         } catch (TransformerException ex) {

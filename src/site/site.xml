@@ -55,6 +55,10 @@
             <item name="Test coverage" href="./cobertura/index.html"/>
             <item name="Release History" href="./changes-report.html"/>
         </menu>
+        <menu name="Examples">
+            <item name="Parsing XML" href="example-parsing.html"/>
+            <item name="XSL Transforming" href="example-xslt.html"/>
+        </menu>
         <menu ref="reports"/>
     </body>
 </project>

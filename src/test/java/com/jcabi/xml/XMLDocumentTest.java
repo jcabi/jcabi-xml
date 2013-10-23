@@ -29,16 +29,18 @@
  */
 package com.jcabi.xml;
 
+import com.google.common.io.Files;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import org.w3c.dom.Node;
 
 /**
@@ -48,13 +50,6 @@ import org.w3c.dom.Node;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class XMLDocumentTest {
-
-    /**
-     * Temporary folder.
-     * @checkstyle VisibilityModifier (3 lines)
-     */
-    @Rule
-    public transient TemporaryFolder temp = new TemporaryFolder();
 
     /**
      * XMLDocument can find nodes with XPath.
@@ -101,7 +96,7 @@ public final class XMLDocumentTest {
      */
     @Test
     public void findsWithXpathWithCustomNamespace() throws Exception {
-        final File file = this.temp.newFile("temp-1.xml");
+        final File file = new File(Files.createTempDir(), "x.xml");
         FileUtils.writeStringToFile(
             file,
             "<a xmlns='urn:foo'><b>\u0433!</b></a>",
@@ -207,6 +202,27 @@ public final class XMLDocumentTest {
         MatcherAssert.assertThat(
             new XMLDocument("<?xml version='1.0'?><?x test?><a/>"),
             Matchers.hasToString(Matchers.containsString("<?x test?>"))
+        );
+    }
+
+    /**
+     * XMLDocument can make XSL transformations.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void makesXslTransformations() throws Exception {
+        final String xsl = StringUtils.join(
+            "<xsl:stylesheet",
+            " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+            " version='2.0'>",
+            "<xsl:template match='/'><done/>",
+            "</xsl:template></xsl:stylesheet>"
+        );
+        MatcherAssert.assertThat(
+            new XMLDocument("<?xml version='1.0'?><a/>").xslt(
+                new StreamSource(IOUtils.toInputStream(xsl, Charsets.UTF_8))
+            ),
+            XhtmlMatchers.hasXPath("/done")
         );
     }
 
