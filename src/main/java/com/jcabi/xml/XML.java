@@ -113,7 +113,7 @@ public interface XML {
      * </pre>
      *
      * <p>A number of standard namespaces are registered by default in
-     * instances of {@link XML}. Their
+     * instances of XML. Their
      * full list is in {@link XMLDocument#XMLDocument(String)}.
      *
      * <p>If a namespace prefix is already registered an

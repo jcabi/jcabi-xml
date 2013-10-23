@@ -99,65 +99,44 @@ final class ListWrapper<T> implements List<T> {
      * @param node The XML
      * @param addr Address
      */
-    protected ListWrapper(@NotNull final List<T> list, @NotNull final Node node,
+    ListWrapper(@NotNull final List<T> list, @NotNull final Node node,
         @NotNull final String addr) {
         this.original = list;
         this.dom = node;
         this.xpath = addr;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean add(@NotNull final T element) {
         throw new UnsupportedOperationException("#add(T)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void add(final int index, @NotNull final T element) {
         throw new UnsupportedOperationException("#add(int, T)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean addAll(@NotNull final Collection<? extends T> elements) {
         throw new UnsupportedOperationException("#addAll(Collection)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean addAll(final int index,
         @NotNull final Collection<? extends T> elements) {
         throw new UnsupportedOperationException("#add(int, Collection)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clear() {
         throw new UnsupportedOperationException("#clear()");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains(@NotNull final Object element) {
         return this.original.contains(element);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean containsAll(@NotNull final Collection<?> elements) {
         return this.original.containsAll(elements);
@@ -176,8 +155,7 @@ final class ListWrapper<T> implements List<T> {
             throw new ListWrapper.NodeNotFoundException(
                 String.format(
                     "Index (%d) is out of bounds (size=%d)",
-                    index,
-                    this.size()
+                    index, this.size()
                 ),
                 this.dom,
                 this.xpath
@@ -186,100 +164,64 @@ final class ListWrapper<T> implements List<T> {
         return this.original.get(index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int indexOf(@NotNull final Object element) {
         return this.original.indexOf(element);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isEmpty() {
         return this.original.isEmpty();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @NotNull
     public Iterator<T> iterator() {
         return this.original.iterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int lastIndexOf(@NotNull final Object element) {
         return this.original.lastIndexOf(element);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @NotNull
     public ListIterator<T> listIterator() {
         return this.original.listIterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @NotNull
     public ListIterator<T> listIterator(final int index) {
         return this.original.listIterator(index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public T remove(final int index) {
         throw new UnsupportedOperationException("#remove(int)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean remove(@NotNull final Object element) {
         throw new UnsupportedOperationException("#remove(Object)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean removeAll(@NotNull final Collection<?> elements) {
         throw new UnsupportedOperationException("#removeAll(Collection)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean retainAll(@NotNull final Collection<?> elements) {
         throw new UnsupportedOperationException("#retainAll(Collection)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public T set(final int index, @NotNull final T element) {
         throw new UnsupportedOperationException("#set(int, T)");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int size() {
         return this.original.size();
@@ -303,8 +245,7 @@ final class ListWrapper<T> implements List<T> {
             throw new ListWrapper.NodeNotFoundException(
                 String.format(
                     "Start of subList (%d) is out of bounds (size=%d)",
-                    start,
-                    this.size()
+                    start, this.size()
                 ),
                 this.dom,
                 this.xpath
@@ -314,8 +255,7 @@ final class ListWrapper<T> implements List<T> {
             throw new ListWrapper.NodeNotFoundException(
                 String.format(
                     "End of subList (%d) is out of bounds (size=%d)",
-                    end,
-                    this.size()
+                    end, this.size()
                 ),
                 this.dom,
                 this.xpath
@@ -324,17 +264,11 @@ final class ListWrapper<T> implements List<T> {
         return this.original.subList(start, end);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object[] toArray() {
         return this.original.toArray();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <E> E[] toArray(@NotNull final E[] array) {
         return this.original.toArray(array);
@@ -355,7 +289,7 @@ final class ListWrapper<T> implements List<T> {
          * @param node The XML with error
          * @param xpath The address
          */
-        protected NodeNotFoundException(@NotNull final String message,
+        NodeNotFoundException(@NotNull final String message,
             @NotNull final Node node, @NotNull final String xpath) {
             super(
                 Logger.format(

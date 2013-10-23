@@ -74,7 +74,7 @@ public final class XPathContext implements NamespaceContext {
      * <p>Since this class is private in the package users won't be able
      * to see this code and its documentation. That's why all these prefixes
      * and namespaces should be documented in
-     * {@link SimpleXml#SimpleXml(String)} ctor. When adding/changing this
+     * {@link XMLDocument#XMLDocument(String)} ctor. When adding/changing this
      * list - don't forget to document it there.
      */
     public XPathContext() {
@@ -121,14 +121,11 @@ public final class XPathContext implements NamespaceContext {
         this.map.put(prefix, namespace.toString());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getNamespaceURI(@NotNull final String prefix) {
         String namespace = this.map.get(prefix);
         if (namespace == null) {
-            for (NamespaceContext ctx : this.contexts) {
+            for (final NamespaceContext ctx : this.contexts) {
                 namespace = ctx.getNamespaceURI(prefix);
                 if (namespace != null) {
                     break;
@@ -147,9 +144,6 @@ public final class XPathContext implements NamespaceContext {
         return namespace;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getPrefix(@NotNull final String namespace) {
         final Iterator<String> prefixes = this.getPrefixes(namespace);
@@ -160,18 +154,16 @@ public final class XPathContext implements NamespaceContext {
         return prefix;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterator<String> getPrefixes(@NotNull final String namespace) {
         final List<String> prefixes = new LinkedList<String>();
-        for (ConcurrentMap.Entry<String, String> entry : this.map.entrySet()) {
+        for (final ConcurrentMap.Entry<String, String> entry
+            : this.map.entrySet()) {
             if (entry.getValue().equals(namespace)) {
                 prefixes.add(entry.getKey());
             }
         }
-        for (NamespaceContext ctx : this.contexts) {
+        for (final NamespaceContext ctx : this.contexts) {
             final Iterator<?> iterator = ctx.getPrefixes(namespace);
             while (iterator.hasNext()) {
                 prefixes.add(iterator.next().toString());

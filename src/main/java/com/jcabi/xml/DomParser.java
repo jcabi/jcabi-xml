@@ -83,7 +83,7 @@ final class DomParser {
      *
      * @param txt The XML in text
      */
-    protected DomParser(@NotNull final String txt) {
+    DomParser(@NotNull final String txt) {
         if (txt.isEmpty()) {
             throw new IllegalArgumentException("Empty document, not an XML");
         }
@@ -101,7 +101,7 @@ final class DomParser {
      */
     @NotNull
     public Document document() {
-        Document doc;
+        final Document doc;
         try {
             final DocumentBuilderFactory factory =
                 DocumentBuilderFactory.newInstance();

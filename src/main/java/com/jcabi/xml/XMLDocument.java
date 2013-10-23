@@ -40,10 +40,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.Source;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.io.FileUtils;
@@ -203,33 +206,24 @@ public final class XMLDocument implements XML {
         this.context = ctx;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new DomPrinter(this.dom).toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @NotNull
     public Node node() {
         return this.dom;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @NotNull
     public List<String> xpath(@NotNull final String query) {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final int type = nodes.item(idx).getNodeType();
+            final short type = nodes.item(idx).getNodeType();
             if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
                 && type != Node.CDATA_SECTION_NODE) {
                 throw new IllegalArgumentException(
@@ -245,9 +239,6 @@ public final class XMLDocument implements XML {
         return new ListWrapper<String>(items, this.dom, query);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @NotNull
     public XMLDocument registerNs(@NotNull final String prefix,
@@ -255,9 +246,6 @@ public final class XMLDocument implements XML {
         return new XMLDocument(this.dom, this.context.add(prefix, uri));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @NotNull
@@ -271,9 +259,6 @@ public final class XMLDocument implements XML {
         return new ListWrapper<XML>(items, this.dom, query);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @NotNull
     public XML merge(@NotNull final NamespaceContext ctx) {
@@ -290,7 +275,7 @@ public final class XMLDocument implements XML {
      * @return List of DOM nodes
      */
     private NodeList nodelist(final String query) {
-        NodeList nodes;
+        final NodeList nodes;
         try {
             final XPath xpath = XPathFactory.newInstance().newXPath();
             xpath.setNamespaceContext(this.context);
@@ -299,7 +284,7 @@ public final class XMLDocument implements XML {
                 this.dom,
                 XPathConstants.NODESET
             );
-        } catch (javax.xml.xpath.XPathExpressionException ex) {
+        } catch (XPathExpressionException ex) {
             throw new IllegalArgumentException(
                 String.format("invalid XPath query '%s'", query),
                 ex
@@ -319,9 +304,9 @@ public final class XMLDocument implements XML {
             TransformerFactory.newInstance()
                 .newTransformer()
                 .transform(source, result);
-        } catch (javax.xml.transform.TransformerConfigurationException ex) {
+        } catch (TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
-        } catch (javax.xml.transform.TransformerException ex) {
+        } catch (TransformerException ex) {
             throw new IllegalStateException(ex);
         }
         return result.getNode();

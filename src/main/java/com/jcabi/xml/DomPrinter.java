@@ -34,6 +34,8 @@ import java.io.StringWriter;
 import javax.validation.constraints.NotNull;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -68,13 +70,10 @@ final class DomPrinter {
      * Public ctor.
      * @param elm The node
      */
-    protected DomPrinter(@NotNull final Node elm) {
+    DomPrinter(@NotNull final Node elm) {
         this.node = elm;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         final StringWriter writer = new StringWriter();
@@ -86,9 +85,9 @@ final class DomPrinter {
                 new DOMSource(this.node),
                 new StreamResult(writer)
             );
-        } catch (javax.xml.transform.TransformerConfigurationException ex) {
+        } catch (TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
-        } catch (javax.xml.transform.TransformerException ex) {
+        } catch (TransformerException ex) {
             throw new IllegalArgumentException(ex);
         }
         return writer.toString();
