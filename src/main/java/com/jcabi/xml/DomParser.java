@@ -74,6 +74,11 @@ final class DomParser {
     private final transient String xml;
 
     /**
+     * Document builder factory to use for parsing.
+     */
+    private final transient DocumentBuilderFactory factory;
+
+    /**
      * Public ctor.
      *
      * <p>An {@link IllegalArgumentException} may be thrown if the parameter
@@ -81,9 +86,10 @@ final class DomParser {
      * and is not guaranteed that an exception will be thrown whenever
      * the parameter is not XML.
      *
+     * @param fct Document builder factory to use
      * @param txt The XML in text
      */
-    DomParser(@NotNull final String txt) {
+    DomParser(final DocumentBuilderFactory fct, final String txt) {
         if (txt.isEmpty()) {
             throw new IllegalArgumentException("Empty document, not an XML");
         }
@@ -93,6 +99,7 @@ final class DomParser {
             );
         }
         this.xml = txt;
+        this.factory = fct;
     }
 
     /**
@@ -103,22 +110,16 @@ final class DomParser {
     public Document document() {
         final Document doc;
         try {
-            final DocumentBuilderFactory factory =
-                DocumentBuilderFactory.newInstance();
-            // @checkstyle LineLength (1 line)
-            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-            factory.setNamespaceAware(true);
-            doc = factory
-                .newDocumentBuilder()
-                .parse(IOUtils.toInputStream(this.xml, CharEncoding.UTF_8));
+            doc = this.factory.newDocumentBuilder().parse(
+                IOUtils.toInputStream(this.xml, CharEncoding.UTF_8)
+            );
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         } catch (ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
         } catch (SAXException ex) {
             throw new IllegalArgumentException(
-                Logger.format("Invalid XML: \"%s\"", this.xml),
-                ex
+                Logger.format("Invalid XML: \"%s\"", this.xml), ex
             );
         }
         return doc;

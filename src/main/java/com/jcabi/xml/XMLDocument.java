@@ -33,6 +33,7 @@ import com.jcabi.aspects.Loggable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -48,6 +50,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -68,6 +71,7 @@ import org.w3c.dom.NodeList;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.1
+ * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 @EqualsAndHashCode(of = "dom")
 @Loggable(Loggable.DEBUG)
@@ -105,6 +109,19 @@ public final class XMLDocument implements XML {
     @NotNull
     private final transient Node dom;
 
+    static {
+        try {
+            XMLDocument.DFACTORY.setFeature(
+                // @checkstyle LineLength (1 line)
+                "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                false
+            );
+        } catch (ParserConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        }
+        XMLDocument.DFACTORY.setNamespaceAware(true);
+    }
+
     /**
      * Public ctor, from XML as a text.
      *
@@ -128,7 +145,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull final String text) {
         this(
-            new DomParser(text).document(),
+            new DomParser(XMLDocument.DFACTORY, text).document(),
             new XPathContext()
         );
     }
@@ -247,7 +264,21 @@ public final class XMLDocument implements XML {
 
     @Override
     public String toString() {
-        return new DomPrinter(this.dom).toString();
+        final StringWriter writer = new StringWriter();
+        try {
+            final Transformer trans = XMLDocument.TFACTORY.newTransformer();
+            trans.setOutputProperty(OutputKeys.INDENT, "yes");
+            trans.setOutputProperty(OutputKeys.VERSION, "1.1");
+            trans.transform(
+                new DOMSource(this.dom),
+                new StreamResult(writer)
+            );
+        } catch (TransformerConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        } catch (TransformerException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+        return writer.toString();
     }
 
     @Override

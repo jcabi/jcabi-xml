@@ -30,6 +30,7 @@
 package com.jcabi.xml;
 
 import com.rexsl.test.XhtmlMatchers;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -49,7 +50,9 @@ public final class DomParserTest {
     @Test
     public void parsesIncomingXmlDocument() throws Exception {
         final String xml = "<a><b>\u0443\u0440\u0430!</b></a>";
-        final DomParser parser = new DomParser(xml);
+        final DomParser parser = new DomParser(
+            DocumentBuilderFactory.newInstance(), xml
+        );
         MatcherAssert.assertThat(
             parser.document(),
             XhtmlMatchers.hasXPath("/a/b")
@@ -62,9 +65,9 @@ public final class DomParserTest {
      */
     @Test
     public void throwsWhenInvalidXml() throws Exception {
-        final String xml = "<a><!-- broken XML -->";
+        final String xml = "---<a><-- broken XML -->";
         try {
-            new DomParser(xml).document();
+            new DomParser(DocumentBuilderFactory.newInstance(), xml);
             Assert.fail("exception expected");
         } catch (IllegalArgumentException ex) {
             MatcherAssert.assertThat(
@@ -81,7 +84,9 @@ public final class DomParserTest {
     @Test
     public void parsesIncomingXmlDocumentComment() throws Exception {
         final String xml = "<?xml version='1.0'?><!-- test --><root/>";
-        final DomParser parser = new DomParser(xml);
+        final DomParser parser = new DomParser(
+            DocumentBuilderFactory.newInstance(), xml
+        );
         MatcherAssert.assertThat(
             parser.document(),
             XhtmlMatchers.hasXPath("/root")
@@ -94,16 +99,10 @@ public final class DomParserTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void throwsWhenNonXmlDocument() throws Exception {
-        new DomParser("some text, which is not an XML");
-    }
-
-    /**
-     * DomParser throws exception when it is NULL.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test(expected = javax.validation.ConstraintViolationException.class)
-    public void throwsWhenNull() throws Exception {
-        new DomParser(null);
+        new DomParser(
+            DocumentBuilderFactory.newInstance(),
+            "some text, which is not an XML"
+        );
     }
 
     /**
@@ -112,7 +111,10 @@ public final class DomParserTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void throwsWhenInvalidElement() throws Exception {
-        new DomParser("<123/>");
+        new DomParser(
+            DocumentBuilderFactory.newInstance(),
+            "<123/>"
+        );
     }
 
     /**
@@ -131,7 +133,10 @@ public final class DomParserTest {
             "<something>\uFFFD</something>",
         };
         for (String text : texts) {
-            new DomParser(text);
+            new DomParser(
+                DocumentBuilderFactory.newInstance(),
+                text
+            );
         }
     }
 

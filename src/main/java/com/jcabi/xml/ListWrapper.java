@@ -287,16 +287,16 @@ final class ListWrapper<T> implements List<T> {
          * Public ctor.
          * @param message Error message
          * @param node The XML with error
-         * @param xpath The address
+         * @param query The query in XPath
          */
         NodeNotFoundException(@NotNull final String message,
-            @NotNull final Node node, @NotNull final String xpath) {
+            @NotNull final Node node, @NotNull final String query) {
             super(
                 Logger.format(
-                    "XPath '%s' not found in '%s': %s",
-                    StringEscapeUtils.escapeJava(xpath),
+                    "XPath '%s' not found in '%[text]s': %s",
+                    StringEscapeUtils.escapeJava(query),
                     // @checkstyle LineLength (1 line)
-                    StringEscapeUtils.escapeJava(new DomPrinter(node).toString()),
+                    StringEscapeUtils.escapeJava(new XMLDocument(node).toString()),
                     message
             )
             );
