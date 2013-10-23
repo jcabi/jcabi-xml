@@ -318,14 +318,11 @@ public final class XMLDocument implements XML {
             final XPath xpath = XMLDocument.XFACTORY.newXPath();
             xpath.setNamespaceContext(this.context);
             nodes = (NodeList) xpath.evaluate(
-                query,
-                this.dom,
-                XPathConstants.NODESET
+                query, this.dom, XPathConstants.NODESET
             );
         } catch (XPathExpressionException ex) {
             throw new IllegalArgumentException(
-                String.format("invalid XPath query '%s'", query),
-                ex
+                String.format("invalid XPath query '%s'", query), ex
             );
         }
         return nodes;
