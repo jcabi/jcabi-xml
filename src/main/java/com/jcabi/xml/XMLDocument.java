@@ -243,15 +243,24 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull
-    public XML xslt(final Source xsl) throws TransformerException {
-        final Transformer trans = XMLDocument.TFACTORY.newTransformer(xsl);
+    public XML xslt(final Source xsl) {
+        final Transformer trans;
+        try {
+            trans = XMLDocument.TFACTORY.newTransformer(xsl);
+        } catch (TransformerConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        }
         final Document target;
         try {
             target = XMLDocument.DFACTORY.newDocumentBuilder().newDocument();
         } catch (ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
         }
-        trans.transform(new DOMSource(this.dom), new DOMResult(target));
+        try {
+            trans.transform(new DOMSource(this.dom), new DOMResult(target));
+        } catch (TransformerException ex) {
+            throw new IllegalStateException(ex);
+        }
         return new XMLDocument(target, this.context);
     }
 

@@ -33,7 +33,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.Source;
-import javax.xml.transform.TransformerException;
 import org.w3c.dom.Node;
 
 /**
@@ -147,10 +146,13 @@ public interface XML {
 
     /**
      * Transform to another XML using provided XSL.
+     *
+     * <p>A runtime exception will be thrown if transformation fails for any
+     * reason.
+     *
      * @param xsl XSL stylesheet
      * @return XML document
-     * @throws TransformerException If fails to transform
      */
-    XML xslt(Source xsl) throws TransformerException;
+    XML xslt(Source xsl);
 
 }
