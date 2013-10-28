@@ -267,8 +267,12 @@ public final class XMLDocument implements XML {
         final StringWriter writer = new StringWriter();
         try {
             final Transformer trans = XMLDocument.TFACTORY.newTransformer();
+            // @checkstyle MultipleStringLiterals (1 line)
             trans.setOutputProperty(OutputKeys.INDENT, "yes");
             trans.setOutputProperty(OutputKeys.VERSION, "1.1");
+            if (!(this.dom instanceof Document)) {
+                trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            }
             trans.transform(
                 new DOMSource(this.dom),
                 new StreamResult(writer)
