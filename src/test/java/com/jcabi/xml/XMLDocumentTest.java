@@ -226,4 +226,22 @@ public final class XMLDocumentTest {
         );
     }
 
+    /**
+     * XMLDocument can print with and without XML header.
+     * @throws Exception If something goes wrong inside
+     * @since 0.2
+     */
+    @Test
+    public void printsWithAndWithoutXmlHeader() throws Exception {
+        final XML doc = new XMLDocument("<hey/>");
+        MatcherAssert.assertThat(
+            doc,
+            Matchers.hasToString(Matchers.startsWith("<?xml "))
+        );
+        MatcherAssert.assertThat(
+            doc.nodes("/*").get(0),
+            Matchers.hasToString(Matchers.startsWith("<hey"))
+        );
+    }
+
 }
