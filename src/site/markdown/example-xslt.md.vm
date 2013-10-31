@@ -1,10 +1,13 @@
 # How to apply XSL to XML
 
-The only class you need is
-[`XMLDocument`](./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html),
-which implements
+You need two classes:
+[`XMLDocument`](./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html)
+and [`XSLDocument`](./apidocs-${project.version}/com/jcabi/xml/XSLDocument.html)
+which implement
 [`XML`](./apidocs-${project.version}/com/jcabi/xml/XML.html)
-interface and works with your default DOM implementation:
+and [`XSL`](./apidocs-${project.version}/com/jcabi/xml/XSL.html)
+interfaces respectfully. They work with your default DOM implementation.
+For example:
 
 ```java
 XML first = new XMLDocument(
@@ -15,7 +18,7 @@ String xsl =  "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' 
   + "  <name><xsl:value-of select='/orders/order[@id=4]'/></name>",
   + "</xsl:template>"
   + "</xsl:stylesheet>";
-XML second = first.xslt(new StreamSource(new StringReader(xsl)));
+XML second = new XSLDocument(xsl).transform(first);
 System.out.println(second.toString());
 ```
 
