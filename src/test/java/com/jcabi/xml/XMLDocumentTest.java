@@ -32,12 +32,9 @@ package com.jcabi.xml;
 import com.google.common.io.Files;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
-import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
-import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -202,27 +199,6 @@ public final class XMLDocumentTest {
         MatcherAssert.assertThat(
             new XMLDocument("<?xml version='1.0'?><?x test?><a/>"),
             Matchers.hasToString(Matchers.containsString("<?x test?>"))
-        );
-    }
-
-    /**
-     * XMLDocument can make XSL transformations.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void makesXslTransformations() throws Exception {
-        final String xsl = StringUtils.join(
-            "<xsl:stylesheet",
-            " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
-            " version='2.0'>",
-            "<xsl:template match='/'><done/>",
-            "</xsl:template></xsl:stylesheet>"
-        );
-        MatcherAssert.assertThat(
-            new XMLDocument("<?xml version='1.0'?><a/>").xslt(
-                new StreamSource(IOUtils.toInputStream(xsl, Charsets.UTF_8))
-            ),
-            XhtmlMatchers.hasXPath("/done")
         );
     }
 

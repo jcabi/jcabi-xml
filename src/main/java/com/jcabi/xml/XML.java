@@ -32,7 +32,6 @@ package com.jcabi.xml;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.transform.Source;
 import org.w3c.dom.Node;
 
 /**
@@ -143,16 +142,5 @@ public interface XML {
      * @return DOM node
      */
     Node node();
-
-    /**
-     * Transform to another XML using provided XSL.
-     *
-     * <p>A runtime exception will be thrown if transformation fails for any
-     * reason.
-     *
-     * @param xsl XSL stylesheet
-     * @return XML document
-     */
-    XML xslt(Source xsl);
 
 }

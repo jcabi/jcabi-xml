@@ -126,7 +126,7 @@ public final class XMLDocument implements XML {
      * Public ctor, from XML as a text.
      *
      * <p>The object is created with a default implementation of
-     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * {@link NamespaceContext}, which already defines a
      * number of namespaces, for convenience, including:
      *
      * <pre> xhtml: http://www.w3.org/1999/xhtml
@@ -154,7 +154,7 @@ public final class XMLDocument implements XML {
      * Public ctor, from a DOM node.
      *
      * <p>The object is created with a default implementation of
-     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
      * @param node DOM source
@@ -168,7 +168,7 @@ public final class XMLDocument implements XML {
      * Public ctor, from a source.
      *
      * <p>The object is created with a default implementation of
-     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
@@ -184,7 +184,7 @@ public final class XMLDocument implements XML {
      * Public ctor, from XML in a file.
      *
      * <p>The object is created with a default implementation of
-     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
@@ -201,7 +201,7 @@ public final class XMLDocument implements XML {
      * Public ctor, from XML in the URL.
      *
      * <p>The object is created with a default implementation of
-     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
@@ -218,7 +218,7 @@ public final class XMLDocument implements XML {
      * Public ctor, from XML in the URI.
      *
      * <p>The object is created with a default implementation of
-     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
@@ -235,7 +235,7 @@ public final class XMLDocument implements XML {
      * Public ctor, from input stream.
      *
      * <p>The object is created with a default implementation of
-     * {@link javax.xml.namespace.NamespaceContext}, which already defines a
+     * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
@@ -293,29 +293,6 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull
-    public XML xslt(final Source xsl) {
-        final Transformer trans;
-        try {
-            trans = XMLDocument.TFACTORY.newTransformer(xsl);
-        } catch (TransformerConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        final Document target;
-        try {
-            target = XMLDocument.DFACTORY.newDocumentBuilder().newDocument();
-        } catch (ParserConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        try {
-            trans.transform(new DOMSource(this.dom), new DOMResult(target));
-        } catch (TransformerException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return new XMLDocument(target, this.context);
-    }
-
-    @Override
-    @NotNull
     public List<String> xpath(@NotNull final String query) {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
@@ -338,14 +315,14 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull
-    public XMLDocument registerNs(@NotNull final String prefix,
+    public XML registerNs(@NotNull final String prefix,
         @NotNull final Object uri) {
         return new XMLDocument(this.dom, this.context.add(prefix, uri));
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     @NotNull
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public List<XML> nodes(@NotNull final String query) {
         final NodeList nodes = this.nodelist(query);
         final List<XML> items =
