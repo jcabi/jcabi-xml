@@ -59,7 +59,7 @@
                                                     </ul>
                                     </li>
                                                                                         <li>
-                                                                    <a href="apidocs-0.4/index.html" title="API 0.4 (JavaDoc)">API 0.4 (JavaDoc)</a>
+                                                                    <a href="apidocs-0.5/index.html" title="API 0.5 (JavaDoc)">API 0.5 (JavaDoc)</a>
                                                                                                                         <ul>
                                                     </ul>
                                     </li>
@@ -85,6 +85,11 @@
                                     </li>
                                                                                         <li>
                                                                     <a href="example-xslt.html" title="XSL Transforming">XSL Transforming</a>
+                                                                                                                        <ul>
+                                                    </ul>
+                                    </li>
+                                                                                        <li>
+                                                                    <a href="example-xsd.html" title="XSD Schema Validation">XSD Schema Validation</a>
                                                                                                                         <ul>
                                                     </ul>
                                     </li>
@@ -146,7 +151,7 @@
                                                     </ul>
                                     </li>
                                                                                         <li>
-                                                                    <a href="apidocs-0.4/index.html" title="JavaDocs">JavaDocs</a>
+                                                                    <a href="apidocs-0.5/index.html" title="JavaDocs">JavaDocs</a>
                                                                                                                         <ul>
                                                     </ul>
                                     </li>
@@ -185,8 +190,8 @@
             </a>
                         <p>
                 
-                31-Oct-2013
-                0.4
+                06-Nov-2013
+                0.5
             </p>
             <article>
                 <script type="text/javascript">
@@ -220,12 +225,12 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td>23</td>
+<td>25</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>8.288</td></tr></table><br />
+<td>12.016</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
 <div class="section">
 <h2>Package List<a name="Package_List"></a></h2><a name="Package_List"></a>
@@ -241,12 +246,12 @@ function toggleDisplay(elementId) {
 <th>Time</th></tr>
 <tr class="b">
 <td><a href="#com.jcabi.xml">com.jcabi.xml</a></td>
-<td>23</td>
+<td>25</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>8.288</td></tr></table><br />
+<td>12.016</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
 <div class="section">
 <h3>com.jcabi.xml<a name="com.jcabi.xml"></a></h3><a name="com.jcabi.xml"></a>
@@ -268,7 +273,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.116</td></tr>
+<td>8.341</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.xmlXMLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlXMLDocumentTest">XMLDocumentTest</a></td>
@@ -277,7 +282,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>4.084</td></tr>
+<td>0.522</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.xmlXMLTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlXMLTest">XMLTest</a></td>
@@ -286,7 +291,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.001</td></tr>
+<td>0.004</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.xmlXPathContextTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlXPathContextTest">XPathContextTest</a></td>
@@ -295,8 +300,17 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>2.387</td></tr>
+<td>0.042</td></tr>
 <tr class="b">
+<td><a href="#com.jcabi.xmlXSDDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXSDDocumentTest">XSDDocumentTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.258</td></tr>
+<tr class="a">
 <td><a href="#com.jcabi.xmlXSLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlXSLDocumentTest">XSLDocumentTest</a></td>
 <td>1</td>
@@ -304,7 +318,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>1.7</td></tr></table></div><br /></div>
+<td>2.849</td></tr></table></div><br /></div>
 <div class="section">
 <h2>Test Cases<a name="Test_Cases"></a></h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
@@ -313,108 +327,119 @@ function toggleDisplay(elementId) {
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>allowsValidXmlFormatting</td>
-<td>0.08</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>throwsWhenInvalidElement</td>
-<td>0.004</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>parsesIncomingXmlDocument</td>
-<td>0.012</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>throwsWhenInvalidXml</td>
-<td>0.001</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>parsesIncomingXmlDocumentComment</td>
-<td>0.019</td></tr>
+<td>3.026</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>throwsWhenNonXmlDocument</td>
-<td>0</td></tr></table></div>
+<td>0.561</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>parsesIncomingXmlDocument</td>
+<td>3.026</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>throwsWhenInvalidXml</td>
+<td>0.577</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>throwsWhenInvalidElement</td>
+<td>0.576</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>allowsValidXmlFormatting</td>
+<td>0.575</td></tr></table></div>
 <div class="section">
 <h3>XMLDocumentTest<a name="XMLDocumentTest"></a></h3><a name="com.jcabi.xmlXMLDocumentTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>convertsItselfToXml</td>
-<td>0.803</td></tr>
+<td>0.053</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>throwsWhenXpathQueryIsBroken</td>
-<td>0.369</td></tr>
+<td>0.036</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>retrievesDomNode</td>
-<td>0.819</td></tr>
+<td>0.065</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsWithXpathAndNamespaces</td>
-<td>0.826</td></tr>
+<td>0.086</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>preservesProcessingInstructions</td>
-<td>0.733</td></tr>
+<td>0.021</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>printsWithAndWithoutXmlHeader</td>
-<td>0.346</td></tr>
+<td>0.023</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsWithXpathWithCustomNamespace</td>
-<td>0.054</td></tr>
+<td>0.087</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpathAndReturnsThem</td>
-<td>0.108</td></tr>
+<td>0.057</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>throwsCustomExceptionWhenXpathNotFound</td>
-<td>0.006</td></tr>
+<td>0.051</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpath</td>
-<td>0.02</td></tr></table></div>
+<td>0.043</td></tr></table></div>
 <div class="section">
 <h3>XMLTest<a name="XMLTest"></a></h3><a name="com.jcabi.xmlXMLTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>works</td>
-<td>0.001</td></tr></table></div>
+<td>0.004</td></tr></table></div>
 <div class="section">
 <h3>XPathContextTest<a name="XPathContextTest"></a></h3><a name="com.jcabi.xmlXPathContextTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsNamespaceByPrefix</td>
-<td>0.501</td></tr>
+<td>0.002</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsNonBoundNamespaces</td>
-<td>0.5</td></tr>
+<td>0.01</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsPrefixByNamespace</td>
-<td>0.485</td></tr>
+<td>findsPrefixesByNamespace</td>
+<td>0.029</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsPrefixesByNamespace</td>
-<td>0.501</td></tr>
+<td>findsPrefixByNamespace</td>
+<td>0.001</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDefaultNamespaces</td>
-<td>0.4</td></tr></table></div>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3>XSDDocumentTest<a name="XSDDocumentTest"></a></h3><a name="com.jcabi.xmlXSDDocumentTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>validatesXml</td>
+<td>0.145</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>detectsSchemaViolations</td>
+<td>0.113</td></tr></table></div>
 <div class="section">
 <h3>XSLDocumentTest<a name="XSLDocumentTest"></a></h3><a name="com.jcabi.xmlXSLDocumentTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>makesXslTransformations</td>
-<td>1.7</td></tr></table></div><br /></div>
+<td>2.849</td></tr></table></div><br /></div>
             </article>
             <p style="margin-bottom: 3em; margin-top: 2em;">
                 Copyright &#169;
