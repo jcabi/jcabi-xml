@@ -32,6 +32,8 @@ package com.jcabi.xml;
 import com.jcabi.aspects.Loggable;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -41,7 +43,9 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * Implementation of {@link XSD}.
@@ -55,12 +59,6 @@ import org.xml.sax.SAXException;
 @EqualsAndHashCode(of = "xsd")
 @Loggable(Loggable.DEBUG)
 public final class XSDDocument implements XSD {
-
-    /**
-     * Schema factory.
-     */
-    private static final SchemaFactory FACTORY =
-        SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
     /**
      * XSD document.
@@ -99,14 +97,34 @@ public final class XSDDocument implements XSD {
 
     @Override
     @NotNull
-    public boolean validate(final XML xml) {
+    public Collection<SAXParseException> validate(final XML xml) {
         final Schema schema;
         try {
-            schema = XSDDocument.FACTORY.newSchema(this.xsd);
+            schema = SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                .newSchema(this.xsd);
         } catch (SAXException ex) {
             throw new IllegalStateException(ex);
         }
+        final Collection<SAXParseException> errors =
+            new CopyOnWriteArrayList<SAXParseException>();
         final Validator validator = schema.newValidator();
+        validator.setErrorHandler(
+            new ErrorHandler() {
+                @Override
+                public void warning(final SAXParseException error) {
+                    errors.add(error);
+                }
+                @Override
+                public void error(final SAXParseException error) {
+                    errors.add(error);
+                }
+                @Override
+                public void fatalError(final SAXParseException error) {
+                    errors.add(error);
+                }
+            }
+        );
         try {
             validator.validate(new DOMSource(xml.node()));
         } catch (SAXException ex) {
@@ -114,7 +132,7 @@ public final class XSDDocument implements XSD {
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
-        return true;
+        return errors;
     }
 
 }

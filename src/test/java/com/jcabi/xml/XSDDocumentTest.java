@@ -48,11 +48,30 @@ public final class XSDDocumentTest {
     @Test
     public void validatesXml() throws Exception {
         final String xsd = StringUtils.join(
-            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'/>"
+            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
+            "<xs:element name='test'/>",
+            " </xs:schema>"
         );
         MatcherAssert.assertThat(
-            new XSDDocument(xsd).validate(new XMLDocument("<a/>")),
-            Matchers.is(true)
+            new XSDDocument(xsd).validate(new XMLDocument("<test/>")),
+            Matchers.empty()
+        );
+    }
+
+    /**
+     * XSDDocument can detect schema violations.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void detectsSchemaViolations() throws Exception {
+        final String xsd = StringUtils.join(
+            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+            "<xs:element name='first'/>",
+            "</xs:schema>"
+        );
+        MatcherAssert.assertThat(
+            new XSDDocument(xsd).validate(new XMLDocument("<second/>")),
+            Matchers.not(Matchers.empty())
         );
     }
 

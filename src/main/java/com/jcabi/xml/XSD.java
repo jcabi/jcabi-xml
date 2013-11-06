@@ -29,7 +29,9 @@
  */
 package com.jcabi.xml;
 
+import java.util.Collection;
 import javax.validation.constraints.NotNull;
+import org.xml.sax.SAXParseException;
 
 /**
  * XSD schema.
@@ -47,8 +49,8 @@ public interface XSD {
      * Validate XML.
      *
      * @param xml Source XML document
-     * @return TRUE if it's valid
+     * @return Collection of problems found (empty if no problems)
      */
-    boolean validate(@NotNull XML xml);
+    Collection<SAXParseException> validate(@NotNull XML xml);
 
 }
