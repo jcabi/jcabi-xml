@@ -1,0 +1,25 @@
+# How to validate XML with XSD Schema
+
+You need two classes:
+[`XMLDocument`](./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html)
+and [`XSDDocument`](./apidocs-${project.version}/com/jcabi/xml/XSDDocument.html)
+which implement
+[`XML`](./apidocs-${project.version}/com/jcabi/xml/XML.html)
+and [`XSD`](./apidocs-${project.version}/com/jcabi/xml/XSD.html)
+interfaces respectfully. They work with your default DOM implementation.
+For example:
+
+```java
+XML first = new XMLDocument(
+  "<orders><order id="4">Coffee to go</order></orders>"
+);
+String xsd = "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+    + "<xs:element name='payments'/>",
+    + "</xs:schema>";
+Collection<SAXParseException> errors = new XSDDocument(xsd).validate(xml);
+if (errors.isEmpty()) {
+    System.out.println("XML is valid");
+} else {
+    System.out.println("XSD validation failed: " + errors);
+}
+```
