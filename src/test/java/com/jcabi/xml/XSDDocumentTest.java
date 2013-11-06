@@ -29,34 +29,30 @@
  */
 package com.jcabi.xml;
 
-import com.rexsl.test.XhtmlMatchers;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Test case for {@link XSLDocument}.
+ * Test case for {@link XSDDocument}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-public final class XSLDocumentTest {
+public final class XSDDocumentTest {
 
     /**
-     * XSLDocument can make XSL transformations.
+     * XSDDocument can validate XML.
      * @throws Exception If something goes wrong inside
      */
     @Test
-    public void makesXslTransformations() throws Exception {
-        final String xsl = StringUtils.join(
-            "<xsl:stylesheet",
-            " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
-            " version='2.0'>",
-            "<xsl:template match='/'><done/>",
-            "</xsl:template></xsl:stylesheet>"
+    public void validatesXml() throws Exception {
+        final String xsd = StringUtils.join(
+            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'/>"
         );
         MatcherAssert.assertThat(
-            new XSLDocument(xsl).transform(new XMLDocument("<a/>")),
-            XhtmlMatchers.hasXPath("/done")
+            new XSDDocument(xsd).validate(new XMLDocument("<a/>")),
+            Matchers.is(true)
         );
     }
 

@@ -29,35 +29,26 @@
  */
 package com.jcabi.xml;
 
-import com.rexsl.test.XhtmlMatchers;
-import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import javax.validation.constraints.NotNull;
 
 /**
- * Test case for {@link XSLDocument}.
+ * XSD schema.
+ *
+ * <p>Implementation of this interface must be immutable and thread-safe.
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @since 0.5
+ * @see XSDDocument
  */
-public final class XSLDocumentTest {
+public interface XSD {
 
     /**
-     * XSLDocument can make XSL transformations.
-     * @throws Exception If something goes wrong inside
+     * Validate XML.
+     *
+     * @param xml Source XML document
+     * @return TRUE if it's valid
      */
-    @Test
-    public void makesXslTransformations() throws Exception {
-        final String xsl = StringUtils.join(
-            "<xsl:stylesheet",
-            " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
-            " version='2.0'>",
-            "<xsl:template match='/'><done/>",
-            "</xsl:template></xsl:stylesheet>"
-        );
-        MatcherAssert.assertThat(
-            new XSLDocument(xsl).transform(new XMLDocument("<a/>")),
-            XhtmlMatchers.hasXPath("/done")
-        );
-    }
+    boolean validate(@NotNull XML xml);
 
 }
