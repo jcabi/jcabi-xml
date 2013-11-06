@@ -58,6 +58,7 @@
         <menu name="Examples">
             <item name="Parsing XML" href="example-parsing.html"/>
             <item name="XSL Transforming" href="example-xslt.html"/>
+            <item name="XSD Schema Validation" href="example-xsd.html"/>
         </menu>
         <menu ref="reports"/>
     </body>
