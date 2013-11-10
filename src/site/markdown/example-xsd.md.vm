@@ -8,20 +8,29 @@ interface. It works with your default DOM implementation.
 For example:
 
 ```java
-String xsd = "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-    + "<xs:element name='payments'/>",
-    + "</xs:schema>";
-Collection<SAXParseException> errors = new XSDDocument(xsd).validate(
-  new StreamSource(
-    IOUtils.toInputStream(
-      "<orders><order id="4">Coffee to go</order></orders>",
-      "UTF-8"
-    )
-  )
-);
-if (errors.isEmpty()) {
-    System.out.println("XML is valid");
-} else {
-    System.out.println("XSD validation failed: " + errors);
+import com.jcabi.xml.XSDDocument;
+import java.util.Collection;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.commons.io.IOUtils;
+import org.xml.sax.SAXParseException;
+public class Main {
+  public void main(String[] args) {
+    String xsd = "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+      + "<xs:element name='payments'/>",
+      + "</xs:schema>";
+    Collection<SAXParseException> errors = new XSDDocument(xsd).validate(
+      new StreamSource(
+        IOUtils.toInputStream(
+          "<orders><order id="4">Coffee to go</order></orders>",
+          "UTF-8"
+        )
+      )
+    );
+    if (errors.isEmpty()) {
+      System.out.println("XML is valid");
+    } else {
+      System.out.println("XSD validation failed: " + errors);
+    }
+  }
 }
 ```
