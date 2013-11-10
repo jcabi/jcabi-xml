@@ -30,8 +30,12 @@
 package com.jcabi.xml;
 
 import com.google.common.io.Files;
+import com.jcabi.aspects.Parallel;
+import com.jcabi.aspects.Tv;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
@@ -217,6 +221,32 @@ public final class XMLDocumentTest {
         MatcherAssert.assertThat(
             doc.nodes("/*").get(0),
             Matchers.hasToString(Matchers.startsWith("<hey"))
+        );
+    }
+
+    /**
+     * XMLDocument can parse in multiple threads.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    @SuppressWarnings("PMD.DoNotUseThreads")
+    public void parsesInMultipleThreads() throws Exception {
+        final CountDownLatch done = new CountDownLatch(Tv.FIFTY);
+        final Runnable runnable = new Runnable() {
+            @Override
+            @Parallel(threads = Tv.FIFTY)
+            public void run() {
+                MatcherAssert.assertThat(
+                    new XMLDocument("<root><hey/></root>"),
+                    XhtmlMatchers.hasXPath("/root/hey")
+                );
+                done.countDown();
+            }
+        };
+        runnable.run();
+        MatcherAssert.assertThat(
+            done.await(1L, TimeUnit.SECONDS),
+            Matchers.is(true)
         );
     }
 

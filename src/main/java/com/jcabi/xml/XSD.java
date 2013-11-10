@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import java.util.Collection;
 import javax.validation.constraints.NotNull;
+import javax.xml.transform.Source;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -51,6 +52,6 @@ public interface XSD {
      * @param xml Source XML document
      * @return Collection of problems found (empty if no problems)
      */
-    Collection<SAXParseException> validate(@NotNull XML xml);
+    Collection<SAXParseException> validate(@NotNull Source xml);
 
 }

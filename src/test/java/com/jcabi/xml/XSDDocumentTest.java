@@ -29,10 +29,18 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Tv;
+import java.util.Collection;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.xml.sax.SAXParseException;
 
 /**
  * Test case for {@link XSDDocument}.
@@ -53,7 +61,9 @@ public final class XSDDocumentTest {
             " </xs:schema>"
         );
         MatcherAssert.assertThat(
-            new XSDDocument(xsd).validate(new XMLDocument("<test/>")),
+            new XSDDocument(xsd).validate(
+                new DOMSource(new XMLDocument("<test/>").node())
+            ),
             Matchers.empty()
         );
     }
@@ -69,10 +79,52 @@ public final class XSDDocumentTest {
             "<xs:element name='first'/>",
             "</xs:schema>"
         );
+        final Collection<SAXParseException> errors = new XSDDocument(xsd)
+            .validate(new StreamSource(IOUtils.toInputStream("<second/>")));
         MatcherAssert.assertThat(
-            new XSDDocument(xsd).validate(new XMLDocument("<second/>")),
-            Matchers.not(Matchers.empty())
+            errors,
+            Matchers.<SAXParseException>iterableWithSize(1)
         );
+        MatcherAssert.assertThat(
+            errors.iterator().next().getLineNumber(),
+            Matchers.greaterThan(0)
+        );
+    }
+
+    /**
+     * XSDDocument can validate complex XML.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    public void validatesComplexXml() throws Exception {
+        final String xsd = StringUtils.join(
+            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'  >",
+            "<xs:element name='root'>",
+            "<xs:complexType><xs:sequence>",
+            "<xs:element name='a' type='xs:string' maxOccurs='unbounded' />",
+            "</xs:sequence></xs:complexType>",
+            "</xs:element></xs:schema>"
+        );
+        final StringBuilder text = new StringBuilder("<root>");
+        for (int idx = 0; idx < Tv.HUNDRED; ++idx) {
+            text.append("\n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;")
+                .append(RandomStringUtils.randomAlphanumeric(Tv.TEN))
+                .append("</a>\n\r \t    ");
+        }
+        text.append("</root>");
+        for (int idx = 0; idx < Tv.FIVE; ++idx) {
+            MatcherAssert.assertThat(
+                new XSDDocument(xsd).validate(
+                    new StreamSource(
+                        IOUtils.toInputStream(
+                            text.toString(), CharEncoding.UTF_8
+                        )
+                    )
+                ),
+                Matchers.empty()
+            );
+        }
     }
 
 }

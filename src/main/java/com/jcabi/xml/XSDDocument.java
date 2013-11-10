@@ -97,7 +97,7 @@ public final class XSDDocument implements XSD {
 
     @Override
     @NotNull
-    public Collection<SAXParseException> validate(final XML xml) {
+    public Collection<SAXParseException> validate(final Source xml) {
         final Schema schema;
         try {
             schema = SchemaFactory
@@ -126,7 +126,7 @@ public final class XSDDocument implements XSD {
             }
         );
         try {
-            validator.validate(new DOMSource(xml.node()));
+            validator.validate(xml);
         } catch (SAXException ex) {
             throw new IllegalStateException(ex);
         } catch (IOException ex) {
