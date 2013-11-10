@@ -269,7 +269,7 @@ public final class XMLDocument implements XML {
             final Transformer trans = XMLDocument.TFACTORY.newTransformer();
             // @checkstyle MultipleStringLiterals (1 line)
             trans.setOutputProperty(OutputKeys.INDENT, "yes");
-            trans.setOutputProperty(OutputKeys.VERSION, "1.1");
+            trans.setOutputProperty(OutputKeys.VERSION, "1.0");
             if (!(this.dom instanceof Document)) {
                 trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             }
