@@ -59,7 +59,7 @@
                                                     </ul>
                                     </li>
                                                                                         <li>
-                                                                    <a href="apidocs-0.5/index.html" title="API 0.5 (JavaDoc)">API 0.5 (JavaDoc)</a>
+                                                                    <a href="apidocs-0.6/index.html" title="API 0.6 (JavaDoc)">API 0.6 (JavaDoc)</a>
                                                                                                                         <ul>
                                                     </ul>
                                     </li>
@@ -123,25 +123,38 @@
             </a>
                         <p>
                 
-                06-Nov-2013
-                0.5
+                10-Nov-2013
+                0.6
             </p>
             <article>
                 <h1>How to validate XML with XSD Schema</h1>
-<p>You need two classes: <a href="./apidocs-0.5/com/jcabi/xml/XMLDocument.html"><tt>XMLDocument</tt></a> and <a href="./apidocs-0.5/com/jcabi/xml/XSDDocument.html"><tt>XSDDocument</tt></a> which implement <a href="./apidocs-0.5/com/jcabi/xml/XML.html"><tt>XML</tt></a> and <a href="./apidocs-0.5/com/jcabi/xml/XSD.html"><tt>XSD</tt></a> interfaces respectfully. They work with your default DOM implementation. For example:</p>
+<p>You need one class <a href="./apidocs-0.6/com/jcabi/xml/XSDDocument.html"><tt>XSDDocument</tt></a> which implements <a href="./apidocs-0.6/com/jcabi/xml/XSD.html"><tt>XSD</tt></a> interface. It works with your default DOM implementation. For example:</p>
 
 <div class="source">
-<pre>XML first = new XMLDocument(
-  &quot;&lt;orders&gt;&lt;order id=&quot;4&quot;&gt;Coffee to go&lt;/order&gt;&lt;/orders&gt;&quot;
-);
-String xsd = &quot;&lt;xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'&gt;&quot;,
-    + &quot;&lt;xs:element name='payments'/&gt;&quot;,
-    + &quot;&lt;/xs:schema&gt;&quot;;
-Collection&lt;SAXParseException&gt; errors = new XSDDocument(xsd).validate(xml);
-if (errors.isEmpty()) {
-    System.out.println(&quot;XML is valid&quot;);
-} else {
-    System.out.println(&quot;XSD validation failed: &quot; + errors);
+<pre>import com.jcabi.xml.XSDDocument;
+import java.util.Collection;
+import javax.xml.transform.stream.StreamSource;
+import org.apache.commons.io.IOUtils;
+import org.xml.sax.SAXParseException;
+public class Main {
+  public void main(String[] args) {
+    String xsd = &quot;&lt;xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'&gt;&quot;,
+      + &quot;&lt;xs:element name='payments'/&gt;&quot;,
+      + &quot;&lt;/xs:schema&gt;&quot;;
+    Collection&lt;SAXParseException&gt; errors = new XSDDocument(xsd).validate(
+      new StreamSource(
+        IOUtils.toInputStream(
+          &quot;&lt;orders&gt;&lt;order id=&quot;4&quot;&gt;Coffee to go&lt;/order&gt;&lt;/orders&gt;&quot;,
+          &quot;UTF-8&quot;
+        )
+      )
+    );
+    if (errors.isEmpty()) {
+      System.out.println(&quot;XML is valid&quot;);
+    } else {
+      System.out.println(&quot;XSD validation failed: &quot; + errors);
+    }
+  }
 }
 </pre></div>
             </article>

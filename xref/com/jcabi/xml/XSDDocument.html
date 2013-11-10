@@ -107,7 +107,7 @@
 <a class="jxr_linenumber" name="97" href="#97">97</a>  
 <a class="jxr_linenumber" name="98" href="#98">98</a>      @Override
 <a class="jxr_linenumber" name="99" href="#99">99</a>      @NotNull
-<a class="jxr_linenumber" name="100" href="#100">100</a>     <strong class="jxr_keyword">public</strong> Collection&lt;SAXParseException&gt; validate(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/xml/XML.html">XML</a> xml) {
+<a class="jxr_linenumber" name="100" href="#100">100</a>     <strong class="jxr_keyword">public</strong> Collection&lt;SAXParseException&gt; validate(<strong class="jxr_keyword">final</strong> Source xml) {
 <a class="jxr_linenumber" name="101" href="#101">101</a>         <strong class="jxr_keyword">final</strong> Schema schema;
 <a class="jxr_linenumber" name="102" href="#102">102</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="103" href="#103">103</a>             schema = SchemaFactory
@@ -136,7 +136,7 @@
 <a class="jxr_linenumber" name="126" href="#126">126</a>             }
 <a class="jxr_linenumber" name="127" href="#127">127</a>         );
 <a class="jxr_linenumber" name="128" href="#128">128</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="129" href="#129">129</a>             validator.validate(<strong class="jxr_keyword">new</strong> DOMSource(xml.node()));
+<a class="jxr_linenumber" name="129" href="#129">129</a>             validator.validate(xml);
 <a class="jxr_linenumber" name="130" href="#130">130</a>         } <strong class="jxr_keyword">catch</strong> (SAXException ex) {
 <a class="jxr_linenumber" name="131" href="#131">131</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
 <a class="jxr_linenumber" name="132" href="#132">132</a>         } <strong class="jxr_keyword">catch</strong> (IOException ex) {
