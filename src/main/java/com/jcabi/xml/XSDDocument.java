@@ -63,14 +63,14 @@ public final class XSDDocument implements XSD {
     /**
      * XSD document.
      */
-    @NotNull
     private final transient Source xsd;
 
     /**
      * Public ctor, from XML as a source.
      * @param src XSL document body
      */
-    public XSDDocument(@NotNull(message = "XML can't be NULL") final XML src) {
+    public XSDDocument(@NotNull(message = "XML can't be NULL")
+        final XML src) {
         this(new DOMSource(src.node()));
     }
 
