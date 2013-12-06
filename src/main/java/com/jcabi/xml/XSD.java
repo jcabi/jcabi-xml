@@ -52,6 +52,8 @@ public interface XSD {
      * @param xml Source XML document
      * @return Collection of problems found (empty if no problems)
      */
-    Collection<SAXParseException> validate(@NotNull Source xml);
+    @NotNull(message = "list of errors is never NULL")
+    Collection<SAXParseException> validate(
+        @NotNull(message = "XML source can't be NULL") Source xml);
 
 }

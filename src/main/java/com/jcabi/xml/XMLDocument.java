@@ -100,13 +100,11 @@ public final class XMLDocument implements XML {
      * Namespace context to use for {@link #xpath(String)}
      * and {@link #nodes(String)} methods.
      */
-    @NotNull
     private final transient XPathContext context;
 
     /**
      * Encapsulated DOM node.
      */
-    @NotNull
     private final transient Node dom;
 
     static {
@@ -143,7 +141,8 @@ public final class XMLDocument implements XML {
      *
      * @param text XML document body
      */
-    public XMLDocument(@NotNull final String text) {
+    public XMLDocument(@NotNull(message = "XML text can't be NULL")
+        final String text) {
         this(
             new DomParser(XMLDocument.DFACTORY, text).document(),
             new XPathContext()
@@ -160,7 +159,8 @@ public final class XMLDocument implements XML {
      * @param node DOM source
      * @since 0.2
      */
-    public XMLDocument(@NotNull final Node node) {
+    public XMLDocument(@NotNull(message = "node can't be NULL")
+        final Node node) {
         this(node, new XPathContext());
     }
 
@@ -176,7 +176,8 @@ public final class XMLDocument implements XML {
      *
      * @param source Source of XML document
      */
-    public XMLDocument(@NotNull final Source source) {
+    public XMLDocument(@NotNull(message = "source can't be NULL")
+        final Source source) {
         this(XMLDocument.transform(source), new XPathContext());
     }
 
@@ -193,7 +194,8 @@ public final class XMLDocument implements XML {
      * @param file XML file
      * @throws IOException In case of I/O problems
      */
-    public XMLDocument(@NotNull final File file) throws IOException {
+    public XMLDocument(@NotNull(message = "file can't be NULL")
+        final File file) throws IOException {
         this(FileUtils.readFileToString(file, CharEncoding.UTF_8));
     }
 
@@ -210,7 +212,8 @@ public final class XMLDocument implements XML {
      * @param url The URL to load from
      * @throws IOException In case of I/O problems
      */
-    public XMLDocument(@NotNull final URL url) throws IOException {
+    public XMLDocument(@NotNull(message = "URL can't be NULL")
+        final URL url) throws IOException {
         this(IOUtils.toString(url, CharEncoding.UTF_8));
     }
 
@@ -227,7 +230,8 @@ public final class XMLDocument implements XML {
      * @param uri The URI to load from
      * @throws IOException In case of I/O problems
      */
-    public XMLDocument(@NotNull final URI uri) throws IOException {
+    public XMLDocument(@NotNull(message = "URI can't be NULL")
+        final URI uri) throws IOException {
         this(IOUtils.toString(uri, CharEncoding.UTF_8));
     }
 
@@ -247,7 +251,8 @@ public final class XMLDocument implements XML {
      * @param stream The input stream, which will be closed automatically
      * @throws IOException In case of I/O problem
      */
-    public XMLDocument(@NotNull final InputStream stream) throws IOException {
+    public XMLDocument(@NotNull(message = "input stream can't be NULL")
+        final InputStream stream) throws IOException {
         this(IOUtils.toString(stream, CharEncoding.UTF_8));
         stream.close();
     }
@@ -286,13 +291,13 @@ public final class XMLDocument implements XML {
     }
 
     @Override
-    @NotNull
+    @NotNull(message = "node is never NULL")
     public Node node() {
         return this.dom;
     }
 
     @Override
-    @NotNull
+    @NotNull(message = "list of texts is never NULL")
     public List<String> xpath(@NotNull final String query) {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
@@ -314,14 +319,14 @@ public final class XMLDocument implements XML {
     }
 
     @Override
-    @NotNull
+    @NotNull(message = "XML is never NULL")
     public XML registerNs(@NotNull final String prefix,
         @NotNull final Object uri) {
         return new XMLDocument(this.dom, this.context.add(prefix, uri));
     }
 
     @Override
-    @NotNull
+    @NotNull(message = "XML is never NULL")
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public List<XML> nodes(@NotNull final String query) {
         final NodeList nodes = this.nodelist(query);
@@ -334,8 +339,9 @@ public final class XMLDocument implements XML {
     }
 
     @Override
-    @NotNull
-    public XML merge(@NotNull final NamespaceContext ctx) {
+    @NotNull(message = "XML is never NULL")
+    public XML merge(@NotNull(message = "context can't be NULL")
+        final NamespaceContext ctx) {
         return new XMLDocument(this.dom, this.context.merge(ctx));
     }
 

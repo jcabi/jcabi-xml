@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -73,9 +72,9 @@ import org.w3c.dom.Node;
  * @version $Id$
  * @since 0.1
  */
-@SuppressWarnings("PMD.TooManyMethods")
 @ToString
 @EqualsAndHashCode(of = { "original", "dom", "xpath" })
+@SuppressWarnings("PMD.TooManyMethods")
 final class ListWrapper<T> implements List<T> {
 
     /**
@@ -99,31 +98,29 @@ final class ListWrapper<T> implements List<T> {
      * @param node The XML
      * @param addr Address
      */
-    ListWrapper(@NotNull final List<T> list, @NotNull final Node node,
-        @NotNull final String addr) {
+    ListWrapper(final List<T> list, final Node node, final String addr) {
         this.original = list;
         this.dom = node;
         this.xpath = addr;
     }
 
     @Override
-    public boolean add(@NotNull final T element) {
+    public boolean add(final T element) {
         throw new UnsupportedOperationException("#add(T)");
     }
 
     @Override
-    public void add(final int index, @NotNull final T element) {
+    public void add(final int index, final T element) {
         throw new UnsupportedOperationException("#add(int, T)");
     }
 
     @Override
-    public boolean addAll(@NotNull final Collection<? extends T> elements) {
+    public boolean addAll(final Collection<? extends T> elements) {
         throw new UnsupportedOperationException("#addAll(Collection)");
     }
 
     @Override
-    public boolean addAll(final int index,
-        @NotNull final Collection<? extends T> elements) {
+    public boolean addAll(final int index, final Collection<? extends T> elms) {
         throw new UnsupportedOperationException("#add(int, Collection)");
     }
 
@@ -133,12 +130,12 @@ final class ListWrapper<T> implements List<T> {
     }
 
     @Override
-    public boolean contains(@NotNull final Object element) {
+    public boolean contains(final Object element) {
         return this.original.contains(element);
     }
 
     @Override
-    public boolean containsAll(@NotNull final Collection<?> elements) {
+    public boolean containsAll(final Collection<?> elements) {
         return this.original.containsAll(elements);
     }
 
@@ -149,7 +146,6 @@ final class ListWrapper<T> implements List<T> {
      * if such an element doesn't exist in the list.
      */
     @Override
-    @NotNull
     public T get(final int index) {
         if (index >= this.size()) {
             throw new ListWrapper.NodeNotFoundException(
@@ -165,7 +161,7 @@ final class ListWrapper<T> implements List<T> {
     }
 
     @Override
-    public int indexOf(@NotNull final Object element) {
+    public int indexOf(final Object element) {
         return this.original.indexOf(element);
     }
 
@@ -175,24 +171,21 @@ final class ListWrapper<T> implements List<T> {
     }
 
     @Override
-    @NotNull
     public Iterator<T> iterator() {
         return this.original.iterator();
     }
 
     @Override
-    public int lastIndexOf(@NotNull final Object element) {
+    public int lastIndexOf(final Object element) {
         return this.original.lastIndexOf(element);
     }
 
     @Override
-    @NotNull
     public ListIterator<T> listIterator() {
         return this.original.listIterator();
     }
 
     @Override
-    @NotNull
     public ListIterator<T> listIterator(final int index) {
         return this.original.listIterator(index);
     }
@@ -203,22 +196,22 @@ final class ListWrapper<T> implements List<T> {
     }
 
     @Override
-    public boolean remove(@NotNull final Object element) {
+    public boolean remove(final Object element) {
         throw new UnsupportedOperationException("#remove(Object)");
     }
 
     @Override
-    public boolean removeAll(@NotNull final Collection<?> elements) {
+    public boolean removeAll(final Collection<?> elements) {
         throw new UnsupportedOperationException("#removeAll(Collection)");
     }
 
     @Override
-    public boolean retainAll(@NotNull final Collection<?> elements) {
+    public boolean retainAll(final Collection<?> elements) {
         throw new UnsupportedOperationException("#retainAll(Collection)");
     }
 
     @Override
-    public T set(final int index, @NotNull final T element) {
+    public T set(final int index, final T element) {
         throw new UnsupportedOperationException("#set(int, T)");
     }
 
@@ -239,7 +232,6 @@ final class ListWrapper<T> implements List<T> {
      * implementation of {@Link List}).
      */
     @Override
-    @NotNull
     public List<T> subList(final int start, final int end) {
         if (start >= this.size()) {
             throw new ListWrapper.NodeNotFoundException(
@@ -270,7 +262,7 @@ final class ListWrapper<T> implements List<T> {
     }
 
     @Override
-    public <E> E[] toArray(@NotNull final E[] array) {
+    public <E> E[] toArray(final E[] array) {
         return this.original.toArray(array);
     }
 
@@ -289,8 +281,8 @@ final class ListWrapper<T> implements List<T> {
          * @param node The XML with error
          * @param query The query in XPath
          */
-        NodeNotFoundException(@NotNull final String message,
-            @NotNull final Node node, @NotNull final String query) {
+        NodeNotFoundException(final String message, final Node node,
+            final String query) {
             super(
                 Logger.format(
                     "XPath '%s' not found in '%[text]s': %s",

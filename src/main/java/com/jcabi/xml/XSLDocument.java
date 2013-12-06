@@ -73,14 +73,13 @@ public final class XSLDocument implements XSL {
     /**
      * XSL document.
      */
-    @NotNull
     private final transient Source xsl;
 
     /**
      * Public ctor, from XML as a source.
      * @param src XSL document body
      */
-    public XSLDocument(@NotNull final XML src) {
+    public XSLDocument(@NotNull(message = "XML can't be NULL") final XML src) {
         this(new DOMSource(src.node()));
     }
 
@@ -88,7 +87,8 @@ public final class XSLDocument implements XSL {
      * Public ctor, from XSL as a string.
      * @param src XML document body
      */
-    public XSLDocument(@NotNull final String src) {
+    public XSLDocument(@NotNull(message = "XSL can't be NULL")
+        final String src) {
         this(new StreamSource(new StringReader(src)));
     }
 
@@ -96,7 +96,8 @@ public final class XSLDocument implements XSL {
      * Public ctor, from XML as a source.
      * @param src XML document body
      */
-    public XSLDocument(@NotNull final Source src) {
+    public XSLDocument(@NotNull(message = "source can't be NULL")
+        final Source src) {
         this.xsl = src;
     }
 
@@ -106,8 +107,9 @@ public final class XSLDocument implements XSL {
     }
 
     @Override
-    @NotNull
-    public XML transform(final XML xml) {
+    @NotNull(message = "XML is never NULL")
+    public XML transform(@NotNull(message = "XML can't be NULL")
+        final XML xml) {
         final Transformer trans;
         try {
             trans = XSLDocument.TFACTORY.newTransformer(this.xsl);

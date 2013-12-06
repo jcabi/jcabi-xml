@@ -83,7 +83,8 @@ public interface XML {
      * @param query The XPath query
      * @return The list of string values (texts)
      */
-    List<String> xpath(@NotNull String query);
+    @NotNull(message = "list of texts is never NULL")
+    List<String> xpath(@NotNull(message = "query can't be NULL") String query);
 
     /**
      * Retrieve DOM nodes from the XML response.
@@ -97,7 +98,8 @@ public interface XML {
      * @param query The XPath query
      * @return Collection of DOM nodes
      */
-    List<XML> nodes(@NotNull String query);
+    @NotNull(message = "list of nodes is never NULL")
+    List<XML> nodes(@NotNull(message = "query can't be NULL") String query);
 
     /**
      * Register additional namespace prefix for XPath.
@@ -123,7 +125,10 @@ public interface XML {
      * @param uri Namespace URI
      * @return A new XML document, with this additional namespace registered
      */
-    XML registerNs(@NotNull String prefix, @NotNull Object uri);
+    @NotNull(message = "XML is never NULL")
+    XML registerNs(
+        @NotNull(message = "prefix can't be NULL") String prefix,
+        @NotNull(message = "URI can't be NULL") Object uri);
 
     /**
      * Append this namespace context to the existing one.
@@ -135,12 +140,15 @@ public interface XML {
      * @param context The context to append
      * @return A new XML document, with a merged context on board
      */
-    XML merge(@NotNull NamespaceContext context);
+    @NotNull(message = "XML is never NULL")
+    XML merge(@NotNull(message = "context can't be NULL")
+        NamespaceContext context);
 
     /**
      * Retrieve DOM node, represented by this wrapper.
      * @return DOM node
      */
+    @NotNull(message = "node is never NULL")
     Node node();
 
 }

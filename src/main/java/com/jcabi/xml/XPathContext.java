@@ -122,7 +122,8 @@ public final class XPathContext implements NamespaceContext {
     }
 
     @Override
-    public String getNamespaceURI(@NotNull final String prefix) {
+    public String getNamespaceURI(@NotNull(message = "prefix can't be NULL")
+        final String prefix) {
         String namespace = this.map.get(prefix);
         if (namespace == null) {
             for (final NamespaceContext ctx : this.contexts) {
@@ -145,7 +146,8 @@ public final class XPathContext implements NamespaceContext {
     }
 
     @Override
-    public String getPrefix(@NotNull final String namespace) {
+    public String getPrefix(@NotNull(message = "namespace can't be NULL")
+        final String namespace) {
         final Iterator<String> prefixes = this.getPrefixes(namespace);
         String prefix = null;
         if (prefixes.hasNext()) {
@@ -155,7 +157,8 @@ public final class XPathContext implements NamespaceContext {
     }
 
     @Override
-    public Iterator<String> getPrefixes(@NotNull final String namespace) {
+    public Iterator<String> getPrefixes(
+        @NotNull(message = "namespaces can't be NULL") final String namespace) {
         final List<String> prefixes = new LinkedList<String>();
         for (final ConcurrentMap.Entry<String, String> entry
             : this.map.entrySet()) {
@@ -184,8 +187,9 @@ public final class XPathContext implements NamespaceContext {
      * @param namespace The namespace
      * @return New context
      */
-    public XPathContext add(@NotNull final String prefix,
-        @NotNull final Object namespace) {
+    public XPathContext add(
+        @NotNull(message = "prefix can't be NULL") final String prefix,
+        @NotNull(message = "namespace can't be NULL") final Object namespace) {
         return new XPathContext(this.map, prefix, namespace);
     }
 
@@ -194,7 +198,8 @@ public final class XPathContext implements NamespaceContext {
      * @param context The context to merge into this one
      * @return New context
      */
-    public XPathContext merge(@NotNull final NamespaceContext context) {
+    public XPathContext merge(@NotNull(message = "context can't be NULL")
+        final NamespaceContext context) {
         final XPathContext ctx = new XPathContext();
         ctx.map.putAll(this.map);
         ctx.contexts.addAll(this.contexts);

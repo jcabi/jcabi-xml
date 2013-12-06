@@ -29,27 +29,49 @@
  */
 package com.jcabi.xml;
 
-import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
 
 /**
- * XSL stylesheet.
- *
- * <p>Implementation of this interface must be immutable and thread-safe.
- *
+ * Test case for {@link StrictXML}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.4
- * @see XSLDocument
  */
-public interface XSL {
+public final class StrictXMLTest {
 
     /**
-     * Transform XML to another one.
-     *
-     * @param xml Source XML document
-     * @return Result document
+     * StrictXML can pass a valid document.
+     * @throws Exception If something goes wrong inside
      */
-    @NotNull(message = "XML is never NULL")
-    XML transform(@NotNull(message = "XML can't be NULL") XML xml);
+    @Test
+    public void passesValidXmlThrough() throws Exception {
+        new StrictXML(
+            new XMLDocument("<root>test</root>"),
+            new XSDDocument(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                    "<xs:element name='root' type='xs:string'/>",
+                    "</xs:schema>"
+                )
+            )
+        );
+    }
+
+    /**
+     * StrictXML can reject an invalid document.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectsInvalidXmlThrough() throws Exception {
+        new StrictXML(
+            new XMLDocument("<root>not an integer</root>"),
+            new XSDDocument(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
+                    "<xs:element name='root' type='xs:integer'/></xs:schema>"
+                )
+            )
+        );
+    }
 
 }
