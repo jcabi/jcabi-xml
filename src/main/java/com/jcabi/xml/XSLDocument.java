@@ -105,6 +105,31 @@ public final class XSLDocument implements XSL {
         this(IOUtils.toString(stream, CharEncoding.UTF_8));
     }
 
+    /**
+     * Make an instance of XSL stylesheet without I/O exceptions.
+     *
+     * <p>This factory method is useful when you need to create
+     * an instance of XSL stylesheet as a static final variable. In this
+     * case you can't catch an exception but this method can help, for example:
+     *
+     * <pre> class Foo {
+     *   private static final XSL STYLESHEET = XSLDocument.make(
+     *     Foo.class.getResourceAsStream("my-stylesheet.xsl")
+     *   );
+     * }</pre>
+     *
+     * @param stream Input stream
+     * @return XSL stylesheet
+     */
+    public static XSL make(@NotNull(message = "XSL input stream can't be NULL")
+        final InputStream stream) {
+        try {
+            return new XSLDocument(stream);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
     @Override
     public String toString() {
         return new XMLDocument(this.xsl).toString();
