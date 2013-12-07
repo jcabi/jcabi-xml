@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Loggable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -43,6 +44,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -66,8 +69,8 @@ public final class XSDDocument implements XSD {
     private final transient Source xsd;
 
     /**
-     * Public ctor, from XML as a source.
-     * @param src XSL document body
+     * Public ctor, from XSD as a source.
+     * @param src XSD document body
      */
     public XSDDocument(@NotNull(message = "XML can't be NULL")
         final XML src) {
@@ -75,8 +78,8 @@ public final class XSDDocument implements XSD {
     }
 
     /**
-     * Public ctor, from XSL as a string.
-     * @param src XML document body
+     * Public ctor, from XSD as a string.
+     * @param src XSD document body
      */
     public XSDDocument(@NotNull(message = "XSD text can't be NULL")
         final String src) {
@@ -84,12 +87,47 @@ public final class XSDDocument implements XSD {
     }
 
     /**
-     * Public ctor, from XML as a source.
-     * @param src XML document body
+     * Public ctor, from XSD as an input stream.
+     * @param stream XSD input stream
+     * @throws IOException If fails to read
+     */
+    public XSDDocument(@NotNull(message = "XSD input stream can't be NULL")
+        final InputStream stream) throws IOException {
+        this(IOUtils.toString(stream, CharEncoding.UTF_8));
+    }
+
+    /**
+     * Public ctor, from XSD as a source.
+     * @param src XSD document body
      */
     public XSDDocument(@NotNull(message = "source can't be NULL")
         final Source src) {
         this.xsd = src;
+    }
+
+    /**
+     * Make an instance of XSD schema without I/O exceptions.
+     *
+     * <p>This factory method is useful when you need to create
+     * an instance of XSD schema as a static final variable. In this
+     * case you can't catch an exception but this method can help, for example:
+     *
+     * <pre> class Foo {
+     *   private static final XSD SCHEMA = XSDDocument.make(
+     *     Foo.class.getResourceAsStream("my-schema.xsd")
+     *   );
+     * }</pre>
+     *
+     * @param stream Input stream
+     * @return XSD schema
+     */
+    public static XSD make(@NotNull(message = "XSD input stream can't be NULL")
+        final InputStream stream) {
+        try {
+            return new XSDDocument(stream);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
     @Override
