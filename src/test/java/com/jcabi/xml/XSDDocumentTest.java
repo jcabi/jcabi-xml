@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Tv;
 import java.util.Collection;
+import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
@@ -55,10 +56,14 @@ public final class XSDDocumentTest {
      */
     @Test
     public void validatesXml() throws Exception {
-        final String xsd = StringUtils.join(
-            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
-            "<xs:element name='test'/>",
-            " </xs:schema>"
+        final Source xsd = new StreamSource(
+            IOUtils.toInputStream(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
+                    "<xs:element name='test'/>",
+                    " </xs:schema>"
+                )
+            )
         );
         MatcherAssert.assertThat(
             new XSDDocument(xsd).validate(

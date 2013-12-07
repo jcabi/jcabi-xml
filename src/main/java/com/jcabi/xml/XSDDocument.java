@@ -107,7 +107,10 @@ public final class XSDDocument implements XSD {
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
                 .newSchema(this.xsd);
         } catch (SAXException ex) {
-            throw new IllegalStateException(ex);
+            throw new IllegalStateException(
+                String.format("failed to create XSD schema from %s", this.xsd),
+                ex
+            );
         }
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<SAXParseException>();
