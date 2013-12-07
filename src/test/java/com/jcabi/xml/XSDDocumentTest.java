@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Tv;
-import java.io.InputStream;
 import java.util.Collection;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
@@ -56,16 +55,22 @@ public final class XSDDocumentTest {
      */
     @Test
     public void validatesXml() throws Exception {
-        final InputStream xsd = IOUtils.toInputStream(
-            StringUtils.join(
-                "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
-                "<xs:element name='test'/>",
-                " </xs:schema>"
+        final XSD xsd = new XSDDocument(
+            IOUtils.toInputStream(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
+                    "<xs:element name='test'/>",
+                    " </xs:schema>"
+                )
             )
         );
         MatcherAssert.assertThat(
-            new XSDDocument(xsd).validate(
-                new DOMSource(new XMLDocument("<test/>").node())
+            xsd.validate(new DOMSource(new XMLDocument("<test/>").node())),
+            Matchers.empty()
+        );
+        MatcherAssert.assertThat(
+            xsd.validate(
+                new DOMSource(new XMLDocument("<test></test>").node())
             ),
             Matchers.empty()
         );

@@ -38,7 +38,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -66,7 +65,7 @@ public final class XSDDocument implements XSD {
     /**
      * XSD document.
      */
-    private final transient Source xsd;
+    private final transient String xsd;
 
     /**
      * Public ctor, from XSD as a source.
@@ -74,7 +73,7 @@ public final class XSDDocument implements XSD {
      */
     public XSDDocument(@NotNull(message = "XML can't be NULL")
         final XML src) {
-        this(new DOMSource(src.node()));
+        this(src.toString());
     }
 
     /**
@@ -83,7 +82,7 @@ public final class XSDDocument implements XSD {
      */
     public XSDDocument(@NotNull(message = "XSD text can't be NULL")
         final String src) {
-        this(new StreamSource(new StringReader(src)));
+        this.xsd = src;
     }
 
     /**
@@ -94,15 +93,6 @@ public final class XSDDocument implements XSD {
     public XSDDocument(@NotNull(message = "XSD input stream can't be NULL")
         final InputStream stream) throws IOException {
         this(IOUtils.toString(stream, CharEncoding.UTF_8));
-    }
-
-    /**
-     * Public ctor, from XSD as a source.
-     * @param src XSD document body
-     */
-    public XSDDocument(@NotNull(message = "source can't be NULL")
-        final Source src) {
-        this.xsd = src;
     }
 
     /**
@@ -143,7 +133,7 @@ public final class XSDDocument implements XSD {
         try {
             schema = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                .newSchema(this.xsd);
+                .newSchema(new StreamSource(new StringReader(this.xsd)));
         } catch (SAXException ex) {
             throw new IllegalStateException(
                 String.format("failed to create XSD schema from %s", this.xsd),

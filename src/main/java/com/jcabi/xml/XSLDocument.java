@@ -30,11 +30,12 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Loggable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -43,6 +44,8 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
 import org.w3c.dom.Document;
 
 /**
@@ -73,14 +76,14 @@ public final class XSLDocument implements XSL {
     /**
      * XSL document.
      */
-    private final transient Source xsl;
+    private final transient String xsl;
 
     /**
      * Public ctor, from XML as a source.
      * @param src XSL document body
      */
     public XSLDocument(@NotNull(message = "XML can't be NULL") final XML src) {
-        this(new DOMSource(src.node()));
+        this(src.toString());
     }
 
     /**
@@ -89,16 +92,17 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(@NotNull(message = "XSL can't be NULL")
         final String src) {
-        this(new StreamSource(new StringReader(src)));
+        this.xsl = src;
     }
 
     /**
-     * Public ctor, from XML as a source.
-     * @param src XML document body
+     * Public ctor, from XSL as an input stream.
+     * @param stream XSL input stream
+     * @throws IOException If fails to read
      */
-    public XSLDocument(@NotNull(message = "source can't be NULL")
-        final Source src) {
-        this.xsl = src;
+    public XSLDocument(@NotNull(message = "XSL input stream can't be NULL")
+        final InputStream stream) throws IOException {
+        this(IOUtils.toString(stream, CharEncoding.UTF_8));
     }
 
     @Override
@@ -112,7 +116,9 @@ public final class XSLDocument implements XSL {
         final XML xml) {
         final Transformer trans;
         try {
-            trans = XSLDocument.TFACTORY.newTransformer(this.xsl);
+            trans = XSLDocument.TFACTORY.newTransformer(
+                new StreamSource(new StringReader(this.xsl))
+            );
         } catch (TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
         }

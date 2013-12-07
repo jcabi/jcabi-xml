@@ -47,16 +47,22 @@ public final class XSLDocumentTest {
      */
     @Test
     public void makesXslTransformations() throws Exception {
-        final String xsl = StringUtils.join(
-            "<xsl:stylesheet",
-            " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
-            " version='2.0'>",
-            "<xsl:template match='/'><done/>",
-            "</xsl:template></xsl:stylesheet>"
+        final XSL xsl = new XSLDocument(
+            StringUtils.join(
+                "<xsl:stylesheet",
+                " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                " version='2.0'>",
+                "<xsl:template match='/'><done/>",
+                "</xsl:template></xsl:stylesheet>"
+            )
         );
         MatcherAssert.assertThat(
-            new XSLDocument(xsl).transform(new XMLDocument("<a/>")),
+            xsl.transform(new XMLDocument("<a/>")),
             XhtmlMatchers.hasXPath("/done")
+        );
+        MatcherAssert.assertThat(
+            xsl.transform(new XMLDocument("<a></a>")),
+            XhtmlMatchers.hasXPath("/done ")
         );
     }
 
