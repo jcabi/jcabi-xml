@@ -94,7 +94,7 @@ public final class XSDDocument implements XSD {
 
     @Override
     public String toString() {
-        return this.xsd.toString();
+        return new XMLDocument(this.xsd).toString();
     }
 
     @Override

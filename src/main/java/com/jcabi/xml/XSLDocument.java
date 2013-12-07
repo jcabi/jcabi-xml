@@ -103,7 +103,7 @@ public final class XSLDocument implements XSL {
 
     @Override
     public String toString() {
-        return this.xsl.toString();
+        return new XMLDocument(this.xsl).toString();
     }
 
     @Override

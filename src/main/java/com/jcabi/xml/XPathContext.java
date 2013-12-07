@@ -30,10 +30,12 @@
 package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -65,7 +67,7 @@ public final class XPathContext implements NamespaceContext {
     /**
      * List of contexts to use.
      */
-    private final transient List<NamespaceContext> contexts =
+    private final transient Collection<NamespaceContext> contexts =
         new CopyOnWriteArrayList<NamespaceContext>();
 
     /**
@@ -105,7 +107,7 @@ public final class XPathContext implements NamespaceContext {
      * @param prefix The prefix
      * @param namespace The namespace
      */
-    private XPathContext(final ConcurrentMap<String, String> old,
+    private XPathContext(final Map<String, String> old,
         final String prefix, final Object namespace) {
         this();
         this.map.putAll(old);
