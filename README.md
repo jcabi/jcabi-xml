@@ -1,6 +1,6 @@
 <img src="http://img.jcabi.com/logo.png" width="200px" height="48px" />
 
-More details are here: [www.jcabi.com/jcabi-xml](http://www.jcabi.com/jcabi-xml/index.html)
+More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html)
 
 It's a simple wrapper around DOM that makes XML parsing and printing
 easy and simple, for example:
