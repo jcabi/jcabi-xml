@@ -80,15 +80,34 @@
             <artifactId>aspectjrt</artifactId>
         </dependency>
         <dependency>
+            <!--
+            @todo #2 Get rid of reb4j dependency and build that regular
+             expression on compile phase, somehow. Maybe we can use
+             some sort of Groovy plugin, which will create the expression
+             and store it in a plain text file, which will be used later
+             in runtime. It's important to leave expression building
+             mechanims maintainable. If we just hard-code the expression, we'll
+             loose an ability to maintain/change it later.
+            -->
             <groupId>net.sourceforge.reb4j</groupId>
             <artifactId>net.sourceforge.reb4j</artifactId>
             <version>2.1.0</version>
         </dependency>
         <dependency>
+            <!--
+            @todo #2 Get rid of commons-lang3 dependency, or move it
+             to "test" scope. It's not efficient for such a small and
+             lightweight library to have a big dependency of this kind.
+            -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
+            <!--
+            @todo #2 Get rid of commons-io dependency, or move it
+             to "test" scope. It's not efficient for such a small and
+             lightweight library to have a big dependency of this kind.
+            -->
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
