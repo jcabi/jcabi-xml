@@ -108,14 +108,16 @@ public final class XMLDocument implements XML {
     private final transient Node dom;
 
     static {
-        try {
-            XMLDocument.DFACTORY.setFeature(
-                // @checkstyle LineLength (1 line)
-                "http://apache.org/xml/features/nonvalidating/load-external-dtd",
-                false
-            );
-        } catch (ParserConfigurationException ex) {
-            throw new IllegalStateException(ex);
+        if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
+            try {
+                XMLDocument.DFACTORY.setFeature(
+                    // @checkstyle LineLength (1 line)
+                    "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                    false
+                );
+            } catch (ParserConfigurationException ex) {
+                throw new IllegalStateException(ex);
+            }
         }
         XMLDocument.DFACTORY.setNamespaceAware(true);
     }

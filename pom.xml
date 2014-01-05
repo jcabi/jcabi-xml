@@ -58,6 +58,9 @@
             <url>s3://www.jcabi.com/jcabi-xml</url>
         </site>
     </distributionManagement>
+    <properties>
+        <saxon.version>9.1.0.8</saxon.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.jcabi</groupId>
@@ -126,6 +129,19 @@
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <version>${saxon.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <version>${saxon.version}</version>
+            <classifier>dom</classifier>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
