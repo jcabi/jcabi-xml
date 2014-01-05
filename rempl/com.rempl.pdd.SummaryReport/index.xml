@@ -1,2 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type='text/xsl' href='puzzles.xsl'?><puzzles/>
+<?xml-stylesheet type='text/xsl' href='puzzles.xsl'?><puzzles>
+   <puzzle>
+      <ticket>2</ticket>
+      <file>pom.xml</file>
+      <prefix>            </prefix>
+      <body>Get rid of reb4j dependency and build that regular expression on compile phase, somehow. Maybe we can use some sort of Groovy plugin, which will create the expression and store it in a plain text file, which will be used later in runtime. It's important to leave expression building mechanims maintainable. If we just hard-code the expression, we'll loose an ability to maintain/change it later.</body>
+      <estimate>0</estimate>
+      <lines>84-90</lines>
+      <owner>someone</owner>
+   </puzzle>
+   <puzzle>
+      <ticket>2</ticket>
+      <file>pom.xml</file>
+      <prefix>            </prefix>
+      <body>Get rid of commons-lang3 dependency, or move it to "test" scope. It's not efficient for such a small and lightweight library to have a big dependency of this kind.</body>
+      <estimate>0</estimate>
+      <lines>98-100</lines>
+      <owner>someone</owner>
+   </puzzle>
+   <puzzle>
+      <ticket>2</ticket>
+      <file>pom.xml</file>
+      <prefix>            </prefix>
+      <body>Get rid of commons-io dependency, or move it to "test" scope. It's not efficient for such a small and lightweight library to have a big dependency of this kind.</body>
+      <estimate>0</estimate>
+      <lines>107-109</lines>
+      <owner>someone</owner>
+   </puzzle>
+</puzzles>

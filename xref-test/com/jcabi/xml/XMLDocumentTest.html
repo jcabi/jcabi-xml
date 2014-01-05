@@ -151,7 +151,7 @@
 <a class="jxr_linenumber" name="141" href="#141">141</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> convertsItselfToXml() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="142" href="#142">142</a>         <strong class="jxr_keyword">final</strong> XML doc = <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hello&gt;&lt;a/&gt;&lt;/hello&gt;"</span>);
 <a class="jxr_linenumber" name="143" href="#143">143</a>         MatcherAssert.assertThat(
-<a class="jxr_linenumber" name="144" href="#144">144</a>             doc,
+<a class="jxr_linenumber" name="144" href="#144">144</a>             doc.toString(),
 <a class="jxr_linenumber" name="145" href="#145">145</a>             Matchers.hasToString(XhtmlMatchers.hasXPath(<span class="jxr_string">"/hello/a"</span>))
 <a class="jxr_linenumber" name="146" href="#146">146</a>         );
 <a class="jxr_linenumber" name="147" href="#147">147</a>     }
