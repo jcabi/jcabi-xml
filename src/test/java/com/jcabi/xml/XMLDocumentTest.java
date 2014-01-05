@@ -141,7 +141,7 @@ public final class XMLDocumentTest {
     public void convertsItselfToXml() throws Exception {
         final XML doc = new XMLDocument("<hello><a/></hello>");
         MatcherAssert.assertThat(
-            doc,
+            doc.toString(),
             Matchers.hasToString(XhtmlMatchers.hasXPath("/hello/a"))
         );
     }
