@@ -141,6 +141,7 @@ public final class XSDDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
+    @SuppressWarnings("PMD.DoNotUseThreads")
     public void validatesXmlInThreads() throws Exception {
         final XSD xsd = new XSDDocument(
             IOUtils.toInputStream(
@@ -153,7 +154,7 @@ public final class XSDDocumentTest {
         );
         new Runnable() {
             @Override
-            @Parallel(threads = Tv.TEN)
+            @Parallel(threads = Tv.FIFTY)
             public void run() {
                 MatcherAssert.assertThat(
                     xsd.validate(
@@ -162,6 +163,6 @@ public final class XSDDocumentTest {
                     Matchers.empty()
                 );
             }
-        }.run();
+        } .run();
     }
 }

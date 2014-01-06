@@ -73,10 +73,11 @@ public final class XSLDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
+    @SuppressWarnings("PMD.DoNotUseThreads")
     public void makesXslTransformationsInThreads() throws Exception {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
-                "<xsl:stylesheet",
+                "<xsl:stylesheet  ",
                 " xmlns:xsl='http://www.w3.org/1999/XSL/Transform' ",
                 " version='2.0' >",
                 "<xsl:template match='/'><works/>",
@@ -85,14 +86,14 @@ public final class XSLDocumentTest {
         );
         new Runnable() {
             @Override
-            @Parallel(threads = Tv.TEN)
+            @Parallel(threads = Tv.FIFTY)
             public void run() {
                 MatcherAssert.assertThat(
                     xsl.transform(new XMLDocument("<test/>")),
                     XhtmlMatchers.hasXPath("/works")
                 );
             }
-        }.run();
+        } .run();
     }
 
 }
