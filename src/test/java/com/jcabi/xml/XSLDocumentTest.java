@@ -29,6 +29,8 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Parallel;
+import com.jcabi.aspects.Tv;
 import com.rexsl.test.XhtmlMatchers;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
@@ -64,6 +66,33 @@ public final class XSLDocumentTest {
             xsl.transform(new XMLDocument("<a></a>")),
             XhtmlMatchers.hasXPath("/done ")
         );
+    }
+
+    /**
+     * XSLDocument can make XSL transformations in multiple threads.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void makesXslTransformationsInThreads() throws Exception {
+        final XSL xsl = new XSLDocument(
+            StringUtils.join(
+                "<xsl:stylesheet",
+                " xmlns:xsl='http://www.w3.org/1999/XSL/Transform' ",
+                " version='2.0' >",
+                "<xsl:template match='/'><works/>",
+                "</xsl:template> </xsl:stylesheet>"
+            )
+        );
+        new Runnable() {
+            @Override
+            @Parallel(threads = Tv.TEN)
+            public void run() {
+                MatcherAssert.assertThat(
+                    xsl.transform(new XMLDocument("<test/>")),
+                    XhtmlMatchers.hasXPath("/works")
+                );
+            }
+        }.run();
     }
 
 }

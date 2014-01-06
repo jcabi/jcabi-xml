@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
 import java.util.Collection;
 import javax.xml.transform.dom.DOMSource;
@@ -135,4 +136,32 @@ public final class XSDDocumentTest {
         }
     }
 
+    /**
+     * XSDDocument can validate XML in multiple threads.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void validatesXmlInThreads() throws Exception {
+        final XSD xsd = new XSDDocument(
+            IOUtils.toInputStream(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
+                    "<xs:element name='foo-5'/>",
+                    " </xs:schema> "
+                )
+            )
+        );
+        new Runnable() {
+            @Override
+            @Parallel(threads = Tv.TEN)
+            public void run() {
+                MatcherAssert.assertThat(
+                    xsd.validate(
+                        new DOMSource(new XMLDocument("<foo-5/>").node())
+                    ),
+                    Matchers.empty()
+                );
+            }
+        }.run();
+    }
 }
