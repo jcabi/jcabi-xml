@@ -141,15 +141,20 @@ public final class XSLDocument implements XSL {
         final XML xml) {
         final Transformer trans;
         try {
-            trans = XSLDocument.TFACTORY.newTransformer(
-                new StreamSource(new StringReader(this.xsl))
-            );
+            synchronized (XSLDocument.class) {
+                trans = XSLDocument.TFACTORY.newTransformer(
+                    new StreamSource(new StringReader(this.xsl))
+                );
+            }
         } catch (TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
         }
         final Document target;
         try {
-            target = XSLDocument.DFACTORY.newDocumentBuilder().newDocument();
+            synchronized (XSLDocument.class) {
+                target = XSLDocument.DFACTORY.newDocumentBuilder()
+                    .newDocument();
+            }
         } catch (ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
         }

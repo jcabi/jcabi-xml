@@ -273,7 +273,10 @@ public final class XMLDocument implements XML {
     public String toString() {
         final StringWriter writer = new StringWriter();
         try {
-            final Transformer trans = XMLDocument.TFACTORY.newTransformer();
+            final Transformer trans;
+            synchronized (XMLDocument.class) {
+                trans = XMLDocument.TFACTORY.newTransformer();
+            }
             // @checkstyle MultipleStringLiterals (1 line)
             trans.setOutputProperty(OutputKeys.INDENT, "yes");
             trans.setOutputProperty(OutputKeys.VERSION, "1.0");
@@ -359,7 +362,10 @@ public final class XMLDocument implements XML {
     private NodeList nodelist(final String query) {
         final NodeList nodes;
         try {
-            final XPath xpath = XMLDocument.XFACTORY.newXPath();
+            final XPath xpath;
+            synchronized (XMLDocument.class) {
+                xpath = XMLDocument.XFACTORY.newXPath();
+            }
             xpath.setNamespaceContext(this.context);
             nodes = (NodeList) xpath.evaluate(
                 query, this.dom, XPathConstants.NODESET
@@ -380,7 +386,11 @@ public final class XMLDocument implements XML {
     private static Node transform(final Source source) {
         final DOMResult result = new DOMResult();
         try {
-            XMLDocument.TFACTORY.newTransformer().transform(source, result);
+            final Transformer trans;
+            synchronized (XMLDocument.class) {
+                trans = XMLDocument.TFACTORY.newTransformer();
+            }
+            trans.transform(source, result);
         } catch (TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
         } catch (TransformerException ex) {
