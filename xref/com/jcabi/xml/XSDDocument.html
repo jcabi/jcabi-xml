@@ -141,45 +141,47 @@
 <a class="jxr_linenumber" name="131" href="#131">131</a>         @NotNull(message = <span class="jxr_string">"XML can't be NULL"</span>) <strong class="jxr_keyword">final</strong> Source xml) {
 <a class="jxr_linenumber" name="132" href="#132">132</a>         <strong class="jxr_keyword">final</strong> Schema schema;
 <a class="jxr_linenumber" name="133" href="#133">133</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="134" href="#134">134</a>             schema = SchemaFactory
-<a class="jxr_linenumber" name="135" href="#135">135</a>                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-<a class="jxr_linenumber" name="136" href="#136">136</a>                 .newSchema(<strong class="jxr_keyword">new</strong> StreamSource(<strong class="jxr_keyword">new</strong> StringReader(<strong class="jxr_keyword">this</strong>.xsd)));
-<a class="jxr_linenumber" name="137" href="#137">137</a>         } <strong class="jxr_keyword">catch</strong> (SAXException ex) {
-<a class="jxr_linenumber" name="138" href="#138">138</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(
-<a class="jxr_linenumber" name="139" href="#139">139</a>                 String.format(<span class="jxr_string">"failed to create XSD schema from %s"</span>, <strong class="jxr_keyword">this</strong>.xsd),
-<a class="jxr_linenumber" name="140" href="#140">140</a>                 ex
-<a class="jxr_linenumber" name="141" href="#141">141</a>             );
-<a class="jxr_linenumber" name="142" href="#142">142</a>         }
-<a class="jxr_linenumber" name="143" href="#143">143</a>         <strong class="jxr_keyword">final</strong> Collection&lt;SAXParseException&gt; errors =
-<a class="jxr_linenumber" name="144" href="#144">144</a>             <strong class="jxr_keyword">new</strong> CopyOnWriteArrayList&lt;SAXParseException&gt;();
-<a class="jxr_linenumber" name="145" href="#145">145</a>         <strong class="jxr_keyword">final</strong> Validator validator = schema.newValidator();
-<a class="jxr_linenumber" name="146" href="#146">146</a>         validator.setErrorHandler(
-<a class="jxr_linenumber" name="147" href="#147">147</a>             <strong class="jxr_keyword">new</strong> ErrorHandler() {
-<a class="jxr_linenumber" name="148" href="#148">148</a>                 @Override
-<a class="jxr_linenumber" name="149" href="#149">149</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> warning(<strong class="jxr_keyword">final</strong> SAXParseException error) {
-<a class="jxr_linenumber" name="150" href="#150">150</a>                     errors.add(error);
-<a class="jxr_linenumber" name="151" href="#151">151</a>                 }
-<a class="jxr_linenumber" name="152" href="#152">152</a>                 @Override
-<a class="jxr_linenumber" name="153" href="#153">153</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> error(<strong class="jxr_keyword">final</strong> SAXParseException error) {
-<a class="jxr_linenumber" name="154" href="#154">154</a>                     errors.add(error);
-<a class="jxr_linenumber" name="155" href="#155">155</a>                 }
-<a class="jxr_linenumber" name="156" href="#156">156</a>                 @Override
-<a class="jxr_linenumber" name="157" href="#157">157</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> fatalError(<strong class="jxr_keyword">final</strong> SAXParseException error) {
-<a class="jxr_linenumber" name="158" href="#158">158</a>                     errors.add(error);
-<a class="jxr_linenumber" name="159" href="#159">159</a>                 }
-<a class="jxr_linenumber" name="160" href="#160">160</a>             }
-<a class="jxr_linenumber" name="161" href="#161">161</a>         );
-<a class="jxr_linenumber" name="162" href="#162">162</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="163" href="#163">163</a>             validator.validate(xml);
-<a class="jxr_linenumber" name="164" href="#164">164</a>         } <strong class="jxr_keyword">catch</strong> (SAXException ex) {
-<a class="jxr_linenumber" name="165" href="#165">165</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="166" href="#166">166</a>         } <strong class="jxr_keyword">catch</strong> (IOException ex) {
+<a class="jxr_linenumber" name="134" href="#134">134</a>             <strong class="jxr_keyword">synchronized</strong> (XSDDocument.<strong class="jxr_keyword">class</strong>) {
+<a class="jxr_linenumber" name="135" href="#135">135</a>                 schema = SchemaFactory
+<a class="jxr_linenumber" name="136" href="#136">136</a>                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+<a class="jxr_linenumber" name="137" href="#137">137</a>                     .newSchema(<strong class="jxr_keyword">new</strong> StreamSource(<strong class="jxr_keyword">new</strong> StringReader(<strong class="jxr_keyword">this</strong>.xsd)));
+<a class="jxr_linenumber" name="138" href="#138">138</a>             }
+<a class="jxr_linenumber" name="139" href="#139">139</a>         } <strong class="jxr_keyword">catch</strong> (SAXException ex) {
+<a class="jxr_linenumber" name="140" href="#140">140</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(
+<a class="jxr_linenumber" name="141" href="#141">141</a>                 String.format(<span class="jxr_string">"failed to create XSD schema from %s"</span>, <strong class="jxr_keyword">this</strong>.xsd),
+<a class="jxr_linenumber" name="142" href="#142">142</a>                 ex
+<a class="jxr_linenumber" name="143" href="#143">143</a>             );
+<a class="jxr_linenumber" name="144" href="#144">144</a>         }
+<a class="jxr_linenumber" name="145" href="#145">145</a>         <strong class="jxr_keyword">final</strong> Collection&lt;SAXParseException&gt; errors =
+<a class="jxr_linenumber" name="146" href="#146">146</a>             <strong class="jxr_keyword">new</strong> CopyOnWriteArrayList&lt;SAXParseException&gt;();
+<a class="jxr_linenumber" name="147" href="#147">147</a>         <strong class="jxr_keyword">final</strong> Validator validator = schema.newValidator();
+<a class="jxr_linenumber" name="148" href="#148">148</a>         validator.setErrorHandler(
+<a class="jxr_linenumber" name="149" href="#149">149</a>             <strong class="jxr_keyword">new</strong> ErrorHandler() {
+<a class="jxr_linenumber" name="150" href="#150">150</a>                 @Override
+<a class="jxr_linenumber" name="151" href="#151">151</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> warning(<strong class="jxr_keyword">final</strong> SAXParseException error) {
+<a class="jxr_linenumber" name="152" href="#152">152</a>                     errors.add(error);
+<a class="jxr_linenumber" name="153" href="#153">153</a>                 }
+<a class="jxr_linenumber" name="154" href="#154">154</a>                 @Override
+<a class="jxr_linenumber" name="155" href="#155">155</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> error(<strong class="jxr_keyword">final</strong> SAXParseException error) {
+<a class="jxr_linenumber" name="156" href="#156">156</a>                     errors.add(error);
+<a class="jxr_linenumber" name="157" href="#157">157</a>                 }
+<a class="jxr_linenumber" name="158" href="#158">158</a>                 @Override
+<a class="jxr_linenumber" name="159" href="#159">159</a>                 <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> fatalError(<strong class="jxr_keyword">final</strong> SAXParseException error) {
+<a class="jxr_linenumber" name="160" href="#160">160</a>                     errors.add(error);
+<a class="jxr_linenumber" name="161" href="#161">161</a>                 }
+<a class="jxr_linenumber" name="162" href="#162">162</a>             }
+<a class="jxr_linenumber" name="163" href="#163">163</a>         );
+<a class="jxr_linenumber" name="164" href="#164">164</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="165" href="#165">165</a>             validator.validate(xml);
+<a class="jxr_linenumber" name="166" href="#166">166</a>         } <strong class="jxr_keyword">catch</strong> (SAXException ex) {
 <a class="jxr_linenumber" name="167" href="#167">167</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="168" href="#168">168</a>         }
-<a class="jxr_linenumber" name="169" href="#169">169</a>         <strong class="jxr_keyword">return</strong> errors;
-<a class="jxr_linenumber" name="170" href="#170">170</a>     }
-<a class="jxr_linenumber" name="171" href="#171">171</a> 
-<a class="jxr_linenumber" name="172" href="#172">172</a> }
+<a class="jxr_linenumber" name="168" href="#168">168</a>         } <strong class="jxr_keyword">catch</strong> (IOException ex) {
+<a class="jxr_linenumber" name="169" href="#169">169</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="170" href="#170">170</a>         }
+<a class="jxr_linenumber" name="171" href="#171">171</a>         <strong class="jxr_keyword">return</strong> errors;
+<a class="jxr_linenumber" name="172" href="#172">172</a>     }
+<a class="jxr_linenumber" name="173" href="#173">173</a> 
+<a class="jxr_linenumber" name="174" href="#174">174</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
