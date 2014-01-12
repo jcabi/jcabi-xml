@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +59,7 @@ import org.xml.sax.SAXParseException;
  * @version $Id$
  * @since 0.5
  */
+@Immutable
 @EqualsAndHashCode(of = "xsd")
 @Loggable(Loggable.DEBUG)
 public final class XSDDocument implements XSD {

@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +58,7 @@ import org.w3c.dom.Document;
  * @version $Id$
  * @since 0.4
  */
+@Immutable
 @EqualsAndHashCode(of = "xsl")
 @Loggable(Loggable.DEBUG)
 public final class XSLDocument implements XSL {

@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Immutable;
 import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import javax.xml.transform.Source;
@@ -44,6 +45,7 @@ import org.xml.sax.SAXParseException;
  * @since 0.5
  * @see XSDDocument
  */
+@Immutable
 public interface XSD {
 
     /**
