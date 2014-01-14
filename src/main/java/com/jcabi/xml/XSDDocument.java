@@ -92,6 +92,7 @@ public final class XSDDocument implements XSD {
      * Public ctor, from URL.
      * @param url Location of document
      * @throws IOException If fails to read
+     * @since 0.7.4
      */
     public XSDDocument(@NotNull(message = "URL can't be NULL")
         final URL url) throws IOException {
@@ -128,6 +129,22 @@ public final class XSDDocument implements XSD {
         final InputStream stream) {
         try {
             return new XSDDocument(stream);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+    /**
+     * Make an instance of XSD schema without I/O exceptions.
+     * @param url URL with content
+     * @return XSD schema
+     * @see #make(InputStream)
+     * @since 0.7.4
+     */
+    public static XSD make(@NotNull(message = "URL can't be NULL")
+        final URL url) {
+        try {
+            return new XSDDocument(url);
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }

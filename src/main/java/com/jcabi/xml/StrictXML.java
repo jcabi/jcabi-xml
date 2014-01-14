@@ -121,7 +121,7 @@ public final class StrictXML implements XML {
      * @param errors The errors
      * @return List of messages to print
      */
-    private static Collection<String> print(
+    private static Iterable<String> print(
         final Collection<SAXParseException> errors) {
         final Collection<String> lines = new ArrayList<String>(errors.size());
         for (final SAXParseException error : errors) {

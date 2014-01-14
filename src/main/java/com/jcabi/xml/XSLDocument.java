@@ -102,6 +102,7 @@ public final class XSLDocument implements XSL {
      * Public ctor, from URL.
      * @param url Location of document
      * @throws IOException If fails to read
+     * @since 0.7.4
      */
     public XSLDocument(@NotNull(message = "URL can't be NULL")
     final URL url) throws IOException {
@@ -138,6 +139,22 @@ public final class XSLDocument implements XSL {
         final InputStream stream) {
         try {
             return new XSLDocument(stream);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+    /**
+     * Make an instance of XSL stylesheet without I/O exceptions.
+     * @param url URL with content
+     * @return XSL stylesheet
+     * @see #make(InputStream)
+     * @since 0.7.4
+     */
+    public static XSL make(@NotNull(message = "URL can't be NULL")
+        final URL url) {
+        try {
+            return new XSLDocument(url);
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
