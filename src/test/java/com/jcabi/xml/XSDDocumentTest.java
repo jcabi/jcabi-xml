@@ -165,4 +165,33 @@ public final class XSDDocumentTest {
             }
         } .run();
     }
+
+    /**
+     * XSDDocument can validate a long XML.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void validatesLongXml() throws Exception {
+        final XSD xsd = new XSDDocument(
+            this.getClass().getResource("sample.xsd")
+        );
+        MatcherAssert.assertThat(
+            xsd.validate(
+                new DOMSource(
+                    new XMLDocument(
+                        StringUtils.join(
+                            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                            "<payment><id>333</id>",
+                            "<date>1-Jan-2013</date>",
+                            "<debit>test-1</debit>",
+                            "<credit>test-2</credit>",
+                            "</payment>"
+                        )
+                    ).node()
+                )
+            ),
+            Matchers.empty()
+        );
+    }
+
 }
