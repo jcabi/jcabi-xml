@@ -36,7 +36,7 @@
         <version>1.0.1</version>
     </parent>
     <artifactId>jcabi-xml</artifactId>
-    <version>0.7.3</version>
+    <version>0.7.4</version>
     <name>jcabi-xml</name>
     <description>XML Parsing and Transforming</description>
     <issueManagement>
