@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -198,6 +199,10 @@ public final class XSDDocument implements XSD {
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
+        Logger.debug(
+            this, "%s detected %d error(s)",
+            schema.getClass().getName(), errors.size()
+        );
         return errors;
     }
 

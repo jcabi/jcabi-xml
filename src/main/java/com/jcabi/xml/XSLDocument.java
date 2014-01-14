@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
+import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -195,6 +196,10 @@ public final class XSLDocument implements XSL {
         } catch (TransformerException ex) {
             throw new IllegalStateException(ex);
         }
+        Logger.debug(
+            this, "%s transformed XML",
+            trans.getClass().getName()
+        );
         return new XMLDocument(target);
     }
 
