@@ -34,6 +34,7 @@ import com.jcabi.aspects.Loggable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.URL;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -95,6 +96,16 @@ public final class XSLDocument implements XSL {
     public XSLDocument(@NotNull(message = "XSL can't be NULL")
         final String src) {
         this.xsl = src;
+    }
+
+    /**
+     * Public ctor, from URL.
+     * @param url Location of document
+     * @throws IOException If fails to read
+     */
+    public XSLDocument(@NotNull(message = "URL can't be NULL")
+    final URL url) throws IOException {
+        this(IOUtils.toString(url, CharEncoding.UTF_8));
     }
 
     /**

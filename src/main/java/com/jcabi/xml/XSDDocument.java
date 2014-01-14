@@ -34,6 +34,7 @@ import com.jcabi.aspects.Loggable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.validation.constraints.NotNull;
@@ -85,6 +86,16 @@ public final class XSDDocument implements XSD {
     public XSDDocument(@NotNull(message = "XSD text can't be NULL")
         final String src) {
         this.xsd = src;
+    }
+
+    /**
+     * Public ctor, from URL.
+     * @param url Location of document
+     * @throws IOException If fails to read
+     */
+    public XSDDocument(@NotNull(message = "URL can't be NULL")
+        final URL url) throws IOException {
+        this(IOUtils.toString(url, CharEncoding.UTF_8));
     }
 
     /**
