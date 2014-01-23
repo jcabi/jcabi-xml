@@ -34,8 +34,6 @@ import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
 import com.rexsl.test.XhtmlMatchers;
 import java.io.File;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
@@ -231,8 +229,7 @@ public final class XMLDocumentTest {
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
     public void parsesInMultipleThreads() throws Exception {
-        final CountDownLatch done = new CountDownLatch(Tv.FIFTY);
-        final Runnable runnable = new Runnable() {
+        new Runnable() {
             @Override
             @Parallel(threads = Tv.FIFTY)
             public void run() {
@@ -240,14 +237,32 @@ public final class XMLDocumentTest {
                     new XMLDocument("<root><hey/></root>"),
                     XhtmlMatchers.hasXPath("/root/hey")
                 );
-                done.countDown();
             }
-        };
-        runnable.run();
-        MatcherAssert.assertThat(
-            done.await(1L, TimeUnit.SECONDS),
-            Matchers.is(true)
-        );
+        } .run();
+    }
+
+    /**
+     * XMLDocument can get XPath in multiple threads.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    @SuppressWarnings("PMD.DoNotUseThreads")
+    public void xpathInMultipleThreads() throws Exception {
+        final XML xml = new XMLDocument("<a><b>test text</b><c>ccc</c></a>");
+        new Runnable() {
+            @Override
+            @Parallel(threads = Tv.FIFTY)
+            public void run() {
+                MatcherAssert.assertThat(
+                    xml.xpath("/a/b/text()").get(0),
+                    Matchers.equalTo("test text")
+                );
+                MatcherAssert.assertThat(
+                    xml.nodes("/a/c"),
+                    Matchers.<XML>iterableWithSize(1)
+                );
+            }
+        } .run();
     }
 
 }

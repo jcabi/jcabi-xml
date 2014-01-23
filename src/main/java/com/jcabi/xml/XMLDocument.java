@@ -307,7 +307,7 @@ public final class XMLDocument implements XML {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final int type = (int) nodes.item(idx).getNodeType();
+            final short type = nodes.item(idx).getNodeType();
             if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
                 && type != Node.CDATA_SECTION_NODE) {
                 throw new IllegalArgumentException(
