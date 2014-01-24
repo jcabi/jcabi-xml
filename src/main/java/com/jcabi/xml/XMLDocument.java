@@ -283,10 +283,12 @@ public final class XMLDocument implements XML {
             if (!(this.dom instanceof Document)) {
                 trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             }
-            trans.transform(
-                new DOMSource(this.dom),
-                new StreamResult(writer)
-            );
+            synchronized (this.dom) {
+                trans.transform(
+                    new DOMSource(this.dom),
+                    new StreamResult(writer)
+                );
+            }
         } catch (TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
         } catch (TransformerException ex) {
@@ -307,7 +309,7 @@ public final class XMLDocument implements XML {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final short type = nodes.item(idx).getNodeType();
+            final int type = nodes.item(idx).getNodeType();
             if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
                 && type != Node.CDATA_SECTION_NODE) {
                 throw new IllegalArgumentException(
@@ -367,9 +369,11 @@ public final class XMLDocument implements XML {
                 xpath = XMLDocument.XFACTORY.newXPath();
             }
             xpath.setNamespaceContext(this.context);
-            nodes = (NodeList) xpath.evaluate(
-                query, this.dom, XPathConstants.NODESET
-            );
+            synchronized (this.dom) {
+                nodes = (NodeList) xpath.evaluate(
+                    query, this.dom, XPathConstants.NODESET
+                );
+            }
         } catch (XPathExpressionException ex) {
             throw new IllegalArgumentException(
                 String.format("invalid XPath query '%s'", query), ex
