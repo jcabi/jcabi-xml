@@ -37,6 +37,7 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -47,7 +48,7 @@ import org.w3c.dom.Node;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({ "PMD.TooManyMethods", "PMD.DoNotUseThreads" })
 public final class XMLDocumentTest {
 
     /**
@@ -227,11 +228,10 @@ public final class XMLDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    @SuppressWarnings("PMD.DoNotUseThreads")
     public void parsesInMultipleThreads() throws Exception {
         new Runnable() {
             @Override
-            @Parallel(threads = Tv.FIFTY)
+            @Parallel(threads = Tv.HUNDRED)
             public void run() {
                 MatcherAssert.assertThat(
                     new XMLDocument("<root><hey/></root>"),
@@ -246,9 +246,16 @@ public final class XMLDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    @SuppressWarnings("PMD.DoNotUseThreads")
     public void xpathInMultipleThreads() throws Exception {
-        final XML xml = new XMLDocument("<a><b>test text</b><c>ccc</c></a>");
+        final XML xml = new XMLDocument(
+            String.format(
+                "<a><b>test text</b><c>%s</c></a>",
+                StringUtils.repeat(
+                    "<beta>some text \u20ac</beta> ",
+                    Tv.THOUSAND
+                )
+            )
+        );
         new Runnable() {
             @Override
             @Parallel(threads = Tv.FIFTY)
@@ -260,6 +267,33 @@ public final class XMLDocumentTest {
                 MatcherAssert.assertThat(
                     xml.nodes("/a/c"),
                     Matchers.<XML>iterableWithSize(1)
+                );
+            }
+        } .run();
+    }
+
+    /**
+     * XMLDocument can print in multiple threads.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void printsInMultipleThreads() throws Exception {
+        final XML xml = new XMLDocument(
+            String.format(
+                "<root><data>%s</data></root>",
+                StringUtils.repeat(
+                    "<alpha>some text \u20ac</alpha> ",
+                    Tv.THOUSAND
+                )
+            )
+        );
+        new Runnable() {
+            @Override
+            @Parallel(threads = Tv.FIFTY)
+            public void run() {
+                MatcherAssert.assertThat(
+                    xml.toString(),
+                    XhtmlMatchers.hasXPath("/root/data/alpha")
                 );
             }
         } .run();
