@@ -41,16 +41,6 @@
     <body>
                 <ul id="menu">
                                                     <li>
-                    Parent Project
-                                            <ul>
-                                                                            <li>
-                                                                    <a href="../../../http:/www.jcabi.com/index.html" title="jcabi">jcabi</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                </ul>
-                                    </li>
-                            <li>
                     Overview
                                             <ul>
                                                                             <li>
@@ -69,7 +59,7 @@
                                                     </ul>
                                     </li>
                                                                                         <li>
-                                                                    <a href="changes-report.html" title="Release History">Release History</a>
+                                                                    <a href="https://github.com/jcabi/jcabi-xml/releases" title="Release History">Release History</a>
                                                                                                                         <ul>
                                                     </ul>
                                     </li>
@@ -123,7 +113,7 @@
             </a>
                         <p>
                 
-                24-Jan-2014
+                30-Jan-2014
                 0.7.7
             </p>
             <article>
@@ -131,11 +121,17 @@
 <p>The only class you need is <a href="./apidocs-0.7.7/com/jcabi/xml/XMLDocument.html"><tt>XMLDocument</tt></a>, which implements <a href="./apidocs-0.7.7/com/jcabi/xml/XML.html"><tt>XML</tt></a> interface and works with your default DOM implementation:</p>
 
 <div class="source">
-<pre>XML xml = new XMLDocument(
-  &quot;&lt;orders&gt;&lt;order id=&quot;4&quot;&gt;Coffee to go&lt;/order&gt;&lt;/orders&gt;&quot;
-);
-String id = xml.xpath(&quot;//order/@id&quot;).get(0);
-String name = xml.xpath(&quot;//order[@id=4]/text()&quot;);
+<pre>import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+public class Main {
+  public void main(String[] args) {
+    XML xml = new XMLDocument(
+      &quot;&lt;orders&gt;&lt;order id=&quot;4&quot;&gt;Coffee to go&lt;/order&gt;&lt;/orders&gt;&quot;
+    );
+    String id = xml.xpath(&quot;//order/@id&quot;).get(0);
+    String name = xml.xpath(&quot;//order[@id=4]/text()&quot;);
+  }
+}
 </pre></div>
             </article>
             <p style="margin-bottom: 3em; margin-top: 2em;">

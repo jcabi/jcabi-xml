@@ -41,16 +41,6 @@
     <body>
                 <ul id="menu">
                                                     <li>
-                    Parent Project
-                                            <ul>
-                                                                            <li>
-                                                                    <a href="../../../http:/www.jcabi.com/index.html" title="jcabi">jcabi</a>
-                                                                                                                        <ul>
-                                                    </ul>
-                                    </li>
-                                                                </ul>
-                                    </li>
-                            <li>
                     Overview
                                             <ul>
                                                                             <li>
@@ -69,7 +59,7 @@
                                                     </ul>
                                     </li>
                                                                                         <li>
-                                                                    <a href="changes-report.html" title="Release History">Release History</a>
+                                                                    <a href="https://github.com/jcabi/jcabi-xml/releases" title="Release History">Release History</a>
                                                                                                                         <ul>
                                                     </ul>
                                     </li>
@@ -123,7 +113,7 @@
             </a>
                         <p>
                 
-                24-Jan-2014
+                30-Jan-2014
                 0.7.7
             </p>
             <article>
@@ -131,16 +121,24 @@
 <p>You need two classes: <a href="./apidocs-0.7.7/com/jcabi/xml/XMLDocument.html"><tt>XMLDocument</tt></a> and <a href="./apidocs-0.7.7/com/jcabi/xml/XSLDocument.html"><tt>XSLDocument</tt></a> which implement <a href="./apidocs-0.7.7/com/jcabi/xml/XML.html"><tt>XML</tt></a> and <a href="./apidocs-0.7.7/com/jcabi/xml/XSL.html"><tt>XSL</tt></a> interfaces respectfully. They work with your default DOM implementation. For example:</p>
 
 <div class="source">
-<pre>XML first = new XMLDocument(
-  &quot;&lt;orders&gt;&lt;order id=&quot;4&quot;&gt;Coffee to go&lt;/order&gt;&lt;/orders&gt;&quot;
-);
-String xsl =  &quot;&lt;xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='2.0'&gt;&quot;,
-  + &quot;&lt;xsl:template match='/'&gt;&quot;
-  + &quot;  &lt;name&gt;&lt;xsl:value-of select='/orders/order[@id=4]'/&gt;&lt;/name&gt;&quot;,
-  + &quot;&lt;/xsl:template&gt;&quot;
-  + &quot;&lt;/xsl:stylesheet&gt;&quot;;
-XML second = new XSLDocument(xsl).transform(first);
-System.out.println(second.toString());
+<pre>import com.jcabi.xml.XML;
+import com.jcabi.xml.XMLDocument;
+import com.jcabi.xml.XSL;
+import com.jcabi.xml.XSLDocument;
+public class Main {
+  public void main(String[] args) {
+    XML first = new XMLDocument(
+      &quot;&lt;orders&gt;&lt;order id=&quot;4&quot;&gt;Coffee to go&lt;/order&gt;&lt;/orders&gt;&quot;
+    );
+    String xsl = &quot;&lt;xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='2.0'&gt;&quot;,
+      + &quot;&lt;xsl:template match='/'&gt;&quot;
+      + &quot;  &lt;name&gt;&lt;xsl:value-of select='/orders/order[@id=4]'/&gt;&lt;/name&gt;&quot;,
+      + &quot;&lt;/xsl:template&gt;&quot;
+      + &quot;&lt;/xsl:stylesheet&gt;&quot;;
+    XML second = new XSLDocument(xsl).transform(first);
+    System.out.println(second.toString());
+  }
+}
 </pre></div>
 <p>Prints:</p>
 
