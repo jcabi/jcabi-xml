@@ -31,7 +31,10 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
+import java.security.SecureRandom;
 import java.util.Collection;
+import java.util.Random;
+import java.util.concurrent.Callable;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
@@ -147,20 +150,30 @@ public final class XSDDocumentTest {
             IOUtils.toInputStream(
                 StringUtils.join(
                     "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
-                    "<xs:element name='foo-5'/>",
+                    "<xs:element name='foo-5' type='xs:string'/>",
                     " </xs:schema> "
                 )
             )
         );
+        final Random rand = new SecureRandom();
         new Runnable() {
             @Override
             @Parallel(threads = Tv.FIFTY)
             public void run() {
+                final int cnt = rand.nextInt(2);
                 MatcherAssert.assertThat(
                     xsd.validate(
-                        new DOMSource(new XMLDocument("<foo-5/>").node())
+                        new DOMSource(
+                            new XMLDocument(
+                                StringUtils.join(
+                                    "<foo-5>",
+                                    StringUtils.repeat("<broken/>", cnt),
+                                    "</foo-5>"
+                                )
+                            ).node()
+                        )
                     ),
-                    Matchers.empty()
+                    Matchers.hasSize(cnt)
                 );
             }
         } .run();
@@ -192,6 +205,50 @@ public final class XSDDocumentTest {
             ),
             Matchers.empty()
         );
+    }
+
+    /**
+     * XSDDocument can validate XML in multiple threads.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void validatesMultipleXmlsInThreads() throws Exception {
+        final Random rand = new SecureRandom();
+        new Callable<Void>() {
+            @Override
+            @Parallel(threads = Tv.TEN)
+            public Void call() throws Exception {
+                final int cnt = rand.nextInt(Tv.HUNDRED);
+                final XSD xsd = new XSDDocument(
+                    IOUtils.toInputStream(
+                        StringUtils.join(
+                            "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
+                            "<xs:element name='r'><xs:complexType>",
+                            "<xs:sequence>",
+                            "<xs:element name='x' type='xs:integer'",
+                            " minOccurs='0' maxOccurs='unbounded'/>",
+                            "</xs:sequence></xs:complexType></xs:element>",
+                            "</xs:schema>"
+                        )
+                    )
+                );
+                MatcherAssert.assertThat(
+                    xsd.validate(
+                        new DOMSource(
+                            new XMLDocument(
+                                StringUtils.join(
+                                    "<r>",
+                                    StringUtils.repeat("<x>hey</x>", cnt),
+                                    "</r>"
+                                )
+                            ).node()
+                        )
+                    ),
+                    Matchers.hasSize(cnt << 1)
+                );
+                return null;
+            }
+        } .call();
     }
 
 }
