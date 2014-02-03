@@ -86,7 +86,7 @@ public class SampleTest {
     }
 
     @Test
-    public void validatesInMultipleThreads() throws Exception {
+    public void validatesInMultipleThreadsAgain() throws Exception {
         final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
