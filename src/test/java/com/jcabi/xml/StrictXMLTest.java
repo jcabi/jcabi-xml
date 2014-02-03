@@ -29,7 +29,15 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Parallel;
+import com.jcabi.aspects.Tv;
+import java.security.SecureRandom;
+import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -72,6 +80,47 @@ public final class StrictXMLTest {
                 )
             )
         );
+    }
+
+    /**
+     * StrictXML can validate XML in multiple threads.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void validatesMultipleXmlsInThreads() throws Exception {
+        final Random rand = new SecureRandom();
+        final XSD xsd = new XSDDocument(
+            StringUtils.join(
+                "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
+                "<xs:element name='r'><xs:complexType>",
+                "<xs:sequence>",
+                "<xs:element name='x' type='xs:integer'",
+                " minOccurs='0' maxOccurs='unbounded'/>",
+                "</xs:sequence></xs:complexType></xs:element>",
+                "</xs:schema>"
+            )
+        );
+        final XML xml = new XMLDocument(
+            StringUtils.join(
+                "<r>",
+                StringUtils.repeat("<x>hey</x>", rand.nextInt(Tv.TEN)),
+                "</r>"
+            )
+        );
+        final AtomicInteger done = new AtomicInteger();
+        new Callable<Void>() {
+            @Override
+            @Parallel(threads = Tv.TEN)
+            public Void call() throws Exception {
+                try {
+                    new StrictXML(xml, xsd);
+                } catch (IllegalArgumentException ex) {
+                    done.incrementAndGet();
+                }
+                return null;
+            }
+        } .call();
+        MatcherAssert.assertThat(done.get(), Matchers.equalTo(Tv.TEN));
     }
 
 }

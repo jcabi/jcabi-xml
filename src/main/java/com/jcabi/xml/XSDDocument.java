@@ -199,7 +199,7 @@ public final class XSDDocument implements XSD {
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
-        Logger.warn(
+        Logger.debug(
             this, "%s detected %d error(s)",
             schema.getClass().getName(), errors.size()
         );
