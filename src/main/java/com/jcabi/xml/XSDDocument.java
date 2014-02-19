@@ -130,7 +130,7 @@ public final class XSDDocument implements XSD {
         final InputStream stream) {
         try {
             return new XSDDocument(stream);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }
     }
@@ -146,7 +146,7 @@ public final class XSDDocument implements XSD {
         final URL url) {
         try {
             return new XSDDocument(url);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }
     }
@@ -167,7 +167,7 @@ public final class XSDDocument implements XSD {
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
                     .newSchema(new StreamSource(new StringReader(this.xsd)));
             }
-        } catch (SAXException ex) {
+        } catch (final SAXException ex) {
             throw new IllegalStateException(
                 String.format("failed to create XSD schema from %s", this.xsd),
                 ex
@@ -194,9 +194,9 @@ public final class XSDDocument implements XSD {
         );
         try {
             validator.validate(xml);
-        } catch (SAXException ex) {
+        } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }
         Logger.debug(

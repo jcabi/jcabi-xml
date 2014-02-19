@@ -289,9 +289,9 @@ public final class XMLDocument implements XML {
                     new StreamResult(writer)
                 );
             }
-        } catch (TransformerConfigurationException ex) {
+        } catch (final TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
-        } catch (TransformerException ex) {
+        } catch (final TransformerException ex) {
             throw new IllegalArgumentException(ex);
         }
         return writer.toString();
@@ -309,7 +309,7 @@ public final class XMLDocument implements XML {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final int type = nodes.item(idx).getNodeType();
+            final int type = (int) nodes.item(idx).getNodeType();
             if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
                 && type != Node.CDATA_SECTION_NODE) {
                 throw new IllegalArgumentException(
@@ -337,8 +337,7 @@ public final class XMLDocument implements XML {
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public List<XML> nodes(@NotNull final String query) {
         final NodeList nodes = this.nodelist(query);
-        final List<XML> items =
-            new ArrayList<XML>(nodes.getLength());
+        final List<XML> items = new ArrayList<XML>(nodes.getLength());
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
             items.add(new XMLDocument(nodes.item(idx), this.context));
         }
@@ -374,7 +373,7 @@ public final class XMLDocument implements XML {
                     query, this.dom, XPathConstants.NODESET
                 );
             }
-        } catch (XPathExpressionException ex) {
+        } catch (final XPathExpressionException ex) {
             throw new IllegalArgumentException(
                 String.format("invalid XPath query '%s'", query), ex
             );
@@ -395,9 +394,9 @@ public final class XMLDocument implements XML {
                 trans = XMLDocument.TFACTORY.newTransformer();
             }
             trans.transform(source, result);
-        } catch (TransformerConfigurationException ex) {
+        } catch (final TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
-        } catch (TransformerException ex) {
+        } catch (final TransformerException ex) {
             throw new IllegalStateException(ex);
         }
         return result.getNode();
