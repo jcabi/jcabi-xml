@@ -265,7 +265,7 @@ public final class XMLDocumentTest {
                     Matchers.equalTo("test text")
                 );
                 MatcherAssert.assertThat(
-                    xml.nodes("/a/c"),
+                    xml.nodes("/a").get(0).nodes("c"),
                     Matchers.<XML>iterableWithSize(1)
                 );
             }

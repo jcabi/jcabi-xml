@@ -72,7 +72,6 @@ import org.w3c.dom.Node;
  * @version $Id$
  * @since 0.1
  */
-@ToString
 @EqualsAndHashCode(of = { "original", "dom", "xpath" })
 @SuppressWarnings("PMD.TooManyMethods")
 final class ListWrapper<T> implements List<T> {
@@ -102,6 +101,11 @@ final class ListWrapper<T> implements List<T> {
         this.original = list;
         this.dom = node;
         this.xpath = addr;
+    }
+
+    @Override
+    public String toString() {
+        return this.original.toString();
     }
 
     @Override

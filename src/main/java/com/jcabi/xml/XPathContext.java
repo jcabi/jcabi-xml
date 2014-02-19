@@ -43,7 +43,6 @@ import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * Convenient internal implementation of {@link NamespaceContext}.
@@ -54,7 +53,6 @@ import lombok.ToString;
  * @version $Id$
  * @since 0.1
  */
-@ToString
 @EqualsAndHashCode(of = { "map", "contexts" })
 public final class XPathContext implements NamespaceContext {
 
@@ -85,6 +83,11 @@ public final class XPathContext implements NamespaceContext {
         this.map.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         this.map.put("xsl", "http://www.w3.org/1999/XSL/Transform");
         this.map.put("svg", "http://www.w3.org/2000/svg");
+    }
+
+    @Override
+    public String toString() {
+        return this.map.keySet().toString();
     }
 
     /**
