@@ -29,9 +29,12 @@
  */
 package com.jcabi.xml;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
 import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -88,29 +91,42 @@ public final class StrictXMLTest {
      */
     @Test
     public void validatesMultipleXmlsInThreads() throws Exception {
-        final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
                 "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
-                "<xs:element name='r'><xs:complexType>",
-                "<xs:sequence>",
-                "<xs:element name='x' type='xs:integer'",
-                " minOccurs='0' maxOccurs='unbounded'/>",
-                "</xs:sequence></xs:complexType></xs:element>",
-                "</xs:schema>"
+                "<xs:element name='r'><xs:complexType><xs:sequence>",
+                "<xs:element name='x' maxOccurs='unbounded'><xs:simpleType>",
+                "<xs:restriction base='xs:integer'>",
+                "<xs:maxInclusive value='100'/></xs:restriction>",
+                "</xs:simpleType></xs:element>",
+                "</xs:sequence></xs:complexType></xs:element></xs:schema>"
             )
         );
+        final Random rnd = new SecureRandom();
         final XML xml = new XMLDocument(
             StringUtils.join(
-                "<r>",
-                StringUtils.repeat("<x>hey</x>", rand.nextInt(Tv.TEN)),
-                "</r>"
+                Iterables.concat(
+                    Collections.singleton("<r>"),
+                    Iterables.transform(
+                        Collections.nCopies(Tv.TEN, 0),
+                        new Function<Integer, String>() {
+                            @Override
+                            public String apply(final Integer pos) {
+                                return String.format(
+                                    "<x>%d</x>", rnd.nextInt(Tv.HUNDRED)
+                                );
+                            }
+                        }
+                    ),
+                    Collections.singleton("<x>101</x></r>")
+                ),
+                " "
             )
         );
         final AtomicInteger done = new AtomicInteger();
         new Callable<Void>() {
             @Override
-            @Parallel(threads = Tv.TEN)
+            @Parallel(threads = Tv.FIFTY)
             public Void call() throws Exception {
                 try {
                     new StrictXML(xml, xsd);
@@ -120,7 +136,7 @@ public final class StrictXMLTest {
                 return null;
             }
         } .call();
-        MatcherAssert.assertThat(done.get(), Matchers.equalTo(Tv.TEN));
+        MatcherAssert.assertThat(done.get(), Matchers.equalTo(Tv.FIFTY));
     }
 
 }
