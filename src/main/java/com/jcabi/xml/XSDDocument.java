@@ -193,7 +193,9 @@ public final class XSDDocument implements XSD {
             }
         );
         try {
-            validator.validate(xml);
+            synchronized (XSDDocument.class) {
+                validator.validate(xml);
+            }
         } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
         } catch (final IOException ex) {
