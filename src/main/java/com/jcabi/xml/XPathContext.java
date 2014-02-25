@@ -85,11 +85,6 @@ public final class XPathContext implements NamespaceContext {
         this.map.put("svg", "http://www.w3.org/2000/svg");
     }
 
-    @Override
-    public String toString() {
-        return this.map.keySet().toString();
-    }
-
     /**
      * Public ctor with custom namespaces.
      * @param namespaces List of namespaces
@@ -124,6 +119,11 @@ public final class XPathContext implements NamespaceContext {
             );
         }
         this.map.put(prefix, namespace.toString());
+    }
+
+    @Override
+    public String toString() {
+        return this.map.keySet().toString();
     }
 
     @Override

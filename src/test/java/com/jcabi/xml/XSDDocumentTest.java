@@ -88,8 +88,7 @@ public final class XSDDocumentTest {
     public void detectsSchemaViolations() throws Exception {
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-            "<xs:element name='first'/>",
-            "</xs:schema>"
+            "<xs:element name='first'/></xs:schema>"
         );
         final Collection<SAXParseException> errors = new XSDDocument(xsd)
             .validate(new StreamSource(IOUtils.toInputStream("<second/>")));
@@ -185,6 +184,7 @@ public final class XSDDocumentTest {
                 "</xs:schema>"
             )
         );
+        // @checkstyle AnonInnerLengthCheck (50 lines)
         new Callable<Void>() {
             @Override
             @Parallel(threads = Tv.TEN)

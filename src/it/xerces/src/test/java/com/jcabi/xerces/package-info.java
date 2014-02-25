@@ -29,10 +29,9 @@
  */
 
 /**
- * XML Parsing and Transforming.
+ * Samples, tests.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
- * @since 0.1
  */
-package com.jcabi.xml;
+package com.jcabi.xerces;

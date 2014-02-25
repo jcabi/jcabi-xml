@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.foo;
+package com.jcabi.xerces;
 
 import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
@@ -35,7 +35,6 @@ import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSD;
 import com.jcabi.xml.XSDDocument;
 import java.security.SecureRandom;
-import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import javax.xml.transform.dom.DOMSource;
@@ -43,50 +42,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.xml.sax.SAXParseException;
 
-public class SampleTest {
+/**
+ * Test of XML features with Xerces.
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ */
+public final class XercesSampleTest {
 
+    /**
+     * XSDDocument can validate XML against its schema.
+     * @throws Exception If fails
+     */
     @Test
-    public void validatesInMultipleThreads() throws Exception {
-        final Random rand = new SecureRandom();
-        new Callable<Void>() {
-            @Override
-            @Parallel(threads = Tv.TEN)
-            public Void call() throws Exception {
-                final int cnt = rand.nextInt(Tv.HUNDRED);
-                final XSD xsd = new XSDDocument(
-                    StringUtils.join(
-                        "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
-                        "<xs:element name='r'><xs:complexType>",
-                        "<xs:sequence>",
-                        "<xs:element name='x' type='xs:integer'",
-                        " minOccurs='0' maxOccurs='unbounded'/>",
-                        "</xs:sequence></xs:complexType></xs:element>",
-                        "</xs:schema>"
-                    )
-                );
-                MatcherAssert.assertThat(
-                    xsd.validate(
-                        new DOMSource(
-                            new XMLDocument(
-                                StringUtils.join(
-                                    "<r>",
-                                    StringUtils.repeat("<x>hey</x>", cnt),
-                                    "</r>"
-                                )
-                            ).node()
-                        )
-                    ),
-                    Matchers.hasSize(cnt << 1)
-                );
-                return null;
-            }
-        } .call();
-    }
-
-    @Test
-    public void validatesInMultipleThreadsAgain() throws Exception {
+    public void validatesXmlForSchemaValidity() throws Exception {
         final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
@@ -99,6 +68,7 @@ public class SampleTest {
                 "</xs:schema>"
             )
         );
+        // @checkstyle AnonInnerLengthCheck (50 lines)
         new Callable<Void>() {
             @Override
             @Parallel(threads = Tv.TEN)

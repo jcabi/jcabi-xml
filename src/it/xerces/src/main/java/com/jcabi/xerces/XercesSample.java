@@ -27,7 +27,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.foo;
+package com.jcabi.xerces;
 
-final class Sample {
+/**
+ * Sample class for Xerces testing.
+ * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @version $Id$
+ */
+final class XercesSample {
 }
