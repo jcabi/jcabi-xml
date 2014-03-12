@@ -48,7 +48,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.w3c.dom.Document;
 
 /**
@@ -76,6 +75,11 @@ public final class XSLDocument implements XSL {
      */
     private static final DocumentBuilderFactory DFACTORY =
         DocumentBuilderFactory.newInstance();
+
+    /**
+     * Encoding.
+     */
+    private static final String ENCODING = "UTF-8";
 
     /**
      * XSL document.
@@ -107,7 +111,7 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(@NotNull(message = "URL can't be NULL")
     final URL url) throws IOException {
-        this(IOUtils.toString(url, CharEncoding.UTF_8));
+        this(IOUtils.toString(url, ENCODING));
     }
 
     /**
@@ -117,7 +121,7 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(@NotNull(message = "XSL input stream can't be NULL")
         final InputStream stream) throws IOException {
-        this(IOUtils.toString(stream, CharEncoding.UTF_8));
+        this(IOUtils.toString(stream, ENCODING));
     }
 
     /**
@@ -140,7 +144,7 @@ public final class XSLDocument implements XSL {
         final InputStream stream) {
         try {
             return new XSLDocument(stream);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }
     }
@@ -156,7 +160,7 @@ public final class XSLDocument implements XSL {
         final URL url) {
         try {
             return new XSLDocument(url);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         }
     }
@@ -177,7 +181,7 @@ public final class XSLDocument implements XSL {
                     new StreamSource(new StringReader(this.xsl))
                 );
             }
-        } catch (TransformerConfigurationException ex) {
+        } catch (final TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
         }
         final Document target;
@@ -186,14 +190,14 @@ public final class XSLDocument implements XSL {
                 target = XSLDocument.DFACTORY.newDocumentBuilder()
                     .newDocument();
             }
-        } catch (ParserConfigurationException ex) {
+        } catch (final ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
         }
         try {
             trans.transform(
                 new DOMSource(xml.node()), new DOMResult(target)
             );
-        } catch (TransformerException ex) {
+        } catch (final TransformerException ex) {
             throw new IllegalStateException(ex);
         }
         Logger.debug(

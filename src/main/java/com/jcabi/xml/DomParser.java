@@ -45,7 +45,6 @@ import net.sourceforge.reb4j.Literal;
 import net.sourceforge.reb4j.Sequence;
 import net.sourceforge.reb4j.charclass.CharClass;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -67,6 +66,11 @@ final class DomParser {
      * Pattern to detect if passed txt looks like xml.
      */
     private static final Pattern PATTERN = DomParser.buildPattern();
+
+    /**
+     * Encoding.
+     */
+    private static final String ENCODING = "UTF-8";
 
     /**
      * The XML as a text.
@@ -111,13 +115,13 @@ final class DomParser {
         final Document doc;
         try {
             doc = this.factory.newDocumentBuilder().parse(
-                IOUtils.toInputStream(this.xml, CharEncoding.UTF_8)
+                IOUtils.toInputStream(this.xml, ENCODING)
             );
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new IllegalStateException(ex);
-        } catch (ParserConfigurationException ex) {
+        } catch (final ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
-        } catch (SAXException ex) {
+        } catch (final SAXException ex) {
             throw new IllegalArgumentException(
                 Logger.format("Invalid XML: \"%s\"", this.xml), ex
             );

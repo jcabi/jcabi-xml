@@ -58,7 +58,6 @@ import javax.xml.xpath.XPathFactory;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -97,6 +96,11 @@ public final class XMLDocument implements XML {
         DocumentBuilderFactory.newInstance();
 
     /**
+     * Encoding.
+     */
+    private static final String ENCODING = "UTF-8";
+
+    /**
      * Namespace context to use for {@link #xpath(String)}
      * and {@link #nodes(String)} methods.
      */
@@ -115,7 +119,7 @@ public final class XMLDocument implements XML {
                     "http://apache.org/xml/features/nonvalidating/load-external-dtd",
                     false
                 );
-            } catch (ParserConfigurationException ex) {
+            } catch (final ParserConfigurationException ex) {
                 throw new IllegalStateException(ex);
             }
         }
@@ -198,7 +202,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "file can't be NULL")
         final File file) throws IOException {
-        this(FileUtils.readFileToString(file, CharEncoding.UTF_8));
+        this(FileUtils.readFileToString(file, ENCODING));
     }
 
     /**
@@ -216,7 +220,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "URL can't be NULL")
         final URL url) throws IOException {
-        this(IOUtils.toString(url, CharEncoding.UTF_8));
+        this(IOUtils.toString(url, ENCODING));
     }
 
     /**
@@ -234,7 +238,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "URI can't be NULL")
         final URI uri) throws IOException {
-        this(IOUtils.toString(uri, CharEncoding.UTF_8));
+        this(IOUtils.toString(uri, ENCODING));
     }
 
     /**
@@ -255,7 +259,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "input stream can't be NULL")
         final InputStream stream) throws IOException {
-        this(IOUtils.toString(stream, CharEncoding.UTF_8));
+        this(IOUtils.toString(stream, ENCODING));
         stream.close();
     }
 
@@ -309,7 +313,7 @@ public final class XMLDocument implements XML {
         final NodeList nodes = this.nodelist(query);
         final List<String> items = new ArrayList<String>(nodes.getLength());
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final int type = (int) nodes.item(idx).getNodeType();
+            final int type = nodes.item(idx).getNodeType();
             if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
                 && type != Node.CDATA_SECTION_NODE) {
                 throw new IllegalArgumentException(

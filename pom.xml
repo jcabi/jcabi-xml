@@ -94,13 +94,9 @@
             <version>2.1.0</version>
         </dependency>
         <dependency>
-            <!--
-            @todo #2 Get rid of commons-lang3 dependency, or move it
-             to "test" scope. It's not efficient for such a small and
-             lightweight library to have a big dependency of this kind.
-            -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <!--
