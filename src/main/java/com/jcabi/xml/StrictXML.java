@@ -33,12 +33,12 @@ import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.dom.DOMSource;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXParseException;
 
@@ -77,7 +77,7 @@ public final class StrictXML implements XML {
                 StrictXML.class,
                 "%d XML validation error(s):\n  %s\n%s",
                 errors.size(),
-                StringUtils.join(StrictXML.print(errors), "\n  "),
+                StrictXML.join(StrictXML.print(errors), "\n  "),
                 xml
             );
             throw new IllegalArgumentException(
@@ -137,4 +137,28 @@ public final class StrictXML implements XML {
         return lines;
     }
 
+    /**
+     * Joins many objects's string representations with the given separator
+     * string. The separator will not be appended to the beginning or the end.
+     * @param iterable Iterable of objects.
+     * @param sep Separator string.
+     * @return Joined string.
+     */
+    private static String join(final Iterable<?> iterable, final String sep) {
+        final Iterator<?> iterator = iterable.iterator();
+        final Object first = iterator.next();
+        // @checkstyle MagicNumber (1 line)
+        final StringBuilder buf = new StringBuilder(256);
+        if (first != null) {
+            buf.append(first);
+        }
+        while (iterator.hasNext()) {
+            buf.append(sep);
+            final Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+        }
+        return buf.toString();
+    }
 }

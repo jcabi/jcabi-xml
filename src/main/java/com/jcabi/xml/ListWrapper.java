@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.w3c.dom.Node;
 
 /**
@@ -289,12 +288,31 @@ final class ListWrapper<T> implements List<T> {
             super(
                 Logger.format(
                     "XPath '%s' not found in '%[text]s': %s",
-                    StringEscapeUtils.escapeJava(query),
-                    // @checkstyle LineLength (1 line)
-                    StringEscapeUtils.escapeJava(new XMLDocument(node).toString()),
+                    escapeUnicode(query),
+                    escapeUnicode(new XMLDocument(node).toString()),
                     message
             )
             );
+        }
+
+        /**
+         * Escape unicode characters.
+         * @param input Input string
+         * @return Escaped output
+         */
+        private static String escapeUnicode(final String input) {
+            final int length = input.length();
+            final StringBuilder output = new StringBuilder(length);
+            for (int index = 0; index < length; index += 1) {
+                final char character = input.charAt(index);
+                // @checkstyle MagicNumber (1 line)
+                if (character < 32 || character > 0x7f) {
+                    output.append(String.format("\\u%X", (int) character));
+                } else {
+                    output.append(character);
+                }
+            }
+            return String.valueOf(input);
         }
     }
 
