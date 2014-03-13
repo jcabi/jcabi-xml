@@ -69,7 +69,7 @@ public final class DomParserTest {
         try {
             new DomParser(DocumentBuilderFactory.newInstance(), xml);
             Assert.fail("exception expected");
-        } catch (IllegalArgumentException ex) {
+        } catch (final IllegalArgumentException ex) {
             MatcherAssert.assertThat(
                 ex.getMessage(),
                 Matchers.containsString(xml)
@@ -132,7 +132,7 @@ public final class DomParserTest {
             "<\u00c0a/>",
             "<something>\uFFFD</something>",
         };
-        for (String text : texts) {
+        for (final String text : texts) {
             new DomParser(
                 DocumentBuilderFactory.newInstance(),
                 text

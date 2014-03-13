@@ -130,7 +130,7 @@ public final class StrictXMLTest {
             public Void call() throws Exception {
                 try {
                     new StrictXML(xml, xsd);
-                } catch (IllegalArgumentException ex) {
+                } catch (final IllegalArgumentException ex) {
                     done.incrementAndGet();
                 }
                 return null;
