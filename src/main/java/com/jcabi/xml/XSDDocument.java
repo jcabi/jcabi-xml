@@ -180,22 +180,7 @@ public final class XSDDocument implements XSD {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<SAXParseException>();
         final Validator validator = schema.newValidator();
-        validator.setErrorHandler(
-            new ErrorHandler() {
-                @Override
-                public void warning(final SAXParseException error) {
-                    errors.add(error);
-                }
-                @Override
-                public void error(final SAXParseException error) {
-                    errors.add(error);
-                }
-                @Override
-                public void fatalError(final SAXParseException error) {
-                    errors.add(error);
-                }
-            }
-        );
+        validator.setErrorHandler(new ValidationHandler(errors));
         try {
             synchronized (XSDDocument.class) {
                 validator.validate(xml);
@@ -210,6 +195,35 @@ public final class XSDDocument implements XSD {
             schema.getClass().getName(), errors.size()
         );
         return errors;
+    }
+
+    /**
+     * Validation error handler.
+     */
+    private static final class ValidationHandler implements ErrorHandler {
+        /**
+         * Errors.
+         */
+        private final transient Collection<SAXParseException> errors;
+        /**
+         * Constructor.
+         * @param errs Collection of errors
+         */
+        public ValidationHandler(final Collection<SAXParseException> errs) {
+            this.errors = errs;
+        }
+        @Override
+        public void warning(final SAXParseException error) {
+            this.errors.add(error);
+        }
+        @Override
+        public void error(final SAXParseException error) {
+            this.errors.add(error);
+        }
+        @Override
+        public void fatalError(final SAXParseException error) {
+            this.errors.add(error);
+        }
     }
 
 }
