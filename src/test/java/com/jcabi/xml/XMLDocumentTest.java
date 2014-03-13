@@ -173,7 +173,7 @@ public final class XMLDocumentTest {
         try {
             new XMLDocument("<root/>").xpath("/absent-node/text()").get(0);
             MatcherAssert.assertThat("exception expected here", false);
-        } catch (IndexOutOfBoundsException ex) {
+        } catch (final IndexOutOfBoundsException ex) {
             MatcherAssert.assertThat(
                 ex.getMessage(),
                 Matchers.allOf(
