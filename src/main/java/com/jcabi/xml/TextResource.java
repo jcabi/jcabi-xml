@@ -111,10 +111,6 @@ final class TextResource {
         this(readAsString(uri.toURL()));
     }
 
-    /**
-     * Text content of this resource.
-     * @return The text content
-     */
     @Override
     public String toString() {
         return this.content;
