@@ -29,8 +29,11 @@
  */
 package com.jcabi.xml;
 
+import com.google.common.io.Files;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -44,6 +47,10 @@ import org.junit.Test;
  */
 public final class TextResourceTest {
 
+    /**
+     * TextResource should be able to read streams as text.
+     * @throws Exception If something goes wrong.
+     */
     @Test
     public void readsStreamAsText() throws Exception {
         final String text = "Blah!\u20ac\u2122";
@@ -52,6 +59,21 @@ public final class TextResourceTest {
         );
         MatcherAssert.assertThat(
             new TextResource(stream).toString(),
+            Matchers.is(text)
+        );
+    }
+
+    /**
+     * TextResource should be able to read files as text.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsFileAsText() throws Exception {
+        final String text = "<a xmlns='urn:foo'><b>\u0433!</b></a>";
+        final File file = new File(Files.createTempDir(), "dummy.xml");
+        FileUtils.writeStringToFile(file, text, CharEncoding.UTF_8);
+        MatcherAssert.assertThat(
+            new TextResource(file).toString(),
             Matchers.is(text)
         );
     }

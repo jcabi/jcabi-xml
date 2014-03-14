@@ -46,7 +46,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.IOUtils;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -64,11 +63,6 @@ import org.xml.sax.SAXParseException;
 @EqualsAndHashCode(of = "xsd")
 @Loggable(Loggable.DEBUG)
 public final class XSDDocument implements XSD {
-
-    /**
-     * Encoding.
-     */
-    private static final String ENCODING = "UTF-8";
 
     /**
      * XSD document.
@@ -101,7 +95,7 @@ public final class XSDDocument implements XSD {
      */
     public XSDDocument(@NotNull(message = "URL can't be NULL")
         final URL url) throws IOException {
-        this(IOUtils.toString(url, ENCODING));
+        this(new TextResource(url).toString());
     }
 
     /**
@@ -111,7 +105,7 @@ public final class XSDDocument implements XSD {
      */
     public XSDDocument(@NotNull(message = "XSD input stream can't be NULL")
         final InputStream stream) throws IOException {
-        this(IOUtils.toString(stream, ENCODING));
+        this(new TextResource(stream).toString());
     }
 
     /**

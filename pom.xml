@@ -99,13 +99,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!--
-            @todo #2 Get rid of commons-io dependency, or move it
-             to "test" scope. It's not efficient for such a small and
-             lightweight library to have a big dependency of this kind.
-            -->
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.rexsl</groupId>

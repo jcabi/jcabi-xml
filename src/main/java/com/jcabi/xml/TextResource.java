@@ -30,6 +30,7 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.aspects.Loggable;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,13 +43,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Represent a given resource (InputStream, URL/URI location content, File)
- * as UTF-8 encoded string.
+ * as a string. UTF-8 encoding is used.
+ *
+ * <p>Objects of this class are immutable and thread-safe.
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  */
 @Immutable
 @EqualsAndHashCode(of = "content")
+@Loggable(Loggable.DEBUG)
 final class TextResource {
     /**
      * Encoding.
@@ -62,7 +66,7 @@ final class TextResource {
 
     /**
      * Private constructor, used for initializing the field text content.
-     * @param txt
+     * @param text The text content
      */
     private TextResource(final String text) {
         this.content = text;
@@ -108,7 +112,8 @@ final class TextResource {
     }
 
     /**
-     * Encoded text content of this resource.
+     * Text content of this resource.
+     * @return The text content
      */
     @Override
     public String toString() {
@@ -116,11 +121,11 @@ final class TextResource {
     }
 
     /**
-     * Reads an entire stream into a string.
+     * Reads an entire stream's contents into a string.
      * @param stream The stream to read
      * @return The stream content, in String form
      */
-    private static final String readAsString(final InputStream stream) {
+    private static String readAsString(final InputStream stream) {
         @SuppressWarnings("resource")
         final Scanner scanner =
             new Scanner(stream, ENCODING).useDelimiter("\\A");
@@ -139,11 +144,11 @@ final class TextResource {
 
     /**
      * Reads URI contents into a string.
-     * @param stream The stream to read
+     * @param url The URL to read
      * @return The stream content, in String form
      * @throws IOException if an IO exception occurs
      */
-    private static final String readAsString(final URL url) throws IOException {
+    private static String readAsString(final URL url) throws IOException {
         return readAsString(new BufferedInputStream(url.openStream()));
     }
 }

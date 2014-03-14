@@ -47,7 +47,6 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 
 /**
@@ -111,7 +110,7 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(@NotNull(message = "URL can't be NULL")
     final URL url) throws IOException {
-        this(IOUtils.toString(url, ENCODING));
+        this(new TextResource(url).toString());
     }
 
     /**
@@ -121,7 +120,7 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(@NotNull(message = "XSL input stream can't be NULL")
         final InputStream stream) throws IOException {
-        this(IOUtils.toString(stream, ENCODING));
+        this(new TextResource(stream).toString());
     }
 
     /**
