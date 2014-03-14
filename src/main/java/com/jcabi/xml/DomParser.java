@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import javax.validation.constraints.NotNull;
@@ -44,7 +45,6 @@ import net.sourceforge.reb4j.Group;
 import net.sourceforge.reb4j.Literal;
 import net.sourceforge.reb4j.Sequence;
 import net.sourceforge.reb4j.charclass.CharClass;
-import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -66,11 +66,6 @@ final class DomParser {
      * Pattern to detect if passed txt looks like xml.
      */
     private static final Pattern PATTERN = DomParser.buildPattern();
-
-    /**
-     * Encoding.
-     */
-    private static final String ENCODING = "UTF-8";
 
     /**
      * The XML as a text.
@@ -115,7 +110,9 @@ final class DomParser {
         final Document doc;
         try {
             doc = this.factory.newDocumentBuilder().parse(
-                IOUtils.toInputStream(this.xml, ENCODING)
+                new ByteArrayInputStream(
+                    this.xml.getBytes(TextResource.ENCODING)
+                )
             );
         } catch (final IOException ex) {
             throw new IllegalStateException(ex);

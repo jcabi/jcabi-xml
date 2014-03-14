@@ -56,8 +56,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import lombok.EqualsAndHashCode;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -202,7 +200,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "file can't be NULL")
         final File file) throws IOException {
-        this(FileUtils.readFileToString(file, ENCODING));
+        this(new TextResource(file).toString());
     }
 
     /**
@@ -220,7 +218,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "URL can't be NULL")
         final URL url) throws IOException {
-        this(IOUtils.toString(url, ENCODING));
+        this(new TextResource(url).toString());
     }
 
     /**
@@ -238,7 +236,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "URI can't be NULL")
         final URI uri) throws IOException {
-        this(IOUtils.toString(uri, ENCODING));
+        this(new TextResource(uri.toURL()).toString());
     }
 
     /**
@@ -259,7 +257,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "input stream can't be NULL")
         final InputStream stream) throws IOException {
-        this(IOUtils.toString(stream, ENCODING));
+        this(new TextResource(stream).toString());
         stream.close();
     }
 
