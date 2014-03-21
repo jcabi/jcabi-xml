@@ -29,16 +29,17 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Immutable;
+import com.jcabi.immutable.Array;
+import com.jcabi.immutable.ArrayMap;
 import com.jcabi.log.Logger;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
@@ -53,20 +54,19 @@ import lombok.EqualsAndHashCode;
  * @version $Id$
  * @since 0.1
  */
+@Immutable
 @EqualsAndHashCode(of = { "map", "contexts" })
 public final class XPathContext implements NamespaceContext {
 
     /**
      * Map of prefixes and URIs.
      */
-    private final transient ConcurrentMap<String, String> map =
-        new ConcurrentHashMap<String, String>(0);
+    private final transient ArrayMap<String, String> map;
 
     /**
      * List of contexts to use.
      */
-    private final transient Collection<NamespaceContext> contexts =
-        new CopyOnWriteArrayList<NamespaceContext>();
+    private final transient Array<NamespaceContext> contexts;
 
     /**
      * Public ctor.
@@ -78,11 +78,15 @@ public final class XPathContext implements NamespaceContext {
      * list - don't forget to document it there.
      */
     public XPathContext() {
-        this.map.put("xhtml", "http://www.w3.org/1999/xhtml");
-        this.map.put("xs", "http://www.w3.org/2001/XMLSchema");
-        this.map.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        this.map.put("xsl", "http://www.w3.org/1999/XSL/Transform");
-        this.map.put("svg", "http://www.w3.org/2000/svg");
+        this(
+            new ArrayMap<String, String>()
+                .with("xhtml", "http://www.w3.org/1999/xhtml")
+                .with("xs", "http://www.w3.org/2001/XMLSchema")
+                .with("xsi", "http://www.w3.org/2001/XMLSchema-instance")
+                .with("xsl", "http://www.w3.org/1999/XSL/Transform")
+                .with("svg", "http://www.w3.org/2000/svg"),
+            new Array<NamespaceContext>()
+        );
     }
 
     /**
@@ -90,13 +94,7 @@ public final class XPathContext implements NamespaceContext {
      * @param namespaces List of namespaces
      */
     public XPathContext(final Object... namespaces) {
-        this();
-        for (int pos = 0; pos < namespaces.length; ++pos) {
-            this.map.put(
-                Logger.format("ns%d", pos + 1),
-                namespaces[pos].toString()
-            );
-        }
+        this(namespacesAsMap(namespaces), new Array<NamespaceContext>());
     }
 
     /**
@@ -105,20 +103,23 @@ public final class XPathContext implements NamespaceContext {
      * @param prefix The prefix
      * @param namespace The namespace
      */
-    private XPathContext(final Map<String, String> old,
+    private XPathContext(final ArrayMap<String, String> old,
         final String prefix, final Object namespace) {
-        this();
-        this.map.putAll(old);
-        if (this.map.containsKey(prefix)) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "prefix '%s' already registered for namespace '%s'",
-                    prefix,
-                    this.map.get(prefix)
-                )
-            );
-        }
-        this.map.put(prefix, namespace.toString());
+        this(
+            old.with(prefix, namespace.toString()),
+            new Array<NamespaceContext>()
+        );
+    }
+
+    /**
+     * Private ctor.
+     * @param mapping Mapping to set.
+     * @param ctxs Context to set.
+     */
+    private XPathContext(final ArrayMap<String, String> mapping,
+        final Array<NamespaceContext> ctxs) {
+        this.map = mapping;
+        this.contexts = ctxs;
     }
 
     @Override
@@ -195,6 +196,15 @@ public final class XPathContext implements NamespaceContext {
     public XPathContext add(
         @NotNull(message = "prefix can't be NULL") final String prefix,
         @NotNull(message = "namespace can't be NULL") final Object namespace) {
+        if (this.map.containsKey(prefix)) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "prefix '%s' already registered for namespace '%s'",
+                    prefix,
+                    this.map.get(prefix)
+                )
+            );
+        }
         return new XPathContext(this.map, prefix, namespace);
     }
 
@@ -205,11 +215,28 @@ public final class XPathContext implements NamespaceContext {
      */
     public XPathContext merge(@NotNull(message = "context can't be NULL")
         final NamespaceContext context) {
-        final XPathContext ctx = new XPathContext();
-        ctx.map.putAll(this.map);
-        ctx.contexts.addAll(this.contexts);
-        ctx.contexts.add(context);
+        final XPathContext ctx = new XPathContext(
+            this.map, this.contexts.with(context)
+        );
         return ctx;
+    }
+
+    /**
+     * Get namespaces as map.
+     * @param namespaces The namespaces
+     * @return Namespaces as map
+     */
+    @SuppressWarnings("PMD.UseConcurrentHashMap")
+    private static ArrayMap<String, String> namespacesAsMap(
+        final Object...namespaces) {
+        final Map<String, String> map = new HashMap<String, String>();
+        for (int pos = 0; pos < namespaces.length; ++pos) {
+            map.put(
+                Logger.format("ns%d", pos + 1),
+                namespaces[pos].toString()
+            );
+        }
+        return new ArrayMap<String, String>(map);
     }
 
 }
