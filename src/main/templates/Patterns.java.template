@@ -30,18 +30,18 @@
 package com.jcabi.xml;
 
 /**
- * Holder of Regexes which are generated using Groovy/Maven upon build.
+ * Holder of RegEx pattern strings. Generated using Groovy/Maven upon build.
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version \$Id\$
  * @checkstyle InterfaceIsType (500 lines)
  */
 @SuppressWarnings("PMD.AvoidConstantsInterface")
-interface Regexes {
+interface Patterns {
 
     /**
      * Pattern that matches if input looks like XML.
      */
-    String XML_PATTERN = "${xmlPattern}";
+    String XML = "${xmlPattern}";
 
 }

@@ -39,12 +39,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.sourceforge.reb4j.Adopted;
-import net.sourceforge.reb4j.Entity;
-import net.sourceforge.reb4j.Group;
-import net.sourceforge.reb4j.Literal;
-import net.sourceforge.reb4j.Sequence;
-import net.sourceforge.reb4j.charclass.CharClass;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -65,7 +59,7 @@ final class DomParser {
     /**
      * Pattern to detect if passed txt looks like xml.
      */
-    private static final Pattern PATTERN = DomParser.buildPattern();
+    private static final Pattern PATTERN = Pattern.compile(Patterns.XML);
 
     /**
      * The XML as a text.
@@ -126,51 +120,4 @@ final class DomParser {
         return doc;
     }
 
-    /**
-     * Pattern initialization method.
-     * @return The pattern that matches any valid XML document
-     */
-    private static Pattern buildPattern() {
-        final CharClass start = CharClass.characters(':', '_')
-            .union(CharClass.range('a', 'z'))
-            .union(CharClass.range('A', 'Z'))
-            .union(CharClass.range('\u00C0', '\u00D6'))
-            .union(CharClass.range('\u00D8', '\u00F6'))
-            .union(CharClass.range('\u00F8', '\u02FF'))
-            .union(CharClass.range('\u0370', '\u037D'))
-            .union(CharClass.range('\u037F', '\u1FFF'))
-            .union(CharClass.range('\u200C', '\u200D'))
-            .union(CharClass.range('\u2070', '\u218F'))
-            .union(CharClass.range('\u2C00', '\u2FEF'))
-            .union(CharClass.range('\u3001', '\uD7FF'))
-            .union(CharClass.range('\uF900', '\uFDCF'))
-            .union(CharClass.range('\uFDF0', '\uFFFD'));
-        final CharClass letter = CharClass.characters('-', '.', '\u00B7')
-            .union(CharClass.range('0', '9'))
-            .union(CharClass.range('\u0300', '\u036F'))
-            .union(CharClass.range('\u203F', '\u2040'));
-        final Sequence element = start
-            .andThen(Group.nonCapturing(letter).anyTimes());
-        return Sequence.sequence(
-            Group.nonCapturing(
-                Adopted.fromPattern(
-                    Pattern.compile(
-                        "<\\?xml.*\\?>\\s*",
-                        Pattern.CASE_INSENSITIVE
-                    )
-                )
-            ).optional(),
-            Group.nonCapturing(
-                Adopted.fromPattern(Pattern.compile("<!DOCTYPE.*>"))
-            ).optional(),
-            Group.nonCapturing(
-                Adopted.fromPattern(Pattern.compile("<!--.*-->"))
-            ).optional(),
-            Literal.literal('<'),
-            element,
-            Entity.ANY_CHAR.anyTimes(),
-            Group.nonCapturing(element.or(CharClass.character('/'))),
-            Literal.literal('>')
-        ).toPattern();
-    }
 }
