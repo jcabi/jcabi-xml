@@ -136,7 +136,7 @@
                                     ${basedir}/src/main/templates/Patterns.java.template
                                 </sourcePath>
                                 <destinationPath>
-                                    ${basedir}/target/generated-sources/java/com/jcabi/xml/Patterns.java
+                                    ${project.build.directory}/generated-sources/java/com/jcabi/xml/Patterns.java
                                 </destinationPath>
                             </properties>
                             <classpath>
@@ -151,7 +151,7 @@
                                 </element>
                             </classpath>
                             <source>
-                                ${basedir}/src/main/scripts/GeneratePatterns.groovy
+                                ${basedir}/src/main/groovy/GeneratePatterns.groovy
                             </source>
                         </configuration>
                     </execution>
