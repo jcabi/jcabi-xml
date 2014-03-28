@@ -84,20 +84,6 @@
             <artifactId>aspectjrt</artifactId>
         </dependency>
         <dependency>
-            <!--
-            @todo #2 Get rid of reb4j dependency and build that regular
-             expression on compile phase, somehow. Maybe we can use
-             some sort of Groovy plugin, which will create the expression
-             and store it in a plain text file, which will be used later
-             in runtime. It's important to leave expression building
-             mechanims maintainable. If we just hard-code the expression, we'll
-             loose an ability to maintain/change it later.
-            -->
-            <groupId>net.sourceforge.reb4j</groupId>
-            <artifactId>net.sourceforge.reb4j</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <scope>test</scope>
@@ -131,4 +117,88 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-regexes-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <properties>
+                                <sourcePath>
+                                    ${basedir}/src/main/templates/Patterns.java.template
+                                </sourcePath>
+                                <destinationPath>
+                                    ${project.build.directory}/generated-sources/java/com/jcabi/xml/Patterns.java
+                                </destinationPath>
+                            </properties>
+                            <classpath>
+                                <element>
+                                    <groupId>net.sourceforge.reb4j</groupId>
+                                    <artifactId>net.sourceforge.reb4j</artifactId>
+                                    <version>2.1.0</version>
+                                </element>
+                                <element>
+                                    <groupId>org.apache.commons</groupId>
+                                    <artifactId>commons-lang3</artifactId>
+                                </element>
+                            </classpath>
+                            <source>
+                                ${basedir}/src/main/groovy/GeneratePatterns.groovy
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.gmaven.runtime</groupId>
+                        <artifactId>gmaven-runtime-2.0</artifactId>
+                        <version>1.5</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>org.codehaus.groovy</groupId>
+                                <artifactId>groovy-all</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>2.2.2</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.reb4j</groupId>
+                        <artifactId>net.sourceforge.reb4j</artifactId>
+                        <version>2.1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/java/</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+             </plugin>
+        </plugins>
+    </build>
 </project>
