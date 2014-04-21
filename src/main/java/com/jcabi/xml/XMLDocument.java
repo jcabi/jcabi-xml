@@ -94,11 +94,6 @@ public final class XMLDocument implements XML {
         DocumentBuilderFactory.newInstance();
 
     /**
-     * Encoding.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
      * Namespace context to use for {@link #xpath(String)}
      * and {@link #nodes(String)} methods.
      */

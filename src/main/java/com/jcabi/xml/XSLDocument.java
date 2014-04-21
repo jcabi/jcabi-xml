@@ -76,11 +76,6 @@ public final class XSLDocument implements XSL {
         DocumentBuilderFactory.newInstance();
 
     /**
-     * Encoding.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
      * XSL document.
      */
     private final transient String xsl;
