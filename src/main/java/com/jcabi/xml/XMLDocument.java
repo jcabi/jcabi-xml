@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import java.io.File;
 import java.io.IOException;
@@ -70,7 +71,8 @@ import org.w3c.dom.NodeList;
  * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
-@EqualsAndHashCode(of = "dom")
+@Immutable
+@EqualsAndHashCode(of = "xml")
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.ExcessiveImports")
 public final class XMLDocument implements XML {
@@ -100,9 +102,9 @@ public final class XMLDocument implements XML {
     private final transient XPathContext context;
 
     /**
-     * Encapsulated DOM node.
+     * Encapsulated String representation of this XML document.
      */
-    private final transient Node dom;
+    private final transient String xml;
 
     static {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
@@ -262,42 +264,20 @@ public final class XMLDocument implements XML {
      * @param ctx Namespace context
      */
     private XMLDocument(final Node node, final XPathContext ctx) {
-        this.dom = node;
+        this.xml = XMLDocument.asString(node);
         this.context = ctx;
     }
 
     @Override
     public String toString() {
-        final StringWriter writer = new StringWriter();
-        try {
-            final Transformer trans;
-            synchronized (XMLDocument.class) {
-                trans = XMLDocument.TFACTORY.newTransformer();
-            }
-            // @checkstyle MultipleStringLiterals (1 line)
-            trans.setOutputProperty(OutputKeys.INDENT, "yes");
-            trans.setOutputProperty(OutputKeys.VERSION, "1.0");
-            if (!(this.dom instanceof Document)) {
-                trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            }
-            synchronized (this.dom) {
-                trans.transform(
-                    new DOMSource(this.dom),
-                    new StreamResult(writer)
-                );
-            }
-        } catch (final TransformerConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final TransformerException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-        return writer.toString();
+        return this.xml;
     }
 
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        return this.dom;
+        return new DomParser(XMLDocument.DFACTORY, this.xml).document()
+            .getDocumentElement();
     }
 
     @Override
@@ -319,14 +299,14 @@ public final class XMLDocument implements XML {
             }
             items.add(nodes.item(idx).getNodeValue());
         }
-        return new ListWrapper<String>(items, this.dom, query);
+        return new ListWrapper<String>(items, this.node(), query);
     }
 
     @Override
     @NotNull(message = "XML is never NULL")
     public XML registerNs(@NotNull final String prefix,
         @NotNull final Object uri) {
-        return new XMLDocument(this.dom, this.context.add(prefix, uri));
+        return new XMLDocument(this.node(), this.context.add(prefix, uri));
     }
 
     @Override
@@ -338,14 +318,14 @@ public final class XMLDocument implements XML {
         for (int idx = 0; idx < nodes.getLength(); ++idx) {
             items.add(new XMLDocument(nodes.item(idx), this.context));
         }
-        return new ListWrapper<XML>(items, this.dom, query);
+        return new ListWrapper<XML>(items, this.node(), query);
     }
 
     @Override
     @NotNull(message = "XML is never NULL")
     public XML merge(@NotNull(message = "context can't be NULL")
         final NamespaceContext ctx) {
-        return new XMLDocument(this.dom, this.context.merge(ctx));
+        return new XMLDocument(this.node(), this.context.merge(ctx));
     }
 
     /**
@@ -365,17 +345,48 @@ public final class XMLDocument implements XML {
                 xpath = XMLDocument.XFACTORY.newXPath();
             }
             xpath.setNamespaceContext(this.context);
-            synchronized (this.dom) {
-                nodes = (NodeList) xpath.evaluate(
-                    query, this.dom, XPathConstants.NODESET
-                );
-            }
+            nodes = (NodeList) xpath.evaluate(
+                query, this.node(), XPathConstants.NODESET
+            );
         } catch (final XPathExpressionException ex) {
             throw new IllegalArgumentException(
                 String.format("invalid XPath query '%s'", query), ex
             );
         }
         return nodes;
+    }
+
+    /**
+     * Transform node to String.
+     *
+     * @param node The DOM node.
+     * @return String representation
+     */
+    private static String asString(final Node node) {
+        final StringWriter writer = new StringWriter();
+        try {
+            final Transformer trans;
+            synchronized (XMLDocument.class) {
+                trans = XMLDocument.TFACTORY.newTransformer();
+            }
+            // @checkstyle MultipleStringLiterals (1 line)
+            trans.setOutputProperty(OutputKeys.INDENT, "yes");
+            trans.setOutputProperty(OutputKeys.VERSION, "1.0");
+            if (!(node instanceof Document)) {
+                trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            }
+            synchronized (node) {
+                trans.transform(
+                    new DOMSource(node),
+                    new StreamResult(writer)
+                );
+            }
+        } catch (final TransformerConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        } catch (final TransformerException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+        return writer.toString();
     }
 
     /**
