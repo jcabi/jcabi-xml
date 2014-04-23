@@ -86,6 +86,32 @@ public final class StrictXMLTest {
     }
 
     /**
+     * StrictXML passes a valid document using xsi:schemaLocation.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test
+    public void passesValidXmlUsingXsiSchemaLocation() throws Exception {
+        new StrictXML(
+            new XMLDocument(
+                this.getClass().getResource("xsi-schemalocation-valid.xml")
+            )
+        );
+    }
+
+    /**
+     * StrictXML rejects an invalid document using xsi:schemaLocation.
+     * @throws Exception If something goes wrong inside.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectsInvalidXmlUsingXsiSchemaLocation() throws Exception {
+        new StrictXML(
+            new XMLDocument(
+                this.getClass().getResource("xsi-schemalocation-invalid.xml")
+            )
+        );
+    }
+
+    /**
      * StrictXML can validate XML in multiple threads.
      * @throws Exception If something goes wrong inside
      */
