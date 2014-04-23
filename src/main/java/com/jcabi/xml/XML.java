@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.aspects.Immutable;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
@@ -57,6 +58,7 @@ import org.w3c.dom.Node;
  * @since 0.1
  * @see XMLDocument
  */
+@Immutable
 public interface XML {
 
     /**
