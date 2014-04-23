@@ -194,7 +194,7 @@ public final class XSDDocument implements XSD {
     /**
      * Validation error handler.
      */
-    private static final class ValidationHandler implements ErrorHandler {
+    static final class ValidationHandler implements ErrorHandler {
         /**
          * Errors.
          */

@@ -31,15 +31,23 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
+import com.jcabi.xml.XSDDocument.ValidationHandler;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.validation.constraints.NotNull;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -64,14 +72,29 @@ public final class StrictXML implements XML {
     /**
      * Public ctor.
      * @param xml XML document
+     */
+    public StrictXML(@NotNull(message = "XML can't be NULL") final XML xml) {
+        this(xml, StrictXML.validate(xml));
+    }
+
+    /**
+     * Public ctor.
+     * @param xml XML document
      * @param schema XSD schema
      */
     public StrictXML(
         @NotNull(message = "XML can't be NULL") final XML xml,
         @NotNull(message = "XSD schema can't be NULL") final XSD schema) {
-        this.origin = xml;
-        final Collection<SAXParseException> errors =
-            schema.validate(new DOMSource(xml.node()));
+        this(xml, schema.validate(new DOMSource(xml.node())));
+    }
+
+    /**
+     * Private ctor.
+     * @param xml XML Document
+     * @param errors XML Document errors
+     */
+    private StrictXML(final XML xml, final Collection<SAXParseException> errors)
+    {
         if (!errors.isEmpty()) {
             Logger.warn(
                 StrictXML.class,
@@ -84,6 +107,7 @@ public final class StrictXML implements XML {
                 String.format("%d error(s), see log above", errors.size())
             );
         }
+        this.origin = xml;
     }
 
     @Override
@@ -160,5 +184,27 @@ public final class StrictXML implements XML {
             }
         }
         return buf.toString();
+    }
+
+    /**
+     * Validate XML without external schema.
+     * @param xml XML Document
+     * @return List of validation errors
+     */
+    private static Collection<SAXParseException> validate(final XML xml) {
+        final Collection<SAXParseException> errors =
+            new CopyOnWriteArrayList<SAXParseException>();
+        try {
+            final Schema schema = SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema();
+            final Validator validator = schema.newValidator();
+            validator.setErrorHandler(new ValidationHandler(errors));
+            validator.validate(new DOMSource(xml.node()));
+        } catch (final SAXException ex) {
+            throw new IllegalStateException(ex);
+        } catch (final IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+        return errors;
     }
 }
