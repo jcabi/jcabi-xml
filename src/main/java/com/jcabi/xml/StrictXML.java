@@ -52,7 +52,8 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Strict {@link XML} that fails if encapsulated XML document
- * doesn't validate against provided XSD schema.
+ * doesn't validate against externally provided XSD schema or internally
+ * specified schema locations.
  *
  * <p>Objects of this class are immutable and thread-safe.
  *
