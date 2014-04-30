@@ -38,6 +38,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
@@ -282,22 +283,49 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull(message = "list of texts is never NULL")
+    @SuppressWarnings(
+        { "PMD.ExceptionAsFlowControl", "PMD.PreserveStackTrace" }
+    )
     public List<String> xpath(@NotNull final String query) {
-        final NodeList nodes = this.nodelist(query);
-        final List<String> items = new ArrayList<String>(nodes.getLength());
-        for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final int type = nodes.item(idx).getNodeType();
-            if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
-                && type != Node.CDATA_SECTION_NODE) {
-                throw new IllegalArgumentException(
-                    String.format(
-                        // @checkstyle LineLength (1 line)
-                        "Only text() nodes or attributes are retrievable with xpath() '%s': %d",
-                        query, type
-                    )
-                );
+        List<String> items;
+        try {
+            final NodeList nodes = this.nodelist(query);
+            items = new ArrayList<String>(nodes.getLength());
+            for (int idx = 0; idx < nodes.getLength(); ++idx) {
+                final int type = nodes.item(idx).getNodeType();
+                if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
+                    && type != Node.CDATA_SECTION_NODE) {
+                    throw new IllegalArgumentException(
+                        String.format(
+                            // @checkstyle LineLength (1 line)
+                            "Only text() nodes or attributes are retrievable with xpath() '%s': %d",
+                            query, type
+                        )
+                    );
+                }
+                items.add(nodes.item(idx).getNodeValue());
             }
-            items.add(nodes.item(idx).getNodeValue());
+        } catch (final IllegalArgumentException ex) {
+            if (ex.getMessage().startsWith("invalid XPath query")) {
+                try {
+                    final XPath xpath;
+                    synchronized (XMLDocument.class) {
+                        xpath = XMLDocument.XFACTORY.newXPath();
+                    }
+                    xpath.setNamespaceContext(this.context);
+                    final String result = (String) xpath.evaluate(
+                        query, this.node(), XPathConstants.STRING
+                    );
+                    items = Collections.singletonList(result);
+                } catch (final XPathExpressionException exp) {
+                    throw new IllegalArgumentException(
+                        // @checkstyle MultipleStringLiterals (1 line)
+                        String.format("invalid XPath query '%s'", query), exp
+                    );
+                }
+            } else {
+                throw ex;
+            }
         }
         return new ListWrapper<String>(items, this.node(), query);
     }
