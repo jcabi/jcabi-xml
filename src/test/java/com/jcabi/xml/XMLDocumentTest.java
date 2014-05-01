@@ -299,4 +299,20 @@ public final class XMLDocumentTest {
         } .run();
     }
 
+    /**
+     * XMLDocument can calculate using XPath functions.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void performsXpathCalculations() throws Exception {
+        final XML xml = new XMLDocument("<x><a/><a/><a/></x>");
+        MatcherAssert.assertThat(
+            xml.xpath("count(//x/a)"),
+            Matchers.allOf(
+                Matchers.<String>iterableWithSize(1),
+                Matchers.contains("3")
+            )
+        );
+    }
+
 }

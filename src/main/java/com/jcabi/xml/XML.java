@@ -69,6 +69,15 @@ public interface XML {
      * are found in result node list -
      * a {@link RuntimeException} will be thrown.
      *
+     * <p>Alternatively, the XPath query can be a function or expression that
+     * returns a single value instead of pointing to a set of nodes. In this
+     * case, the result will be a List containing a single String, the content
+     * of which is the result of the evaluation. If the expression result is not
+     * a String, it will be converted to a String representation and returned as
+     * such. For example, a document containing three &lt;a&gt; elements,
+     * the input query "count(//a)", will return a singleton List with a single
+     * string value "3".
+     *
      * <p>This is a convenient method, which is used (according to our
      * experience) in 95% of all cases. Usually you don't need to get anything
      * else but a text value of some node or an attribute. And in most cases
@@ -83,7 +92,7 @@ public interface XML {
      * passed is not a valid XPath expression.
      *
      * @param query The XPath query
-     * @return The list of string values (texts)
+     * @return The list of string values (texts) or single function result
      */
     @NotNull(message = "list of texts is never NULL")
     List<String> xpath(@NotNull(message = "query can't be NULL") String query);

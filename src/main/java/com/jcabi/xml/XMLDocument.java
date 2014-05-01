@@ -38,9 +38,11 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -70,6 +72,7 @@ import org.w3c.dom.NodeList;
  * @version $Id$
  * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
+ * @checkstyle ClassFanOutComplexity (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = "xml")
@@ -282,22 +285,39 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull(message = "list of texts is never NULL")
+    @SuppressWarnings(
+        { "PMD.ExceptionAsFlowControl", "PMD.PreserveStackTrace" }
+    )
     public List<String> xpath(@NotNull final String query) {
-        final NodeList nodes = this.nodelist(query);
-        final List<String> items = new ArrayList<String>(nodes.getLength());
-        for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            final int type = nodes.item(idx).getNodeType();
-            if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
-                && type != Node.CDATA_SECTION_NODE) {
+        List<String> items;
+        try {
+            final NodeList nodes = this.fetch(query, NodeList.class);
+            items = new ArrayList<String>(nodes.getLength());
+            for (int idx = 0; idx < nodes.getLength(); ++idx) {
+                final int type = nodes.item(idx).getNodeType();
+                if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
+                    && type != Node.CDATA_SECTION_NODE) {
+                    throw new IllegalArgumentException(
+                        String.format(
+                            // @checkstyle LineLength (1 line)
+                            "Only text() nodes or attributes are retrievable with xpath() '%s': %d",
+                            query, type
+                        )
+                    );
+                }
+                items.add(nodes.item(idx).getNodeValue());
+            }
+        } catch (final XPathExpressionException ex) {
+            try {
+                items = Collections.singletonList(
+                    this.fetch(query, String.class)
+                );
+            } catch (final XPathExpressionException exp) {
                 throw new IllegalArgumentException(
-                    String.format(
-                        // @checkstyle LineLength (1 line)
-                        "Only text() nodes or attributes are retrievable with xpath() '%s': %d",
-                        query, type
-                    )
+                    // @checkstyle MultipleStringLiterals (1 line)
+                    String.format("invalid XPath query '%s'", query), exp
                 );
             }
-            items.add(nodes.item(idx).getNodeValue());
         }
         return new ListWrapper<String>(items, this.node(), query);
     }
@@ -313,10 +333,17 @@ public final class XMLDocument implements XML {
     @NotNull(message = "XML is never NULL")
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public List<XML> nodes(@NotNull final String query) {
-        final NodeList nodes = this.nodelist(query);
-        final List<XML> items = new ArrayList<XML>(nodes.getLength());
-        for (int idx = 0; idx < nodes.getLength(); ++idx) {
-            items.add(new XMLDocument(nodes.item(idx), this.context));
+        final List<XML> items;
+        try {
+            final NodeList nodes = this.fetch(query, NodeList.class);
+            items = new ArrayList<XML>(nodes.getLength());
+            for (int idx = 0; idx < nodes.getLength(); ++idx) {
+                items.add(new XMLDocument(nodes.item(idx), this.context));
+            }
+        } catch (final XPathExpressionException ex) {
+            throw new IllegalArgumentException(
+                String.format("invalid XPath query '%s'", query), ex
+            );
         }
         return new ListWrapper<XML>(items, this.node(), query);
     }
@@ -329,31 +356,40 @@ public final class XMLDocument implements XML {
     }
 
     /**
-     * Retrieve and return a nodelist for XPath query.
+     * Retrieve XPath query result. Supports returning {@link NodeList} and
+     * {@link String} types.
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not a valid XPath expression.
+     * passed is not a valid XPath expression or an unsupported type is
+     * specified.
      *
+     * @param <T> The type to return
      * @param query XPath query
-     * @return List of DOM nodes
+     * @param type The return type
+     * @return Result of XPath query
+     * @throws XPathExpressionException If an error occurs when evaluating XPath
      */
-    private NodeList nodelist(final String query) {
-        final NodeList nodes;
-        try {
-            final XPath xpath;
-            synchronized (XMLDocument.class) {
-                xpath = XMLDocument.XFACTORY.newXPath();
-            }
-            xpath.setNamespaceContext(this.context);
-            nodes = (NodeList) xpath.evaluate(
-                query, this.node(), XPathConstants.NODESET
-            );
-        } catch (final XPathExpressionException ex) {
+    @SuppressWarnings("unchecked")
+    private <T> T fetch(final String query, final Class<T> type)
+        throws XPathExpressionException {
+        final XPath xpath;
+        synchronized (XMLDocument.class) {
+            xpath = XMLDocument.XFACTORY.newXPath();
+        }
+        xpath.setNamespaceContext(this.context);
+        final QName qname;
+        if (type.equals(String.class)) {
+            qname = XPathConstants.STRING;
+        } else if (type.equals(NodeList.class)) {
+            qname = XPathConstants.NODESET;
+        } else {
             throw new IllegalArgumentException(
-                String.format("invalid XPath query '%s'", query), ex
+                String.format(
+                    "Unsupported type: %s", type.getName()
+                )
             );
         }
-        return nodes;
+        return (T) xpath.evaluate(query, this.node(), qname);
     }
 
     /**
