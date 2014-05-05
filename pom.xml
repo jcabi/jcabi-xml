@@ -151,7 +151,7 @@
                                 </element>
                             </classpath>
                             <source>
-                                ${basedir}/src/main/groovy/GeneratePatterns.groovy
+                                ${basedir}/src/main/grv/GeneratePatterns.groovy
                             </source>
                         </configuration>
                     </execution>
@@ -201,4 +201,23 @@
              </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>qulice</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.qulice</groupId>
+                        <artifactId>qulice-maven-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <exclude>xml:/src/it/settings.xml</exclude>
+                                <exclude>xml:/src/test/resources/com/jcabi/xml/.*</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

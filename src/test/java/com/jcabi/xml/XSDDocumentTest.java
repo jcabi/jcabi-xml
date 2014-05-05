@@ -107,7 +107,10 @@ public final class XSDDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    @SuppressWarnings({
+        "PMD.AvoidInstantiatingObjectsInLoops",
+        "PMD.InsufficientStringBufferDeclaration"
+    })
     public void validatesComplexXml() throws Exception {
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'  >",
@@ -117,7 +120,8 @@ public final class XSDDocumentTest {
             "</xs:sequence></xs:complexType>",
             "</xs:element></xs:schema>"
         );
-        final StringBuilder text = new StringBuilder("<root>");
+        final StringBuilder text = new StringBuilder(Tv.TEN * Tv.THOUSAND)
+            .append("<root>");
         for (int idx = 0; idx < Tv.HUNDRED; ++idx) {
             text.append("\n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;")
                 .append(RandomStringUtils.randomAlphanumeric(Tv.TEN))
