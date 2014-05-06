@@ -1,5 +1,5 @@
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
- 
+
 [![Build Status](https://travis-ci.org/jcabi/jcabi-xml.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-xml)
 
 More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html)
@@ -20,7 +20,7 @@ You need just this dependency:
 <dependency>
   <groupId>com.jcabi</groupId>
   <artifactId>jcabi-xml</artifactId>
-  <version>0.7.8</version>
+  <version>0.8</version>
 </dependency>
 ```
 
