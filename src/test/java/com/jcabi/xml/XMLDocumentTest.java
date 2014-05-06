@@ -308,10 +308,11 @@ public final class XMLDocumentTest {
         final XML xml = new XMLDocument("<x><a/><a/><a/></x>");
         MatcherAssert.assertThat(
             xml.xpath("count(//x/a)"),
-            Matchers.allOf(
-                Matchers.<String>iterableWithSize(1),
-                Matchers.contains("3")
-            )
+            Matchers.<String>iterableWithSize(1)
+        );
+        MatcherAssert.assertThat(
+            xml.xpath("count(//a)").get(0),
+            Matchers.equalTo("3")
         );
     }
 
