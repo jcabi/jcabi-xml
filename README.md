@@ -20,7 +20,7 @@ You need just this dependency:
 <dependency>
   <groupId>com.jcabi</groupId>
   <artifactId>jcabi-xml</artifactId>
-  <version>0.8</version>
+  <version>0.8.1</version>
 </dependency>
 ```
 
