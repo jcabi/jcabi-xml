@@ -335,4 +335,22 @@ public final class XMLDocumentTest {
         );
     }
 
+    /**
+     * XMLDocument can compare to itself.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void comparesToAnotherDocument() throws Exception {
+        MatcherAssert.assertThat(
+            new XMLDocument("<hi>\n<dude>  </dude></hi>"),
+            Matchers.equalTo(new XMLDocument("<hi><dude>  </dude></hi>"))
+        );
+        MatcherAssert.assertThat(
+            new XMLDocument("<hi><man></man></hi>"),
+            Matchers.not(
+                Matchers.equalTo(new XMLDocument("<hi><man>  </man></hi>"))
+            )
+        );
+    }
+
 }

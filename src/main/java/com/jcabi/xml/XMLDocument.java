@@ -75,7 +75,7 @@ import org.w3c.dom.NodeList;
  * @checkstyle ClassFanOutComplexity (500 lines)
  */
 @Immutable
-@EqualsAndHashCode(of = "xml")
+@EqualsAndHashCode(of = { "xml", "leaf" })
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.ExcessiveImports")
 public final class XMLDocument implements XML {
