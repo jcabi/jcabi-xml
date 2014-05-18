@@ -32,7 +32,7 @@ package com.jcabi.xml;
 import com.google.common.io.Files;
 import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.matchers.XhtmlMatchers;
 import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;

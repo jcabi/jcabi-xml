@@ -31,7 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
-import com.rexsl.test.XhtmlMatchers;
+import com.jcabi.matchers.XhtmlMatchers;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
