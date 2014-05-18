@@ -109,6 +109,11 @@ public final class XMLDocument implements XML {
      */
     private final transient String xml;
 
+    /**
+     * Is it a leaf node (Element, not a Document)?
+     */
+    private final transient boolean leaf;
+
     static {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
             try {
@@ -149,7 +154,8 @@ public final class XMLDocument implements XML {
         final String text) {
         this(
             new DomParser(XMLDocument.DFACTORY, text).document(),
-            new XPathContext()
+            new XPathContext(),
+            false
         );
     }
 
@@ -165,7 +171,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "node can't be NULL")
         final Node node) {
-        this(node, new XPathContext());
+        this(node, new XPathContext(), !(node instanceof Document));
     }
 
     /**
@@ -182,7 +188,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "source can't be NULL")
         final Source source) {
-        this(XMLDocument.transform(source), new XPathContext());
+        this(XMLDocument.transform(source), new XPathContext(), false);
     }
 
     /**
@@ -265,10 +271,13 @@ public final class XMLDocument implements XML {
      * Private ctor.
      * @param node The source
      * @param ctx Namespace context
+     * @param lfe Is it a leaf node?
      */
-    private XMLDocument(final Node node, final XPathContext ctx) {
+    private XMLDocument(final Node node, final XPathContext ctx,
+        final boolean lfe) {
         this.xml = XMLDocument.asString(node);
         this.context = ctx;
+        this.leaf = lfe;
     }
 
     @Override
@@ -279,8 +288,16 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        return new DomParser(XMLDocument.DFACTORY, this.xml).document()
-            .getDocumentElement();
+        final Document doc = new DomParser(
+            XMLDocument.DFACTORY, this.xml
+        ).document();
+        final Node node;
+        if (this.leaf) {
+            node = doc.getDocumentElement();
+        } else {
+            node = doc;
+        }
+        return node;
     }
 
     @Override
@@ -326,7 +343,9 @@ public final class XMLDocument implements XML {
     @NotNull(message = "XML is never NULL")
     public XML registerNs(@NotNull final String prefix,
         @NotNull final Object uri) {
-        return new XMLDocument(this.node(), this.context.add(prefix, uri));
+        return new XMLDocument(
+            this.node(), this.context.add(prefix, uri), this.leaf
+        );
     }
 
     @Override
@@ -338,7 +357,7 @@ public final class XMLDocument implements XML {
             final NodeList nodes = this.fetch(query, NodeList.class);
             items = new ArrayList<XML>(nodes.getLength());
             for (int idx = 0; idx < nodes.getLength(); ++idx) {
-                items.add(new XMLDocument(nodes.item(idx), this.context));
+                items.add(new XMLDocument(nodes.item(idx), this.context, true));
             }
         } catch (final XPathExpressionException ex) {
             throw new IllegalArgumentException(
@@ -352,7 +371,7 @@ public final class XMLDocument implements XML {
     @NotNull(message = "XML is never NULL")
     public XML merge(@NotNull(message = "context can't be NULL")
         final NamespaceContext ctx) {
-        return new XMLDocument(this.node(), this.context.merge(ctx));
+        return new XMLDocument(this.node(), this.context.merge(ctx), this.leaf);
     }
 
     /**

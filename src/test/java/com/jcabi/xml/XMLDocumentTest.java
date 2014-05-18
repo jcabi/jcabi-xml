@@ -41,6 +41,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
@@ -313,6 +315,23 @@ public final class XMLDocumentTest {
         MatcherAssert.assertThat(
             xml.xpath("count(//a)").get(0),
             Matchers.equalTo("3")
+        );
+    }
+
+    /**
+     * XMLDocument can build a DOM node (Document or Element).
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void buildsDomNode() throws Exception {
+        final XML doc = new XMLDocument("<?xml version='1.0'?><f/>");
+        MatcherAssert.assertThat(
+            doc.node(),
+            Matchers.instanceOf(Document.class)
+        );
+        MatcherAssert.assertThat(
+            doc.nodes("/f").get(0).node(),
+            Matchers.instanceOf(Element.class)
         );
     }
 
