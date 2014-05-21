@@ -1,6 +1,7 @@
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-xml.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-xml)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
 
 More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html)
 
@@ -12,16 +13,6 @@ XML xml = new XMLDocument("<orders><order id="4">Coffee to go</order></orders>")
 String id = xml.xpath("//order/@id").get(0);
 String name = xml.xpath("//order[@id=4]/text()").get(0);
 System.out.println(xml.toString());
-```
-
-You need just this dependency:
-
-```xml
-<dependency>
-  <groupId>com.jcabi</groupId>
-  <artifactId>jcabi-xml</artifactId>
-  <version>0.8.1</version>
-</dependency>
 ```
 
 ## Questions?
