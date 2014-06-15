@@ -353,4 +353,17 @@ public final class XMLDocumentTest {
         );
     }
 
+    /**
+     * XMLDocument can preserve xml namespaces.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void preservesXmlNamespaces() throws Exception {
+        final String xml = "<a xmlns='http://www.w3.org/1999/xhtml'><b/></a>";
+        MatcherAssert.assertThat(
+            new XMLDocument(xml),
+            XhtmlMatchers.hasXPath("/xhtml:a/xhtml:b")
+        );
+    }
+
 }
