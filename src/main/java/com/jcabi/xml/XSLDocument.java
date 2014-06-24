@@ -67,12 +67,6 @@ import org.w3c.dom.Document;
 public final class XSLDocument implements XSL {
 
     /**
-     * Transformer factory.
-     */
-    private static final TransformerFactory TFACTORY =
-        TransformerFactory.newInstance();
-
-    /**
      * DOM document builder factory.
      */
     private static final DocumentBuilderFactory DFACTORY =
@@ -228,12 +222,15 @@ public final class XSLDocument implements XSL {
         final Document target;
         try {
             synchronized (XSLDocument.class) {
-                trans = XSLDocument.TFACTORY.newTransformer(
+                final TransformerFactory factory =
+                    TransformerFactory.newInstance();
+                factory.setErrorListener(XSLDocument.ERRORS);
+                factory.setURIResolver(this.sources);
+                trans = factory.newTransformer(
                     new StreamSource(new StringReader(this.xsl))
                 );
                 target = XSLDocument.DFACTORY.newDocumentBuilder()
                     .newDocument();
-                trans.setErrorListener(XSLDocument.ERRORS);
                 trans.setURIResolver(this.sources);
                 trans.transform(
                     new DOMSource(xml.node()), new DOMResult(target)

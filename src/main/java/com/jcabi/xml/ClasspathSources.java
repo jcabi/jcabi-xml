@@ -68,7 +68,7 @@ public final class ClasspathSources implements Sources {
         this(
             String.format(
                 "/%s/",
-                type.getCanonicalName().replace(".", "/")
+                type.getPackage().getName().replace(".", "/")
             )
         );
     }
