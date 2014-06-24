@@ -39,6 +39,7 @@ import java.net.URL;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -58,6 +59,7 @@ import org.w3c.dom.Document;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.4
+ * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 @Immutable
 @EqualsAndHashCode(of = "xsl")
@@ -77,12 +79,30 @@ public final class XSLDocument implements XSL {
         DocumentBuilderFactory.newInstance();
 
     /**
+     * Error listener.
+     */
+    private static final ErrorListener ERRORS = new ErrorListener() {
+        @Override
+        public void warning(final TransformerException exception) {
+            Logger.warn(this, exception.getMessageAndLocation());
+        }
+        @Override
+        public void error(final TransformerException exception) {
+            Logger.error(this, exception.getMessageAndLocation());
+        }
+        @Override
+        public void fatalError(final TransformerException exception) {
+            this.error(exception);
+        }
+    };
+
+    /**
      * XSL document.
      */
     private final transient String xsl;
 
     /**
-     * URI resolver.
+     * Sources.
      */
     private final transient Sources sources;
 
@@ -213,6 +233,7 @@ public final class XSLDocument implements XSL {
                 );
                 target = XSLDocument.DFACTORY.newDocumentBuilder()
                     .newDocument();
+                trans.setErrorListener(XSLDocument.ERRORS);
                 trans.setURIResolver(this.sources);
                 trans.transform(
                     new DOMSource(xml.node()), new DOMResult(target)
