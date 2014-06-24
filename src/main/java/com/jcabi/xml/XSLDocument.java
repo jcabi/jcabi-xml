@@ -169,35 +169,26 @@ public final class XSLDocument implements XSL {
     public XML transform(@NotNull(message = "XML can't be NULL")
         final XML xml) {
         final Transformer trans;
+        final Document target;
         try {
             synchronized (XSLDocument.class) {
                 trans = XSLDocument.TFACTORY.newTransformer(
                     new StreamSource(new StringReader(this.xsl))
                 );
-            }
-        } catch (final TransformerConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        final Document target;
-        try {
-            synchronized (XSLDocument.class) {
                 target = XSLDocument.DFACTORY.newDocumentBuilder()
                     .newDocument();
+                trans.transform(
+                    new DOMSource(xml.node()), new DOMResult(target)
+                );
             }
         } catch (final ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
-        }
-        try {
-            trans.transform(
-                new DOMSource(xml.node()), new DOMResult(target)
-            );
+        } catch (final TransformerConfigurationException ex) {
+            throw new IllegalStateException(ex);
         } catch (final TransformerException ex) {
             throw new IllegalStateException(ex);
         }
-        Logger.debug(
-            this, "%s transformed XML",
-            trans.getClass().getName()
-        );
+        Logger.debug(this, "%s transformed XML", trans.getClass().getName());
         return new XMLDocument(target);
     }
 
