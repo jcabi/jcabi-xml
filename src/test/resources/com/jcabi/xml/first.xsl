@@ -5,7 +5,9 @@
     <xsl:include href="second.xsl"/>
     <xsl:template match="/">
         <result>
-            <xsl:value-of select="j:format('5.76')"/>
+            <xsl:call-template name="j:format">
+                <xsl:with-param name="value" select="5.67"/>
+            </xsl:call-template>
         </result>
     </xsl:template>
 </xsl:stylesheet>

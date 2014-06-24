@@ -34,7 +34,6 @@ import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -102,14 +101,13 @@ public final class XSLDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    @Ignore
     public void transformsWithImports() throws Exception {
         final XSL xsl = new XSLDocument(
             this.getClass().getResourceAsStream("first.xsl")
         ).with(new ClasspathSources(this.getClass()));
         MatcherAssert.assertThat(
             xsl.transform(new XMLDocument("<simple-test/>")),
-            XhtmlMatchers.hasXPath("/result[.=5]")
+            XhtmlMatchers.hasXPath("/result[.=6]")
         );
     }
 
