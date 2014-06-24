@@ -39,6 +39,7 @@ import java.net.URL;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -81,20 +82,16 @@ public final class XSLDocument implements XSL {
     private final transient String xsl;
 
     /**
+     * URI resolver.
+     */
+    private final transient Sources sources;
+
+    /**
      * Public ctor, from XML as a source.
      * @param src XSL document body
      */
     public XSLDocument(@NotNull(message = "XML can't be NULL") final XML src) {
         this(src.toString());
-    }
-
-    /**
-     * Public ctor, from XSL as a string.
-     * @param src XML document body
-     */
-    public XSLDocument(@NotNull(message = "XSL can't be NULL")
-        final String src) {
-        this.xsl = src;
     }
 
     /**
@@ -116,6 +113,50 @@ public final class XSLDocument implements XSL {
     public XSLDocument(@NotNull(message = "XSL input stream can't be NULL")
         final InputStream stream) throws IOException {
         this(new TextResource(stream).toString());
+    }
+
+    /**
+     * Public ctor, from XSL as a string.
+     * @param src XML document body
+     */
+    public XSLDocument(final String src) {
+        this(
+            src,
+            new Sources() {
+                @Override
+                public Source resolve(final String href, final String base) {
+                    throw new UnsupportedOperationException(
+                        // @checkstyle LineLength (1 line)
+                        "URI resolving is not configured in XSLDocument, use #with(URIResolver) method"
+                    );
+                }
+            }
+        );
+    }
+
+    /**
+     * Public ctor, from XSL as a string.
+     * @param src XML document body
+     * @param srcs Sources
+     * @since 0.9
+     */
+    public XSLDocument(
+        @NotNull(message = "XSL can't be NULL") final String src,
+        @NotNull(message = "sources can't be NULL")
+        final Sources srcs) {
+        this.xsl = src;
+        this.sources = srcs;
+    }
+
+    /**
+     * With this resolver.
+     * @param srcs Resolver
+     * @return XSL document
+     * @since 0.9
+     */
+    public XSLDocument with(@NotNull(message = "sources can't be NULL")
+        final Sources srcs) {
+        return new XSLDocument(this.xsl, srcs);
     }
 
     /**
@@ -177,6 +218,7 @@ public final class XSLDocument implements XSL {
                 );
                 target = XSLDocument.DFACTORY.newDocumentBuilder()
                     .newDocument();
+                trans.setURIResolver(this.sources);
                 trans.transform(
                     new DOMSource(xml.node()), new DOMResult(target)
                 );
