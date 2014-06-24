@@ -47,11 +47,18 @@ public interface XSL {
 
     /**
      * Transform XML to another one.
-     *
      * @param xml Source XML document
      * @return Result document
      */
     @NotNull(message = "XML is never NULL")
     XML transform(@NotNull(message = "XML can't be NULL") XML xml);
+
+    /**
+     * With this sources.
+     * @param src Sources
+     * @return New XSL document
+     */
+    @NotNull(message = "XSL is never NULL")
+    XSL with(@NotNull(message = "sources can't be NULL") Sources src);
 
 }

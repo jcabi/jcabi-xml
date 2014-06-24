@@ -148,15 +148,10 @@ public final class XSLDocument implements XSL {
         this.sources = srcs;
     }
 
-    /**
-     * With this resolver.
-     * @param srcs Resolver
-     * @return XSL document
-     * @since 0.9
-     */
-    public XSLDocument with(@NotNull(message = "sources can't be NULL")
-        final Sources srcs) {
-        return new XSLDocument(this.xsl, srcs);
+    @Override
+    public XSL with(@NotNull(message = "sources can't be NULL")
+        final Sources src) {
+        return new XSLDocument(this.xsl, src);
     }
 
     /**
