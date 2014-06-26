@@ -57,7 +57,7 @@ public interface XSL {
      * Transform XML into text.
      * @param xml Source XML document
      * @return Result text
-     * @since 0.10
+     * @since 0.11
      */
     @NotNull(message = "result text is never NULL")
     String applyTo(@NotNull(message = "XML can't be NULL") XML xml);

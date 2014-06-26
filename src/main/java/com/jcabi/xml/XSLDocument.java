@@ -252,6 +252,7 @@ public final class XSLDocument implements XSL {
      * Tranform XML into result.
      * @param xml XML
      * @param result Result
+     * @since 0.11
      */
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans;

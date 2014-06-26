@@ -115,6 +115,7 @@ public final class XSLDocumentTest {
     /**
      * XSLDocument can transform into text.
      * @throws Exception If something goes wrong inside
+     * @since 0.11
      */
     @Test
     public void transformsIntoText() throws Exception {
