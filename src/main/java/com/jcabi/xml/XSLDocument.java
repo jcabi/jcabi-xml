@@ -32,14 +32,17 @@ package com.jcabi.xml;
 import com.jcabi.aspects.Immutable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.ErrorListener;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -47,6 +50,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
 import org.w3c.dom.Document;
@@ -64,6 +68,7 @@ import org.w3c.dom.Document;
 @Immutable
 @EqualsAndHashCode(of = "xsl")
 @Loggable(Loggable.DEBUG)
+@SuppressWarnings("PMD.TooManyMethods")
 public final class XSLDocument implements XSL {
 
     /**
@@ -218,8 +223,38 @@ public final class XSLDocument implements XSL {
     @NotNull(message = "XML is never NULL")
     public XML transform(@NotNull(message = "XML can't be NULL")
         final XML xml) {
-        final Transformer trans;
         final Document target;
+        try {
+            target = XSLDocument.DFACTORY.newDocumentBuilder()
+                .newDocument();
+            this.transformInto(
+                xml, new DOMResult(target)
+            );
+        } catch (final ParserConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        }
+        return new XMLDocument(target);
+    }
+
+    @Override
+    public String applyTo(
+        @NotNull(message = "XML can't be NULL") final XML xml) {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        this.transformInto(xml, new StreamResult(baos));
+        try {
+            return baos.toString("UTF-8");
+        } catch (final UnsupportedEncodingException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+    /**
+     * Tranform XML into result.
+     * @param xml XML
+     * @param result Result
+     */
+    private void transformInto(final XML xml, final Result result) {
+        final Transformer trans;
         try {
             synchronized (XSLDocument.class) {
                 final TransformerFactory factory =
@@ -229,22 +264,15 @@ public final class XSLDocument implements XSL {
                 trans = factory.newTransformer(
                     new StreamSource(new StringReader(this.xsl))
                 );
-                target = XSLDocument.DFACTORY.newDocumentBuilder()
-                    .newDocument();
                 trans.setURIResolver(this.sources);
-                trans.transform(
-                    new DOMSource(xml.node()), new DOMResult(target)
-                );
+                trans.transform(new DOMSource(xml.node()), result);
             }
-        } catch (final ParserConfigurationException ex) {
-            throw new IllegalStateException(ex);
         } catch (final TransformerConfigurationException ex) {
             throw new IllegalStateException(ex);
         } catch (final TransformerException ex) {
             throw new IllegalStateException(ex);
         }
         Logger.debug(this, "%s transformed XML", trans.getClass().getName());
-        return new XMLDocument(target);
     }
 
 }

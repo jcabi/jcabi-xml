@@ -34,6 +34,7 @@ import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -108,6 +109,26 @@ public final class XSLDocumentTest {
         MatcherAssert.assertThat(
             xsl.transform(new XMLDocument("<simple-test/>")),
             XhtmlMatchers.hasXPath("/result[.=6]")
+        );
+    }
+
+    /**
+     * XSLDocument can transform into text.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void transformsIntoText() throws Exception {
+        final XSL xsl = new XSLDocument(
+            StringUtils.join(
+                "<xsl:stylesheet ",
+                " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'  ",
+                " version='2.0'><xsl:output method='text'/>",
+                "<xsl:template match='/'>hello</xsl:template></xsl:stylesheet>"
+            )
+        );
+        MatcherAssert.assertThat(
+            xsl.applyTo(new XMLDocument("<something/>")),
+            Matchers.equalTo("hello")
         );
     }
 
