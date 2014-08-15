@@ -4,7 +4,6 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>jcabi-xml - Surefire Report</title>
-        <link media="all" rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
                             <script>
                 var _gaq = _gaq || [];
@@ -44,7 +43,7 @@
             <nav class="menu-section" role="navigation">
                 <ul class="menu" id="menu">
                                                                                     <li>
-                            Overview
+                            <span>Overview</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="index.html" title="Introduction">Introduction</a>
@@ -53,7 +52,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-0.11/index.html" title="API 0.11 (JavaDoc)">API 0.11 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-0.11.1/index.html" title="API 0.11.1 (JavaDoc)">API 0.11.1 (JavaDoc)</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -73,7 +72,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Examples
+                            <span>Examples</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="example-parsing.html" title="Parsing XML">Parsing XML</a>
@@ -96,7 +95,7 @@
                                                                                         </ul>
                                                     </li>
                                             <li>
-                            Project Documentation
+                            <span>Project Documentation</span>
                                                             <ul>
                                                                                                     <li >
                             <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
@@ -105,14 +104,8 @@
                                                                                                                         <li >
                             <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <ul>
                                                                                                     <li >
-                            <span>                        <a href="rempl.html" title="REMPL">REMPL</a>
-        </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li >
                             <span>                        <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
         </span>
                                                                                                                                                                 <ul>
@@ -143,7 +136,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-0.11/index.html" title="JavaDocs">JavaDocs</a>
+                            <span>                        <a href="apidocs-0.11.1/index.html" title="JavaDocs">JavaDocs</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -164,11 +157,10 @@
                 <main role="main">
                     <div class="content">
                         <header>
-                            <i class="menu-button fa fa-align-justify"></i>
                             <div class="logo">
                                 <a href="../"
                                     title=" logo ">
-                                    <img src="http://img.jcabi.com/logo-square.png"
+                                    <img src="http://img.jcabi.com/logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
@@ -176,24 +168,30 @@
                                     />
                                 </a>
                             </div>
-                            <div class="date">
-                                <div class="date-numbers">
-                                    <strong itemprop="version">0.11</strong>
+                            <div class="teamed">
+                                <a href="http://www.teamed.io">
+                                    <img src="http://img.teamed.io/btn.svg" alt="teamed.io logo"/>
+                                </a>
+                            </div>
+                            <ul class="badges">
+                                <li>
+                                    <strong itemprop="version">0.11.1</strong>
+                                </li>
+                                <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-06-26T04:26:21Z">
+                                    <time itemprop="datePublished" datetime="2014-08-15T08:21:24Z">
                                         
-                                        26-Jun-2014
+                                        15-Aug-2014
                                     </time>
-                                </div>
-                                                                                                    <div>
-                                        <iframe src="http://ghbtns.com/github-btn.html?user=jcabi&amp;repo=jcabi-xml&amp;type=watch&amp;count=true&amp;size=large"
-                                            style="border-width:0px;overflow:hidden;width:170px;height:30px;">
-                                        </iframe>
-                                    </div>
-                                                            </div>
-                            <div id="here-goes-menu" class="menu-off"></div>
+                                </li>
+                                <li class="menu-button">menu</li>
+                            </ul>
                         </header>
-                        <article role="article" itemprop="articleBody">
+                        <div id="here-goes-menu" class="menu-off"></div>
+                                                                            <a href="https://github.com/jcabi/jcabi-xml">
+                                <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
+                            </a>
+                                                <article role="article" itemprop="articleBody">
                             <script type="text/javascript">
 //<![CDATA[
 function toggleDisplay(elementId) {
@@ -225,12 +223,12 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td>44</td>
+<td>39</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>63.609</td></tr></table><br />
+<td>72.667</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
 <div class="section">
 <h2>Package List<a name="Package_List"></a></h2><a name="Package_List"></a>
@@ -246,12 +244,12 @@ function toggleDisplay(elementId) {
 <th>Time</th></tr>
 <tr class="b">
 <td><a href="#com.jcabi.xml">com.jcabi.xml</a></td>
-<td>44</td>
+<td>39</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>63.609</td></tr></table><br />
+<td>72.667</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
 <div class="section">
 <h3>com.jcabi.xml<a name="com.jcabi.xml"></a></h3><a name="com.jcabi.xml"></a>
@@ -268,13 +266,22 @@ function toggleDisplay(elementId) {
 <tr class="b">
 <td><a href="#com.jcabi.xmlDomParserTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlDomParserTest">DomParserTest</a></td>
-<td>6</td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.869</td></tr>
+<td>0.072</td></tr>
 <tr class="a">
+<td><a href="#com.jcabi.xmlXSLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXSLDocumentTest">XSLDocumentTest</a></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>24.789</td></tr>
+<tr class="b">
 <td><a href="#com.jcabi.xmlStrictXMLTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlStrictXMLTest">StrictXMLTest</a></td>
 <td>5</td>
@@ -282,16 +289,7 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>8.174</td></tr>
-<tr class="b">
-<td><a href="#com.jcabi.xmlTextResourceTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlTextResourceTest">TextResourceTest</a></td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.246</td></tr>
+<td>9.668</td></tr>
 <tr class="a">
 <td><a href="#com.jcabi.xmlXMLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlXMLDocumentTest">XMLDocumentTest</a></td>
@@ -300,17 +298,8 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>27.001</td></tr>
+<td>33.323</td></tr>
 <tr class="b">
-<td><a href="#com.jcabi.xmlXPathContextTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlXPathContextTest">XPathContextTest</a></td>
-<td>5</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>1.084</td></tr>
-<tr class="a">
 <td><a href="#com.jcabi.xmlXSDDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlXSDDocumentTest">XSDDocumentTest</a></td>
 <td>5</td>
@@ -318,16 +307,25 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>4.748</td></tr>
-<tr class="b">
-<td><a href="#com.jcabi.xmlXSLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlXSLDocumentTest">XSLDocumentTest</a></td>
-<td>4</td>
+<td>4.303</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.xmlXPathContextTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXPathContextTest">XPathContextTest</a></td>
+<td>5</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>21.487</td></tr></table></div><br /></div>
+<td>0.034</td></tr>
+<tr class="b">
+<td><a href="#com.jcabi.xmlTextResourceTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlTextResourceTest">TextResourceTest</a></td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.478</td></tr></table></div><br /></div>
 <div class="section">
 <h2>Test Cases<a name="Test_Cases"></a></h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
@@ -336,199 +334,178 @@ function toggleDisplay(elementId) {
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>throwsWhenInvalidXml</td>
-<td>0.059</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>throwsWhenInvalidElement</td>
-<td>0.041</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>allowsValidXmlFormatting</td>
-<td>0.043</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>parsesIncomingXmlDocumentComment</td>
-<td>0.609</td></tr>
+<td>0.072</td></tr></table></div>
+<div class="section">
+<h3>XSLDocumentTest<a name="XSLDocumentTest"></a></h3><a name="com.jcabi.xmlXSLDocumentTest"></a>
+<table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>parsesIncomingXmlDocument</td>
-<td>0.117</td></tr>
+<td>transformsIntoText</td>
+<td>1.216</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>throwsWhenNonXmlDocument</td>
-<td>0</td></tr></table></div>
+<td>makesXslTransformationsInThreads</td>
+<td>11.111</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>transformsWithImports</td>
+<td>1.293</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>makesXslTransformations</td>
+<td>11.169</td></tr></table></div>
 <div class="section">
 <h3>StrictXMLTest<a name="StrictXMLTest"></a></h3><a name="com.jcabi.xmlStrictXMLTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>passesValidXmlUsingXsiSchemaLocation</td>
-<td>2.109</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>validatesMultipleXmlsInThreads</td>
-<td>1.454</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>rejectsInvalidXmlThrough</td>
-<td>0.487</td></tr>
+<td>passesValidXmlThrough</td>
+<td>1.467</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>rejectsInvalidXmlUsingXsiSchemaLocation</td>
-<td>2.9</td></tr>
+<td>1.659</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>passesValidXmlThrough</td>
-<td>1.224</td></tr></table></div>
-<div class="section">
-<h3>TextResourceTest<a name="TextResourceTest"></a></h3><a name="com.jcabi.xmlTextResourceTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>readsFileAsText</td>
-<td>0.124</td></tr>
+<td>rejectsInvalidXmlThrough</td>
+<td>1.485</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>readsStreamAsText</td>
-<td>0.122</td></tr></table></div>
+<td>validatesMultipleXmlsInThreads</td>
+<td>3.406</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>passesValidXmlUsingXsiSchemaLocation</td>
+<td>1.651</td></tr></table></div>
 <div class="section">
 <h3>XMLDocumentTest<a name="XMLDocumentTest"></a></h3><a name="com.jcabi.xmlXMLDocumentTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>preservesProcessingInstructions</td>
-<td>0.47</td></tr>
+<td>convertsItselfToXml</td>
+<td>0.966</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>convertsItselfToXml</td>
-<td>1.26</td></tr>
+<td>throwsWhenXpathQueryIsBroken</td>
+<td>0.925</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>throwsWhenXpathQueryIsBroken</td>
-<td>0.514</td></tr>
+<td>preservesProcessingInstructions</td>
+<td>0.856</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsWithXpathAndNamespaces</td>
-<td>1.329</td></tr>
+<td>1.063</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>printsWithAndWithoutXmlHeader</td>
-<td>0.486</td></tr>
+<td>retrievesDomNode</td>
+<td>0.731</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>retrievesDomNode</td>
-<td>1.316</td></tr>
+<td>printsWithAndWithoutXmlHeader</td>
+<td>0.708</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsWithXpathWithCustomNamespace</td>
-<td>1.055</td></tr>
+<td>0.727</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>preservesXmlNamespaces</td>
-<td>0.405</td></tr>
+<td>0.124</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpathAndReturnsThem</td>
-<td>1.24</td></tr>
+<td>0.196</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>xpathInMultipleThreads</td>
-<td>6.905</td></tr>
+<td>9.668</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>comparesToAnotherDocument</td>
-<td>0.225</td></tr>
+<td>buildsDomNode</td>
+<td>0.085</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>buildsDomNode</td>
-<td>0.584</td></tr>
+<td>comparesToAnotherDocument</td>
+<td>0.031</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>performsXpathCalculations</td>
-<td>0.373</td></tr>
+<td>0.107</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>parsesInMultipleThreads</td>
-<td>1.184</td></tr>
+<td>5.674</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>printsInMultipleThreads</td>
-<td>8.635</td></tr>
+<td>11.345</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>throwsCustomExceptionWhenXpathNotFound</td>
-<td>0.784</td></tr>
+<td>0.058</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpath</td>
-<td>0.236</td></tr></table></div>
-<div class="section">
-<h3>XPathContextTest<a name="XPathContextTest"></a></h3><a name="com.jcabi.xmlXPathContextTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsNamespaceByPrefix</td>
-<td>0.214</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsPrefixByNamespace</td>
-<td>0.212</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsNonBoundNamespaces</td>
-<td>0.208</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsPrefixesByNamespace</td>
-<td>0.242</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsDefaultNamespaces</td>
-<td>0.208</td></tr></table></div>
+<td>0.059</td></tr></table></div>
 <div class="section">
 <h3>XSDDocumentTest<a name="XSDDocumentTest"></a></h3><a name="com.jcabi.xmlXSDDocumentTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>validatesComplexXml</td>
-<td>1.217</td></tr>
+<td>1.655</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>validatesMultipleXmlsInThreads</td>
-<td>1.121</td></tr>
+<td>1.556</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>validatesLongXml</td>
-<td>0.817</td></tr>
+<td>0.324</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>validatesXml</td>
-<td>1.221</td></tr>
+<td>0.456</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>detectsSchemaViolations</td>
-<td>0.372</td></tr></table></div>
+<td>0.312</td></tr></table></div>
 <div class="section">
-<h3>XSLDocumentTest<a name="XSLDocumentTest"></a></h3><a name="com.jcabi.xmlXSLDocumentTest"></a>
+<h3>XPathContextTest<a name="XPathContextTest"></a></h3><a name="com.jcabi.xmlXPathContextTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>makesXslTransformations</td>
-<td>7.394</td></tr>
+<td>findsNamespaceByPrefix</td>
+<td>0.004</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>transformsWithImports</td>
-<td>5.357</td></tr>
+<td>findsNonBoundNamespaces</td>
+<td>0.001</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>makesXslTransformationsInThreads</td>
-<td>7.367</td></tr>
+<td>findsDefaultNamespaces</td>
+<td>0.004</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>transformsIntoText</td>
-<td>1.369</td></tr></table></div><br /></div>
-                            <img class="maven-logo" src="//img.jcabi.com/built-by-maven.png" alt="built by maven"/>
+<td>findsPrefixesByNamespace</td>
+<td>0.023</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>findsPrefixByNamespace</td>
+<td>0.002</td></tr></table></div>
+<div class="section">
+<h3>TextResourceTest<a name="TextResourceTest"></a></h3><a name="com.jcabi.xmlTextResourceTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>readsStreamAsText</td>
+<td>0.285</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>readsFileAsText</td>
+<td>0.193</td></tr></table></div><br /></div>
                         </article>
                     </div>
                 </main>
