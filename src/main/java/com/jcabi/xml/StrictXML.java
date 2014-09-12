@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import com.jcabi.xml.XSDDocument.ValidationHandler;
 import java.io.IOException;
@@ -62,7 +61,6 @@ import org.xml.sax.SAXParseException;
  * @since 0.7
  */
 @EqualsAndHashCode(of = "origin")
-@Loggable(Loggable.DEBUG)
 public final class StrictXML implements XML {
 
     /**

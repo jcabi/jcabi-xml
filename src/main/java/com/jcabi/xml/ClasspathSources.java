@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Loggable;
 import java.io.InputStream;
 import javax.validation.constraints.NotNull;
 import javax.xml.transform.Source;
@@ -45,7 +44,6 @@ import lombok.EqualsAndHashCode;
  * @since 0.9
  */
 @EqualsAndHashCode(of = "prefix")
-@Loggable(Loggable.DEBUG)
 public final class ClasspathSources implements Sources {
 
     /**

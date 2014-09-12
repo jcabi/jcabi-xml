@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -53,7 +52,6 @@ import org.xml.sax.SAXException;
  */
 @ToString
 @EqualsAndHashCode(of = "xml")
-@Loggable(Loggable.DEBUG)
 final class DomParser {
 
     /**

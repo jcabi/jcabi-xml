@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -67,7 +66,6 @@ import org.w3c.dom.Document;
  */
 @Immutable
 @EqualsAndHashCode(of = "xsl")
-@Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class XSLDocument implements XSL {
 

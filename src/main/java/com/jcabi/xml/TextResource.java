@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,7 +51,6 @@ import lombok.EqualsAndHashCode;
  */
 @Immutable
 @EqualsAndHashCode(of = "content")
-@Loggable(Loggable.DEBUG)
 final class TextResource {
     /**
      * Encoding.

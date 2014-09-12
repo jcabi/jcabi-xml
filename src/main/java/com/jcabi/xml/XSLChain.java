@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
 import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -44,7 +43,6 @@ import lombok.EqualsAndHashCode;
  */
 @Immutable
 @EqualsAndHashCode(of = "sheets")
-@Loggable(Loggable.DEBUG)
 public final class XSLChain implements XSL {
 
     /**

@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
-import com.jcabi.aspects.Loggable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,7 +75,6 @@ import org.w3c.dom.NodeList;
  */
 @Immutable
 @EqualsAndHashCode(of = { "xml", "leaf" })
-@Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.ExcessiveImports")
 public final class XMLDocument implements XML {
 
