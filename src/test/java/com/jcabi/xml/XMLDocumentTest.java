@@ -47,7 +47,7 @@ import org.w3c.dom.Node;
 
 /**
  * Test case for {@link XMLDocument}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  */
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.DoNotUseThreads" })

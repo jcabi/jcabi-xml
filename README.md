@@ -6,7 +6,8 @@
 [![Build Status](https://travis-ci.org/jcabi/jcabi-xml.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-xml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
 
-More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html)
+More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html).
+Also, read this blog post: [Java XML Parsing Made Easy](http://www.yegor256.com/2014/04/24/java-xml-parsing-and-traversing.html).
 
 It's a simple wrapper around DOM that makes XML parsing and printing
 easy and simple, for example:
