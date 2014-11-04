@@ -1,13 +1,13 @@
 # How to validate XML with XSD Schema
 
 You need one class
-{{{./apidocs-${project.version}/com/jcabi/xml/XSDDocument.html}`XSDDocument`}}
+{{{./apidocs-${project.version}/com/jcabi/xml/XSDDocument.html}<<<XSDDocument>>>}}
 which implements
-{{{./apidocs-${project.version}/com/jcabi/xml/XSD.html}`XSD`}}
+{{{./apidocs-${project.version}/com/jcabi/xml/XSD.html}<<<XSD>>>}}
 interface. It works with your default DOM implementation.
 For example:
 
-```java
++--java
 import com.jcabi.xml.XSDDocument;
 import java.util.Collection;
 import javax.xml.transform.stream.StreamSource;
@@ -33,4 +33,4 @@ public class Main {
     }
   }
 }
-```
++--

@@ -1,12 +1,12 @@
 # How to parse XML
 
 The only class you need is
-{{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}`XMLDocument`}},
+{{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}<<<XMLDocument>>>}},
 which implements
-{{{./apidocs-${project.version}/com/jcabi/xml/XML.html}`XML`}}
+{{{./apidocs-${project.version}/com/jcabi/xml/XML.html}<<<XML>>>}}
 interface and works with your default DOM implementation:
 
-```java
++--java
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 public class Main {
@@ -18,4 +18,4 @@ public class Main {
     String name = xml.xpath("//order[@id=4]/text()");
   }
 }
-```
++--
