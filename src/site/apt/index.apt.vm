@@ -1,7 +1,7 @@
 # XML Parsing and Printing
 
 Set of classes in
-[`com.jcabi.xml`](./apidocs-${project.version}/com/jcabi/xml/index.html)
+{{{./apidocs-${project.version}/com/jcabi/xml/index.html}`com.jcabi.xml`}}
 is an extra layer on top of DOM that allows simple
 parsing, printing, and transforming of XML documents and nodes:
 
@@ -20,7 +20,7 @@ public class Main {
 
 The only dependency you need is
 (you can also download
-[`jcabi-xml-${project.version}.jar`](http://repo1.maven.org/maven2/com/jcabi/jcabi-xml/${project.version}/jcabi-xml-${project.version}.jar)
+{{{http://repo1.maven.org/maven2/com/jcabi/jcabi-xml/${project.version}/jcabi-xml-${project.version}.jar}`jcabi-xml-${project.version}.jar`}}
 and add it to the classpath):
 
 ```xml

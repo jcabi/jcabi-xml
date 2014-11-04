@@ -1,11 +1,11 @@
 # How to apply XSL to XML
 
 You need two classes:
-[`XMLDocument`](./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html)
-and [`XSLDocument`](./apidocs-${project.version}/com/jcabi/xml/XSLDocument.html)
+{{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}`XMLDocument`}}
+and {{{./apidocs-${project.version}/com/jcabi/xml/XSLDocument.html}`XSLDocument`}}
 which implement
-[`XML`](./apidocs-${project.version}/com/jcabi/xml/XML.html)
-and [`XSL`](./apidocs-${project.version}/com/jcabi/xml/XSL.html)
+{{{./apidocs-${project.version}/com/jcabi/xml/XML.html}`XML`}}
+and {{{./apidocs-${project.version}/com/jcabi/xml/XSL.html}`XSL`}}
 interfaces respectfully. They work with your default DOM implementation.
 For example:
 

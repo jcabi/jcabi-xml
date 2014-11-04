@@ -1,9 +1,9 @@
 # How to parse XML
 
 The only class you need is
-[`XMLDocument`](./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html),
+{{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}`XMLDocument`}},
 which implements
-[`XML`](./apidocs-${project.version}/com/jcabi/xml/XML.html)
+{{{./apidocs-${project.version}/com/jcabi/xml/XML.html}`XML`}}
 interface and works with your default DOM implementation:
 
 ```java
