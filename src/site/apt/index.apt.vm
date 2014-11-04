@@ -1,9 +1,17 @@
-# XML Parsing and Printing
+  ---
+  XML Parsing and Printing
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-Set of classes in
-{{{./apidocs-${project.version}/com/jcabi/xml/index.html}<<<com.jcabi.xml>>>}}
-is an extra layer on top of DOM that allows simple
-parsing, printing, and transforming of XML documents and nodes:
+XML Parsing and Printing
+
+  Set of classes in
+  {{{./apidocs-${project.version}/com/jcabi/xml/index.html}<<<com.jcabi.xml>>>}}
+  is an extra layer on top of DOM that allows simple
+  parsing, printing, and transforming of XML documents and nodes:
 
 +--
 public class Main {
@@ -18,12 +26,12 @@ public class Main {
 }
 +--
 
-The only dependency you need is
-(you can also download
-{{{http://repo1.maven.org/maven2/com/jcabi/jcabi-xml/${project.version}/jcabi-xml-${project.version}.jar}<<<jcabi-xml-${project.version}.jar>>>}}
-and add it to the classpath):
+  The only dependency you need is
+  (you can also download
+  {{{http://repo1.maven.org/maven2/com/jcabi/jcabi-xml/${project.version}/jcabi-xml-${project.version}.jar}<<<jcabi-xml-${project.version}.jar>>>}}
+  and add it to the classpath):
 
-+--xml
++--
 <dependency>
   <groupId>com.jcabi</groupId>
   <artifactId>jcabi-xml</artifactId>
@@ -31,13 +39,12 @@ and add it to the classpath):
 </dependency>
 +--
 
-Cutting Edge Version
------------------------
+* Cutting Edge Version
 
-If you want to use current version of the product, you can do it with
-this configuration in your <<<pom.xml>>>:
+  If you want to use current version of the product, you can do it with
+  this configuration in your <<<pom.xml>>>:
 
-+--xml
++--
 <repositories>
   <repository>
     <id>oss.sonatype.org</id>

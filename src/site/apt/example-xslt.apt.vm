@@ -1,15 +1,23 @@
-# How to apply XSL to XML
+  ---
+  How to apply XSL to XML
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-You need two classes:
-{{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}<<<XMLDocument>>>}}
-and {{{./apidocs-${project.version}/com/jcabi/xml/XSLDocument.html}<<<XSLDocument>>>}}
-which implement
-{{{./apidocs-${project.version}/com/jcabi/xml/XML.html}<<<XML>>>}}
-and {{{./apidocs-${project.version}/com/jcabi/xml/XSL.html}<<<XSL>>>}}
-interfaces respectfully. They work with your default DOM implementation.
-For example:
+How to apply XSL to XML
 
-+--java
+  You need two classes:
+  {{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}<<<XMLDocument>>>}}
+  and {{{./apidocs-${project.version}/com/jcabi/xml/XSLDocument.html}<<<XSLDocument>>>}}
+  which implement
+  {{{./apidocs-${project.version}/com/jcabi/xml/XML.html}<<<XML>>>}}
+  and {{{./apidocs-${project.version}/com/jcabi/xml/XSL.html}<<<XSL>>>}}
+  interfaces respectfully. They work with your default DOM implementation.
+  For example:
+
++--
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
@@ -30,7 +38,7 @@ public class Main {
 }
 +--
 
-Prints:
+  Prints:
 
 +--xml
 <name>Coffee to go</name>

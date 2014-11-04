@@ -1,12 +1,20 @@
-# How to parse XML
+  ---
+  How to parse XML
+  ---
+  Yegor Bugayenko
+  ---
+  2014-11-02
+  ---
 
-The only class you need is
-{{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}<<<XMLDocument>>>}},
-which implements
-{{{./apidocs-${project.version}/com/jcabi/xml/XML.html}<<<XML>>>}}
-interface and works with your default DOM implementation:
+How to parse XML
 
-+--java
+  The only class you need is
+  {{{./apidocs-${project.version}/com/jcabi/xml/XMLDocument.html}<<<XMLDocument>>>}},
+  which implements
+  {{{./apidocs-${project.version}/com/jcabi/xml/XML.html}<<<XML>>>}}
+  interface and works with your default DOM implementation:
+
++--
 import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 public class Main {
