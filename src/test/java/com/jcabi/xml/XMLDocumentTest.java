@@ -190,9 +190,17 @@ public final class XMLDocumentTest {
      * XMLDocument can throw when invalid XPath.
      * @throws Exception If something goes wrong inside
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwsWhenXpathQueryIsBroken() throws Exception {
-        new XMLDocument("<root-99/>").xpath("invalid xpath query");
+        try {
+            new XMLDocument("<root-99/>").xpath("/*/hello()");
+            MatcherAssert.assertThat("exception expected", false);
+        } catch (final IllegalArgumentException ex) {
+            MatcherAssert.assertThat(
+                ex.getMessage(),
+                Matchers.containsString("XPathFactoryImpl")
+            );
+        }
     }
 
     /**

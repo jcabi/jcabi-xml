@@ -330,7 +330,10 @@ public final class XMLDocument implements XML {
             } catch (final XPathExpressionException exp) {
                 throw new IllegalArgumentException(
                     // @checkstyle MultipleStringLiterals (1 line)
-                    String.format("invalid XPath query '%s'", query), exp
+                    String.format(
+                        "invalid XPath query '%s' at %s",
+                        query, XMLDocument.XFACTORY.getClass().getName()
+                    ), exp
                 );
             }
         }
@@ -359,7 +362,10 @@ public final class XMLDocument implements XML {
             }
         } catch (final XPathExpressionException ex) {
             throw new IllegalArgumentException(
-                String.format("invalid XPath query '%s'", query), ex
+                String.format(
+                    "invalid XPath query '%s' by %s",
+                    query, XMLDocument.XFACTORY.getClass().getName()
+                ), ex
             );
         }
         return new ListWrapper<XML>(items, this.node(), query);
