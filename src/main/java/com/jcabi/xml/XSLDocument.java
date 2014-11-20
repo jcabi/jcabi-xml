@@ -254,10 +254,10 @@ public final class XSLDocument implements XSL {
      */
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans;
-        try {
-            synchronized (XSLDocument.class) {
-                final TransformerFactory factory =
-                    TransformerFactory.newInstance();
+        synchronized (XSLDocument.class) {
+            final TransformerFactory factory =
+                TransformerFactory.newInstance();
+            try {
                 factory.setErrorListener(XSLDocument.ERRORS);
                 factory.setURIResolver(this.sources);
                 trans = factory.newTransformer(
@@ -265,11 +265,23 @@ public final class XSLDocument implements XSL {
                 );
                 trans.setURIResolver(this.sources);
                 trans.transform(new DOMSource(xml.node()), result);
+            } catch (final TransformerConfigurationException ex) {
+                throw new IllegalStateException(
+                    String.format(
+                        "failed to configure transformer by %s",
+                        factory.getClass().getName()
+                    ),
+                    ex
+                );
+            } catch (final TransformerException ex) {
+                throw new IllegalStateException(
+                    String.format(
+                        "failed to transform by %s",
+                        factory.getClass().getName()
+                    ),
+                    ex
+                );
             }
-        } catch (final TransformerConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final TransformerException ex) {
-            throw new IllegalStateException(ex);
         }
         Logger.debug(this, "%s transformed XML", trans.getClass().getName());
     }
