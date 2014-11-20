@@ -201,7 +201,7 @@ public final class XSDDocument implements XSD {
          * Constructor.
          * @param errs Collection of errors
          */
-        public ValidationHandler(final Collection<SAXParseException> errs) {
+        ValidationHandler(final Collection<SAXParseException> errs) {
             this.errors = errs;
         }
         @Override
