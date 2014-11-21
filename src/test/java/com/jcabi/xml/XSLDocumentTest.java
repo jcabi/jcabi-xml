@@ -140,7 +140,9 @@ public final class XSLDocumentTest {
     @Test
     public void stripsXml() throws Exception {
         MatcherAssert.assertThat(
-            XSL.STRIP.transform(new XMLDocument("<a>   <b/>  </a>")).toString(),
+            XSLDocument.STRIP.transform(
+                new XMLDocument("<a>   <b/>  </a>")
+            ).toString(),
             Matchers.containsString("<a>\n<b/>\n</a>")
         );
     }

@@ -70,6 +70,14 @@ import org.w3c.dom.Document;
 public final class XSLDocument implements XSL {
 
     /**
+     * Strip spaces.
+     * @since 0.14
+     */
+    public static final XSL STRIP = XSLDocument.make(
+        XSL.class.getResourceAsStream("strip.xsl")
+    );
+
+    /**
      * DOM document builder factory.
      */
     private static final DocumentBuilderFactory DFACTORY =
