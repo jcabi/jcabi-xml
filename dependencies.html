@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-xml - Project Dependencies</title>
+        <title>jcabi-xml &#x2013; Project Dependencies</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="./ico/ico.css"/>
                             <script>
                 var _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-1963507-23']);
@@ -19,24 +20,8 @@
 <link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
                                                                                                                 
 <link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="./js/jcabi.js"></script>
     </head>
     <body>
                 <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
@@ -52,7 +37,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-0.11.1/index.html" title="API 0.11.1 (JavaDoc)">API 0.11.1 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-0.13/index.html" title="JavaDoc 0.13">JavaDoc 0.13</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -187,17 +172,51 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.11.1</strong>
+                                    <strong itemprop="version">0.13</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-08-15T08:21:23Z">
+                                    <time itemprop="datePublished" datetime="2014-11-21T08:29:46Z">
                                         
-                                        15-Aug-2014
+                                        21-Nov-2014
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
                             </ul>
+                            <div class="social">
+                                <a href="http://www.facebook.com/sharer/sharer.php?u=URL"
+                                    title="Share on Facebook" class="ico">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/share?url=URL&amp;text=TITLE"
+                                    title="Share on Twitter" class="ico">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                                <a href="https://plus.google.com/share?url=URL"
+                                    title="Share on Google+" class="ico">
+                                    <i class="icon-googleplus"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/cws/share?url=URL"
+                                    title="Share on LinkedIn" class="ico">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                                <a href="http://www.stumbleupon.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on StumbleUpon" class="ico">
+                                    <i class="icon-stumbleupon"></i>
+                                </a>
+                                <a href="http://digg.com/submit?phase=2&amp;url=URL&amp;title=TITLE"
+                                    title="Share on Digg" class="ico">
+                                    <i class="icon-digg"></i>
+                                </a>
+                                <a href="http://reddit.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on Reddit" class="ico">
+                                    <i class="icon-reddit"></i>
+                                </a>
+                                <a href="http://news.ycombinator.com/submitlink?u=URL&amp;t=TITLE"
+                                    title="Share on Hacker News" class="ico">
+                                    <i class="icon-hackernews"></i>
+                                </a>
+                            </div>
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-xml">
@@ -206,9 +225,9 @@
                                                 <article role="article" itemprop="articleBody">
                             <a name="Project_Dependencies"></a>
 <div class="section">
-<h2>Project Dependencies<a name="Project_Dependencies"></a></h2><a name="Project_Dependencies_compile"></a>
+<h2><a name="Project_Dependencies"></a>Project Dependencies</h2><a name="Project_Dependencies_compile"></a>
 <div class="section">
-<h3>compile<a name="compile"></a></h3>
+<h3><a name="compile"></a>compile</h3>
 <p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -220,19 +239,19 @@
 <tr class="b">
 <td>com.jcabi</td>
 <td><a class="externalLink" href="http://www.jcabi.com/jcabi-aspects">jcabi-aspects</a></td>
-<td>0.17.1</td>
+<td>0.18</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></td></tr>
 <tr class="a">
 <td>com.jcabi</td>
 <td><a class="externalLink" href="http://www.jcabi.com/jcabi-immutable">jcabi-immutable</a></td>
-<td>1.2</td>
+<td>1.3</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></td></tr>
 <tr class="b">
 <td>com.jcabi</td>
 <td><a class="externalLink" href="http://www.jcabi.com/jcabi-log">jcabi-log</a></td>
-<td>0.14.1</td>
+<td>0.14.3</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></td></tr>
 <tr class="a">
@@ -240,15 +259,9 @@
 <td><a class="externalLink" href="http://beanvalidation.org">validation-api</a></td>
 <td>1.1.0.Final</td>
 <td>jar</td>
-<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr>
-<tr class="b">
-<td>org.aspectj</td>
-<td><a class="externalLink" href="http://www.aspectj.org">aspectjrt</a></td>
-<td>1.8.1</td>
-<td>jar</td>
-<td><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></td></tr></table></div><a name="Project_Dependencies_test"></a>
+<td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr></table></div><a name="Project_Dependencies_test"></a>
 <div class="section">
-<h3>test<a name="test"></a></h3>
+<h3><a name="test"></a>test</h3>
 <p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -260,13 +273,13 @@
 <tr class="b">
 <td>com.google.guava</td>
 <td><a class="externalLink" href="http://code.google.com/p/guava-libraries/guava">guava</a></td>
-<td>17.0</td>
+<td>18.0</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr>
 <tr class="a">
 <td>com.jcabi</td>
 <td><a class="externalLink" href="http://www.jcabi.com/jcabi-matchers">jcabi-matchers</a></td>
-<td>1.1</td>
+<td>1.2</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></td></tr>
 <tr class="b">
@@ -324,7 +337,7 @@
 <td>jar</td>
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></td></tr></table></div><a name="Project_Dependencies_provided"></a>
 <div class="section">
-<h3>provided<a name="provided"></a></h3>
+<h3><a name="provided"></a>provided</h3>
 <p>The following is a list of provided dependencies for this project. These dependencies are required to compile the application, but should be provided by default when using the library:</p>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -340,28 +353,34 @@
 <td>jar</td>
 <td><a class="externalLink" href="https://glassfish.dev.java.net/nonav/public/CDDL+GPL.html">CDDL + GPLv2 with classpath exception</a></td></tr>
 <tr class="a">
+<td>org.aspectj</td>
+<td><a class="externalLink" href="http://www.aspectj.org">aspectjrt</a></td>
+<td>1.8.2</td>
+<td>jar</td>
+<td><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></td></tr>
+<tr class="b">
 <td>org.hibernate</td>
 <td><a class="externalLink" href="http://validator.hibernate.org/hibernate-validator">hibernate-validator</a></td>
 <td>5.1.2.Final</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, Version 2.0</a></td></tr>
-<tr class="b">
+<tr class="a">
 <td>org.projectlombok</td>
 <td><a class="externalLink" href="http://projectlombok.org">lombok</a></td>
-<td>1.14.4</td>
+<td>1.14.8</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://projectlombok.org/LICENSE">The MIT License</a></td></tr>
-<tr class="a">
+<tr class="b">
 <td>xml-apis</td>
 <td><a class="externalLink" href="http://xml.apache.org/commons/components/external/">xml-apis</a></td>
 <td>1.4.01</td>
 <td>jar</td>
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a>-<a class="externalLink" href="http://www.saxproject.org/copying.html">The SAX License</a>-<a class="externalLink" href="http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407/java-binding.zip">The W3C License</a></td></tr></table></div></div><a name="Project_Transitive_Dependencies"></a>
 <div class="section">
-<h2>Project Transitive Dependencies<a name="Project_Transitive_Dependencies"></a></h2>
+<h2><a name="Project_Transitive_Dependencies"></a>Project Transitive Dependencies</h2>
 <p>The following is a list of transitive dependencies for this project. Transitive dependencies are the dependencies of the project dependencies.</p><a name="Project_Transitive_Dependencies_compile"></a>
 <div class="section">
-<h3>compile<a name="compile"></a></h3>
+<h3><a name="compile"></a>compile</h3>
 <p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -377,7 +396,7 @@
 <td>jar</td>
 <td><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></td></tr></table></div><a name="Project_Transitive_Dependencies_test"></a>
 <div class="section">
-<h3>test<a name="test"></a></h3>
+<h3><a name="test"></a>test</h3>
 <p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -393,7 +412,7 @@
 <td>jar</td>
 <td><a class="externalLink" href="http://objenesis.googlecode.com/svn/docs/license.html">MIT License</a></td></tr></table></div><a name="Project_Transitive_Dependencies_provided"></a>
 <div class="section">
-<h3>provided<a name="provided"></a></h3>
+<h3><a name="provided"></a>provided</h3>
 <p>The following is a list of provided dependencies for this project. These dependencies are required to compile the application, but should be provided by default when using the library:</p>
 <table border="0" class="bodyTable">
 <tr class="a">
@@ -415,7 +434,7 @@
 <td>jar</td>
 <td><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache License, version 2.0</a></td></tr></table></div></div><a name="Project_Dependency_Graph"></a>
 <div class="section">
-<h2>Project Dependency Graph<a name="Project_Dependency_Graph"></a></h2><script language="javascript" type="text/javascript">
+<h2><a name="Project_Dependency_Graph"></a>Project Dependency Graph</h2><script language="javascript" type="text/javascript">
       function toggleDependencyDetail( divId, imgId )
       {
         var div = document.getElementById( divId );
@@ -434,9 +453,9 @@
 </script>
 <a name="Dependency_Tree"></a>
 <div class="section">
-<h3>Dependency Tree<a name="Dependency_Tree"></a></h3>
+<h3><a name="Dependency_Tree"></a>Dependency Tree</h3>
 <ul>
-<li>com.jcabi:jcabi-xml:jar:0.11.1 <img id="_img1" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep0', '_img1' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep0" style="display:none">
+<li>com.jcabi:jcabi-xml:jar:0.13 <img id="_img1" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep0', '_img1' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep0" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-xml</th></tr>
@@ -446,7 +465,7 @@
 <p><b>URL: </b><a class="externalLink" href="http://www.jcabi.com/jcabi-xml">http://www.jcabi.com/jcabi-xml</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></p></td></tr></table></div>
 <ul>
-<li>com.jcabi:jcabi-aspects:jar:0.17.1 (compile) <img id="_img3" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep2', '_img3' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep2" style="display:none">
+<li>com.jcabi:jcabi-aspects:jar:0.18 (compile) <img id="_img3" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep2', '_img3' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep2" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-aspects</th></tr>
@@ -455,7 +474,7 @@
 <p><b>Description: </b>Collection of convenient and useful Java annotations</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.jcabi.com/jcabi-aspects">http://www.jcabi.com/jcabi-aspects</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></p></td></tr></table></div></li>
-<li>com.jcabi:jcabi-log:jar:0.14.1 (compile) <img id="_img5" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep4', '_img5' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep4" style="display:none">
+<li>com.jcabi:jcabi-log:jar:0.14.3 (compile) <img id="_img5" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep4', '_img5' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep4" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-log</th></tr>
@@ -474,7 +493,7 @@
 <p><b>Description: </b>The slf4j API</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p></td></tr></table></div></li></ul></li>
-<li>com.jcabi:jcabi-immutable:jar:1.2 (compile) <img id="_img9" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep8', '_img9' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep8" style="display:none">
+<li>com.jcabi:jcabi-immutable:jar:1.3 (compile) <img id="_img9" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep8', '_img9' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep8" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-immutable</th></tr>
@@ -483,7 +502,7 @@
 <p><b>Description: </b>Immutable Collections</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.jcabi.com/jcabi-immutable">http://www.jcabi.com/jcabi-immutable</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.jcabi.com/LICENSE.txt">BSD</a></p></td></tr></table></div></li>
-<li>org.projectlombok:lombok:jar:1.14.4 (provided) <img id="_img11" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep10', '_img11' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep10" style="display:none">
+<li>org.projectlombok:lombok:jar:1.14.8 (provided) <img id="_img11" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep10', '_img11' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep10" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>Project Lombok</th></tr>
@@ -501,7 +520,7 @@
 <p><b>Description: </b>Bean Validation API</p>
 <p><b>URL: </b><a class="externalLink" href="http://beanvalidation.org">http://beanvalidation.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li>
-<li>org.aspectj:aspectjrt:jar:1.8.1 (compile) <img id="_img15" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep14', '_img15' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep14" style="display:none">
+<li>org.aspectj:aspectjrt:jar:1.8.2 (provided) <img id="_img15" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep14', '_img15' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep14" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>AspectJ runtime</th></tr>
@@ -510,7 +529,7 @@
 <p><b>Description: </b>The runtime needed to execute a program using AspectJ</p>
 <p><b>URL: </b><a class="externalLink" href="http://www.aspectj.org">http://www.aspectj.org</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a></p></td></tr></table></div></li>
-<li>com.jcabi:jcabi-matchers:jar:1.1 (test) <img id="_img17" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep16', '_img17' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep16" style="display:none">
+<li>com.jcabi:jcabi-matchers:jar:1.2 (test) <img id="_img17" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep16', '_img17' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep16" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>jcabi-matchers</th></tr>
@@ -540,7 +559,7 @@
 file comparators, endian transformation classes, and much more.</p>
 <p><b>URL: </b><a class="externalLink" href="http://commons.apache.org/io/">http://commons.apache.org/io/</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li>
-<li>com.google.guava:guava:jar:17.0 (test) <img id="_img23" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep22', '_img23' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep22" style="display:none">
+<li>com.google.guava:guava:jar:18.0 (test) <img id="_img23" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_dep22', '_img23' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_dep22" style="display:none">
 <table border="0" class="bodyTable">
 <tr class="a">
 <th>Guava: Google Core Libraries for Java</th></tr>
@@ -691,7 +710,7 @@ file comparators, endian transformation classes, and much more.</p>
 <p><b>URL: </b><a class="externalLink" href="http://logging.apache.org/log4j/1.2/">http://logging.apache.org/log4j/1.2/</a></p>
 <p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p></td></tr></table></div></li></ul></li></ul></div></div><a name="Licenses"></a>
 <div class="section">
-<h2>Licenses<a name="Licenses"></a></h2>
+<h2><a name="Licenses"></a>Licenses</h2>
 <p><b>Apache License, version 2.0: </b>JBoss Logging 3</p>
 <p><b>The SAX License: </b>XML Commons External Components XML APIs</p>
 <p><b>CDDL + GPLv2 with classpath exception: </b>Expression Language 3.0 API</p>

@@ -3,8 +3,9 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-xml - Surefire Report</title>
+        <title>jcabi-xml &#x2013; Surefire Report</title>
         <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="./ico/ico.css"/>
                             <script>
                 var _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-1963507-23']);
@@ -19,24 +20,8 @@
 <link rel="shortcut icon" href="http://img.jcabi.com/favicon.ico"/>
                                                                                                                 
 <link rel="author" href="https://plus.google.com/u/0/114792568016408327418?rel=author"/>
-                                            <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-        <script>
-            $(document).ready(
-                function() {
-                    $(".menu-button").click(
-                        function() {
-                            if ($("#here-goes-menu").attr("class") == "menu-off") {
-                                $("#menu").clone().attr("class", "mobile-menu").appendTo("#here-goes-menu");
-                                $("#here-goes-menu").attr("class", "menu-on");
-                            } else {
-                                $(".mobile-menu").hide();
-                                $("#here-goes-menu").attr("class", "menu-off");
-                            }
-                        }
-                    );
-                }
-            );
-        </script>
+                                            <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="./js/jcabi.js"></script>
     </head>
     <body>
                 <section class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
@@ -52,7 +37,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-0.11.1/index.html" title="API 0.11.1 (JavaDoc)">API 0.11.1 (JavaDoc)</a>
+                            <span>                        <a href="apidocs-0.13/index.html" title="JavaDoc 0.13">JavaDoc 0.13</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -136,7 +121,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-0.11.1/index.html" title="JavaDocs">JavaDocs</a>
+                            <span>                        <a href="apidocs-0.13/index.html" title="JavaDocs">JavaDocs</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -175,17 +160,51 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.11.1</strong>
+                                    <strong itemprop="version">0.13</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-08-15T08:21:24Z">
+                                    <time itemprop="datePublished" datetime="2014-11-21T08:29:47Z">
                                         
-                                        15-Aug-2014
+                                        21-Nov-2014
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
                             </ul>
+                            <div class="social">
+                                <a href="http://www.facebook.com/sharer/sharer.php?u=URL"
+                                    title="Share on Facebook" class="ico">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/share?url=URL&amp;text=TITLE"
+                                    title="Share on Twitter" class="ico">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                                <a href="https://plus.google.com/share?url=URL"
+                                    title="Share on Google+" class="ico">
+                                    <i class="icon-googleplus"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/cws/share?url=URL"
+                                    title="Share on LinkedIn" class="ico">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                                <a href="http://www.stumbleupon.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on StumbleUpon" class="ico">
+                                    <i class="icon-stumbleupon"></i>
+                                </a>
+                                <a href="http://digg.com/submit?phase=2&amp;url=URL&amp;title=TITLE"
+                                    title="Share on Digg" class="ico">
+                                    <i class="icon-digg"></i>
+                                </a>
+                                <a href="http://reddit.com/submit?url=URL&amp;title=TITLE"
+                                    title="Share on Reddit" class="ico">
+                                    <i class="icon-reddit"></i>
+                                </a>
+                                <a href="http://news.ycombinator.com/submitlink?u=URL&amp;t=TITLE"
+                                    title="Share on Hacker News" class="ico">
+                                    <i class="icon-hackernews"></i>
+                                </a>
+                            </div>
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-xml">
@@ -210,9 +229,9 @@ function toggleDisplay(elementId) {
 //]]>
 </script>
 <div class="section">
-<h2>Surefire Report<a name="Surefire_Report"></a></h2></div>
+<h2><a name="Surefire_Report"></a>Surefire Report</h2></div>
 <div class="section">
-<h2>Summary<a name="Summary"></a></h2><a name="Summary"></a>
+<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table border="1" class="bodyTable">
 <tr class="a">
@@ -223,15 +242,15 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td>39</td>
+<td>45</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>72.667</td></tr></table><br />
+<td>38.859</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
 <div class="section">
-<h2>Package List<a name="Package_List"></a></h2><a name="Package_List"></a>
+<h2><a name="Package_List"></a>Package List</h2><a name="Package_List"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />
 <table border="1" class="bodyTable">
 <tr class="a">
@@ -244,15 +263,15 @@ function toggleDisplay(elementId) {
 <th>Time</th></tr>
 <tr class="b">
 <td><a href="#com.jcabi.xml">com.jcabi.xml</a></td>
-<td>39</td>
+<td>45</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>72.667</td></tr></table><br />
+<td>38.859</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
 <div class="section">
-<h3>com.jcabi.xml<a name="com.jcabi.xml"></a></h3><a name="com.jcabi.xml"></a>
+<h3><a name="com.jcabi.xml"></a>com.jcabi.xml</h3><a name="com.jcabi.xml"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <th></th>
@@ -264,24 +283,6 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td><a href="#com.jcabi.xmlDomParserTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlDomParserTest">DomParserTest</a></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.072</td></tr>
-<tr class="a">
-<td><a href="#com.jcabi.xmlXSLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlXSLDocumentTest">XSLDocumentTest</a></td>
-<td>4</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>24.789</td></tr>
-<tr class="b">
 <td><a href="#com.jcabi.xmlStrictXMLTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlStrictXMLTest">StrictXMLTest</a></td>
 <td>5</td>
@@ -289,34 +290,16 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>9.668</td></tr>
+<td>7.415</td></tr>
 <tr class="a">
-<td><a href="#com.jcabi.xmlXMLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlXMLDocumentTest">XMLDocumentTest</a></td>
-<td>17</td>
+<td><a href="#com.jcabi.xmlDomParserTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlDomParserTest">DomParserTest</a></td>
+<td>6</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>33.323</td></tr>
-<tr class="b">
-<td><a href="#com.jcabi.xmlXSDDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlXSDDocumentTest">XSDDocumentTest</a></td>
-<td>5</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>4.303</td></tr>
-<tr class="a">
-<td><a href="#com.jcabi.xmlXPathContextTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.xmlXPathContextTest">XPathContextTest</a></td>
-<td>5</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>100%</td>
-<td>0.034</td></tr>
+<td>0.087</td></tr>
 <tr class="b">
 <td><a href="#com.jcabi.xmlTextResourceTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.xmlTextResourceTest">TextResourceTest</a></td>
@@ -325,187 +308,259 @@ function toggleDisplay(elementId) {
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.478</td></tr></table></div><br /></div>
+<td>0.334</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.xmlXSLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXSLDocumentTest">XSLDocumentTest</a></td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>5.961</td></tr>
+<tr class="b">
+<td><a href="#com.jcabi.xmlXMLDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXMLDocumentTest">XMLDocumentTest</a></td>
+<td>17</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>20.45</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.xmlXSLChainTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXSLChainTest">XSLChainTest</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.746</td></tr>
+<tr class="b">
+<td><a href="#com.jcabi.xmlXPathContextTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXPathContextTest">XPathContextTest</a></td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>1.439</td></tr>
+<tr class="a">
+<td><a href="#com.jcabi.xmlXSDDocumentTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.xmlXSDDocumentTest">XSDDocumentTest</a></td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>2.427</td></tr></table></div><br /></div>
 <div class="section">
-<h2>Test Cases<a name="Test_Cases"></a></h2><a name="Test_Cases"></a>
+<h2><a name="Test_Cases"></a>Test Cases</h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
 <div class="section">
-<h3>DomParserTest<a name="DomParserTest"></a></h3><a name="com.jcabi.xmlDomParserTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>allowsValidXmlFormatting</td>
-<td>0.072</td></tr></table></div>
-<div class="section">
-<h3>XSLDocumentTest<a name="XSLDocumentTest"></a></h3><a name="com.jcabi.xmlXSLDocumentTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>transformsIntoText</td>
-<td>1.216</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>makesXslTransformationsInThreads</td>
-<td>11.111</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>transformsWithImports</td>
-<td>1.293</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>makesXslTransformations</td>
-<td>11.169</td></tr></table></div>
-<div class="section">
-<h3>StrictXMLTest<a name="StrictXMLTest"></a></h3><a name="com.jcabi.xmlStrictXMLTest"></a>
+<h3><a name="StrictXMLTest"></a>StrictXMLTest</h3><a name="com.jcabi.xmlStrictXMLTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>passesValidXmlThrough</td>
-<td>1.467</td></tr>
+<td>0.878</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>rejectsInvalidXmlThrough</td>
+<td>0.954</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>validatesMultipleXmlsInThreads</td>
+<td>2.097</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>rejectsInvalidXmlUsingXsiSchemaLocation</td>
-<td>1.659</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>rejectsInvalidXmlThrough</td>
-<td>1.485</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>validatesMultipleXmlsInThreads</td>
-<td>3.406</td></tr>
+<td>1.831</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>passesValidXmlUsingXsiSchemaLocation</td>
-<td>1.651</td></tr></table></div>
+<td>1.655</td></tr></table></div>
 <div class="section">
-<h3>XMLDocumentTest<a name="XMLDocumentTest"></a></h3><a name="com.jcabi.xmlXMLDocumentTest"></a>
+<h3><a name="DomParserTest"></a>DomParserTest</h3><a name="com.jcabi.xmlDomParserTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>allowsValidXmlFormatting</td>
+<td>0.048</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>parsesIncomingXmlDocumentComment</td>
+<td>0.021</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>throwsWhenInvalidXml</td>
+<td>0</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>throwsWhenInvalidElement</td>
+<td>0</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>parsesIncomingXmlDocument</td>
+<td>0.018</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>throwsWhenNonXmlDocument</td>
+<td>0</td></tr></table></div>
+<div class="section">
+<h3><a name="TextResourceTest"></a>TextResourceTest</h3><a name="com.jcabi.xmlTextResourceTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>readsFileAsText</td>
+<td>0.166</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>readsStreamAsText</td>
+<td>0.168</td></tr></table></div>
+<div class="section">
+<h3><a name="XSLDocumentTest"></a>XSLDocumentTest</h3><a name="com.jcabi.xmlXSLDocumentTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>makesXslTransformationsInThreads</td>
+<td>5.245</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>transformsWithImports</td>
+<td>0.232</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>makesXslTransformations</td>
+<td>0.301</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>transformsIntoText</td>
+<td>0.183</td></tr></table></div>
+<div class="section">
+<h3><a name="XMLDocumentTest"></a>XMLDocumentTest</h3><a name="com.jcabi.xmlXMLDocumentTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>convertsItselfToXml</td>
-<td>0.966</td></tr>
+<td>0.457</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>throwsWhenXpathQueryIsBroken</td>
-<td>0.925</td></tr>
+<td>0.46</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>preservesProcessingInstructions</td>
-<td>0.856</td></tr>
+<td>0.42</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>retrievesDomNode</td>
+<td>0.295</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>printsWithAndWithoutXmlHeader</td>
+<td>0.265</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsWithXpathAndNamespaces</td>
-<td>1.063</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>retrievesDomNode</td>
-<td>0.731</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>printsWithAndWithoutXmlHeader</td>
-<td>0.708</td></tr>
+<td>0.28</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsWithXpathWithCustomNamespace</td>
-<td>0.727</td></tr>
+<td>0.184</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>preservesXmlNamespaces</td>
-<td>0.124</td></tr>
+<td>0.172</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpathAndReturnsThem</td>
-<td>0.196</td></tr>
+<td>0.179</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>xpathInMultipleThreads</td>
-<td>9.668</td></tr>
+<td>5.263</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>buildsDomNode</td>
-<td>0.085</td></tr>
+<td>0.142</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>comparesToAnotherDocument</td>
-<td>0.031</td></tr>
+<td>0.099</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>performsXpathCalculations</td>
-<td>0.107</td></tr>
+<td>0.074</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>parsesInMultipleThreads</td>
-<td>5.674</td></tr>
+<td>4.979</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>printsInMultipleThreads</td>
-<td>11.345</td></tr>
+<td>7.132</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>throwsCustomExceptionWhenXpathNotFound</td>
-<td>0.058</td></tr>
+<td>0.026</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>findsDocumentNodesWithXpath</td>
-<td>0.059</td></tr></table></div>
+<td>0.023</td></tr></table></div>
 <div class="section">
-<h3>XSDDocumentTest<a name="XSDDocumentTest"></a></h3><a name="com.jcabi.xmlXSDDocumentTest"></a>
+<h3><a name="XSLChainTest"></a>XSLChainTest</h3><a name="com.jcabi.xmlXSLChainTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>makesXslTransformations</td>
+<td>0.746</td></tr></table></div>
+<div class="section">
+<h3><a name="XPathContextTest"></a>XPathContextTest</h3><a name="com.jcabi.xmlXPathContextTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>findsDefaultNamespaces</td>
+<td>0.286</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>findsNamespaceByPrefix</td>
+<td>0.289</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>findsNonBoundNamespaces</td>
+<td>0.282</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>findsPrefixesByNamespace</td>
+<td>0.307</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>findsPrefixByNamespace</td>
+<td>0.275</td></tr></table></div>
+<div class="section">
+<h3><a name="XSDDocumentTest"></a>XSDDocumentTest</h3><a name="com.jcabi.xmlXSDDocumentTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>validatesComplexXml</td>
-<td>1.655</td></tr>
+<td>1.002</td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>validatesMultipleXmlsInThreads</td>
-<td>1.556</td></tr>
+<td>0.432</td></tr>
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>validatesXml</td>
+<td>0.487</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>detectsSchemaViolations</td>
+<td>0.271</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
 <td>validatesLongXml</td>
-<td>0.324</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>validatesXml</td>
-<td>0.456</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>detectsSchemaViolations</td>
-<td>0.312</td></tr></table></div>
-<div class="section">
-<h3>XPathContextTest<a name="XPathContextTest"></a></h3><a name="com.jcabi.xmlXPathContextTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsNamespaceByPrefix</td>
-<td>0.004</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsNonBoundNamespaces</td>
-<td>0.001</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsDefaultNamespaces</td>
-<td>0.004</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsPrefixesByNamespace</td>
-<td>0.023</td></tr>
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>findsPrefixByNamespace</td>
-<td>0.002</td></tr></table></div>
-<div class="section">
-<h3>TextResourceTest<a name="TextResourceTest"></a></h3><a name="com.jcabi.xmlTextResourceTest"></a>
-<table border="1" class="bodyTable">
-<tr class="a">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>readsStreamAsText</td>
-<td>0.285</td></tr>
-<tr class="b">
-<td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>readsFileAsText</td>
-<td>0.193</td></tr></table></div><br /></div>
+<td>0.235</td></tr></table></div><br /></div>
                         </article>
                     </div>
                 </main>
