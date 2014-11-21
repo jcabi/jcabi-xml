@@ -133,4 +133,16 @@ public final class XSLDocumentTest {
         );
     }
 
+    /**
+     * XSL.STRIP can strip XML.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void stripsXml() throws Exception {
+        MatcherAssert.assertThat(
+            XSL.STRIP.transform(new XMLDocument("<a>   <b/>  </a>")).toString(),
+            Matchers.containsString("<a>\n<b/>\n</a>")
+        );
+    }
+
 }

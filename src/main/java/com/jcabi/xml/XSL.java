@@ -46,6 +46,14 @@ import javax.validation.constraints.NotNull;
 public interface XSL {
 
     /**
+     * Strip spaces.
+     * @since 0.14
+     */
+    XSL STRIP = XSLDocument.make(
+        XSL.class.getResourceAsStream("strip.xsl")
+    );
+
+    /**
      * Transform XML to another one.
      * @param xml Source XML document
      * @return Result document
