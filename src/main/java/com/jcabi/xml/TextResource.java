@@ -33,6 +33,7 @@ import com.jcabi.aspects.Immutable;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -52,6 +53,7 @@ import lombok.EqualsAndHashCode;
 @Immutable
 @EqualsAndHashCode(of = "content")
 final class TextResource {
+
     /**
      * Encoding.
      */
@@ -76,19 +78,22 @@ final class TextResource {
      * <p>The provided input stream will be closed automatically after
      * getting data from it.
      * @param stream Stream to represent as text.
-     * @throws IOException If an IO problem occurs.
      */
-    public TextResource(final InputStream stream) throws IOException {
-        this(readAsString(stream));
+    TextResource(final InputStream stream) {
+        this(TextResource.readAsString(stream));
     }
 
     /**
      * Public constructor, represent a File as a text resource.
      * @param file File to represent as text.
-     * @throws IOException If an IO problem occurs.
+     * @throws FileNotFoundException If file not found
      */
-    public TextResource(final File file) throws IOException {
-        this(readAsString(new BufferedInputStream(new FileInputStream(file))));
+    TextResource(final File file) throws FileNotFoundException {
+        this(
+            TextResource.readAsString(
+                new BufferedInputStream(new FileInputStream(file))
+            )
+        );
     }
 
     /**
@@ -96,8 +101,8 @@ final class TextResource {
      * @param url URL to represent as text.
      * @throws IOException If an IO problem occurs.
      */
-    public TextResource(final URL url) throws IOException {
-        this(readAsString(url));
+    TextResource(final URL url) throws IOException {
+        this(TextResource.readAsString(url));
     }
 
     /**
@@ -105,8 +110,8 @@ final class TextResource {
      * @param uri URI to represent as text.
      * @throws IOException If an IO problem occurs.
      */
-    public TextResource(final URI uri) throws IOException {
-        this(readAsString(uri.toURL()));
+    TextResource(final URI uri) throws IOException {
+        this(TextResource.readAsString(uri.toURL()));
     }
 
     @Override
@@ -120,9 +125,8 @@ final class TextResource {
      * @return The stream content, in String form
      */
     private static String readAsString(final InputStream stream) {
-        @SuppressWarnings("resource")
         final Scanner scanner =
-            new Scanner(stream, ENCODING).useDelimiter("\\A");
+            new Scanner(stream, TextResource.ENCODING).useDelimiter("\\A");
         final String result;
         try {
             if (scanner.hasNext()) {
@@ -143,6 +147,8 @@ final class TextResource {
      * @throws IOException if an IO exception occurs
      */
     private static String readAsString(final URL url) throws IOException {
-        return readAsString(new BufferedInputStream(url.openStream()));
+        return TextResource.readAsString(
+            new BufferedInputStream(url.openStream())
+        );
     }
 }

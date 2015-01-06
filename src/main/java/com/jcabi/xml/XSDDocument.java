@@ -34,6 +34,7 @@ import com.jcabi.log.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -97,12 +98,22 @@ public final class XSDDocument implements XSD {
     }
 
     /**
+     * Public ctor, from URI.
+     * @param uri Location of document
+     * @throws IOException If fails to read
+     * @since 0.15
+     */
+    public XSDDocument(@NotNull(message = "URI can't be NULL")
+        final URI uri) throws IOException {
+        this(new TextResource(uri).toString());
+    }
+
+    /**
      * Public ctor, from XSD as an input stream.
      * @param stream XSD input stream
-     * @throws IOException If fails to read
      */
     public XSDDocument(@NotNull(message = "XSD input stream can't be NULL")
-        final InputStream stream) throws IOException {
+        final InputStream stream) {
         this(new TextResource(stream).toString());
     }
 
@@ -124,11 +135,7 @@ public final class XSDDocument implements XSD {
      */
     public static XSD make(@NotNull(message = "XSD input stream can't be NULL")
         final InputStream stream) {
-        try {
-            return new XSDDocument(stream);
-        } catch (final IOException ex) {
-            throw new IllegalStateException(ex);
-        }
+        return new XSDDocument(stream);
     }
 
     /**

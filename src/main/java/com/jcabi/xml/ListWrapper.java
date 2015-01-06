@@ -284,12 +284,14 @@ final class ListWrapper<T> implements List<T> {
          * @param query The query in XPath
          */
         NodeNotFoundException(final String message, final Node node,
-            final String query) {
+            final CharSequence query) {
             super(
                 Logger.format(
                     "XPath '%s' not found in '%[text]s': %s",
-                    escapeUnicode(query),
-                    escapeUnicode(new XMLDocument(node).toString()),
+                    ListWrapper.NodeNotFoundException.escapeUnicode(query),
+                    ListWrapper.NodeNotFoundException.escapeUnicode(
+                        new XMLDocument(node).toString()
+                ),
                     message
             )
             );
@@ -300,7 +302,7 @@ final class ListWrapper<T> implements List<T> {
          * @param input Input string
          * @return Escaped output
          */
-        private static String escapeUnicode(final String input) {
+        private static String escapeUnicode(final CharSequence input) {
             final int length = input.length();
             final StringBuilder output = new StringBuilder(length);
             for (int index = 0; index < length; index += 1) {
@@ -312,7 +314,7 @@ final class ListWrapper<T> implements List<T> {
                     output.append(character);
                 }
             }
-            return String.valueOf(input);
+            return output.toString();
         }
     }
 

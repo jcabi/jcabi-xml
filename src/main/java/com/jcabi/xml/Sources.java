@@ -30,6 +30,7 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
+import javax.xml.transform.Source;
 import javax.xml.transform.URIResolver;
 
 /**
@@ -38,8 +39,22 @@ import javax.xml.transform.URIResolver;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 0.9
+ * @checkstyle InterfaceIsType (500 lines)
  */
 @Immutable
 public interface Sources extends URIResolver {
+
+    /**
+     * Dummy sources.
+     */
+    Sources DUMMY = new Sources() {
+        @Override
+        public Source resolve(final String href, final String base) {
+            throw new UnsupportedOperationException(
+                // @checkstyle LineLength (1 line)
+                "URI resolving is not configured in XSLDocument, use #with(URIResolver) method"
+            );
+        }
+    };
 
 }

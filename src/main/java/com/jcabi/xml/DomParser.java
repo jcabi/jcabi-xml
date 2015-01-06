@@ -32,6 +32,7 @@ package com.jcabi.xml;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -108,6 +109,8 @@ final class DomParser {
                     this.xml.getBytes(TextResource.ENCODING)
                 )
             );
+        } catch (final UnsupportedEncodingException ex) {
+            throw new IllegalStateException(ex);
         } catch (final IOException ex) {
             throw new IllegalStateException(ex);
         } catch (final ParserConfigurationException ex) {

@@ -34,11 +34,10 @@ import com.jcabi.immutable.Array;
 import com.jcabi.immutable.ArrayMap;
 import com.jcabi.log.Logger;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
@@ -94,7 +93,10 @@ public final class XPathContext implements NamespaceContext {
      * @param namespaces List of namespaces
      */
     public XPathContext(final Object... namespaces) {
-        this(namespacesAsMap(namespaces), new Array<NamespaceContext>());
+        this(
+            XPathContext.namespacesAsMap(namespaces),
+            new Array<NamespaceContext>()
+        );
     }
 
     /**
@@ -226,10 +228,10 @@ public final class XPathContext implements NamespaceContext {
      * @param namespaces The namespaces
      * @return Namespaces as map
      */
-    @SuppressWarnings("PMD.UseConcurrentHashMap")
     private static ArrayMap<String, String> namespacesAsMap(
         final Object...namespaces) {
-        final Map<String, String> map = new HashMap<String, String>();
+        final ConcurrentMap<String, String> map =
+            new ConcurrentHashMap<String, String>(namespaces.length);
         for (int pos = 0; pos < namespaces.length; ++pos) {
             map.put(
                 Logger.format("ns%d", pos + 1),
