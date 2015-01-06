@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -192,14 +193,32 @@ public final class StrictXML implements XML {
     private static Collection<SAXParseException> validate(final XML xml) {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<SAXParseException>();
+        final int amountOfRetries = 3;
         try {
-            final Schema schema = SchemaFactory
-                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema();
-            final Validator validator = schema.newValidator();
+            final Validator validator = newValidator();
             validator.setErrorHandler(
                 new XSDDocument.ValidationHandler(errors)
             );
-            validator.validate(new DOMSource(xml.node()));
+            final DOMSource domsrc = new DOMSource(xml.node());
+            for (int retry = 0; retry < amountOfRetries; ++retry) {
+                try {
+                    validator.validate(domsrc);
+                    // @checkstyle ModifiedControlVariableCheck (1 line)
+                    retry = amountOfRetries;
+                } catch (final SocketException ex) {
+                    Logger.error(
+                        StrictXML.class,
+                        "Try #%d of %d failed: %s: %s",
+                        retry,
+                        amountOfRetries,
+                        ex.getClass().getName(),
+                        ex.getMessage()
+                    );
+                    if (amountOfRetries == retry + 1) {
+                        throw new IllegalStateException(ex);
+                    }
+                }
+            }
         } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
         } catch (final IOException ex) {
@@ -207,4 +226,18 @@ public final class StrictXML implements XML {
         }
         return errors;
     }
+
+    /**
+     * Creates a new validator.
+     * @return A new validator
+     * @throws SAXException If fails
+     */
+    private static Validator newValidator() throws SAXException {
+        final Schema schema =
+            SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                .newSchema();
+        return schema.newValidator();
+    }
+
 }

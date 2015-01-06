@@ -51,20 +51,27 @@ import org.junit.Test;
 public final class StrictXMLTest {
 
     /**
+     * Valid xml document.
+     */
+    private static final String VALID_XML = "<root>test</root>";
+    /**
+     * Xml schema document.
+     */
+    private static final String XSD = StringUtils.join(
+        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+        "<xs:element name='root' type='xs:string'/>",
+        "</xs:schema>"
+    );
+
+    /**
      * StrictXML can pass a valid document.
      * @throws Exception If something goes wrong inside
      */
     @Test
     public void passesValidXmlThrough() throws Exception {
         new StrictXML(
-            new XMLDocument("<root>test</root>"),
-            new XSDDocument(
-                StringUtils.join(
-                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-                    "<xs:element name='root' type='xs:string'/>",
-                    "</xs:schema>"
-                )
-            )
+            new XMLDocument(VALID_XML),
+            new XSDDocument(XSD)
         );
     }
 
@@ -163,6 +170,22 @@ public final class StrictXMLTest {
             }
         } .call();
         MatcherAssert.assertThat(done.get(), Matchers.equalTo(Tv.FIFTY));
+    }
+
+    /**
+     * Passes valid xml with network problems.
+     * @todo #32 This test does nothing useful for the moment, to be a real test
+     *  it needs to mock com.jcabi.xml.StrictXML.newValidator() and new mocked
+     *  validator should throw few SocketException's while executing
+     *  javax.xml.validation.Validator.validate(Source) in order to simulate the
+     *  situation with network problems. For more details, see
+     *  com.jcabi.xml.StrictXML.validate(XML) as well.
+     */
+    @Test
+    public void passesValidXmlWithNetworkProblems() {
+        new StrictXML(
+            new XMLDocument(VALID_XML), new XSDDocument(XSD)
+        );
     }
 
 }
