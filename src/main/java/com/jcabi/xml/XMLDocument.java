@@ -240,7 +240,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(@NotNull(message = "URI can't be NULL")
         final URI uri) throws IOException {
-        this(new TextResource(uri.toURL()).toString());
+        this(new TextResource(uri).toString());
     }
 
     /**

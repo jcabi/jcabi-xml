@@ -36,13 +36,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -126,17 +126,27 @@ public final class XSLDocument implements XSL {
      * @since 0.7.4
      */
     public XSLDocument(@NotNull(message = "URL can't be NULL")
-    final URL url) throws IOException {
+        final URL url) throws IOException {
         this(new TextResource(url).toString());
+    }
+
+    /**
+     * Public ctor, from URI.
+     * @param uri Location of document
+     * @throws IOException If fails to read
+     * @since 0.15
+     */
+    public XSLDocument(@NotNull(message = "URI can't be NULL")
+        final URI uri) throws IOException {
+        this(new TextResource(uri).toString());
     }
 
     /**
      * Public ctor, from XSL as an input stream.
      * @param stream XSL input stream
-     * @throws IOException If fails to read
      */
     public XSLDocument(@NotNull(message = "XSL input stream can't be NULL")
-        final InputStream stream) throws IOException {
+        final InputStream stream) {
         this(new TextResource(stream).toString());
     }
 
@@ -145,18 +155,7 @@ public final class XSLDocument implements XSL {
      * @param src XML document body
      */
     public XSLDocument(final String src) {
-        this(
-            src,
-            new Sources() {
-                @Override
-                public Source resolve(final String href, final String base) {
-                    throw new UnsupportedOperationException(
-                        // @checkstyle LineLength (1 line)
-                        "URI resolving is not configured in XSLDocument, use #with(URIResolver) method"
-                    );
-                }
-            }
-        );
+        this(src, Sources.DUMMY);
     }
 
     /**
@@ -197,11 +196,7 @@ public final class XSLDocument implements XSL {
      */
     public static XSL make(@NotNull(message = "XSL input stream can't be NULL")
         final InputStream stream) {
-        try {
-            return new XSLDocument(stream);
-        } catch (final IOException ex) {
-            throw new IllegalStateException(ex);
-        }
+        return new XSLDocument(stream);
     }
 
     /**

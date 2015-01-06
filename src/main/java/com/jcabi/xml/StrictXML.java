@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
-import com.jcabi.xml.XSDDocument.ValidationHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -161,7 +160,7 @@ public final class StrictXML implements XML {
     }
 
     /**
-     * Joins many objects's string representations with the given separator
+     * Joins many objects' string representations with the given separator
      * string. The separator will not be appended to the beginning or the end.
      * @param iterable Iterable of objects.
      * @param sep Separator string.
@@ -197,7 +196,9 @@ public final class StrictXML implements XML {
             final Schema schema = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema();
             final Validator validator = schema.newValidator();
-            validator.setErrorHandler(new ValidationHandler(errors));
+            validator.setErrorHandler(
+                new XSDDocument.ValidationHandler(errors)
+            );
             validator.validate(new DOMSource(xml.node()));
         } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
