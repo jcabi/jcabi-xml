@@ -193,28 +193,27 @@ public final class StrictXML implements XML {
     private static Collection<SAXParseException> validate(final XML xml) {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<SAXParseException>();
-        final int amountOfRetries = 3;
+        final int max = 3;
         try {
             final Validator validator = newValidator();
             validator.setErrorHandler(
                 new XSDDocument.ValidationHandler(errors)
             );
-            final DOMSource domsrc = new DOMSource(xml.node());
-            for (int retry = 0; retry < amountOfRetries; ++retry) {
+            final DOMSource dom = new DOMSource(xml.node());
+            for (int retry = 1; retry <= max; ++retry) {
                 try {
-                    validator.validate(domsrc);
-                    // @checkstyle ModifiedControlVariableCheck (1 line)
-                    retry = amountOfRetries;
+                    validator.validate(dom);
+                    break;
                 } catch (final SocketException ex) {
                     Logger.error(
                         StrictXML.class,
                         "Try #%d of %d failed: %s: %s",
                         retry,
-                        amountOfRetries,
+                        max,
                         ex.getClass().getName(),
                         ex.getMessage()
                     );
-                    if (amountOfRetries == retry + 1) {
+                    if (retry == max) {
                         throw new IllegalStateException(ex);
                     }
                 }
