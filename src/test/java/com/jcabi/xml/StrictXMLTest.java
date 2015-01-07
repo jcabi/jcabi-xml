@@ -47,21 +47,9 @@ import org.junit.Test;
  * Test case for {@link StrictXML}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
+ * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 public final class StrictXMLTest {
-
-    /**
-     * Valid xml document.
-     */
-    private static final String VALID_XML = "<root>test</root>";
-    /**
-     * Xml schema document.
-     */
-    private static final String XSD = StringUtils.join(
-        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-        "<xs:element name='root' type='xs:string'/>",
-        "</xs:schema>"
-    );
 
     /**
      * StrictXML can pass a valid document.
@@ -70,8 +58,14 @@ public final class StrictXMLTest {
     @Test
     public void passesValidXmlThrough() throws Exception {
         new StrictXML(
-            new XMLDocument(VALID_XML),
-            new XSDDocument(XSD)
+            new XMLDocument("<root>passesValidXmlThrough</root>"),
+            new XSDDocument(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                    "<xs:element name='root' type='xs:string'/>",
+                    "</xs:schema>"
+                )
+            )
         );
     }
 
@@ -184,7 +178,16 @@ public final class StrictXMLTest {
     @Test
     public void passesValidXmlWithNetworkProblems() {
         new StrictXML(
-            new XMLDocument(VALID_XML), new XSDDocument(XSD)
+            new XMLDocument(
+                "<root>passesValidXmlWithNetworkProblems</root>"
+            ),
+            new XSDDocument(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                    "<xs:element name='root' type='xs:string'/>",
+                    "</xs:schema>"
+                )
+            )
         );
     }
 
