@@ -70,7 +70,8 @@ import org.w3c.dom.Document;
 public final class XSLDocument implements XSL {
 
     /**
-     * Strip spaces.
+     * Strips spaces of whitespace-only text nodes. This will NOT remove
+     * line-breaks between Element nodes.
      * @since 0.14
      */
     public static final XSL STRIP = XSLDocument.make(
