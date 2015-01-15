@@ -71,7 +71,21 @@ public final class XSLDocument implements XSL {
 
     /**
      * Strips spaces of whitespace-only text nodes. This will NOT remove
-     * line-breaks between Element nodes.
+     * existing indentation between Element nodes currently introduced by the
+     * constructor of {@link com.jcabi.xml.XMLDocument}. For example:
+     * <pre>
+     * {@code
+     * <a>
+     *           <b> TXT </b>
+     *    </a>}
+     * </pre>
+     * becomes
+     * <pre>
+     * {@code
+     * <a>
+     *     <b> TXT </b>
+     * </a>}
+     * </pre>
      * @since 0.14
      */
     public static final XSL STRIP = XSLDocument.make(
