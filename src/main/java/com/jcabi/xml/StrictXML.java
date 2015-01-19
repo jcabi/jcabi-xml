@@ -73,7 +73,18 @@ public final class StrictXML implements XML {
      * @param xml XML document
      */
     public StrictXML(@NotNull(message = "XML can't be NULL") final XML xml) {
-        this(xml, StrictXML.validate(xml));
+        this(xml, StrictXML.newValidator());
+    }
+
+    /**
+     * Public ctor.
+     * @param xml XML document
+     * @param val Custom validator
+     */
+    public StrictXML(
+        @NotNull(message = "XML can't be NULL") final XML xml,
+        @NotNull(message = "Validator can't be NULL") final Validator val) {
+        this(xml, StrictXML.validate(xml, val));
     }
 
     /**
@@ -188,14 +199,16 @@ public final class StrictXML implements XML {
     /**
      * Validate XML without external schema.
      * @param xml XML Document
+     * @param validator XML Validator
      * @return List of validation errors
      */
-    private static Collection<SAXParseException> validate(final XML xml) {
+    private static Collection<SAXParseException> validate(
+        final XML xml,
+        final Validator validator) {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<SAXParseException>();
         final int max = 3;
         try {
-            final Validator validator = newValidator();
             validator.setErrorHandler(
                 new XSDDocument.ValidationHandler(errors)
             );
@@ -229,14 +242,17 @@ public final class StrictXML implements XML {
     /**
      * Creates a new validator.
      * @return A new validator
-     * @throws SAXException If fails
      */
-    private static Validator newValidator() throws SAXException {
-        final Schema schema =
-            SchemaFactory
-                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                .newSchema();
-        return schema.newValidator();
+    private static Validator newValidator() {
+        try {
+            final Schema schema =
+                SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                    .newSchema();
+            return schema.newValidator();
+        } catch (final SAXException ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
 }
