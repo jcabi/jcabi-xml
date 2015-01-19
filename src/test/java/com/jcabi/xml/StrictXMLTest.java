@@ -192,11 +192,11 @@ public final class StrictXMLTest {
                         throw new SocketException(
                             String.format("Attempt #%s failed", attempt)
                         );
-                    } else {
-                        return null;
                     }
+                    return null;
                 }
-            }).when(validator).validate(Mockito.any(Source.class));
+            }
+        ).when(validator).validate(Mockito.any(Source.class));
         new StrictXML(
             new XMLDocument(
                 "<root>passesValidXmlWithNetworkProblems</root>"
