@@ -37,6 +37,9 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.io.BufferedWriter;
+import java.io.StringWriter;
+
 /**
  * Test case for {@link XSLDocument}.
  * @author Yegor Bugayenko (yegor@teamed.io)
@@ -139,11 +142,20 @@ public final class XSLDocumentTest {
      */
     @Test
     public void stripsXml() throws Exception {
+        StringWriter out = new StringWriter();
+        BufferedWriter writer = new BufferedWriter(out);
+        writer.write("<a>");
+        writer.newLine();
+        writer.write("<b/>");
+        writer.newLine();
+        writer.write("</a>");
+        writer.close();
+        String actual = out.getBuffer().toString();
         MatcherAssert.assertThat(
             XSLDocument.STRIP.transform(
                 new XMLDocument("<a>   <b/>  </a>")
             ).toString(),
-            Matchers.containsString("<a>\n<b/>\n</a>")
+            Matchers.containsString(actual)
         );
     }
 
