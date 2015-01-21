@@ -32,13 +32,12 @@ package com.jcabi.xml;
 import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
+import java.io.BufferedWriter;
+import java.io.StringWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-
-import java.io.BufferedWriter;
-import java.io.StringWriter;
 
 /**
  * Test case for {@link XSLDocument}.
@@ -142,15 +141,15 @@ public final class XSLDocumentTest {
      */
     @Test
     public void stripsXml() throws Exception {
-        StringWriter out = new StringWriter();
-        BufferedWriter writer = new BufferedWriter(out);
+        final StringWriter out = new StringWriter();
+        final BufferedWriter writer = new BufferedWriter(out);
         writer.write("<a>");
         writer.newLine();
         writer.write("<b/>");
         writer.newLine();
         writer.write("</a>");
         writer.close();
-        String actual = out.getBuffer().toString();
+        final String actual = out.getBuffer().toString();
         MatcherAssert.assertThat(
             XSLDocument.STRIP.transform(
                 new XMLDocument("<a>   <b/>  </a>")
