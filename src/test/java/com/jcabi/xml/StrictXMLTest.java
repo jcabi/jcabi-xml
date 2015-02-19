@@ -33,21 +33,28 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.jcabi.aspects.Parallel;
 import com.jcabi.aspects.Tv;
+import java.net.SocketException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.transform.Source;
+import javax.xml.validation.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  * Test case for {@link StrictXML}.
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
+ * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 public final class StrictXMLTest {
 
@@ -168,27 +175,33 @@ public final class StrictXMLTest {
 
     /**
      * Passes valid xml with network problems.
-     * @todo #32 This test does nothing useful for the moment, to be a real test
-     *  it needs to mock com.jcabi.xml.StrictXML.newValidator() and new mocked
-     *  validator should throw few SocketException's while executing
-     *  javax.xml.validation.Validator.validate(Source) in order to simulate the
-     *  situation with network problems. For more details, see
-     *  com.jcabi.xml.StrictXML.validate(XML) as well.
+     * @throws Exception If something goes wrong inside
      */
     @Test
-    public void passesValidXmlWithNetworkProblems() {
+    public void passesValidXmlWithNetworkProblems() throws Exception {
+        final Validator validator = Mockito.mock(Validator.class);
+        final AtomicInteger counter = new AtomicInteger(0);
+        Mockito.doAnswer(
+            new Answer<Void>() {
+                // @checkstyle IllegalThrowsCheck (5 lines)
+                @Override
+                public Void answer(final InvocationOnMock invocation)
+                    throws Throwable {
+                    final int attempt = counter.incrementAndGet();
+                    if (attempt == 1 || attempt == 2) {
+                        throw new SocketException(
+                            String.format("Attempt #%s failed", attempt)
+                        );
+                    }
+                    return null;
+                }
+            }
+        ).when(validator).validate(Mockito.any(Source.class));
         new StrictXML(
             new XMLDocument(
                 "<root>passesValidXmlWithNetworkProblems</root>"
             ),
-            new XSDDocument(
-                StringUtils.join(
-                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-                    "<xs:element name='root' type='xs:string'/>",
-                    "</xs:schema>"
-                )
-            )
+            validator
         );
     }
-
 }

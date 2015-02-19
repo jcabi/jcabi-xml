@@ -143,7 +143,15 @@ public final class XSLDocumentTest {
             XSLDocument.STRIP.transform(
                 new XMLDocument("<a>   <b/>  </a>")
             ).toString(),
-            Matchers.containsString("<a>\n<b/>\n</a>")
+            Matchers.containsString(
+                new StringBuilder()
+                    .append("<a>")
+                    .append(System.lineSeparator())
+                    .append("<b/>")
+                    .append(System.lineSeparator())
+                    .append("</a>")
+                    .toString()
+            )
         );
     }
 
