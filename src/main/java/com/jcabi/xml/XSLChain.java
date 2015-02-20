@@ -79,4 +79,9 @@ public final class XSLChain implements XSL {
     public XSL with(final Sources src) {
         throw new UnsupportedOperationException("#with()");
     }
+
+    @Override
+    public XSL with(final String name, final String value) {
+        throw new UnsupportedOperationException("#with(name, value)");
+    }
 }

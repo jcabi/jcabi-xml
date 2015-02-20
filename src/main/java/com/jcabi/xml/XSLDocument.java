@@ -30,6 +30,7 @@
 package com.jcabi.xml;
 
 import com.jcabi.aspects.Immutable;
+import com.jcabi.immutable.ArrayMap;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,6 +39,7 @@ import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,22 +72,28 @@ import org.w3c.dom.Document;
 public final class XSLDocument implements XSL {
 
     /**
-     * Strips spaces of whitespace-only text nodes. This will NOT remove
+     * Strips spaces of whitespace-only text nodes.
+     *
+     * <p>This will NOT remove
      * existing indentation between Element nodes currently introduced by the
      * constructor of {@link com.jcabi.xml.XMLDocument}. For example:
+     *
      * <pre>
      * {@code
-     * <a>
-     *           <b> TXT </b>
-     *    </a>}
+     * &lt;a&gt;
+     *           &lt;b> TXT &lt;/b>
+     *    &lt;/a>}
      * </pre>
+     *
      * becomes
+     *
      * <pre>
      * {@code
-     * <a>
-     *     <b> TXT </b>
-     * </a>}
+     * &lt;a>
+     *     &lt;b> TXT &lt;/b>
+     * &lt;/a>}
      * </pre>
+     *
      * @since 0.14
      */
     public static final XSL STRIP = XSLDocument.make(
@@ -125,6 +133,11 @@ public final class XSLDocument implements XSL {
      * Sources.
      */
     private final transient Sources sources;
+
+    /**
+     * Parameters.
+     */
+    private final transient ArrayMap<String, String> params;
 
     /**
      * Public ctor, from XML as a source.
@@ -179,18 +192,40 @@ public final class XSLDocument implements XSL {
      * @param srcs Sources
      * @since 0.9
      */
+    public XSLDocument(final String src, final Sources srcs) {
+        this(src, srcs, new ArrayMap<String, String>());
+    }
+
+    /**
+     * Public ctor, from XSL as a string.
+     * @param src XML document body
+     * @param srcs Sources
+     * @param map Map of XSL params
+     * @since 0.16
+     */
     public XSLDocument(
         @NotNull(message = "XSL can't be NULL") final String src,
-        @NotNull(message = "sources can't be NULL")
-        final Sources srcs) {
+        @NotNull(message = "sources can't be NULL") final Sources srcs,
+        @NotNull(message = "map of params can't be NULL")
+        final Map<String, String> map) {
         this.xsl = src;
         this.sources = srcs;
+        this.params = new ArrayMap<String, String>(map);
     }
 
     @Override
     public XSL with(@NotNull(message = "sources can't be NULL")
         final Sources src) {
-        return new XSLDocument(this.xsl, src);
+        return new XSLDocument(this.xsl, src, this.params);
+    }
+
+    @Override
+    public XSL with(
+        @NotNull(message = "name can't be NULL") final String name,
+        @NotNull(message = "value can't be NULL") final String value) {
+        return new XSLDocument(
+            this.xsl, this.sources, this.params.with(name, value)
+        );
     }
 
     /**
@@ -282,6 +317,10 @@ public final class XSLDocument implements XSL {
                     new StreamSource(new StringReader(this.xsl))
                 );
                 trans.setURIResolver(this.sources);
+                for (final Map.Entry<String, String> ent
+                    : this.params.entrySet()) {
+                    trans.setParameter(ent.getKey(), ent.getValue());
+                }
                 trans.transform(new DOMSource(xml.node()), result);
             } catch (final TransformerConfigurationException ex) {
                 throw new IllegalStateException(

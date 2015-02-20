@@ -70,4 +70,15 @@ public interface XSL {
     @NotNull(message = "XSL is never NULL")
     XSL with(@NotNull(message = "sources can't be NULL") Sources src);
 
+    /**
+     * With this parameter.
+     * @param name Name of XSL parameter
+     * @param value Value of XSL parameter
+     * @return New XSL document
+     * @since 0.16
+     */
+    @NotNull(message = "XSL is never NULL")
+    XSL with(@NotNull(message = "parameter name can't be NULL") String name,
+        @NotNull(message = "parameter value can't be NULL") String value);
+
 }

@@ -155,4 +155,27 @@ public final class XSLDocumentTest {
         );
     }
 
+    /**
+     * XSLDocument can transform into text, with params.
+     * @throws Exception If something goes wrong inside
+     * @since 0.16
+     */
+    @Test
+    public void transformsIntoTextWithParams() throws Exception {
+        final XSL xsl = new XSLDocument(
+            StringUtils.join(
+                "<xsl:stylesheet   ",
+                " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'    ",
+                " version='2.0'><xsl:output method='text'  />",
+                "<xsl:param name='boom' />",
+                "<xsl:template match='/'>[<xsl:value-of select='$boom'/>]",
+                "</xsl:template>   </xsl:stylesheet>"
+            )
+        );
+        MatcherAssert.assertThat(
+            xsl.with("boom", "Donny").applyTo(new XMLDocument("<ehe/>")),
+            Matchers.equalTo("[Donny]")
+        );
+    }
+
 }
