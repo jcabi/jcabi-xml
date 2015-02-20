@@ -112,6 +112,12 @@ public final class XMLDocument implements XML {
      */
     private final transient boolean leaf;
 
+    /**
+     * Actual XML document node. Needs to be an Object so the class is still
+     * recognized as @Immutable.
+     */
+    private final transient Object cache;
+
     static {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
             try {
@@ -276,6 +282,7 @@ public final class XMLDocument implements XML {
         this.xml = XMLDocument.asString(node);
         this.context = ctx;
         this.leaf = lfe;
+        this.cache = node;
     }
 
     @Override
@@ -286,16 +293,7 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        final Document doc = new DomParser(
-            XMLDocument.DFACTORY, this.xml
-        ).document();
-        final Node node;
-        if (this.leaf) {
-            node = doc.getDocumentElement();
-        } else {
-            node = doc;
-        }
-        return node;
+        return (Node) this.cache;
     }
 
     @Override
