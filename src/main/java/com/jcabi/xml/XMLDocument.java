@@ -116,7 +116,7 @@ public final class XMLDocument implements XML {
      * Actual XML document node. Needs to be an Object so the class is still
      * recognized as @Immutable.
      */
-    private final transient Object node;
+    private final transient Object cache;
 
     static {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
@@ -170,12 +170,12 @@ public final class XMLDocument implements XML {
      * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
-     * @param nde DOM source
+     * @param node DOM source
      * @since 0.2
      */
     public XMLDocument(@NotNull(message = "node can't be NULL")
-        final Node nde) {
-        this(nde, new XPathContext(), !(nde instanceof Document));
+        final Node node) {
+        this(node, new XPathContext(), !(node instanceof Document));
     }
 
     /**
@@ -273,16 +273,16 @@ public final class XMLDocument implements XML {
 
     /**
      * Private ctor.
-     * @param nde The source
+     * @param node The source
      * @param ctx Namespace context
      * @param lfe Is it a leaf node?
      */
-    private XMLDocument(final Node nde, final XPathContext ctx,
+    private XMLDocument(final Node node, final XPathContext ctx,
         final boolean lfe) {
-        this.xml = XMLDocument.asString(nde);
+        this.xml = XMLDocument.asString(node);
         this.context = ctx;
         this.leaf = lfe;
-        this.node = nde;
+        this.cache = node;
     }
 
     @Override
@@ -293,7 +293,7 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        return (Node) this.node;
+        return (Node) this.cache;
     }
 
     @Override
