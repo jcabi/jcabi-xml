@@ -112,6 +112,12 @@ public final class XMLDocument implements XML {
      */
     private final transient boolean leaf;
 
+    /**
+     * Actual XML document node. Needs to be an Object so the class is still
+     * recognized as @Immutable.
+     */
+    private final transient Object node;
+
     static {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
             try {
@@ -164,12 +170,12 @@ public final class XMLDocument implements XML {
      * {@link NamespaceContext}, which already defines a
      * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
      *
-     * @param node DOM source
+     * @param nde DOM source
      * @since 0.2
      */
     public XMLDocument(@NotNull(message = "node can't be NULL")
-        final Node node) {
-        this(node, new XPathContext(), !(node instanceof Document));
+        final Node nde) {
+        this(nde, new XPathContext(), !(nde instanceof Document));
     }
 
     /**
@@ -267,15 +273,16 @@ public final class XMLDocument implements XML {
 
     /**
      * Private ctor.
-     * @param node The source
+     * @param nde The source
      * @param ctx Namespace context
      * @param lfe Is it a leaf node?
      */
-    private XMLDocument(final Node node, final XPathContext ctx,
+    private XMLDocument(final Node nde, final XPathContext ctx,
         final boolean lfe) {
-        this.xml = XMLDocument.asString(node);
+        this.xml = XMLDocument.asString(nde);
         this.context = ctx;
         this.leaf = lfe;
+        this.node = nde;
     }
 
     @Override
@@ -286,16 +293,7 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        final Document doc = new DomParser(
-            XMLDocument.DFACTORY, this.xml
-        ).document();
-        final Node node;
-        if (this.leaf) {
-            node = doc.getDocumentElement();
-        } else {
-            node = doc;
-        }
-        return node;
+        return (Node) this.node;
     }
 
     @Override
