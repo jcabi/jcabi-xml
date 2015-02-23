@@ -9,13 +9,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * TODO add javadoc
+ * {@link org.w3c.dom.ls.LSResourceResolver} implementation based
+ * the chain of responsibility design pattern.
+ * The resolveResource method is called on the provided instances
+ * until a non null value is returned.
+ *
+ * @author Adam Siemion (adam.siemion.null@lemonsoftware.pl)
  */
-public class ChainnedResolver implements LSResourceResolver {
+class ChainedResourceResolver implements LSResourceResolver {
 
     private List<LSResourceResolver> resolvers = new ArrayList<LSResourceResolver>();
 
-    public ChainnedResolver(LSResourceResolver... resolvers) {
+    public ChainedResourceResolver(LSResourceResolver... resolvers) {
         for(final LSResourceResolver resolver : resolvers) {
             this.resolvers.add(resolver);
         }

@@ -213,7 +213,7 @@ public final class StrictXMLTest {
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
                     "<payment xmlns=\"http://com.jcabi/schema/xml\" ",
                         "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
-                        "xsi:schemaLocation=\"http://com.jcabi/schema/xml sample.xsd\">",
+                        "xsi:schemaLocation=\"http://com.jcabi/schema/xml sample-namespaces.xsd\">",
                         "<id>333</id>",
                         "<date>1-Jan-2013</date>",
                         "<debit>test-1</debit>",
