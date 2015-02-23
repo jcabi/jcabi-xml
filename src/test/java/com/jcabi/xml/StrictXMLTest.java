@@ -204,4 +204,23 @@ public final class StrictXMLTest {
             validator
         );
     }
+
+    @Test
+    public void lookupXsdsFromClasspath() throws Exception {
+        new StrictXML(
+            new XMLDocument(
+                StringUtils.join(
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                    "<payment xmlns=\"http://com.jcabi/schema/xml\" ",
+                        "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ",
+                        "xsi:schemaLocation=\"http://com.jcabi/schema/xml sample.xsd\">",
+                        "<id>333</id>",
+                        "<date>1-Jan-2013</date>",
+                        "<debit>test-1</debit>",
+                        "<credit>test-2</credit>",
+                    "</payment>"
+                )
+            )
+        );
+    }
 }

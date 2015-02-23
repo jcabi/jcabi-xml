@@ -40,12 +40,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
 import org.w3c.dom.Node;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -245,11 +247,14 @@ public final class StrictXML implements XML {
      */
     private static Validator newValidator() {
         try {
-            final Schema schema =
-                SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                    .newSchema();
-            return schema.newValidator();
+            final Validator validator = SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                .newSchema()
+                .newValidator();
+            validator.setResourceResolver(new ChainnedResolver(
+                new ClasspathResolver(), validator.getResourceResolver())
+            );
+            return validator;
         } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
         }
