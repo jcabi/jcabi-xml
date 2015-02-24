@@ -249,14 +249,10 @@ public final class StrictXML implements XML {
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
                 .newSchema()
                 .newValidator();
-            final LSResourceResolver resolver = new ChainedResourceResolver(
-                new ClasspathResolver(), validator.getResourceResolver()
-            );
-            validator.setResourceResolver(resolver);
+            validator.setResourceResolver(new ClasspathResolver());
             return validator;
         } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
         }
     }
-
 }
