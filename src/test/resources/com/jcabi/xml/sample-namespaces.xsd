@@ -1,5 +1,5 @@
-<xs:schema xmlns="http://com.jcabi/schema/xml"
-           targetNamespace="http://com.jcabi/schema/xml"
+<xs:schema xmlns="http://jcabi.com/schema/xml"
+           targetNamespace="http://jcabi.com/schema/xml"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            elementFormDefault="qualified">
     <xs:complexType name="payment">
