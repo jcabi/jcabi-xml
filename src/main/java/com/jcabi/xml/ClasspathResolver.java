@@ -42,6 +42,7 @@ import org.w3c.dom.ls.LSResourceResolver;
  */
 class ClasspathResolver implements LSResourceResolver {
     @Override
+    // @checkstyle ParameterNumber (1 line)
     public LSInput resolveResource(
         final String type,
         final String namespaceuri,

@@ -44,34 +44,51 @@ import org.w3c.dom.ls.LSInput;
  */
 class ClasspathInput implements LSInput {
 
-    private BufferedInputStream input;
+    /**
+     * Input stream.
+     */
+    private BufferedInputStream stream;
+    /**
+     * Public Id.
+     */
     private String publicid;
+    /**
+     * System Id.
+     */
     private String systemid;
 
-    public ClasspathInput(final String publicid, final String systemid, final InputStream input) {
-        this.publicid = publicid;
-        this.systemid = systemid;
-        this.input = new BufferedInputStream(input);
+    /**
+     * Public constructor.
+     * @param pubid Public id
+     * @param sysid System id
+     * @param input Input stream
+     */
+    public ClasspathInput(
+        final String pubid, final String sysid, final InputStream input
+    ) {
+        this.publicid = pubid;
+        this.systemid = sysid;
+        this.stream = new BufferedInputStream(input);
     }
 
     @Override
     public String getPublicId() {
-        return publicid;
+        return this.publicid;
     }
 
     @Override
-    public void setPublicId(String publicid) {
-        this.publicid = publicid;
+    public void setPublicId(final String pubid) {
+        this.publicid = pubid;
     }
 
     @Override
     public String getSystemId() {
-        return systemid;
+        return this.systemid;
     }
 
     @Override
-    public void setSystemId(String systemid) {
-        this.systemid = systemid;
+    public void setSystemId(final String sysid) {
+        this.systemid = sysid;
     }
 
     @Override
@@ -99,42 +116,42 @@ class ClasspathInput implements LSInput {
         return null;
     }
 
-    // @todo #31:30min replace below code with org.apache.commons.io.IOUtils.toString()
+    // @todo #31:30min replace below code with IOUtils.toString()
     @Override
     public String getStringData() {
-        synchronized (input) {
+        synchronized (this.stream) {
             try {
-                byte[] input = new byte[this.input.available()];
-                this.input.read(input);
-                String contents = new String(input);
+                final byte[] input = new byte[this.stream.available()];
+                this.stream.read(input);
+                final String contents = new String(input);
                 return contents;
-            } catch (IOException e) {
-                throw new RuntimeException("Unable to read input", e);
+            } catch (final IOException exception) {
+                throw new RuntimeException("Unable to read input", exception);
             }
         }
     }
 
     @Override
-    public void setBaseURI(String baseuri) {
+    public void setBaseURI(final String baseuri) {
     }
 
     @Override
-    public void setByteStream(InputStream bytestream) {
+    public void setByteStream(final InputStream bytestream) {
     }
 
     @Override
-    public void setCertifiedText(boolean certifiedtext) {
+    public void setCertifiedText(final boolean certifiedtext) {
     }
 
     @Override
-    public void setCharacterStream(Reader characterstream) {
+    public void setCharacterStream(final Reader characterstream) {
     }
 
     @Override
-    public void setEncoding(String encoding) {
+    public void setEncoding(final String encoding) {
     }
 
     @Override
-    public void setStringData(String stringdata) {
+    public void setStringData(final String stringdata) {
     }
 }
