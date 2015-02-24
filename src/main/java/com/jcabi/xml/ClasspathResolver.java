@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2015, jcabi.com
+ * Copyright (c) 2012-2014, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,7 @@ import org.w3c.dom.ls.LSResourceResolver;
  */
 class ClasspathResolver implements LSResourceResolver {
     @Override
+    @SuppressWarnings("PMD.UseObjectForClearerAPI")
     // @checkstyle ParameterNumber (1 line)
     public LSInput resolveResource(
         final String type,
@@ -51,9 +52,10 @@ class ClasspathResolver implements LSResourceResolver {
         final String baseuri
     ) {
         final InputStream stream = getClass().getResourceAsStream(systemid);
+        LSInput ret = null;
         if (stream != null) {
-            return new ClasspathInput(publicid, systemid, stream);
+            ret = new ClasspathInput(publicid, systemid, stream);
         }
-        return null;
+        return ret;
     }
 }

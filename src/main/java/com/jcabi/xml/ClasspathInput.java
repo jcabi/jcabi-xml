@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2015, jcabi.com
+ * Copyright (c) 2012-2014, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.ls.LSInput;
 
 /**
@@ -47,15 +48,15 @@ class ClasspathInput implements LSInput {
     /**
      * Input stream.
      */
-    private BufferedInputStream stream;
+    private final transient BufferedInputStream stream;
     /**
      * Public Id.
      */
-    private String publicid;
+    private transient String publicid;
     /**
      * System Id.
      */
-    private String systemid;
+    private transient String systemid;
 
     /**
      * Public constructor.
@@ -102,6 +103,7 @@ class ClasspathInput implements LSInput {
     }
 
     @Override
+    @SuppressWarnings("PMD.BooleanGetMethodName")
     public boolean getCertifiedText() {
         return false;
     }
@@ -116,42 +118,43 @@ class ClasspathInput implements LSInput {
         return null;
     }
 
-    // @todo #31:30min replace below code with IOUtils.toString()
     @Override
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public String getStringData() {
-        synchronized (this.stream) {
-            try {
-                final byte[] input = new byte[this.stream.available()];
-                this.stream.read(input);
-                final String contents = new String(input);
-                return contents;
-            } catch (final IOException exception) {
-                throw new RuntimeException("Unable to read input", exception);
-            }
+        try {
+            return IOUtils.toString(this.stream);
+        } catch (final IOException exception) {
+            throw new RuntimeException("Unable to read input", exception);
         }
     }
 
     @Override
     public void setBaseURI(final String baseuri) {
+        // intentionally empty
     }
 
     @Override
     public void setByteStream(final InputStream bytestream) {
+        // intentionally empty
     }
 
     @Override
     public void setCertifiedText(final boolean certifiedtext) {
+        // intentionally empty
     }
 
     @Override
     public void setCharacterStream(final Reader characterstream) {
+        // intentionally empty
     }
 
     @Override
     public void setEncoding(final String encoding) {
+        // intentionally empty
     }
 
     @Override
     public void setStringData(final String stringdata) {
+        // intentionally empty
     }
 }
