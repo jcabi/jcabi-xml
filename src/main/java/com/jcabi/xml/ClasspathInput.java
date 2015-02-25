@@ -119,12 +119,11 @@ class ClasspathInput implements LSInput {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public String getStringData() {
         try {
             return IOUtils.toString(this.stream);
         } catch (final IOException exception) {
-            throw new RuntimeException("Unable to read input", exception);
+            throw new IllegalArgumentException("Unable to read input", exception);
         }
     }
 
