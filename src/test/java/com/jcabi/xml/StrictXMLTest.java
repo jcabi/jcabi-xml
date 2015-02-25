@@ -56,6 +56,7 @@ import org.mockito.stubbing.Answer;
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class StrictXMLTest {
 
     /**

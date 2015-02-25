@@ -123,7 +123,9 @@ class ClasspathInput implements LSInput {
         try {
             return IOUtils.toString(this.stream);
         } catch (final IOException exception) {
-            throw new IllegalArgumentException("Unable to read input", exception);
+            throw new IllegalArgumentException(
+                "Unable to read input", exception
+            );
         }
     }
 
