@@ -52,10 +52,10 @@ class ClasspathResolver implements LSResourceResolver {
         final String baseuri
     ) {
         final InputStream stream = getClass().getResourceAsStream(systemid);
-        LSInput ret = null;
+        LSInput input = null;
         if (stream != null) {
-            ret = new ClasspathInput(publicid, systemid, stream);
+            input = new ClasspathInput(publicid, systemid, stream);
         }
-        return ret;
+        return input;
     }
 }
