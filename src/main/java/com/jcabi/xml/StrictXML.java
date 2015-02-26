@@ -41,7 +41,6 @@ import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
@@ -245,14 +244,14 @@ public final class StrictXML implements XML {
      */
     private static Validator newValidator() {
         try {
-            final Schema schema =
-                SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                    .newSchema();
-            return schema.newValidator();
+            final Validator validator = SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                .newSchema()
+                .newValidator();
+            validator.setResourceResolver(new ClasspathResolver());
+            return validator;
         } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
         }
     }
-
 }

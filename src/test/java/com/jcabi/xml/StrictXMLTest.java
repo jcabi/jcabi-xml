@@ -56,6 +56,7 @@ import org.mockito.stubbing.Answer;
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class StrictXMLTest {
 
     /**
@@ -202,6 +203,63 @@ public final class StrictXMLTest {
                 "<root>passesValidXmlWithNetworkProblems</root>"
             ),
             validator
+        );
+    }
+
+    /**
+     * StrictXML can lookup XSD files from the classpath.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void lookupXsdsFromClasspath() throws Exception {
+        new StrictXML(
+            new XMLDocument(
+                StringUtils.join(
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                    "<payment xmlns=\"http://jcabi.com/schema/xml\" ",
+                        "xmlns:xsi=\"",
+                            "http://www.w3.org/2001/XMLSchema-instance",
+                        "\" ",
+                        "xsi:schemaLocation=\"",
+                            "http://jcabi.com/schema/xml ",
+                                "sample-namespaces.xsd",
+                        "\">",
+                        "<id>333</id>",
+                        "<date>1-Jan-2013</date>",
+                        "<debit>test-1</debit>",
+                        "<credit>test-2</credit>",
+                    "</payment>"
+                )
+            )
+        );
+    }
+
+    /**
+     * StrictXML can reject the an when
+     * the XSD is not available on the classpath.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectXmlWhenXsdIsNotAvailableOnClasspath() throws Exception {
+        new StrictXML(
+            new XMLDocument(
+                StringUtils.join(
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                    "<payment xmlns=\"http://jcabi.com/schema/xml\" ",
+                        "xmlns:xsi=\"",
+                            "http://www.w3.org/2001/XMLSchema-instance",
+                        "\" ",
+                        "xsi:schemaLocation=\"",
+                            "http://jcabi.com/schema/xml ",
+                                "sample-non-existing.xsd",
+                        "\">",
+                        "<id>333</id>",
+                        "<date>1-Jan-2013</date>",
+                        "<debit>test-1</debit>",
+                        "<credit>test-2</credit>",
+                    "</payment>"
+                )
+            )
         );
     }
 }

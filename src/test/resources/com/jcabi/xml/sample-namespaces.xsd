@@ -1,0 +1,14 @@
+<xs:schema xmlns="http://jcabi.com/schema/xml"
+           targetNamespace="http://jcabi.com/schema/xml"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    <xs:complexType name="payment">
+        <xs:all>
+            <xs:element name="id"/>
+            <xs:element name="date"/>
+            <xs:element name="debit"/>
+            <xs:element name="credit"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:element name="payment" type="payment"/>
+</xs:schema>
