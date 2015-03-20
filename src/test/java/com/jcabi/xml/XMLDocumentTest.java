@@ -344,19 +344,6 @@ public final class XMLDocumentTest {
     }
 
     /**
-     * XMLDocument parse result is cached.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void cachesParseResult() throws Exception {
-        final XML doc = new XMLDocument("<?xml version='1.1'?><f/>");
-        MatcherAssert.assertThat(
-            doc.node(),
-            Matchers.sameInstance(doc.node())
-        );
-    }
-
-    /**
      * XMLDocument can compare to itself.
      * @throws Exception If something goes wrong inside
      */
@@ -384,6 +371,21 @@ public final class XMLDocumentTest {
         MatcherAssert.assertThat(
             new XMLDocument(xml),
             XhtmlMatchers.hasXPath("/xhtml:a/xhtml:b")
+        );
+    }
+
+    /**
+     * XMLDocument can preserve immutability.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void preservesImmutability() throws Exception {
+        final XML xml = new XMLDocument("<r1><a/></r1>");
+        final Node node = xml.nodes("/r1/a").get(0).node();
+        node.appendChild(node.getOwnerDocument().createElement("h9"));
+        MatcherAssert.assertThat(
+            xml,
+            XhtmlMatchers.hasXPath("/r1/a[not(hey-you)]")
         );
     }
 

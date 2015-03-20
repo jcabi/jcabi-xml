@@ -293,7 +293,7 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        return (Node) this.cache;
+        return Node.class.cast(this.cache).cloneNode(true);
     }
 
     @Override
@@ -356,7 +356,12 @@ public final class XMLDocument implements XML {
             final NodeList nodes = this.fetch(query, NodeList.class);
             items = new ArrayList<XML>(nodes.getLength());
             for (int idx = 0; idx < nodes.getLength(); ++idx) {
-                items.add(new XMLDocument(nodes.item(idx), this.context, true));
+                items.add(
+                    new XMLDocument(
+                        nodes.item(idx),
+                        this.context, true
+                    )
+                );
             }
         } catch (final XPathExpressionException ex) {
             throw new IllegalArgumentException(
