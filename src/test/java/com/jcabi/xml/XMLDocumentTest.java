@@ -385,7 +385,7 @@ public final class XMLDocumentTest {
         node.appendChild(node.getOwnerDocument().createElement("h9"));
         MatcherAssert.assertThat(
             xml,
-            XhtmlMatchers.hasXPath("/r1/a[not(hey-you)]")
+            XhtmlMatchers.hasXPath("/r1/a[not(h9)]")
         );
     }
 
