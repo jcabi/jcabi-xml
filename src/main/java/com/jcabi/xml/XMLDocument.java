@@ -389,8 +389,7 @@ public final class XMLDocument implements XML {
     }
 
     /**
-     * Clones a node importing the clone in a new document.
-     *
+     * Clones a node and imports it in a new document.
      * @param node A node to clone.
      * @return A cloned node imported in a dedicated document.
      */
