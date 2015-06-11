@@ -155,7 +155,7 @@ public final class XMLDocument implements XML {
      * @param text XML document body
      */
     public XMLDocument(@NotNull(message = "XML text can't be NULL")
-                       final String text) {
+        final String text) {
         this(
             new DomParser(XMLDocument.DFACTORY, text).document(),
             new XPathContext(),
@@ -174,7 +174,7 @@ public final class XMLDocument implements XML {
      * @since 0.2
      */
     public XMLDocument(@NotNull(message = "node can't be NULL")
-                       final Node node) {
+        final Node node) {
         this(node, new XPathContext(), !(node instanceof Document));
     }
 
@@ -191,7 +191,7 @@ public final class XMLDocument implements XML {
      * @param source Source of XML document
      */
     public XMLDocument(@NotNull(message = "source can't be NULL")
-                       final Source source) {
+        final Source source) {
         this(XMLDocument.transform(source), new XPathContext(), false);
     }
 
@@ -209,7 +209,7 @@ public final class XMLDocument implements XML {
      * @throws IOException In case of I/O problems
      */
     public XMLDocument(@NotNull(message = "file can't be NULL")
-                       final File file) throws IOException {
+        final File file) throws IOException {
         this(new TextResource(file).toString());
     }
 
@@ -227,7 +227,7 @@ public final class XMLDocument implements XML {
      * @throws IOException In case of I/O problems
      */
     public XMLDocument(@NotNull(message = "URL can't be NULL")
-                       final URL url) throws IOException {
+        final URL url) throws IOException {
         this(new TextResource(url).toString());
     }
 
@@ -245,7 +245,7 @@ public final class XMLDocument implements XML {
      * @throws IOException In case of I/O problems
      */
     public XMLDocument(@NotNull(message = "URI can't be NULL")
-                       final URI uri) throws IOException {
+        final URI uri) throws IOException {
         this(new TextResource(uri).toString());
     }
 
@@ -266,20 +266,19 @@ public final class XMLDocument implements XML {
      * @throws IOException In case of I/O problem
      */
     public XMLDocument(@NotNull(message = "input stream can't be NULL")
-                       final InputStream stream) throws IOException {
+        final InputStream stream) throws IOException {
         this(new TextResource(stream).toString());
         stream.close();
     }
 
     /**
      * Private ctor.
-     *
      * @param node The source
      * @param ctx Namespace context
      * @param lfe Is it a leaf node?
      */
     private XMLDocument(final Node node, final XPathContext ctx,
-                        final boolean lfe) {
+        final boolean lfe) {
         this.xml = XMLDocument.asString(node);
         this.context = ctx;
         this.leaf = lfe;
@@ -296,8 +295,7 @@ public final class XMLDocument implements XML {
     public Node node() {
         final Node castCache = Node.class.cast(this.cache);
         final Node answer;
-        final boolean isDocument = castCache instanceof Document;
-        if (isDocument) {
+        if (castCache instanceof Document) {
             answer = castCache.cloneNode(true);
         } else {
             answer = this.createImportedNode(castCache);
@@ -350,7 +348,7 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "XML is never NULL")
     public XML registerNs(@NotNull final String prefix,
-                          @NotNull final Object uri) {
+        @NotNull final Object uri) {
         return new XMLDocument(
             this.node(), this.context.add(prefix, uri), this.leaf
         );
@@ -386,7 +384,7 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "XML is never NULL")
     public XML merge(@NotNull(message = "context can't be NULL")
-                     final NamespaceContext ctx) {
+        final NamespaceContext ctx) {
         return new XMLDocument(this.node(), this.context.merge(ctx), this.leaf);
     }
 
@@ -397,7 +395,6 @@ public final class XMLDocument implements XML {
      * @return A cloned node imported in a dedicated document.
      */
     private Node createImportedNode(final Node node) {
-        assert !(node instanceof Document);
         final Document document;
         try {
             document = DFACTORY.newDocumentBuilder().newDocument();
@@ -481,7 +478,6 @@ public final class XMLDocument implements XML {
 
     /**
      * Transform source to DOM node.
-     *
      * @param source The source
      * @return The node
      */
