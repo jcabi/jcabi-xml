@@ -391,10 +391,6 @@ public final class XMLDocumentTest {
 
     /**
      * XMLDocument can apply XPath to cloned node.
-     *
-     * This test doesn't work. If I replace "//z9/@a" with "z9/@a" it works
-     * perfectly. I'm not sure what is that, but would be great to fix it.
-     *
      * @throws Exception If something goes wrong inside
      */
     @Test

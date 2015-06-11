@@ -155,7 +155,7 @@ public final class XMLDocument implements XML {
      * @param text XML document body
      */
     public XMLDocument(@NotNull(message = "XML text can't be NULL")
-                      final String text) {
+                       final String text) {
         this(
             new DomParser(XMLDocument.DFACTORY, text).document(),
             new XPathContext(),
@@ -294,21 +294,13 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        final Node cloned = Node.class.cast(this.cache).cloneNode(true);
+        final Node castCache = Node.class.cast(this.cache);
         final Node answer;
-        final boolean isClonedDocument = !(cloned instanceof Document);
-        if (isClonedDocument) {
-            final Document document;
-            try {
-                document = DFACTORY.newDocumentBuilder().newDocument();
-            } catch (final ParserConfigurationException ex) {
-                throw new IllegalStateException(ex);
-            }
-            final Node imported = document.importNode(cloned, true);
-            document.appendChild(imported);
-            answer = imported;
+        final boolean isDocument = castCache instanceof Document;
+        if (isDocument) {
+            answer = castCache.cloneNode(true);
         } else {
-            answer = cloned;
+            answer = this.createImportedNode(castCache);
         }
         return answer;
     }
@@ -396,6 +388,25 @@ public final class XMLDocument implements XML {
     public XML merge(@NotNull(message = "context can't be NULL")
                      final NamespaceContext ctx) {
         return new XMLDocument(this.node(), this.context.merge(ctx), this.leaf);
+    }
+
+    /**
+     * Clones a node importing the clone in a new document.
+     *
+     * @param node A node to clone.
+     * @return A cloned node imported in a dedicated document.
+     */
+    private Node createImportedNode(final Node node) {
+        assert !(node instanceof Document);
+        final Document document;
+        try {
+            document = DFACTORY.newDocumentBuilder().newDocument();
+        } catch (final ParserConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        }
+        final Node imported = document.importNode(node, true);
+        document.appendChild(imported);
+        return imported;
     }
 
     /**
