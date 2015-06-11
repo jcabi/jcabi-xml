@@ -40,7 +40,6 @@ import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -399,7 +398,6 @@ public final class XMLDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    @Ignore
     public void appliesXpathToClonedNode() throws Exception {
         final XML xml = new XMLDocument("<t6><z9 a='433'/></t6>");
         final XML root = xml.nodes("/t6").get(0);
