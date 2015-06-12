@@ -352,50 +352,66 @@
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>     }
 <a class="jxr_linenumber" name="L345" href="#L345">345</a> 
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L347" href="#L347">347</a> <em class="jxr_javadoccomment">     * XMLDocument parse result is cached.</em>
+<a class="jxr_linenumber" name="L347" href="#L347">347</a> <em class="jxr_javadoccomment">     * XMLDocument can compare to itself.</em>
 <a class="jxr_linenumber" name="L348" href="#L348">348</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong inside</em>
 <a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>     @Test
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> cachesParseResult() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L352" href="#L352">352</a>         <strong class="jxr_keyword">final</strong> XML doc = <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;?xml version='1.1'?&gt;&lt;f/&gt;"</span>);
-<a class="jxr_linenumber" name="L353" href="#L353">353</a>         MatcherAssert.assertThat(
-<a class="jxr_linenumber" name="L354" href="#L354">354</a>             doc.node(),
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>             Matchers.sameInstance(doc.node())
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>         );
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     }
-<a class="jxr_linenumber" name="L358" href="#L358">358</a> 
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_javadoccomment">     * XMLDocument can compare to itself.</em>
-<a class="jxr_linenumber" name="L361" href="#L361">361</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong inside</em>
-<a class="jxr_linenumber" name="L362" href="#L362">362</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>     @Test
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> comparesToAnotherDocument() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>         MatcherAssert.assertThat(
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>             <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;\n&lt;dude&gt;  &lt;/dude&gt;&lt;/hi&gt;"</span>),
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>             Matchers.equalTo(<strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;&lt;dude&gt;  &lt;/dude&gt;&lt;/hi&gt;"</span>))
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>         );
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>         MatcherAssert.assertThat(
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>             <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;&lt;man&gt;&lt;/man&gt;&lt;/hi&gt;"</span>),
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>             Matchers.not(
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>                 Matchers.equalTo(<strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;&lt;man&gt;  &lt;/man&gt;&lt;/hi&gt;"</span>))
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>             )
+<a class="jxr_linenumber" name="L351" href="#L351">351</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> comparesToAnotherDocument() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>             <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;\n&lt;dude&gt;  &lt;/dude&gt;&lt;/hi&gt;"</span>),
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>             Matchers.equalTo(<strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;&lt;dude&gt;  &lt;/dude&gt;&lt;/hi&gt;"</span>))
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>         );
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>             <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;&lt;man&gt;&lt;/man&gt;&lt;/hi&gt;"</span>),
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>             Matchers.not(
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>                 Matchers.equalTo(<strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;hi&gt;&lt;man&gt;  &lt;/man&gt;&lt;/hi&gt;"</span>))
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>             )
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>         );
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>     }
+<a class="jxr_linenumber" name="L363" href="#L363">363</a> 
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L365" href="#L365">365</a> <em class="jxr_javadoccomment">     * XMLDocument can preserve xml namespaces.</em>
+<a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong inside</em>
+<a class="jxr_linenumber" name="L367" href="#L367">367</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>     @Test
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> preservesXmlNamespaces() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>         <strong class="jxr_keyword">final</strong> String xml = <span class="jxr_string">"&lt;a xmlns='http://www.w3.org/1999/xhtml'&gt;&lt;b/&gt;&lt;/a&gt;"</span>;
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>             <strong class="jxr_keyword">new</strong> XMLDocument(xml),
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>             XhtmlMatchers.hasXPath(<span class="jxr_string">"/xhtml:a/xhtml:b"</span>)
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>         );
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>     }
 <a class="jxr_linenumber" name="L376" href="#L376">376</a> 
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L378" href="#L378">378</a> <em class="jxr_javadoccomment">     * XMLDocument can preserve xml namespaces.</em>
+<a class="jxr_linenumber" name="L378" href="#L378">378</a> <em class="jxr_javadoccomment">     * XMLDocument can preserve immutability.</em>
 <a class="jxr_linenumber" name="L379" href="#L379">379</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong inside</em>
 <a class="jxr_linenumber" name="L380" href="#L380">380</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L381" href="#L381">381</a>     @Test
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> preservesXmlNamespaces() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>         <strong class="jxr_keyword">final</strong> String xml = <span class="jxr_string">"&lt;a xmlns='http://www.w3.org/1999/xhtml'&gt;&lt;b/&gt;&lt;/a&gt;"</span>;
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>         MatcherAssert.assertThat(
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>             <strong class="jxr_keyword">new</strong> XMLDocument(xml),
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>             XhtmlMatchers.hasXPath(<span class="jxr_string">"/xhtml:a/xhtml:b"</span>)
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>         );
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>     }
-<a class="jxr_linenumber" name="L389" href="#L389">389</a> 
-<a class="jxr_linenumber" name="L390" href="#L390">390</a> }
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> preservesImmutability() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>         <strong class="jxr_keyword">final</strong> XML xml = <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;r1&gt;&lt;a/&gt;&lt;/r1&gt;"</span>);
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>         <strong class="jxr_keyword">final</strong> Node node = xml.nodes(<span class="jxr_string">"/r1/a"</span>).get(0).node();
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>         node.appendChild(node.getOwnerDocument().createElement(<span class="jxr_string">"h9"</span>));
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>             xml,
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>             XhtmlMatchers.hasXPath(<span class="jxr_string">"/r1/a[not(h9)]"</span>)
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>         );
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>     }
+<a class="jxr_linenumber" name="L391" href="#L391">391</a> 
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L393" href="#L393">393</a> <em class="jxr_javadoccomment">     * XMLDocument can apply XPath to cloned node.</em>
+<a class="jxr_linenumber" name="L394" href="#L394">394</a> <em class="jxr_javadoccomment">     * @throws Exception If something goes wrong inside</em>
+<a class="jxr_linenumber" name="L395" href="#L395">395</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     @Test
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> appliesXpathToClonedNode() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>         <strong class="jxr_keyword">final</strong> XML xml = <strong class="jxr_keyword">new</strong> XMLDocument(<span class="jxr_string">"&lt;t6&gt;&lt;z9 a='433'/&gt;&lt;/t6&gt;"</span>);
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>         <strong class="jxr_keyword">final</strong> XML root = xml.nodes(<span class="jxr_string">"/t6"</span>).get(0);
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>             root.xpath(<span class="jxr_string">"//z9/@a"</span>).get(0),
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>             Matchers.equalTo(<span class="jxr_string">"433"</span>)
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         );
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>     }
+<a class="jxr_linenumber" name="L405" href="#L405">405</a> 
+<a class="jxr_linenumber" name="L406" href="#L406">406</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2015 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
