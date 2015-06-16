@@ -293,7 +293,14 @@ public final class XMLDocument implements XML {
     @Override
     @NotNull(message = "node is never NULL")
     public Node node() {
-        return Node.class.cast(this.cache).cloneNode(true);
+        final Node castCache = Node.class.cast(this.cache);
+        final Node answer;
+        if (castCache instanceof Document) {
+            answer = castCache.cloneNode(true);
+        } else {
+            answer = this.createImportedNode(castCache);
+        }
+        return answer;
     }
 
     @Override
@@ -379,6 +386,23 @@ public final class XMLDocument implements XML {
     public XML merge(@NotNull(message = "context can't be NULL")
         final NamespaceContext ctx) {
         return new XMLDocument(this.node(), this.context.merge(ctx), this.leaf);
+    }
+
+    /**
+     * Clones a node and imports it in a new document.
+     * @param node A node to clone.
+     * @return A cloned node imported in a dedicated document.
+     */
+    private Node createImportedNode(final Node node) {
+        final Document document;
+        try {
+            document = DFACTORY.newDocumentBuilder().newDocument();
+        } catch (final ParserConfigurationException ex) {
+            throw new IllegalStateException(ex);
+        }
+        final Node imported = document.importNode(node, true);
+        document.appendChild(imported);
+        return imported;
     }
 
     /**
