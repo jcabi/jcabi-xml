@@ -30,10 +30,11 @@
 package com.jcabi.xml;
 
 import com.google.common.io.Files;
-import com.jcabi.aspects.Parallel;
-import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
@@ -239,16 +240,24 @@ public final class XMLDocumentTest {
      */
     @Test
     public void parsesInMultipleThreads() throws Exception {
-        new Runnable() {
+        final int ten = 10;
+        final int zero = 0;
+        final int hundred = 100;
+        final Runnable runnable = new Runnable() {
             @Override
-            @Parallel(threads = Tv.HUNDRED)
             public void run() {
                 MatcherAssert.assertThat(
                     new XMLDocument("<root><hey/></root>"),
                     XhtmlMatchers.hasXPath("/root/hey")
                 );
             }
-        } .run();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = zero; count < hundred; count = count + 1) {
+            executorService.submit(runnable);
+        }
+        executorService.awaitTermination(ten, TimeUnit.SECONDS);
+        executorService.shutdown();
     }
 
     /**
@@ -257,18 +266,21 @@ public final class XMLDocumentTest {
      */
     @Test
     public void xpathInMultipleThreads() throws Exception {
+        final int zero = 0;
+        final int ten = 10;
+        final int thousand = 1000;
+        final int fifty = 50;
         final XML xml = new XMLDocument(
             String.format(
                 "<a><b>test text</b><c>%s</c></a>",
                 StringUtils.repeat(
                     "<beta>some text \u20ac</beta> ",
-                    Tv.THOUSAND
+                    thousand
                 )
             )
         );
-        new Runnable() {
+        final Runnable runnable = new Runnable() {
             @Override
-            @Parallel(threads = Tv.FIFTY)
             public void run() {
                 MatcherAssert.assertThat(
                     xml.xpath("/a/b/text()").get(0),
@@ -279,7 +291,13 @@ public final class XMLDocumentTest {
                     Matchers.<XML>iterableWithSize(1)
                 );
             }
-        } .run();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = zero; count < fifty; count = count + 1) {
+            executorService.submit(runnable);
+        }
+        executorService.awaitTermination(ten, TimeUnit.SECONDS);
+        executorService.shutdown();
     }
 
     /**
@@ -288,25 +306,34 @@ public final class XMLDocumentTest {
      */
     @Test
     public void printsInMultipleThreads() throws Exception {
+        final int zero = 0;
+        final int ten = 10;
+        final int thousand = 1000;
+        final int fifty = 50;
         final XML xml = new XMLDocument(
             String.format(
                 "<root><data>%s</data></root>",
                 StringUtils.repeat(
                     "<alpha>some text \u20ac</alpha> ",
-                    Tv.THOUSAND
+                    thousand
                 )
             )
         );
-        new Runnable() {
+        final Runnable runnable = new Runnable() {
             @Override
-            @Parallel(threads = Tv.FIFTY)
             public void run() {
                 MatcherAssert.assertThat(
                     xml.toString(),
                     XhtmlMatchers.hasXPath("/root/data/alpha")
                 );
             }
-        } .run();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = zero; count < fifty; count = count + 1) {
+            executorService.submit(runnable);
+        }
+        executorService.awaitTermination(ten, TimeUnit.SECONDS);
+        executorService.shutdown();
     }
 
     /**

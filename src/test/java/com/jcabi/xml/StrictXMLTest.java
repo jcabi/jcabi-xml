@@ -31,13 +31,14 @@ package com.jcabi.xml;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import com.jcabi.aspects.Parallel;
-import com.jcabi.aspects.Tv;
 import java.net.SocketException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.transform.Source;
 import javax.xml.validation.Validator;
@@ -126,6 +127,10 @@ public final class StrictXMLTest {
      */
     @Test
     public void validatesMultipleXmlsInThreads() throws Exception {
+        final int zero = 0;
+        final int ten = 10;
+        final int hundred = 100;
+        final int fifty = 50;
         final XSD xsd = new XSDDocument(
             StringUtils.join(
                 "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
@@ -143,12 +148,12 @@ public final class StrictXMLTest {
                 Iterables.concat(
                     Collections.singleton("<r>"),
                     Iterables.transform(
-                        Collections.nCopies(Tv.TEN, 0),
+                        Collections.nCopies(ten, zero),
                         new Function<Integer, String>() {
                             @Override
                             public String apply(final Integer pos) {
                                 return String.format(
-                                    "<x>%d</x>", rnd.nextInt(Tv.HUNDRED)
+                                    "<x>%d</x>", rnd.nextInt(hundred)
                                 );
                             }
                         }
@@ -159,9 +164,8 @@ public final class StrictXMLTest {
             )
         );
         final AtomicInteger done = new AtomicInteger();
-        new Callable<Void>() {
+        final Callable<Void> callable = new Callable<Void>() {
             @Override
-            @Parallel(threads = Tv.FIFTY)
             public Void call() throws Exception {
                 try {
                     new StrictXML(xml, xsd);
@@ -170,8 +174,14 @@ public final class StrictXMLTest {
                 }
                 return null;
             }
-        } .call();
-        MatcherAssert.assertThat(done.get(), Matchers.equalTo(Tv.FIFTY));
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = zero; count < fifty; count = count + 1) {
+            executorService.submit(callable);
+        }
+        executorService.awaitTermination(ten, TimeUnit.SECONDS);
+        executorService.shutdown();
+        MatcherAssert.assertThat(done.get(), Matchers.equalTo(fifty));
     }
 
     /**

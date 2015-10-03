@@ -29,9 +29,10 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Parallel;
-import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -76,6 +77,9 @@ public final class XSLDocumentTest {
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
     public void makesXslTransformationsInThreads() throws Exception {
+        final int zero = 0;
+        final int fifty = 50;
+        final int ten = 10;
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet  ",
@@ -85,16 +89,21 @@ public final class XSLDocumentTest {
                 "</xsl:template> </xsl:stylesheet>"
             )
         );
-        new Runnable() {
+        final Runnable runnable = new Runnable() {
             @Override
-            @Parallel(threads = Tv.FIFTY)
             public void run() {
                 MatcherAssert.assertThat(
                     xsl.transform(new XMLDocument("<test/>")),
                     XhtmlMatchers.hasXPath("/works")
                 );
             }
-        } .run();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = zero; count < fifty; count = count + 1) {
+            executorService.submit(runnable);
+        }
+        executorService.awaitTermination(ten, TimeUnit.SECONDS);
+        executorService.shutdown();
     }
 
     /**

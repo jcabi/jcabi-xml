@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Immutable;
 import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -41,14 +40,12 @@ import lombok.EqualsAndHashCode;
  * @version $Id$
  * @since 0.12
  */
-@Immutable
 @EqualsAndHashCode(of = "sheets")
 public final class XSLChain implements XSL {
 
     /**
      * XSL sheets.
      */
-    @Immutable.Array
     private final transient XSL[] sheets;
 
     /**
