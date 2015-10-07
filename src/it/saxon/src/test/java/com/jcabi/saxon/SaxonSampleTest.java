@@ -57,16 +57,16 @@ public final class SaxonSampleTest {
      */
     @Test
     public void validatesInMultipleThreads() throws Exception {
-        final int zero = 0;
-        final int ten = 10;
-        final int hundred = 100;
-        final int fifty = 50;
+        final int zerotime = 0;
+        final int tentimes = 10;
+        final int hundredtimes = 100;
+        final int fiftytimes = 50;
         final Random rand = new SecureRandom();
         // @checkstyle AnonInnerLengthCheck (100 lines)
         final Callable<Void> callable = new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                final int cnt = rand.nextInt(hundred);
+                final int cnt = rand.nextInt(hundredtimes);
                 final XSD xsd = new XSDDocument(
                     StringUtils.join(
                         "<xs:schema ",
@@ -97,11 +97,12 @@ public final class SaxonSampleTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < fifty; count = count + 1) {
+        for (int count = zerotime; count < fiftytimes; count = count + 1) {
             executorService.submit(callable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
+        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        executorService.shutdownNow();
     }
 
     /**
@@ -110,10 +111,10 @@ public final class SaxonSampleTest {
      */
     @Test
     public void validatesInMultipleThreadsAgain() throws Exception {
-        final int zero = 0;
-        final int ten = 10;
-        final int hundred = 100;
-        final int fifty = 50;
+        final int zerotime = 0;
+        final int tentimes = 10;
+        final int hundredtimes = 100;
+        final int fiftytimes = 50;
         final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
@@ -127,7 +128,7 @@ public final class SaxonSampleTest {
         final Callable<Void> callable = new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                final int cnt = rand.nextInt(hundred);
+                final int cnt = rand.nextInt(hundredtimes);
                 MatcherAssert.assertThat(
                     xsd.validate(
                         new DOMSource(
@@ -146,11 +147,12 @@ public final class SaxonSampleTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < fifty; count = count + 1) {
+        for (int count = zerotime; count < fiftytimes; count = count + 1) {
             executorService.submit(callable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
+        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        executorService.shutdownNow();
     }
 
 }

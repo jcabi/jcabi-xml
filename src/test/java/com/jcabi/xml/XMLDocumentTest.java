@@ -240,9 +240,9 @@ public final class XMLDocumentTest {
      */
     @Test
     public void parsesInMultipleThreads() throws Exception {
-        final int ten = 10;
-        final int zero = 0;
-        final int hundred = 100;
+        final int tentimes = 10;
+        final int zerotime = 0;
+        final int hundredtimes = 100;
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -253,11 +253,12 @@ public final class XMLDocumentTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < hundred; count = count + 1) {
+        for (int count = zerotime; count < hundredtimes; count = count + 1) {
             executorService.submit(runnable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
+        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        executorService.shutdownNow();
     }
 
     /**
@@ -266,16 +267,16 @@ public final class XMLDocumentTest {
      */
     @Test
     public void xpathInMultipleThreads() throws Exception {
-        final int zero = 0;
-        final int ten = 10;
-        final int thousand = 1000;
-        final int fifty = 50;
+        final int zerotime = 0;
+        final int tentimes = 10;
+        final int thousandtimes = 1000;
+        final int fiftytimes = 50;
         final XML xml = new XMLDocument(
             String.format(
                 "<a><b>test text</b><c>%s</c></a>",
                 StringUtils.repeat(
                     "<beta>some text \u20ac</beta> ",
-                    thousand
+                    thousandtimes
                 )
             )
         );
@@ -293,11 +294,12 @@ public final class XMLDocumentTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < fifty; count = count + 1) {
+        for (int count = zerotime; count < fiftytimes; count = count + 1) {
             executorService.submit(runnable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
+        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        executorService.shutdownNow();
     }
 
     /**
@@ -306,16 +308,16 @@ public final class XMLDocumentTest {
      */
     @Test
     public void printsInMultipleThreads() throws Exception {
-        final int zero = 0;
-        final int ten = 10;
-        final int thousand = 1000;
-        final int fifty = 50;
+        final int zerotime = 0;
+        final int tentimes = 10;
+        final int thousandtimes = 1000;
+        final int fiftytimes = 50;
         final XML xml = new XMLDocument(
             String.format(
                 "<root><data>%s</data></root>",
                 StringUtils.repeat(
                     "<alpha>some text \u20ac</alpha> ",
-                    thousand
+                    thousandtimes
                 )
             )
         );
@@ -329,11 +331,12 @@ public final class XMLDocumentTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < fifty; count = count + 1) {
+        for (int count = zerotime; count < fiftytimes; count = count + 1) {
             executorService.submit(runnable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
+        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        executorService.shutdownNow();
     }
 
     /**

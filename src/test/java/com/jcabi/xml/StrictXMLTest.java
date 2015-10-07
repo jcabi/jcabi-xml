@@ -127,10 +127,10 @@ public final class StrictXMLTest {
      */
     @Test
     public void validatesMultipleXmlsInThreads() throws Exception {
-        final int zero = 0;
-        final int ten = 10;
-        final int hundred = 100;
-        final int fifty = 50;
+        final int zerotime = 0;
+        final int tentimes = 10;
+        final int hundredtimes = 100;
+        final int fiftytimes = 50;
         final XSD xsd = new XSDDocument(
             StringUtils.join(
                 "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
@@ -148,12 +148,12 @@ public final class StrictXMLTest {
                 Iterables.concat(
                     Collections.singleton("<r>"),
                     Iterables.transform(
-                        Collections.nCopies(ten, zero),
+                        Collections.nCopies(tentimes, zerotime),
                         new Function<Integer, String>() {
                             @Override
                             public String apply(final Integer pos) {
                                 return String.format(
-                                    "<x>%d</x>", rnd.nextInt(hundred)
+                                    "<x>%d</x>", rnd.nextInt(hundredtimes)
                                 );
                             }
                         }
@@ -176,12 +176,13 @@ public final class StrictXMLTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < fifty; count = count + 1) {
+        for (int count = zerotime; count < fiftytimes; count = count + 1) {
             executorService.submit(callable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
-        MatcherAssert.assertThat(done.get(), Matchers.equalTo(fifty));
+        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        executorService.shutdownNow();
+        MatcherAssert.assertThat(done.get(), Matchers.equalTo(fiftytimes));
     }
 
     /**
