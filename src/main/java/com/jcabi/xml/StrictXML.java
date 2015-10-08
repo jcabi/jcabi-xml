@@ -113,7 +113,11 @@ public final class StrictXML implements XML {
                 xml
             );
             throw new IllegalArgumentException(
-                String.format("%d error(s), see log above", errors.size())
+                String.format(
+                    "%d error(s) in XML document: %s",
+                    errors.size(),
+                    StrictXML.join(StrictXML.print(errors), ";")
+                )
             );
         }
         this.origin = xml;
