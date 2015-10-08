@@ -35,7 +35,7 @@
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi</artifactId>
-        <version>1.17</version>
+        <version>1.20.1</version>
     </parent>
     <artifactId>jcabi-xml</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -211,7 +211,7 @@
                         <groupId>com.qulice</groupId>
                         <artifactId>qulice-maven-plugin</artifactId>
                         <configuration>
-                            <excludes>
+                            <excludes combine.children="append">
                                 <exclude>xml:/src/it/settings.xml</exclude>
                                 <exclude>xml:/src/test/resources/com/jcabi/xml/.*</exclude>
                             </excludes>

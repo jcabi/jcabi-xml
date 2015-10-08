@@ -107,10 +107,13 @@ public final class XSDDocumentTest {
      * @throws Exception If something goes wrong inside
      */
     @Test
-    @SuppressWarnings({
-        "PMD.AvoidInstantiatingObjectsInLoops",
-        "PMD.InsufficientStringBufferDeclaration"
-    })
+    @SuppressWarnings
+        (
+            {
+                "PMD.AvoidInstantiatingObjectsInLoops",
+                "PMD.InsufficientStringBufferDeclaration"
+            }
+        )
     public void validatesComplexXml() throws Exception {
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'  >",
