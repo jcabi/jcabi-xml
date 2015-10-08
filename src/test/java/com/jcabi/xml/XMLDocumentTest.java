@@ -240,9 +240,8 @@ public final class XMLDocumentTest {
      */
     @Test
     public void parsesInMultipleThreads() throws Exception {
-        final int tentimes = 10;
-        final int zerotime = 0;
-        final int hundredtimes = 100;
+        final int timeout = 10;
+        final int loop = 100;
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -253,11 +252,14 @@ public final class XMLDocumentTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zerotime; count < hundredtimes; count = count + 1) {
+        for (int count = 0; count < loop; count = count + 1) {
             executorService.submit(runnable);
         }
         executorService.shutdown();
-        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
         executorService.shutdownNow();
     }
 
@@ -298,7 +300,10 @@ public final class XMLDocumentTest {
             executorService.submit(runnable);
         }
         executorService.shutdown();
-        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(tentimes, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
         executorService.shutdownNow();
     }
 
@@ -308,16 +313,15 @@ public final class XMLDocumentTest {
      */
     @Test
     public void printsInMultipleThreads() throws Exception {
-        final int zerotime = 0;
-        final int tentimes = 10;
-        final int thousandtimes = 1000;
-        final int fiftytimes = 50;
+        final int timeout = 10;
+        final int repeat = 1000;
+        final int loop = 50;
         final XML xml = new XMLDocument(
             String.format(
                 "<root><data>%s</data></root>",
                 StringUtils.repeat(
                     "<alpha>some text \u20ac</alpha> ",
-                    thousandtimes
+                    repeat
                 )
             )
         );
@@ -331,11 +335,14 @@ public final class XMLDocumentTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zerotime; count < fiftytimes; count = count + 1) {
+        for (int count = 0; count < loop; count = count + 1) {
             executorService.submit(runnable);
         }
         executorService.shutdown();
-        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
         executorService.shutdownNow();
     }
 

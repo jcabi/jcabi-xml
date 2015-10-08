@@ -57,10 +57,9 @@ public final class XercesSampleTest {
      */
     @Test
     public void validatesXmlForSchemaValidity() throws Exception {
-        final int zerotime = 0;
-        final int tentimes = 10;
-        final int hundredtimes = 100;
-        final int fiftytimes = 50;
+        final int timeout = 10;
+        final int random = 100;
+        final int loop = 50;
         final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
@@ -77,7 +76,7 @@ public final class XercesSampleTest {
         final Callable<Void> callable = new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                final int cnt = rand.nextInt(hundredtimes);
+                final int cnt = rand.nextInt(random);
                 MatcherAssert.assertThat(
                     xsd.validate(
                         new DOMSource(
@@ -96,11 +95,14 @@ public final class XercesSampleTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zerotime; count < fiftytimes; count = count + 1) {
+        for (int count = 0; count < loop; count = count + 1) {
             executorService.submit(callable);
         }
         executorService.shutdown();
-        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
         executorService.shutdownNow();
     }
 }

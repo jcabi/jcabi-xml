@@ -127,10 +127,9 @@ public final class StrictXMLTest {
      */
     @Test
     public void validatesMultipleXmlsInThreads() throws Exception {
-        final int zerotime = 0;
-        final int tentimes = 10;
-        final int hundredtimes = 100;
-        final int fiftytimes = 50;
+        final int timeout = 10;
+        final int numrun = 100;
+        final int loop = 50;
         final XSD xsd = new XSDDocument(
             StringUtils.join(
                 "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
@@ -148,12 +147,12 @@ public final class StrictXMLTest {
                 Iterables.concat(
                     Collections.singleton("<r>"),
                     Iterables.transform(
-                        Collections.nCopies(tentimes, zerotime),
+                        Collections.nCopies(timeout, 0),
                         new Function<Integer, String>() {
                             @Override
                             public String apply(final Integer pos) {
                                 return String.format(
-                                    "<x>%d</x>", rnd.nextInt(hundredtimes)
+                                    "<x>%d</x>", rnd.nextInt(numrun)
                                 );
                             }
                         }
@@ -176,13 +175,16 @@ public final class StrictXMLTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zerotime; count < fiftytimes; count = count + 1) {
+        for (int count = 0; count < loop; count = count + 1) {
             executorService.submit(callable);
         }
         executorService.shutdown();
-        executorService.awaitTermination(tentimes, TimeUnit.SECONDS);
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
         executorService.shutdownNow();
-        MatcherAssert.assertThat(done.get(), Matchers.equalTo(fiftytimes));
+        MatcherAssert.assertThat(done.get(), Matchers.equalTo(loop));
     }
 
     /**
