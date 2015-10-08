@@ -113,11 +113,10 @@ public final class XSDDocumentTest {
         "PMD.InsufficientStringBufferDeclaration"
     })
     public void validatesComplexXml() throws Exception {
-        final int zero = 0;
-        final int five = 5;
-        final int ten = 10;
-        final int thousand = 1000;
-        final int hundred = 100;
+        final int loopp = 5;
+        final int size = 10000;
+        final int loop = 100;
+        final int random = 10;
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'  >",
             "<xs:element name='root'>",
@@ -126,15 +125,15 @@ public final class XSDDocumentTest {
             "</xs:sequence></xs:complexType>",
             "</xs:element></xs:schema>"
         );
-        final StringBuilder text = new StringBuilder(ten * thousand)
+        final StringBuilder text = new StringBuilder(size)
             .append("<root>");
-        for (int idx = zero; idx < hundred; ++idx) {
+        for (int idx = 0; idx < loop; ++idx) {
             text.append("\n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;")
-                .append(RandomStringUtils.randomAlphanumeric(ten))
+                .append(RandomStringUtils.randomAlphanumeric(random))
                 .append("</a>\n\r \t    ");
         }
         text.append("</root>");
-        for (int idx = 0; idx < five; ++idx) {
+        for (int idx = 0; idx < loopp; ++idx) {
             MatcherAssert.assertThat(
                 new XSDDocument(xsd).validate(
                     new StreamSource(
