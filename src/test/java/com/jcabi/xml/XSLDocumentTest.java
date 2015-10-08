@@ -77,9 +77,8 @@ public final class XSLDocumentTest {
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
     public void makesXslTransformationsInThreads() throws Exception {
-        final int zero = 0;
-        final int fifty = 50;
-        final int ten = 10;
+        final int loop = 50;
+        final int timeout = 30;
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet  ",
@@ -99,11 +98,15 @@ public final class XSLDocumentTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < fifty; count = count + 1) {
+        for (int count = 0; count < loop; count = count + 1) {
             executorService.submit(runnable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        executorService.shutdownNow();
     }
 
     /**

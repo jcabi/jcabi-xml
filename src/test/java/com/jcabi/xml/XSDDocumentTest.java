@@ -182,9 +182,9 @@ public final class XSDDocumentTest {
      */
     @Test
     public void validatesMultipleXmlsInThreads() throws Exception {
-        final int zero = 0;
-        final int hundred = 100;
-        final int ten = 10;
+        final int random = 100;
+        final int loop = 10;
+        final int timeout = 30;
         final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
@@ -201,7 +201,7 @@ public final class XSDDocumentTest {
         final Callable<Void> callable = new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                final int cnt = rand.nextInt(hundred);
+                final int cnt = rand.nextInt(random);
                 MatcherAssert.assertThat(
                     xsd.validate(
                         new DOMSource(
@@ -220,11 +220,15 @@ public final class XSDDocumentTest {
             }
         };
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = zero; count < ten; count = count + 1) {
+        for (int count = 0; count < loop; count = count + 1) {
             executorService.submit(callable);
         }
-        executorService.awaitTermination(ten, TimeUnit.SECONDS);
         executorService.shutdown();
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        executorService.shutdownNow();
     }
 
 }
