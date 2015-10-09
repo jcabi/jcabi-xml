@@ -29,12 +29,13 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Parallel;
-import com.jcabi.aspects.Tv;
 import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.IOUtils;
@@ -115,6 +116,10 @@ public final class XSDDocumentTest {
             }
         )
     public void validatesComplexXml() throws Exception {
+        final int loopp = 5;
+        final int size = 10000;
+        final int loop = 100;
+        final int random = 10;
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'  >",
             "<xs:element name='root'>",
@@ -123,15 +128,15 @@ public final class XSDDocumentTest {
             "</xs:sequence></xs:complexType>",
             "</xs:element></xs:schema>"
         );
-        final StringBuilder text = new StringBuilder(Tv.TEN * Tv.THOUSAND)
+        final StringBuilder text = new StringBuilder(size)
             .append("<root>");
-        for (int idx = 0; idx < Tv.HUNDRED; ++idx) {
+        for (int idx = 0; idx < loop; ++idx) {
             text.append("\n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;")
-                .append(RandomStringUtils.randomAlphanumeric(Tv.TEN))
+                .append(RandomStringUtils.randomAlphanumeric(random))
                 .append("</a>\n\r \t    ");
         }
         text.append("</root>");
-        for (int idx = 0; idx < Tv.FIVE; ++idx) {
+        for (int idx = 0; idx < loopp; ++idx) {
             MatcherAssert.assertThat(
                 new XSDDocument(xsd).validate(
                     new StreamSource(
@@ -179,6 +184,9 @@ public final class XSDDocumentTest {
      */
     @Test
     public void validatesMultipleXmlsInThreads() throws Exception {
+        final int random = 100;
+        final int loop = 10;
+        final int timeout = 30;
         final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
@@ -192,11 +200,10 @@ public final class XSDDocumentTest {
             )
         );
         // @checkstyle AnonInnerLengthCheck (50 lines)
-        new Callable<Void>() {
+        final Callable<Void> callable = new Callable<Void>() {
             @Override
-            @Parallel(threads = Tv.TEN)
             public Void call() throws Exception {
-                final int cnt = rand.nextInt(Tv.HUNDRED);
+                final int cnt = rand.nextInt(random);
                 MatcherAssert.assertThat(
                     xsd.validate(
                         new DOMSource(
@@ -213,7 +220,17 @@ public final class XSDDocumentTest {
                 );
                 return null;
             }
-        } .call();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count = count + 1) {
+            executorService.submit(callable);
+        }
+        executorService.shutdown();
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        executorService.shutdownNow();
     }
 
 }

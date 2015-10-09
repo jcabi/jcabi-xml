@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Immutable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +72,6 @@ import org.w3c.dom.NodeList;
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle ClassFanOutComplexity (500 lines)
  */
-@Immutable
 @EqualsAndHashCode(of = { "xml", "leaf" })
 @SuppressWarnings("PMD.ExcessiveImports")
 public final class XMLDocument implements XML {

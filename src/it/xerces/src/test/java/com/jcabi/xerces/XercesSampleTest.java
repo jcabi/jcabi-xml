@@ -29,14 +29,15 @@
  */
 package com.jcabi.xerces;
 
-import com.jcabi.aspects.Parallel;
-import com.jcabi.aspects.Tv;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSD;
 import com.jcabi.xml.XSDDocument;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import javax.xml.transform.dom.DOMSource;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
@@ -56,6 +57,9 @@ public final class XercesSampleTest {
      */
     @Test
     public void validatesXmlForSchemaValidity() throws Exception {
+        final int timeout = 10;
+        final int random = 100;
+        final int loop = 50;
         final Random rand = new SecureRandom();
         final XSD xsd = new XSDDocument(
             StringUtils.join(
@@ -69,11 +73,10 @@ public final class XercesSampleTest {
             )
         );
         // @checkstyle AnonInnerLengthCheck (50 lines)
-        new Callable<Void>() {
+        final Callable<Void> callable = new Callable<Void>() {
             @Override
-            @Parallel(threads = Tv.TEN)
             public Void call() throws Exception {
-                final int cnt = rand.nextInt(Tv.HUNDRED);
+                final int cnt = rand.nextInt(random);
                 MatcherAssert.assertThat(
                     xsd.validate(
                         new DOMSource(
@@ -90,7 +93,16 @@ public final class XercesSampleTest {
                 );
                 return null;
             }
-        } .call();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count = count + 1) {
+            executorService.submit(callable);
+        }
+        executorService.shutdown();
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        executorService.shutdownNow();
     }
-
 }
