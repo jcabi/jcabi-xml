@@ -305,7 +305,7 @@ public final class XMLDocument implements XML {
     @NotNull(message = "list of texts is never NULL")
     @SuppressWarnings(
         { "PMD.ExceptionAsFlowControl", "PMD.PreserveStackTrace" }
-    )
+        )
     public List<String> xpath(@NotNull final String query) {
         List<String> items;
         try {

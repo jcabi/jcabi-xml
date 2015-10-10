@@ -111,7 +111,7 @@ public final class XSDDocumentTest {
     @SuppressWarnings({
         "PMD.AvoidInstantiatingObjectsInLoops",
         "PMD.InsufficientStringBufferDeclaration"
-    })
+        })
     public void validatesComplexXml() throws Exception {
         final int loopp = 5;
         final int size = 10000;
