@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Immutable;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,7 +49,6 @@ import lombok.EqualsAndHashCode;
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
  */
-@Immutable
 @EqualsAndHashCode(of = "content")
 final class TextResource {
 

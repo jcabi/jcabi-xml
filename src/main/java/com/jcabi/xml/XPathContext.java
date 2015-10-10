@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Immutable;
 import com.jcabi.immutable.Array;
 import com.jcabi.immutable.ArrayMap;
 import com.jcabi.log.Logger;
@@ -53,7 +52,6 @@ import lombok.EqualsAndHashCode;
  * @version $Id$
  * @since 0.1
  */
-@Immutable
 @EqualsAndHashCode(of = { "map", "contexts" })
 public final class XPathContext implements NamespaceContext {
 

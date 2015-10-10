@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Immutable;
 import javax.xml.transform.Source;
 import javax.xml.transform.URIResolver;
 
@@ -41,7 +40,6 @@ import javax.xml.transform.URIResolver;
  * @since 0.9
  * @checkstyle InterfaceIsType (500 lines)
  */
-@Immutable
 public interface Sources extends URIResolver {
 
     /**
