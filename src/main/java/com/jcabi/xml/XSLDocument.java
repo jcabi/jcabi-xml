@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Immutable;
 import com.jcabi.immutable.ArrayMap;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayOutputStream;
@@ -66,7 +65,6 @@ import org.w3c.dom.Document;
  * @since 0.4
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
-@Immutable
 @EqualsAndHashCode(of = "xsl")
 @SuppressWarnings("PMD.TooManyMethods")
 public final class XSLDocument implements XSL {

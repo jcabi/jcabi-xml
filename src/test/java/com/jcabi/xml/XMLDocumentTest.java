@@ -30,10 +30,11 @@
 package com.jcabi.xml;
 
 import com.google.common.io.Files;
-import com.jcabi.aspects.Parallel;
-import com.jcabi.aspects.Tv;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
@@ -239,16 +240,27 @@ public final class XMLDocumentTest {
      */
     @Test
     public void parsesInMultipleThreads() throws Exception {
-        new Runnable() {
+        final int timeout = 10;
+        final int loop = 100;
+        final Runnable runnable = new Runnable() {
             @Override
-            @Parallel(threads = Tv.HUNDRED)
             public void run() {
                 MatcherAssert.assertThat(
                     new XMLDocument("<root><hey/></root>"),
                     XhtmlMatchers.hasXPath("/root/hey")
                 );
             }
-        } .run();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count = count + 1) {
+            executorService.submit(runnable);
+        }
+        executorService.shutdown();
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        executorService.shutdownNow();
     }
 
     /**
@@ -257,18 +269,20 @@ public final class XMLDocumentTest {
      */
     @Test
     public void xpathInMultipleThreads() throws Exception {
+        final int timeout = 30;
+        final int repeat = 1000;
+        final int loop = 50;
         final XML xml = new XMLDocument(
             String.format(
                 "<a><b>test text</b><c>%s</c></a>",
                 StringUtils.repeat(
                     "<beta>some text \u20ac</beta> ",
-                    Tv.THOUSAND
+                    repeat
                 )
             )
         );
-        new Runnable() {
+        final Runnable runnable = new Runnable() {
             @Override
-            @Parallel(threads = Tv.FIFTY)
             public void run() {
                 MatcherAssert.assertThat(
                     xml.xpath("/a/b/text()").get(0),
@@ -279,7 +293,17 @@ public final class XMLDocumentTest {
                     Matchers.<XML>iterableWithSize(1)
                 );
             }
-        } .run();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count = count + 1) {
+            executorService.submit(runnable);
+        }
+        executorService.shutdown();
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        executorService.shutdownNow();
     }
 
     /**
@@ -288,25 +312,37 @@ public final class XMLDocumentTest {
      */
     @Test
     public void printsInMultipleThreads() throws Exception {
+        final int timeout = 30;
+        final int repeat = 1000;
+        final int loop = 50;
         final XML xml = new XMLDocument(
             String.format(
                 "<root><data>%s</data></root>",
                 StringUtils.repeat(
                     "<alpha>some text \u20ac</alpha> ",
-                    Tv.THOUSAND
+                    repeat
                 )
             )
         );
-        new Runnable() {
+        final Runnable runnable = new Runnable() {
             @Override
-            @Parallel(threads = Tv.FIFTY)
             public void run() {
                 MatcherAssert.assertThat(
                     xml.toString(),
                     XhtmlMatchers.hasXPath("/root/data/alpha")
                 );
             }
-        } .run();
+        };
+        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count = count + 1) {
+            executorService.submit(runnable);
+        }
+        executorService.shutdown();
+        MatcherAssert.assertThat(
+            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        executorService.shutdownNow();
     }
 
     /**
