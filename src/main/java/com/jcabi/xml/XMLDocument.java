@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.aspects.Immutable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +72,6 @@ import org.w3c.dom.NodeList;
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle ClassFanOutComplexity (500 lines)
  */
-@Immutable
 @EqualsAndHashCode(of = { "xml", "leaf" })
 @SuppressWarnings("PMD.ExcessiveImports")
 public final class XMLDocument implements XML {
@@ -305,12 +303,8 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull(message = "list of texts is never NULL")
-    @SuppressWarnings
-        (
-            {
-                "PMD.ExceptionAsFlowControl",
-                "PMD.PreserveStackTrace"
-            }
+    @SuppressWarnings(
+        { "PMD.ExceptionAsFlowControl", "PMD.PreserveStackTrace" }
         )
     public List<String> xpath(@NotNull final String query) {
         List<String> items;
