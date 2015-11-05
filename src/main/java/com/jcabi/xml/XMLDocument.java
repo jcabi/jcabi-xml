@@ -345,8 +345,9 @@ public final class XMLDocument implements XML {
 
     @Override
     @NotNull(message = "XML is never NULL")
-    public XML registerNs(@NotNull final String prefix,
-        @NotNull final Object uri) {
+    public XML registerNs(
+        @NotNull(message = "prefix can't be NULL") final String prefix,
+        @NotNull(message = "URI can't be NULL") final Object uri) {
         return new XMLDocument(
             this.node(), this.context.add(prefix, uri), this.leaf
         );
