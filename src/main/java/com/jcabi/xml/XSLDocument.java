@@ -107,7 +107,7 @@ public final class XSLDocument implements XSL {
     /**
      * Error listener.
      */
-    private static final ErrorListener ERRORS = new ErrorListener() {
+    private static ErrorListener ERRORS = new ErrorListener() {
         @Override
         public void warning(final TransformerException exception) {
             Logger.warn(this, exception.getMessageAndLocation());
@@ -122,6 +122,11 @@ public final class XSLDocument implements XSL {
         }
     };
 
+    public void setErrorListener(ErrorListener errorListener){
+            XSLDocument.ERRORS = errorListener;
+    }
+    
+    
     /**
      * XSL document.
      */
