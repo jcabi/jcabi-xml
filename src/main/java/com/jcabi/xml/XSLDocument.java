@@ -126,7 +126,7 @@ public final class XSLDocument implements XSL {
      * Setting up Custom Error Listener
      */
     public static void setErrorListener(final ErrorListener errorListener){
-        XSLDocument.ERRORS = errorListener; 
+        XSLDocument.ERRORS = errorListener;
     }
     
     /**
