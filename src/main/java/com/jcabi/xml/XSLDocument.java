@@ -299,10 +299,11 @@ public final class XSLDocument implements XSL {
 
     /**
      * Setting up Custom Error Listener
+     * @param el ErrorListener
      */
-    public static void SetErrorListener(
-        @NotNull(message = "ErrorListener can't be NULL") ErrorListener errorlistener){
-        XSLDocument.ERRORS = errorlistener; 
+    public static void setErrorListener(
+        @NotNull(message = "ErrorListener can't be NULL") final ErrorListener el){ 
+        XSLDocument.ERRORS = el;
     }
 
     /**
