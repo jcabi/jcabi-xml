@@ -121,13 +121,6 @@ public final class XSLDocument implements XSL {
             this.error(exception);
         }
     };
-
-    /**
-     * Setting up Custom Error Listener
-     */
-    public static void SetErrorListener(ErrorListener errorListener){
-        XSLDocument.ERRORS = errorListener; 
-    }
     
     /**
      * XSL document.
@@ -302,6 +295,14 @@ public final class XSLDocument implements XSL {
         } catch (final UnsupportedEncodingException ex) {
             throw new IllegalStateException(ex);
         }
+    }
+
+    /**
+     * Setting up Custom Error Listener
+     */
+    public static void SetErrorListener(
+        @NotNull(message = "ErrorListener can't be NULL") ErrorListener errorlistener){
+        XSLDocument.ERRORS = errorlistener; 
     }
 
     /**
