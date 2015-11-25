@@ -61,7 +61,7 @@ import org.w3c.dom.Document;
  * <p>Objects of this class are immutable and thread-safe.
  *
  * @author Yegor Bugayenko (yegor@teamed.io)
- * @version $Id$
+ * @version $Id: e6909a931c5e2b36c41e6805407ea33a36791aec $
  * @since 0.4
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
@@ -107,7 +107,7 @@ public final class XSLDocument implements XSL {
     /**
      * Error listener.
      */
-    private static final ErrorListener ERRORS = new ErrorListener() {
+    private final transient ErrorListener ERRORS = new ErrorListener() {
         @Override
         public void warning(final TransformerException exception) {
             Logger.warn(this, exception.getMessageAndLocation());
@@ -174,6 +174,16 @@ public final class XSLDocument implements XSL {
     public XSLDocument(@NotNull(message = "XSL input stream can't be NULL")
         final InputStream stream) {
         this(new TextResource(stream).toString());
+    }
+
+    /**
+     * Public ctor, from XSL as a string with error listener.
+     * @param src XML document body
+     * @param elistener Error Listener
+     */
+    public XSLDocument(final String src, ErrorListener elistener) {
+        this(src, Sources.DUMMY);
+        this.ERRORS = elistener;
     }
 
     /**
