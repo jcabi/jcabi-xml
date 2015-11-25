@@ -107,20 +107,7 @@ public final class XSLDocument implements XSL {
     /**
      * Error listener.
      */
-    private static final ErrorListener ERRORS = new ErrorListener() {
-        @Override
-        public void warning(final TransformerException exception) {
-            Logger.warn(this, exception.getMessageAndLocation());
-        }
-        @Override
-        public void error(final TransformerException exception) {
-            Logger.error(this, exception.getMessageAndLocation());
-        }
-        @Override
-        public void fatalError(final TransformerException exception) {
-            this.error(exception);
-        }
-    };
+    private final transient ErrorListener elistener;
 
     /**
      * XSL document.
@@ -177,6 +164,15 @@ public final class XSLDocument implements XSL {
     }
 
     /**
+     * Public ctor, from XSL as a string with error listener.
+     * @param src XML document body
+     * @param elistener Error Listener
+     */
+    public XSLDocument(final String src, final ErrorListener elistener) {
+        this(src, Sources.DUMMY, new ArrayMap<String, String>(), elistener);
+    }
+
+    /**
      * Public ctor, from XSL as a string.
      * @param src XML document body
      */
@@ -209,6 +205,39 @@ public final class XSLDocument implements XSL {
         this.xsl = src;
         this.sources = srcs;
         this.params = new ArrayMap<String, String>(map);
+        this.elistener = new ErrorListener() {
+        	@Override
+            public void warning(final TransformerException exception) {
+                Logger.warn(this, exception.getMessageAndLocation());
+            }
+            @Override
+            public void error(final TransformerException exception) {
+                Logger.error(this, exception.getMessageAndLocation());
+            }
+            @Override
+            public void fatalError(final TransformerException exception) {
+                this.error(exception);
+            }
+    	};
+    }
+
+    /**
+     * Public ctor, from XSL as a string.
+     * @param src XML document body
+     * @param srcs Sources
+     * @param map Map of XSL params
+     * @since 0.16
+     */
+    public XSLDocument(
+        @NotNull(message = "XSL can't be NULL") final String src,
+        @NotNull(message = "sources can't be NULL") final Sources srcs,
+        @NotNull(message = "map of params can't be NULL") final Map<String, String> map,
+    	@NotNull(message = "elisetener can't be NULL") 
+        final ErrorListener elistener) {
+        this.xsl = src;
+        this.sources = srcs;
+        this.params = new ArrayMap<String, String>(map);
+        this.elistener = elistener;
     }
 
     @Override
@@ -309,7 +338,7 @@ public final class XSLDocument implements XSL {
             final TransformerFactory factory =
                 TransformerFactory.newInstance();
             try {
-                factory.setErrorListener(XSLDocument.ERRORS);
+                factory.setErrorListener(this.elistener);
                 factory.setURIResolver(this.sources);
                 trans = factory.newTransformer(
                     new StreamSource(new StringReader(this.xsl))
