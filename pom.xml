@@ -163,7 +163,7 @@
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-all</artifactId>
-                        <version>2.2.2</version>
+                        <version>2.4.5</version>
                     </dependency>
                     <dependency>
                         <groupId>net.sourceforge.reb4j</groupId>
@@ -175,7 +175,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.8</version>
+                <version>1.10</version>
                 <executions>
                     <execution>
                         <id>add-source</id>
@@ -246,7 +246,7 @@
                     <plugin>
                         <groupId>org.eluder.coveralls</groupId>
                         <artifactId>coveralls-maven-plugin</artifactId>
-                        <version>4.0.0</version>
+                        <version>4.1.0</version>
                         <executions>
                             <execution>
                                 <phase>site</phase>
