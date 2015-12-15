@@ -37,7 +37,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -70,8 +69,7 @@ public final class XSDDocument implements XSD {
      * Public ctor, from XSD as a source.
      * @param src XSD document body
      */
-    public XSDDocument(@NotNull(message = "XML can't be NULL")
-        final XML src) {
+    public XSDDocument(final XML src) {
         this(src.toString());
     }
 
@@ -79,8 +77,7 @@ public final class XSDDocument implements XSD {
      * Public ctor, from XSD as a string.
      * @param src XSD document body
      */
-    public XSDDocument(@NotNull(message = "XSD text can't be NULL")
-        final String src) {
+    public XSDDocument(final String src) {
         this.xsd = src;
     }
 
@@ -90,8 +87,7 @@ public final class XSDDocument implements XSD {
      * @throws IOException If fails to read
      * @since 0.7.4
      */
-    public XSDDocument(@NotNull(message = "URL can't be NULL")
-        final URL url) throws IOException {
+    public XSDDocument(final URL url) throws IOException {
         this(new TextResource(url).toString());
     }
 
@@ -101,8 +97,7 @@ public final class XSDDocument implements XSD {
      * @throws IOException If fails to read
      * @since 0.15
      */
-    public XSDDocument(@NotNull(message = "URI can't be NULL")
-        final URI uri) throws IOException {
+    public XSDDocument(final URI uri) throws IOException {
         this(new TextResource(uri).toString());
     }
 
@@ -110,8 +105,7 @@ public final class XSDDocument implements XSD {
      * Public ctor, from XSD as an input stream.
      * @param stream XSD input stream
      */
-    public XSDDocument(@NotNull(message = "XSD input stream can't be NULL")
-        final InputStream stream) {
+    public XSDDocument(final InputStream stream) {
         this(new TextResource(stream).toString());
     }
 
@@ -131,8 +125,7 @@ public final class XSDDocument implements XSD {
      * @param stream Input stream
      * @return XSD schema
      */
-    public static XSD make(@NotNull(message = "XSD input stream can't be NULL")
-        final InputStream stream) {
+    public static XSD make(final InputStream stream) {
         return new XSDDocument(stream);
     }
 
@@ -143,8 +136,7 @@ public final class XSDDocument implements XSD {
      * @see #make(InputStream)
      * @since 0.7.4
      */
-    public static XSD make(@NotNull(message = "URL can't be NULL")
-        final URL url) {
+    public static XSD make(final URL url) {
         try {
             return new XSDDocument(url);
         } catch (final IOException ex) {
@@ -158,9 +150,7 @@ public final class XSDDocument implements XSD {
     }
 
     @Override
-    @NotNull(message = "list of exceptions is never NULL")
-    public Collection<SAXParseException> validate(
-        @NotNull(message = "XML can't be NULL") final Source xml) {
+    public Collection<SAXParseException> validate(final Source xml) {
         final Schema schema;
         try {
             synchronized (XSDDocument.class) {

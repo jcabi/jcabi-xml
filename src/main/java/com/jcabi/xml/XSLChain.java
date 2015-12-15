@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import java.util.Collection;
-import javax.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -52,14 +51,12 @@ public final class XSLChain implements XSL {
      * Public ctor.
      * @param shts Sheets
      */
-    public XSLChain(@NotNull(message = "list of stylesheets can't be NULL")
-        final Collection<XSL> shts) {
+    public XSLChain(final Collection<XSL> shts) {
         this.sheets = shts.toArray(new XSL[shts.size()]);
     }
 
     @Override
-    public XML transform(@NotNull(message = "XML can't be NULL")
-        final XML xml) {
+    public XML transform(final XML xml) {
         XML output = xml;
         for (final XSL sheet : this.sheets) {
             output = sheet.transform(output);

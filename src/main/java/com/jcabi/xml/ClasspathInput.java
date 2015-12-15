@@ -64,9 +64,8 @@ class ClasspathInput implements LSInput {
      * @param sysid System id
      * @param input Input stream
      */
-    public ClasspathInput(
-        final String pubid, final String sysid, final InputStream input
-    ) {
+    ClasspathInput(final String pubid, final String sysid,
+        final InputStream input) {
         this.publicid = pubid;
         this.systemid = sysid;
         this.stream = new BufferedInputStream(input);

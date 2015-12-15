@@ -34,7 +34,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
-import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import lombok.EqualsAndHashCode;
@@ -100,7 +99,6 @@ final class DomParser {
      * Get document of body.
      * @return The document
      */
-    @NotNull
     public Document document() {
         final Document doc;
         try {

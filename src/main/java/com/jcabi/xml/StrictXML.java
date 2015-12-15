@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.validation.constraints.NotNull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.dom.DOMSource;
@@ -71,7 +70,7 @@ public final class StrictXML implements XML {
      * Public ctor.
      * @param xml XML document
      */
-    public StrictXML(@NotNull(message = "XML can't be NULL") final XML xml) {
+    public StrictXML(final XML xml) {
         this(xml, StrictXML.newValidator());
     }
 
@@ -80,9 +79,7 @@ public final class StrictXML implements XML {
      * @param xml XML document
      * @param val Custom validator
      */
-    public StrictXML(
-        @NotNull(message = "XML can't be NULL") final XML xml,
-        @NotNull(message = "Validator can't be NULL") final Validator val) {
+    public StrictXML(final XML xml, final Validator val) {
         this(xml, StrictXML.validate(xml, val));
     }
 
@@ -91,9 +88,7 @@ public final class StrictXML implements XML {
      * @param xml XML document
      * @param schema XSD schema
      */
-    public StrictXML(
-        @NotNull(message = "XML can't be NULL") final XML xml,
-        @NotNull(message = "XSD schema can't be NULL") final XSD schema) {
+    public StrictXML(final XML xml, final XSD schema) {
         this(xml, schema.validate(new DOMSource(xml.node())));
     }
 

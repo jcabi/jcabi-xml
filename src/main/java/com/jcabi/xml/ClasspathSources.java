@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import java.io.InputStream;
-import javax.validation.constraints.NotNull;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
@@ -75,8 +74,7 @@ public final class ClasspathSources implements Sources {
      * Public ctor.
      * @param pfx Classpath prefix
      */
-    public ClasspathSources(
-        @NotNull(message = "classpath prefix can't be NULL") final String pfx) {
+    public ClasspathSources(final String pfx) {
         this.prefix = pfx;
     }
 

@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import javax.xml.namespace.NamespaceContext;
 import org.w3c.dom.Node;
 
@@ -92,8 +91,7 @@ public interface XML {
      * @param query The XPath query
      * @return The list of string values (texts) or single function result
      */
-    @NotNull(message = "list of texts is never NULL")
-    List<String> xpath(@NotNull(message = "query can't be NULL") String query);
+    List<String> xpath(String query);
 
     /**
      * Retrieve DOM nodes from the XML response.
@@ -107,8 +105,7 @@ public interface XML {
      * @param query The XPath query
      * @return Collection of DOM nodes
      */
-    @NotNull(message = "list of nodes is never NULL")
-    List<XML> nodes(@NotNull(message = "query can't be NULL") String query);
+    List<XML> nodes(String query);
 
     /**
      * Register additional namespace prefix for XPath.
@@ -134,10 +131,7 @@ public interface XML {
      * @param uri Namespace URI
      * @return A new XML document, with this additional namespace registered
      */
-    @NotNull(message = "XML is never NULL")
-    XML registerNs(
-        @NotNull(message = "prefix can't be NULL") String prefix,
-        @NotNull(message = "URI can't be NULL") Object uri);
+    XML registerNs(String prefix, Object uri);
 
     /**
      * Append this namespace context to the existing one.
@@ -149,15 +143,12 @@ public interface XML {
      * @param context The context to append
      * @return A new XML document, with a merged context on board
      */
-    @NotNull(message = "XML is never NULL")
-    XML merge(@NotNull(message = "context can't be NULL")
-        NamespaceContext context);
+    XML merge(NamespaceContext context);
 
     /**
      * Retrieve DOM node, represented by this wrapper.
      * @return DOM node
      */
-    @NotNull(message = "node is never NULL")
     Node node();
 
 }

@@ -39,7 +39,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.ErrorListener;
@@ -141,7 +140,7 @@ public final class XSLDocument implements XSL {
      * Public ctor, from XML as a source.
      * @param src XSL document body
      */
-    public XSLDocument(@NotNull(message = "XML can't be NULL") final XML src) {
+    public XSLDocument(final XML src) {
         this(src.toString());
     }
 
@@ -151,8 +150,7 @@ public final class XSLDocument implements XSL {
      * @throws IOException If fails to read
      * @since 0.7.4
      */
-    public XSLDocument(@NotNull(message = "URL can't be NULL")
-        final URL url) throws IOException {
+    public XSLDocument(final URL url) throws IOException {
         this(new TextResource(url).toString());
     }
 
@@ -162,8 +160,7 @@ public final class XSLDocument implements XSL {
      * @throws IOException If fails to read
      * @since 0.15
      */
-    public XSLDocument(@NotNull(message = "URI can't be NULL")
-        final URI uri) throws IOException {
+    public XSLDocument(final URI uri) throws IOException {
         this(new TextResource(uri).toString());
     }
 
@@ -171,8 +168,7 @@ public final class XSLDocument implements XSL {
      * Public ctor, from XSL as an input stream.
      * @param stream XSL input stream
      */
-    public XSLDocument(@NotNull(message = "XSL input stream can't be NULL")
-        final InputStream stream) {
+    public XSLDocument(final InputStream stream) {
         this(new TextResource(stream).toString());
     }
 
@@ -201,10 +197,7 @@ public final class XSLDocument implements XSL {
      * @param map Map of XSL params
      * @since 0.16
      */
-    public XSLDocument(
-        @NotNull(message = "XSL can't be NULL") final String src,
-        @NotNull(message = "sources can't be NULL") final Sources srcs,
-        @NotNull(message = "map of params can't be NULL")
+    public XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map) {
         this.xsl = src;
         this.sources = srcs;
@@ -212,15 +205,12 @@ public final class XSLDocument implements XSL {
     }
 
     @Override
-    public XSL with(@NotNull(message = "sources can't be NULL")
-        final Sources src) {
+    public XSL with(final Sources src) {
         return new XSLDocument(this.xsl, src, this.params);
     }
 
     @Override
-    public XSL with(
-        @NotNull(message = "name can't be NULL") final String name,
-        @NotNull(message = "value can't be NULL") final Object value) {
+    public XSL with(final String name, final Object value) {
         return new XSLDocument(
             this.xsl, this.sources, this.params.with(name, value)
         );
@@ -242,8 +232,7 @@ public final class XSLDocument implements XSL {
      * @param stream Input stream
      * @return XSL stylesheet
      */
-    public static XSL make(@NotNull(message = "XSL input stream can't be NULL")
-        final InputStream stream) {
+    public static XSL make(final InputStream stream) {
         return new XSLDocument(stream);
     }
 
@@ -254,8 +243,7 @@ public final class XSLDocument implements XSL {
      * @see #make(InputStream)
      * @since 0.7.4
      */
-    public static XSL make(@NotNull(message = "URL can't be NULL")
-        final URL url) {
+    public static XSL make(final URL url) {
         try {
             return new XSLDocument(url);
         } catch (final IOException ex) {
@@ -269,9 +257,7 @@ public final class XSLDocument implements XSL {
     }
 
     @Override
-    @NotNull(message = "XML is never NULL")
-    public XML transform(@NotNull(message = "XML can't be NULL")
-        final XML xml) {
+    public XML transform(final XML xml) {
         final Document target;
         try {
             target = XSLDocument.DFACTORY.newDocumentBuilder()
@@ -286,8 +272,7 @@ public final class XSLDocument implements XSL {
     }
 
     @Override
-    public String applyTo(
-        @NotNull(message = "XML can't be NULL") final XML xml) {
+    public String applyTo(final XML xml) {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         this.transformInto(xml, new StreamResult(baos));
         try {

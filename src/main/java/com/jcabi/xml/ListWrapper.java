@@ -231,7 +231,7 @@ final class ListWrapper<T> implements List<T> {
      * {@code start} or {@code end} is bigger than the size of the list. In all
      * other cases of illegal method call (start is less than zero, end is
      * less than zero, or start is bigger than end) a standard
-     * {@link IndexOutOfBoundException} is thrown (by the encapsulated
+     * {@link IndexOutOfBoundsException} is thrown (by the encapsulated
      * implementation of {@Link List}).
      */
     @Override

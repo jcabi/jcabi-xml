@@ -29,8 +29,6 @@
  */
 package com.jcabi.xml;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * XSL stylesheet.
  *
@@ -48,8 +46,7 @@ public interface XSL {
      * @param xml Source XML document
      * @return Result document
      */
-    @NotNull(message = "XML is never NULL")
-    XML transform(@NotNull(message = "XML can't be NULL") XML xml);
+    XML transform(XML xml);
 
     /**
      * Transform XML into text.
@@ -57,16 +54,14 @@ public interface XSL {
      * @return Result text
      * @since 0.11
      */
-    @NotNull(message = "result text is never NULL")
-    String applyTo(@NotNull(message = "XML can't be NULL") XML xml);
+    String applyTo(XML xml);
 
     /**
      * With this sources.
      * @param src Sources
      * @return New XSL document
      */
-    @NotNull(message = "XSL is never NULL")
-    XSL with(@NotNull(message = "sources can't be NULL") Sources src);
+    XSL with(Sources src);
 
     /**
      * With this parameter.
@@ -75,8 +70,6 @@ public interface XSL {
      * @return New XSL document
      * @since 0.16
      */
-    @NotNull(message = "XSL is never NULL")
-    XSL with(@NotNull(message = "parameter name can't be NULL") String name,
-        @NotNull(message = "parameter value can't be NULL") Object value);
+    XSL with(String name, Object value);
 
 }
