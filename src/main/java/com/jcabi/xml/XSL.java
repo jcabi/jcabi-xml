@@ -77,6 +77,6 @@ public interface XSL {
      */
     @NotNull(message = "XSL is never NULL")
     XSL with(@NotNull(message = "parameter name can't be NULL") String name,
-        @NotNull(message = "parameter value can't be NULL") String value);
+        @NotNull(message = "parameter value can't be NULL") Object value);
 
 }

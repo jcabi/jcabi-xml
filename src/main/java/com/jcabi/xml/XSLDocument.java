@@ -135,7 +135,7 @@ public final class XSLDocument implements XSL {
     /**
      * Parameters.
      */
-    private final transient ArrayMap<String, String> params;
+    private final transient ArrayMap<String, Object> params;
 
     /**
      * Public ctor, from XML as a source.
@@ -191,7 +191,7 @@ public final class XSLDocument implements XSL {
      * @since 0.9
      */
     public XSLDocument(final String src, final Sources srcs) {
-        this(src, srcs, new ArrayMap<String, String>());
+        this(src, srcs, new ArrayMap<String, Object>());
     }
 
     /**
@@ -205,10 +205,10 @@ public final class XSLDocument implements XSL {
         @NotNull(message = "XSL can't be NULL") final String src,
         @NotNull(message = "sources can't be NULL") final Sources srcs,
         @NotNull(message = "map of params can't be NULL")
-        final Map<String, String> map) {
+        final Map<String, Object> map) {
         this.xsl = src;
         this.sources = srcs;
-        this.params = new ArrayMap<String, String>(map);
+        this.params = new ArrayMap<String, Object>(map);
     }
 
     @Override
@@ -220,7 +220,7 @@ public final class XSLDocument implements XSL {
     @Override
     public XSL with(
         @NotNull(message = "name can't be NULL") final String name,
-        @NotNull(message = "value can't be NULL") final String value) {
+        @NotNull(message = "value can't be NULL") final Object value) {
         return new XSLDocument(
             this.xsl, this.sources, this.params.with(name, value)
         );
@@ -315,7 +315,7 @@ public final class XSLDocument implements XSL {
                     new StreamSource(new StringReader(this.xsl))
                 );
                 trans.setURIResolver(this.sources);
-                for (final Map.Entry<String, String> ent
+                for (final Map.Entry<String, Object> ent
                     : this.params.entrySet()) {
                     trans.setParameter(ent.getKey(), ent.getValue());
                 }

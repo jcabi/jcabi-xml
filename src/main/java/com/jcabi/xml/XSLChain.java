@@ -78,7 +78,7 @@ public final class XSLChain implements XSL {
     }
 
     @Override
-    public XSL with(final String name, final String value) {
+    public XSL with(final String name, final Object value) {
         throw new UnsupportedOperationException("#with(name, value)");
     }
 }

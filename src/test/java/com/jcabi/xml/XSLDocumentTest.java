@@ -178,6 +178,7 @@ public final class XSLDocumentTest {
             StringUtils.join(
                 "<xsl:stylesheet   ",
                 " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'    ",
+                " xmlns:xs='http://www.w3.org/2001/XMLSchema'",
                 " version='2.0'><xsl:output method='text'  />",
                 "<xsl:param name='boom' />",
                 "<xsl:template match='/'>[<xsl:value-of select='$boom'/>]",
@@ -187,6 +188,29 @@ public final class XSLDocumentTest {
         MatcherAssert.assertThat(
             xsl.with("boom", "Donny").applyTo(new XMLDocument("<ehe/>")),
             Matchers.equalTo("[Donny]")
+        );
+    }
+
+    /**
+     * XSLDocument can transform into text, with integer params.
+     * @throws Exception If something goes wrong inside
+     * @since 0.17
+     */
+    @Test
+    public void transformsIntoTextWithIntegerParams() throws Exception {
+        final XSL xsl = new XSLDocument(
+            StringUtils.join(
+                "<xsl:stylesheet     ",
+                " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'       ",
+                " version='2.0'><xsl:output method='text'    />",
+                "<xsl:param name='faa' as='xs:integer' select='5'/>",
+                "<xsl:template match='/'>+<xsl:value-of select='$faa'/>+",
+                "</xsl:template>   </xsl:stylesheet>  "
+            )
+        );
+        MatcherAssert.assertThat(
+            xsl.with("faa", 1).applyTo(new XMLDocument("<r0/>")),
+            Matchers.equalTo("+1+")
         );
     }
 
