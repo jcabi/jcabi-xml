@@ -69,6 +69,7 @@ import org.w3c.dom.Node;
  * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  * @since 0.1
+ * @param <T> Time of items
  */
 @EqualsAndHashCode(of = { "original", "dom", "xpath" })
 @SuppressWarnings("PMD.TooManyMethods")
