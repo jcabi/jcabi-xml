@@ -275,4 +275,15 @@ public final class StrictXMLTest {
             )
         );
     }
+
+    /**
+     * StrictXML can handle XML without schemaLocation.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void handlesXmlWithoutSchemaLocation() throws Exception {
+        new StrictXML(
+            new XMLDocument("<a></a>")
+        );
+    }
 }

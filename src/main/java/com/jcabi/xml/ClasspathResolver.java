@@ -46,10 +46,12 @@ class ClasspathResolver implements LSResourceResolver {
     // @checkstyle ParameterNumber (1 line)
     public LSInput resolveResource(final String type, final String namespaceuri,
         final String publicid, final String systemid, final String baseuri) {
-        final InputStream stream = getClass().getResourceAsStream(systemid);
         LSInput input = null;
-        if (stream != null) {
-            input = new ClasspathInput(publicid, systemid, stream);
+        if (systemid != null) {
+            final InputStream stream = getClass().getResourceAsStream(systemid);
+            if (stream != null) {
+                input = new ClasspathInput(publicid, systemid, stream);
+            }
         }
         return input;
     }
