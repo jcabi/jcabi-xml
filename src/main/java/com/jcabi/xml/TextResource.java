@@ -55,7 +55,7 @@ final class TextResource {
     /**
      * Encoding.
      */
-    public static final String ENCODING = "UTF-8";
+    private static final String ENCODING = "UTF-8";
 
     /**
      * The text representation.
