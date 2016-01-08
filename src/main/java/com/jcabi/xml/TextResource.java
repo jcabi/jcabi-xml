@@ -53,11 +53,6 @@ import lombok.EqualsAndHashCode;
 final class TextResource {
 
     /**
-     * Encoding.
-     */
-    private static final String ENCODING = "UTF-8";
-
-    /**
      * The text representation.
      */
     private final transient String content;
@@ -124,7 +119,7 @@ final class TextResource {
      */
     private static String readAsString(final InputStream stream) {
         final Scanner scanner =
-            new Scanner(stream, TextResource.ENCODING).useDelimiter("\\A");
+            new Scanner(stream, "UTF-8").useDelimiter("\\A");
         final String result;
         try {
             if (scanner.hasNext()) {
