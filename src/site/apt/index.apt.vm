@@ -9,7 +9,7 @@
 XML Parsing and Printing
 
   Set of classes in
-  {{{./apidocs-${project.version}/com/jcabi/xml/index.html}<<<com.jcabi.xml>>>}}
+  {{{./apidocs-${project.version}/com/jcabi/xml/package-summary.html}<<<com.jcabi.xml>>>}}
   is an extra layer on top of DOM that allows simple
   parsing, printing, and transforming of XML documents and nodes:
 
