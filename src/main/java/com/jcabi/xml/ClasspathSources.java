@@ -37,13 +37,17 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Sources in classpath.
- *
  * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  * @since 0.9
  */
 @EqualsAndHashCode(of = "prefix")
 public final class ClasspathSources implements Sources {
+
+    /**
+     * Pattern to compose resource.
+     */
+    private static final String PATTERN = "%s%s";
 
     /**
      * Prefix.
@@ -82,22 +86,37 @@ public final class ClasspathSources implements Sources {
     public Source resolve(final String href, final String base)
         throws TransformerException {
         InputStream stream = this.getClass().getResourceAsStream(
-            String.format("%s%s", this.prefix, href)
+            String.format(PATTERN, this.prefix, href)
         );
         if (stream == null) {
             stream = this.getClass().getResourceAsStream(
-                String.format("%s%s", base, href)
+                String.format(PATTERN, base, href)
             );
             if (stream == null) {
-                throw new TransformerException(
-                    String.format(
-                        "resource \"%s\" not found in classpath " +
-                            "with prefix \"%s\" and base \"%s\"",
-                        href, this.prefix, base
-                    )
-                );
+                throw this.getTransformerException(href, base);
             }
         }
         return new StreamSource(stream);
+    }
+
+    /**
+     * Create TransformerException with message.
+     * @param href Resource identifier
+     * @param base Resource base
+     * @return New TransformerException with message
+     */
+    private TransformerException getTransformerException(final String href,
+        final String base) {
+        final StringBuilder message = new StringBuilder(67);
+        message.append("resource \"")
+            .append(href)
+            .append("\" not found in classpath with prefix \"")
+            .append(this.prefix)
+            .append("\" and base \"")
+            .append(base)
+            .append('\"');
+        return new TransformerException(
+            message.toString()
+        );
     }
 }
