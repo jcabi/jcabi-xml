@@ -81,16 +81,22 @@ public final class ClasspathSources implements Sources {
     @Override
     public Source resolve(final String href, final String base)
         throws TransformerException {
-        final InputStream stream = this.getClass().getResourceAsStream(
+        InputStream stream = this.getClass().getResourceAsStream(
             String.format("%s%s", this.prefix, href)
         );
         if (stream == null) {
-            throw new TransformerException(
-                String.format(
-                    "resource \"%s\" not found in classpath with prefix \"%s\"",
-                    href, this.prefix
-                )
+            stream = this.getClass().getResourceAsStream(
+                String.format("%s%s", base, href)
             );
+            if (stream == null) {
+                throw new TransformerException(
+                    String.format(
+                        "resource \"%s\" not found in classpath " +
+                            "with prefix \"%s\"",
+                        href, this.prefix
+                    )
+                );
+            }
         }
         return new StreamSource(stream);
     }
