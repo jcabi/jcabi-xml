@@ -92,8 +92,8 @@ public final class ClasspathSources implements Sources {
                 throw new TransformerException(
                     String.format(
                         "resource \"%s\" not found in classpath " +
-                            "with prefix \"%s\"",
-                        href, this.prefix
+                            "with prefix \"%s\" and base \"%s\"",
+                        href, this.prefix, base
                     )
                 );
             }
