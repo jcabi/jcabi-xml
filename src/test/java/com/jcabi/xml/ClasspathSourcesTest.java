@@ -37,19 +37,19 @@ import org.junit.Test;
  * Test of ClasspathSources.
  * @author Igor Piddubnyi (igor.piddubnyi@gmail.com)
  * @version $Id$
- * @since 0.9
+ * @since 0.18
  */
 public final class ClasspathSourcesTest {
 
     /**
-     * ClasspathSources can resolve resource from base..
+     * ClasspathSources can resolve resource from base.
      * @throws Exception If something goes wrong inside
      */
     @Test
     public void sourcesResolvedFromBase() throws Exception {
         MatcherAssert.assertThat(
-                new ClasspathSources().resolve("simple.xml", "com.jcabi.xml."),
-                Matchers.notNullValue()
+            new ClasspathSources().resolve("simple.xml", "com.jcabi.xml."),
+            Matchers.notNullValue()
         );
     }
 }

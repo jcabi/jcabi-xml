@@ -39,7 +39,6 @@ import lombok.EqualsAndHashCode;
  * Sources in classpath.
  * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
- * @checkstyle StringLiteralsConcatenationCheck (110 lines)
  * @since 0.9
  */
 @EqualsAndHashCode(of = "prefix")
@@ -87,19 +86,19 @@ public final class ClasspathSources implements Sources {
     public Source resolve(final String href, final String base)
         throws TransformerException {
         InputStream stream = this.getClass().getResourceAsStream(
-            String.format(PATTERN, this.prefix, href)
+            String.format(ClasspathSources.PATTERN, this.prefix, href)
         );
         if (stream == null) {
             stream = this.getClass().getResourceAsStream(
-                String.format(PATTERN, base, href)
+                String.format(ClasspathSources.PATTERN, base, href)
             );
             if (stream == null) {
                 throw new TransformerException(
-                        String.format(
-                                "resource \"%s\" not found in classpath"
-                                    + " with prefix \"%s\" and base \"%s\"",
-                                href, this.prefix, base
-                        )
+                    String.format(
+                        //@checkstyle LineLength (1 line)
+                        "resource \"%s\" not found in classpath with prefix \"%s\" and base \"%s\"",
+                        href, this.prefix, base
+                    )
                 );
             }
         }
