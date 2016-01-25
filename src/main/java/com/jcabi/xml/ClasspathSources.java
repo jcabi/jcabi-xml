@@ -37,13 +37,17 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Sources in classpath.
- *
  * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  * @since 0.9
  */
 @EqualsAndHashCode(of = "prefix")
 public final class ClasspathSources implements Sources {
+
+    /**
+     * Pattern to compose resource.
+     */
+    private static final String PATTERN = "%s%s";
 
     /**
      * Prefix.
@@ -81,16 +85,22 @@ public final class ClasspathSources implements Sources {
     @Override
     public Source resolve(final String href, final String base)
         throws TransformerException {
-        final InputStream stream = this.getClass().getResourceAsStream(
-            String.format("%s%s", this.prefix, href)
+        InputStream stream = this.getClass().getResourceAsStream(
+            String.format(ClasspathSources.PATTERN, this.prefix, href)
         );
         if (stream == null) {
-            throw new TransformerException(
-                String.format(
-                    "resource \"%s\" not found in classpath with prefix \"%s\"",
-                    href, this.prefix
-                )
+            stream = this.getClass().getResourceAsStream(
+                String.format(ClasspathSources.PATTERN, base, href)
             );
+            if (stream == null) {
+                throw new TransformerException(
+                    String.format(
+                        //@checkstyle LineLength (1 line)
+                        "resource \"%s\" not found in classpath with prefix \"%s\" and base \"%s\"",
+                        href, this.prefix, base
+                    )
+                );
+            }
         }
         return new StreamSource(stream);
     }
