@@ -33,6 +33,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.ls.LSInput;
 
@@ -120,7 +121,10 @@ class ClasspathInput implements LSInput {
     @Override
     public String getStringData() {
         try {
-            return IOUtils.toString(this.stream);
+            return IOUtils.toString(
+                this.stream,
+                Charset.forName("UTF-8")
+            );
         } catch (final IOException exception) {
             throw new IllegalArgumentException(
                 "Unable to read input", exception
