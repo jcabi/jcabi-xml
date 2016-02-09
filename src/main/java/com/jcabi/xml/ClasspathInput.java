@@ -121,10 +121,12 @@ class ClasspathInput implements LSInput {
     @Override
     public String getStringData() {
         try {
-            return IOUtils.toString(
+            final String data = IOUtils.toString(
                 this.stream,
                 Charset.forName("UTF-8")
             );
+            this.stream.close();
+            return data;
         } catch (final IOException exception) {
             throw new IllegalArgumentException(
                 "Unable to read input", exception
