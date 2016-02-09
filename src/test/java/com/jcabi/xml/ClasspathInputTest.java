@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -39,23 +40,21 @@ import org.junit.Test;
  * Test case for {@link com.jcabi.xml.ClasspathInput}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
+ * @since 0.17.3
  */
 public final class ClasspathInputTest {
     /**
-     * ClasspathInput can read data as string from classpath input text file.
+     * ClasspathInput can successfully read data as string from an inputstream.
      * @throws Exception If something goes wrong.
      */
     @Test
-    public void readsStringFromClasspathInput() throws Exception {
-        final InputStream stream = Thread.currentThread()
-                                      .getContextClassLoader()
-                                      .getResourceAsStream(
-                                          "classpathInputTest.txt"
-                                      );
+    public void readsStringFromInputStreamSuccessfully() throws Exception {
+        final String text = "test content here";
+        final InputStream stream = new ByteArrayInputStream(text.getBytes());
         final ClasspathInput clInput = new ClasspathInput("Id1", "Id", stream);
         MatcherAssert.assertThat(
             clInput.getStringData(),
-            Matchers.equalTo("test content here")
+            Matchers.equalTo(text)
         );
         try {
             clInput.getStringData();
