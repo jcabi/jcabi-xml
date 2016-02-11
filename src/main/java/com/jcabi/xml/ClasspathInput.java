@@ -115,9 +115,8 @@ class ClasspathInput implements LSInput {
     public String getStringData() {
         InputStream stream = null;
         try {
-            stream = getClass().getResourceAsStream(
-                                           this.systemid
-                                       );
+            stream = getClass()
+                .getResourceAsStream(this.systemid);
             final String data = IOUtils.toString(
                 stream,
                 Charset.forName("UTF-8")
