@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -47,10 +46,6 @@ import org.w3c.dom.ls.LSInput;
 class ClasspathInput implements LSInput {
 
     /**
-     * Input stream.
-     */
-    private final transient BufferedInputStream stream;
-    /**
      * Public Id.
      */
     private transient String publicid;
@@ -60,16 +55,13 @@ class ClasspathInput implements LSInput {
     private transient String systemid;
 
     /**
-     * Public constructor.
+     * Constructor.
      * @param pubid Public id
      * @param sysid System id
-     * @param input Input stream
      */
-    ClasspathInput(final String pubid, final String sysid,
-        final InputStream input) {
+    ClasspathInput(final String pubid, final String sysid) {
         this.publicid = pubid;
         this.systemid = sysid;
-        this.stream = new BufferedInputStream(input);
     }
 
     @Override
@@ -119,18 +111,32 @@ class ClasspathInput implements LSInput {
     }
 
     @Override
+    @SuppressWarnings("PMD.DoNotThrowExceptionInFinally")
     public String getStringData() {
+        InputStream stream = null;
         try {
+            stream = getClass().getResourceAsStream(
+                                           this.systemid
+                                       );
             final String data = IOUtils.toString(
-                this.stream,
+                stream,
                 Charset.forName("UTF-8")
             );
-            this.stream.close();
             return data;
         } catch (final IOException exception) {
             throw new IllegalArgumentException(
                 "Unable to read input", exception
             );
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (final IOException ex) {
+                    throw new IllegalArgumentException(
+                         "Unable to close input stream", ex
+                    );
+                }
+            }
         }
     }
 

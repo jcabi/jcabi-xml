@@ -29,11 +29,8 @@
  */
 package com.jcabi.xml;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -44,28 +41,16 @@ import org.junit.Test;
  */
 public final class ClasspathInputTest {
     /**
-     * ClasspathInput can successfully read data as string from an inputstream.
+     * ClasspathInput can successfully read data as string from
+     * the given resource.
      * @throws Exception If something goes wrong.
      */
     @Test
-    public void readsStringFromInputStreamSuccessfully() throws Exception {
-        final String text = "test content here";
-        final InputStream stream = new ByteArrayInputStream(text.getBytes());
-        final ClasspathInput clInput = new ClasspathInput("Id1", "Id", stream);
+    public void readsStringFromResourceSuccessfully() throws Exception {
+        final ClasspathInput clInput = new ClasspathInput("Id", "simple.xml");
         MatcherAssert.assertThat(
             clInput.getStringData(),
-            Matchers.equalTo(text)
+            Matchers.startsWith("<root>")
         );
-        try {
-            clInput.getStringData();
-            Assert.fail(
-                "Should have failed due to closed stream in ClasspathInput"
-            );
-        } catch (final IllegalArgumentException ex) {
-            MatcherAssert.assertThat(
-                ex.getMessage(),
-                Matchers.equalTo("Unable to read input")
-            );
-        }
     }
 }

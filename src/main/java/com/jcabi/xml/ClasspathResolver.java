@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import java.io.InputStream;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 
@@ -47,11 +46,8 @@ class ClasspathResolver implements LSResourceResolver {
     public LSInput resolveResource(final String type, final String namespaceuri,
         final String publicid, final String systemid, final String baseuri) {
         LSInput input = null;
-        if (systemid != null) {
-            final InputStream stream = getClass().getResourceAsStream(systemid);
-            if (stream != null) {
-                input = new ClasspathInput(publicid, systemid, stream);
-            }
+        if (systemid != null && getClass().getResource(systemid) != null) {
+            input = new ClasspathInput(publicid, systemid);
         }
         return input;
     }
