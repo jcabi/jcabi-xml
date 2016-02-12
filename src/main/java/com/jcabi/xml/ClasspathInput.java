@@ -113,10 +113,9 @@ class ClasspathInput implements LSInput {
     @Override
     @SuppressWarnings("PMD.DoNotThrowExceptionInFinally")
     public String getStringData() {
-        InputStream stream = null;
+        final InputStream stream = getClass()
+                                 .getResourceAsStream(this.systemid);
         try {
-            stream = getClass()
-                .getResourceAsStream(this.systemid);
             final String data = IOUtils.toString(
                 stream,
                 Charset.forName("UTF-8")
