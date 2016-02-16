@@ -117,7 +117,10 @@ class ClasspathInput implements LSInput {
                                  .getResourceAsStream(this.systemid);
         if (stream == null) {
             throw new IllegalArgumentException(
-                "Systemid resource does not exist."
+                String.format(
+                    "Systemid %s resource does not exist or can't be opened.",
+                    this.systemid
+                )
             );
         }
         try {
@@ -128,14 +131,21 @@ class ClasspathInput implements LSInput {
             return data;
         } catch (final IOException exception) {
             throw new IllegalArgumentException(
-                "Unable to read input", exception
+                String.format(
+                    "Unable to read input stream of systemid %s", this.systemid
+                ),
+                exception
             );
         } finally {
             try {
                 stream.close();
             } catch (final IOException ex) {
                 throw new IllegalArgumentException(
-                    "Unable to close input stream", ex
+                    String.format(
+                        "Unable to close input stream of systemid %s",
+                        this.systemid
+                    ),
+                    ex
                 );
             }
         }
