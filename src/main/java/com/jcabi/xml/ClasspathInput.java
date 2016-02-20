@@ -111,7 +111,6 @@ class ClasspathInput implements LSInput {
     }
 
     @Override
-    @SuppressWarnings("PMD.DoNotThrowExceptionInFinally")
     public String getStringData() {
         final InputStream stream = getClass()
                                  .getResourceAsStream(this.systemid);
@@ -137,17 +136,7 @@ class ClasspathInput implements LSInput {
                 exception
             );
         } finally {
-            try {
-                stream.close();
-            } catch (final IOException ex) {
-                throw new IllegalArgumentException(
-                    String.format(
-                        "Unable to close input stream of systemid %s",
-                        this.systemid
-                    ),
-                    ex
-                );
-            }
+            IOUtils.closeQuietly(stream);
         }
     }
 
