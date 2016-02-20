@@ -59,7 +59,8 @@ import org.mockito.stubbing.Answer;
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  * @todo #96:30min Fix the tests passesValidXmlUsingXsiSchemaLocation() and
  *  rejectsInvalidXmlUsingXsiSchemaLocation() which started failing with
- *  exception from SaxParser.
+ *  exception from SaxParser (http://maven.apache.org/maven-v4_0_0.xsd;
+ *  White spaces are required between publicId and systemId).
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class StrictXMLTest {
