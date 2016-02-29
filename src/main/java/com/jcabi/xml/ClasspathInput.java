@@ -123,11 +123,10 @@ class ClasspathInput implements LSInput {
             );
         }
         try {
-            final String data = IOUtils.toString(
+            return IOUtils.toString(
                 stream,
                 Charset.forName("UTF-8")
             );
-            return data;
         } catch (final IOException exception) {
             throw new IllegalArgumentException(
                 String.format(
