@@ -112,8 +112,9 @@ class ClasspathInput implements LSInput {
 
     @Override
     public String getStringData() {
-        final InputStream stream = getClass()
-                                 .getResourceAsStream(this.systemid);
+        final InputStream stream = getClass().getResourceAsStream(
+            this.systemid
+        );
         if (stream == null) {
             throw new IllegalArgumentException(
                 String.format(
@@ -123,10 +124,7 @@ class ClasspathInput implements LSInput {
             );
         }
         try {
-            return IOUtils.toString(
-                stream,
-                Charset.forName("UTF-8")
-            );
+            return IOUtils.toString(stream, Charset.forName("UTF-8"));
         } catch (final IOException exception) {
             throw new IllegalArgumentException(
                 String.format(
