@@ -225,23 +225,21 @@
         </profile>
         <profile>
             <id>coveralls</id>
-            <!--
-            @todo #70:30m/DEV This reporting doesn't work, becuase of
-             a conflict with Patterns.java file, which is generated on
-             fly and doesn't really have a source. See the log here,
-             for example: http://www.rultor.com/t/5393-146659058
-             Let's fix it somehow and enable this profile again.
-            -->
-            <!--
             <activation>
                 <file><exists>pom.xml</exists></file>
             </activation>
-            -->
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>cobertura-maven-plugin</artifactId>
+                        <configuration>
+                            <instrumentation>
+                                <excludes>
+                                    <exclude>com/jcabi/xml/Patterns.class</exclude>
+                                </excludes>
+                            </instrumentation>
+                        </configuration>
                         <executions>
                             <execution>
                                 <phase>site</phase>
