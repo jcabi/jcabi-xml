@@ -100,7 +100,10 @@
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.11.0</version>
+            <version>2.11.0</version> <!-- Versioneye complains about this
+			(some security issue) but it cannot be updated yet,
+			as this is the latest version so far. Also, all the earlier versions have
+			the issue. It's test-scoped anyway, so it won't affect the users.-->
             <scope>test</scope>
         </dependency>
         <dependency>
