@@ -4,6 +4,7 @@
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-xml)](http://www.rultor.com/p/jcabi/jcabi-xml)
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-xml.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-xml)
+[![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-xml)](http://www.0pdd.com/p?name=teamed/jcabi/jcabi-xml)
 [![Build status](https://ci.appveyor.com/api/projects/status/323ak1323abk3x30/branch/master?svg=true)](https://ci.appveyor.com/project/yegor256/jcabi-xml/branch/master)
 [![Coverage Status](https://coveralls.io/repos/jcabi/jcabi-xml/badge.svg?branch=__rultor&service=github)](https://coveralls.io/github/jcabi/jcabi-xml?branch=__rultor)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jcabi/jcabi-xml/badge.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-xml)
