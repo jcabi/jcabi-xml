@@ -106,7 +106,7 @@ public final class XSLDocument implements XSL {
     /**
      * Error listener.
      */
-    private static final ErrorListener ERRORS = new ErrorListener() {
+    private final transient ErrorListener ERRORS = new ErrorListener() {
         @Override
         public void warning(final TransformerException exception) {
             Logger.warn(this, exception.getMessageAndLocation());
@@ -170,6 +170,16 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(final InputStream stream) {
         this(new TextResource(stream).toString());
+    }
+
+    /**
+     * Public ctor, from XSL as a string with error listener.
+     * @param src XML document body
+     * @param elistener Error Listener
+     */
+    public XSLDocument(final String src, ErrorListener elistener) {
+        this(src, Sources.DUMMY);
+        this.ERRORS = elistener;
     }
 
     /**
