@@ -103,6 +103,11 @@ public final class XMLDocument implements XML {
      * Encapsulated String representation of this XML document.
      */
     private final transient String xml;
+    
+    /**
+     * DOM representation of this document
+     */
+    private final transient Node node;
 
     /**
      * Is it a leaf node (Element, not a Document)?
@@ -269,6 +274,7 @@ public final class XMLDocument implements XML {
      */
     private XMLDocument(final Node node, final XPathContext ctx,
         final boolean lfe) {
+        this.node = node;
         this.xml = XMLDocument.asString(node);
         this.context = ctx;
         this.leaf = lfe;
@@ -282,14 +288,7 @@ public final class XMLDocument implements XML {
 
     @Override
     public Node node() {
-        final Node castCache = Node.class.cast(this.cache);
-        final Node answer;
-        if (castCache instanceof Document) {
-            answer = castCache.cloneNode(true);
-        } else {
-            answer = this.createImportedNode(castCache);
-        }
-        return answer;
+        return this.node;
     }
 
     @Override
@@ -374,24 +373,7 @@ public final class XMLDocument implements XML {
     public XML merge(final NamespaceContext ctx) {
         return new XMLDocument(this.node(), this.context.merge(ctx), this.leaf);
     }
-
-    /**
-     * Clones a node and imports it in a new document.
-     * @param node A node to clone.
-     * @return A cloned node imported in a dedicated document.
-     */
-    private Node createImportedNode(final Node node) {
-        final Document document;
-        try {
-            document = DFACTORY.newDocumentBuilder().newDocument();
-        } catch (final ParserConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        }
-        final Node imported = document.importNode(node, true);
-        document.appendChild(imported);
-        return imported;
-    }
-
+    
     /**
      * Retrieve XPath query result. Supports returning {@link NodeList} and
      * {@link String} types.
@@ -482,5 +464,4 @@ public final class XMLDocument implements XML {
         }
         return result.getNode();
     }
-
 }
