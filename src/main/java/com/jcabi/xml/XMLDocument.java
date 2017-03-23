@@ -103,11 +103,6 @@ public final class XMLDocument implements XML {
      * Encapsulated String representation of this XML document.
      */
     private final transient String xml;
-    
-    /**
-     * DOM representation of this document
-     */
-    private final transient Node node;
 
     /**
      * Is it a leaf node (Element, not a Document)?
@@ -274,7 +269,6 @@ public final class XMLDocument implements XML {
      */
     private XMLDocument(final Node node, final XPathContext ctx,
         final boolean lfe) {
-        this.node = node;
         this.xml = XMLDocument.asString(node);
         this.context = ctx;
         this.leaf = lfe;
@@ -288,7 +282,7 @@ public final class XMLDocument implements XML {
 
     @Override
     public Node node() {
-        return this.node;
+        return Node.class.cast(this.cache);
     }
 
     @Override
@@ -373,7 +367,7 @@ public final class XMLDocument implements XML {
     public XML merge(final NamespaceContext ctx) {
         return new XMLDocument(this.node(), this.context.merge(ctx), this.leaf);
     }
-    
+
     /**
      * Retrieve XPath query result. Supports returning {@link NodeList} and
      * {@link String} types.
