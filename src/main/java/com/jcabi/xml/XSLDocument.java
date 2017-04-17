@@ -106,7 +106,7 @@ public final class XSLDocument implements XSL {
     /**
      * Error listener.
      */
-    private static final ErrorListener ERRORS = new ErrorListener() {
+    private static ErrorListener ERRORS = new ErrorListener() {
         @Override
         public void warning(final TransformerException exception) {
             Logger.warn(this, exception.getMessageAndLocation());
@@ -120,7 +120,7 @@ public final class XSLDocument implements XSL {
             this.error(exception);
         }
     };
-
+    
     /**
      * XSL document.
      */
@@ -280,6 +280,15 @@ public final class XSLDocument implements XSL {
         } catch (final UnsupportedEncodingException ex) {
             throw new IllegalStateException(ex);
         }
+    }
+
+    /**
+     * Setting up Custom Error Listener
+     * @param el ErrorListener
+     */
+    public static void setErrorListener(
+        @NotNull(message = "ErrorListener can't be NULL") final ErrorListener el){ 
+        XSLDocument.ERRORS = el;
     }
 
     /**
