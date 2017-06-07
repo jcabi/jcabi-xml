@@ -51,7 +51,7 @@ import org.w3c.dom.Node;
  *
  * <p>Implementation of this interface must be immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.1
  * @see XMLDocument

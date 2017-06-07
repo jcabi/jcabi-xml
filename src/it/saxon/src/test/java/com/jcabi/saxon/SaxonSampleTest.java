@@ -46,7 +46,7 @@ import org.junit.Test;
 
 /**
  * Test of XML features with Saxon.
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  */
 public final class SaxonSampleTest {

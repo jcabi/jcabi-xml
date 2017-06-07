@@ -35,7 +35,7 @@ import javax.xml.transform.URIResolver;
 /**
  * Sources for XSLT.
  *
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.9
  * @checkstyle InterfaceIsType (500 lines)

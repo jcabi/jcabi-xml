@@ -53,7 +53,7 @@ import org.xml.sax.SAXParseException;
  *
  * <p>Objects of this class are immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.5
  */

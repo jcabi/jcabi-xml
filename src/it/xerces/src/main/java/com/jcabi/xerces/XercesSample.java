@@ -31,7 +31,7 @@ package com.jcabi.xerces;
 
 /**
  * Sample class for Xerces testing.
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  */
 final class XercesSample {
