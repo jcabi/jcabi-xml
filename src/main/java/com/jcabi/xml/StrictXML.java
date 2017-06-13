@@ -44,6 +44,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
 import org.w3c.dom.Node;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -71,7 +72,17 @@ public final class StrictXML implements XML {
      * @param xml XML document
      */
     public StrictXML(final XML xml) {
-        this(xml, StrictXML.newValidator());
+        this(xml, new ClasspathResolver());
+    }
+
+    /**
+     * Public ctor.
+     * @param xml XML document
+     * @param resolver Custom resolver
+     * @since 0.19
+     */
+    public StrictXML(final XML xml, final LSResourceResolver resolver) {
+        this(xml, StrictXML.newValidator(resolver));
     }
 
     /**
@@ -239,15 +250,16 @@ public final class StrictXML implements XML {
 
     /**
      * Creates a new validator.
+     * @param resolver The resolver for resources
      * @return A new validator
      */
-    private static Validator newValidator() {
+    private static Validator newValidator(final LSResourceResolver resolver) {
         try {
             final Validator validator = SchemaFactory
                 .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
                 .newSchema()
                 .newValidator();
-            validator.setResourceResolver(new ClasspathResolver());
+            validator.setResourceResolver(resolver);
             return validator;
         } catch (final SAXException ex) {
             throw new IllegalStateException(ex);
