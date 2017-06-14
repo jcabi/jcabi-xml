@@ -53,8 +53,9 @@ import org.w3c.dom.Node;
  *
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
- * @since 0.1
  * @see XMLDocument
+ * @since 0.1
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 public interface XML {
 

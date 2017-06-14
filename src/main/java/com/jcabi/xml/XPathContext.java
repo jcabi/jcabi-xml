@@ -161,7 +161,7 @@ public final class XPathContext implements NamespaceContext {
 
     @Override
     public Iterator<String> getPrefixes(final String namespace) {
-        final List<String> prefixes = new LinkedList<String>();
+        final List<String> prefixes = new LinkedList<>();
         for (final ConcurrentMap.Entry<String, String> entry
             : this.map.entrySet()) {
             if (entry.getValue().equals(namespace)) {
@@ -208,10 +208,9 @@ public final class XPathContext implements NamespaceContext {
      * @return New context
      */
     public XPathContext merge(final NamespaceContext context) {
-        final XPathContext ctx = new XPathContext(
+        return new XPathContext(
             this.map, this.contexts.with(context)
         );
-        return ctx;
     }
 
     /**
@@ -222,14 +221,14 @@ public final class XPathContext implements NamespaceContext {
     private static ArrayMap<String, String> namespacesAsMap(
         final Object...namespaces) {
         final ConcurrentMap<String, String> map =
-            new ConcurrentHashMap<String, String>(namespaces.length);
+            new ConcurrentHashMap<>(namespaces.length);
         for (int pos = 0; pos < namespaces.length; ++pos) {
             map.put(
                 Logger.format("ns%d", pos + 1),
                 namespaces[pos].toString()
             );
         }
-        return new ArrayMap<String, String>(map);
+        return new ArrayMap<>(map);
     }
 
 }

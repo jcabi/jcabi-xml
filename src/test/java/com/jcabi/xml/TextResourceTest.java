@@ -33,8 +33,9 @@ import com.google.common.io.Files;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
+import java.nio.charset.StandardCharsets;
+import org.cactoos.io.LengthOfInput;
+import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -44,6 +45,7 @@ import org.junit.Test;
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 0.1
  */
 public final class TextResourceTest {
 
@@ -55,7 +57,7 @@ public final class TextResourceTest {
     public void readsStreamAsText() throws Exception {
         final String text = "Blah!\u20ac\u2122";
         final InputStream stream = new ByteArrayInputStream(
-            text.getBytes(CharEncoding.UTF_8)
+            text.getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
             new TextResource(stream).toString(),
@@ -71,7 +73,7 @@ public final class TextResourceTest {
     public void readsFileAsText() throws Exception {
         final String text = "<a xmlns='urn:foo'><b>\u0433!</b></a>";
         final File file = new File(Files.createTempDir(), "dummy.xml");
-        FileUtils.writeStringToFile(file, text, CharEncoding.UTF_8);
+        new LengthOfInput(new TeeInput(text, file)).asValue();
         MatcherAssert.assertThat(
             new TextResource(file).toString(),
             Matchers.is(text)

@@ -40,8 +40,9 @@ import org.xml.sax.SAXParseException;
  *
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
- * @since 0.5
  * @see XSDDocument
+ * @since 0.5
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 public interface XSD {
 

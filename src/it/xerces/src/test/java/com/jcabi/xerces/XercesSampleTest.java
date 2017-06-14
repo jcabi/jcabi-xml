@@ -48,6 +48,7 @@ import org.junit.Test;
  * Test of XML features with Xerces.
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
+ * @since 0.1
  */
 public final class XercesSampleTest {
 
@@ -94,15 +95,15 @@ public final class XercesSampleTest {
                 return null;
             }
         };
-        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        final ExecutorService service = Executors.newFixedThreadPool(5);
         for (int count = 0; count < loop; count = count + 1) {
-            executorService.submit(callable);
+            service.submit(callable);
         }
-        executorService.shutdown();
+        service.shutdown();
         MatcherAssert.assertThat(
-            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
-        executorService.shutdownNow();
+        service.shutdownNow();
     }
 }

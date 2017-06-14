@@ -36,8 +36,9 @@ package com.jcabi.xml;
  *
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
- * @since 0.4
  * @see XSLDocument
+ * @since 0.4
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 public interface XSL {
 

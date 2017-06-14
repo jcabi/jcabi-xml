@@ -42,6 +42,8 @@ import org.junit.Test;
  * Test case for {@link XSLDocument}.
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
+ * @since 0.1
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 public final class XSLDocumentTest {
 
@@ -97,16 +99,16 @@ public final class XSLDocumentTest {
                 );
             }
         };
-        final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count = count + 1) {
-            executorService.submit(runnable);
+        final ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count += 1) {
+            service.submit(runnable);
         }
-        executorService.shutdown();
+        service.shutdown();
         MatcherAssert.assertThat(
-            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
-        executorService.shutdownNow();
+        service.shutdownNow();
     }
 
     /**

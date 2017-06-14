@@ -63,6 +63,7 @@ import org.w3c.dom.Document;
  * @version $Id$
  * @since 0.4
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @EqualsAndHashCode(of = "xsl")
 @SuppressWarnings("PMD.TooManyMethods")
@@ -201,7 +202,7 @@ public final class XSLDocument implements XSL {
         final Map<String, Object> map) {
         this.xsl = src;
         this.sources = srcs;
-        this.params = new ArrayMap<String, Object>(map);
+        this.params = new ArrayMap<>(map);
     }
 
     @Override
@@ -232,6 +233,7 @@ public final class XSLDocument implements XSL {
      * @param stream Input stream
      * @return XSL stylesheet
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static XSL make(final InputStream stream) {
         return new XSLDocument(stream);
     }
@@ -243,6 +245,7 @@ public final class XSLDocument implements XSL {
      * @see #make(InputStream)
      * @since 0.7.4
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static XSL make(final URL url) {
         try {
             return new XSLDocument(url);

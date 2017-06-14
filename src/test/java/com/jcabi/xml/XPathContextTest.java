@@ -41,6 +41,7 @@ import org.junit.Test;
  * Test case for {@link XPathContext}.
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
+ * @since 0.1
  */
 public final class XPathContextTest {
 

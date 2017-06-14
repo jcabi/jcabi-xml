@@ -70,9 +70,16 @@ import org.w3c.dom.NodeList;
  * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle ClassFanOutComplexity (500 lines)
+ * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
 @EqualsAndHashCode(of = { "xml", "leaf" })
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings
+    (
+        {
+            "PMD.ExcessiveImports",
+            "PMD.OnlyOneConstructorShouldDoInitialization"
+        }
+    )
 public final class XMLDocument implements XML {
 
     /**
@@ -256,6 +263,7 @@ public final class XMLDocument implements XML {
      * @param stream The input stream, which will be closed automatically
      * @throws IOException In case of I/O problem
      */
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public XMLDocument(final InputStream stream) throws IOException {
         this(new TextResource(stream).toString());
         stream.close();
@@ -282,12 +290,12 @@ public final class XMLDocument implements XML {
 
     @Override
     public Node node() {
-        final Node castCache = Node.class.cast(this.cache);
+        final Node casted = Node.class.cast(this.cache);
         final Node answer;
-        if (castCache instanceof Document) {
-            answer = castCache.cloneNode(true);
+        if (casted instanceof Document) {
+            answer = casted.cloneNode(true);
         } else {
-            answer = this.createImportedNode(castCache);
+            answer = XMLDocument.createImportedNode(casted);
         }
         return answer;
     }
@@ -301,14 +309,16 @@ public final class XMLDocument implements XML {
             }
         )
     public List<String> xpath(final String query) {
+        // @checkstyle FinalLocalVariableCheck (1 line)
         List<String> items;
         try {
             final NodeList nodes = this.fetch(query, NodeList.class);
-            items = new ArrayList<String>(nodes.getLength());
+            items = new ArrayList<>(nodes.getLength());
             for (int idx = 0; idx < nodes.getLength(); ++idx) {
-                final int type = nodes.item(idx).getNodeType();
-                if (type != Node.TEXT_NODE && type != Node.ATTRIBUTE_NODE
-                    && type != Node.CDATA_SECTION_NODE) {
+                final int type = (int) nodes.item(idx).getNodeType();
+                if (type != (int) Node.TEXT_NODE
+                    && type != (int) Node.ATTRIBUTE_NODE
+                    && type != (int) Node.CDATA_SECTION_NODE) {
                     throw new IllegalArgumentException(
                         String.format(
                             // @checkstyle LineLength (1 line)
@@ -328,13 +338,15 @@ public final class XMLDocument implements XML {
                 throw new IllegalArgumentException(
                     // @checkstyle MultipleStringLiterals (1 line)
                     String.format(
-                        "invalid XPath query '%s' at %s",
-                        query, XMLDocument.XFACTORY.getClass().getName()
-                    ), exp
+                        "Invalid XPath query '%s' at %s: %s",
+                        query, XMLDocument.XFACTORY.getClass().getName(),
+                        ex.getLocalizedMessage()
+                    ),
+                    exp
                 );
             }
         }
-        return new ListWrapper<String>(items, this.node(), query);
+        return new ListWrapper<>(items, this.node(), query);
     }
 
     @Override
@@ -350,7 +362,7 @@ public final class XMLDocument implements XML {
         final List<XML> items;
         try {
             final NodeList nodes = this.fetch(query, NodeList.class);
-            items = new ArrayList<XML>(nodes.getLength());
+            items = new ArrayList<>(nodes.getLength());
             for (int idx = 0; idx < nodes.getLength(); ++idx) {
                 items.add(
                     new XMLDocument(
@@ -367,7 +379,7 @@ public final class XMLDocument implements XML {
                 ), ex
             );
         }
-        return new ListWrapper<XML>(items, this.node(), query);
+        return new ListWrapper<>(items, this.node(), query);
     }
 
     @Override
@@ -380,10 +392,10 @@ public final class XMLDocument implements XML {
      * @param node A node to clone.
      * @return A cloned node imported in a dedicated document.
      */
-    private Node createImportedNode(final Node node) {
+    private static Node createImportedNode(final Node node) {
         final Document document;
         try {
-            document = DFACTORY.newDocumentBuilder().newDocument();
+            document = XMLDocument.DFACTORY.newDocumentBuilder().newDocument();
         } catch (final ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
         }
@@ -435,6 +447,7 @@ public final class XMLDocument implements XML {
      * @param node The DOM node.
      * @return String representation
      */
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     private static String asString(final Node node) {
         final StringWriter writer = new StringWriter();
         try {
@@ -475,8 +488,6 @@ public final class XMLDocument implements XML {
                 trans = XMLDocument.TFACTORY.newTransformer();
             }
             trans.transform(source, result);
-        } catch (final TransformerConfigurationException ex) {
-            throw new IllegalStateException(ex);
         } catch (final TransformerException ex) {
             throw new IllegalStateException(ex);
         }

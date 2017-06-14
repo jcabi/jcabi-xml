@@ -31,7 +31,8 @@ package com.jcabi.xml;
 
 import com.google.common.io.Files;
 import java.io.File;
-import org.apache.commons.io.FileUtils;
+import org.cactoos.io.LengthOfInput;
+import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -51,7 +52,7 @@ public final class FileSourcesTest {
     @Test
     public void sourcesResolvedFromDir() throws Exception {
         final File file = new File(Files.createTempDir(), "dummy.xml");
-        FileUtils.writeStringToFile(file, "test");
+        new LengthOfInput(new TeeInput("test", file)).asValue();
         MatcherAssert.assertThat(
             new FileSources().resolve(file.getAbsolutePath(), null),
             Matchers.notNullValue()

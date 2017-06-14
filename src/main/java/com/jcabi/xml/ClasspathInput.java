@@ -33,17 +33,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
-import org.apache.commons.io.IOUtils;
+import org.cactoos.Func;
+import org.cactoos.Input;
+import org.cactoos.io.InputAsBytes;
+import org.cactoos.io.ResourceAsInput;
+import org.cactoos.text.BytesAsText;
 import org.w3c.dom.ls.LSInput;
 
 /**
- * {@link org.w3c.dom.ls.LSInput} implementation
- * used by {@link com.jcabi.xml.ClasspathResolver}.
+ * {@link LSInput} implementation used by {@link ClasspathResolver}.
  *
  * @author Adam Siemion (adam.siemion.null@lemonsoftware.pl)
  * @version $Id$
+ * @since 0.1
  */
-class ClasspathInput implements LSInput {
+final class ClasspathInput implements LSInput {
 
     /**
      * Public Id.
@@ -112,28 +116,35 @@ class ClasspathInput implements LSInput {
 
     @Override
     public String getStringData() {
-        final InputStream stream = getClass().getResourceAsStream(
-            this.systemid
-        );
-        if (stream == null) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "Systemid %s resource does not exist or can't be opened.",
-                    this.systemid
-                )
-            );
-        }
         try {
-            return IOUtils.toString(stream, Charset.forName("UTF-8"));
-        } catch (final IOException exception) {
+            return new BytesAsText(
+                new InputAsBytes(
+                    new ResourceAsInput(
+                        this.systemid,
+                        new Func<String, Input>() {
+                            @Override
+                            public Input apply(final String path) {
+                                throw new IllegalArgumentException(
+                                    String.format(
+                                        // @checkstyle LineLength (1 line)
+                                        "SystemID \"%s\" resource does not exist or can't be opened.",
+                                        path
+                                    )
+                                );
+                            }
+                        }
+                    )
+                ),
+                Charset.forName("UTF-8")
+            ).asString();
+        } catch (final IOException ex) {
             throw new IllegalArgumentException(
                 String.format(
-                    "Unable to read input stream of systemid %s", this.systemid
+                    "Unable to read input stream of SystemID \"%s\"",
+                    this.systemid
                 ),
-                exception
+                ex
             );
-        } finally {
-            IOUtils.closeQuietly(stream);
         }
     }
 

@@ -40,6 +40,7 @@ import org.junit.Test;
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.12
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 public final class XSLChainTest {
 

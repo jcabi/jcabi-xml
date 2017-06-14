@@ -31,14 +31,14 @@ package com.jcabi.xml;
 
 import com.google.common.io.Files;
 import com.jcabi.matchers.XhtmlMatchers;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
+import org.cactoos.io.LengthOfInput;
+import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -50,6 +50,8 @@ import org.w3c.dom.Node;
  * Test case for {@link XMLDocument}.
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
+ * @since 0.1
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.DoNotUseThreads" })
 public final class XMLDocumentTest {
@@ -100,11 +102,12 @@ public final class XMLDocumentTest {
     @Test
     public void findsWithXpathWithCustomNamespace() throws Exception {
         final File file = new File(Files.createTempDir(), "x.xml");
-        FileUtils.writeStringToFile(
-            file,
-            "<a xmlns='urn:foo'><b>\u0433!</b></a>",
-            CharEncoding.UTF_8
-        );
+        new LengthOfInput(
+            new TeeInput(
+                "<a xmlns='urn:foo'><b>\u0433!</b></a>",
+                file
+            )
+        ).asValue();
         final XML doc = new XMLDocument(file).registerNs("f", "urn:foo");
         MatcherAssert.assertThat(
             doc.nodes("/f:a/f:b[.='\u0433!']"),
@@ -123,7 +126,9 @@ public final class XMLDocumentTest {
     @Test
     public void findsDocumentNodesWithXpathAndReturnsThem() throws Exception {
         final XML doc = new XMLDocument(
-            IOUtils.toInputStream("<root><a><x>1</x></a><a><x>2</x></a></root>")
+            new ByteArrayInputStream(
+                "<root><a><x>1</x></a><a><x>2</x></a></root>".getBytes()
+            )
         );
         MatcherAssert.assertThat(
             doc.nodes("//a"),
@@ -251,16 +256,16 @@ public final class XMLDocumentTest {
                 );
             }
         };
-        final ExecutorService executorService = Executors.newFixedThreadPool(5);
+        final ExecutorService service = Executors.newFixedThreadPool(5);
         for (int count = 0; count < loop; count = count + 1) {
-            executorService.submit(runnable);
+            service.submit(runnable);
         }
-        executorService.shutdown();
+        service.shutdown();
         MatcherAssert.assertThat(
-            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
-        executorService.shutdownNow();
+        service.shutdownNow();
     }
 
     /**
@@ -294,16 +299,16 @@ public final class XMLDocumentTest {
                 );
             }
         };
-        final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count = count + 1) {
-            executorService.submit(runnable);
+        final ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count += 1) {
+            service.submit(runnable);
         }
-        executorService.shutdown();
+        service.shutdown();
         MatcherAssert.assertThat(
-            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
-        executorService.shutdownNow();
+        service.shutdownNow();
     }
 
     /**
@@ -333,16 +338,16 @@ public final class XMLDocumentTest {
                 );
             }
         };
-        final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count = count + 1) {
-            executorService.submit(runnable);
+        final ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count += 1) {
+            service.submit(runnable);
         }
-        executorService.shutdown();
+        service.shutdown();
         MatcherAssert.assertThat(
-            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
-        executorService.shutdownNow();
+        service.shutdownNow();
     }
 
     /**

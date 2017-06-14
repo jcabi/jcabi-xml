@@ -29,6 +29,8 @@
  */
 package com.jcabi.xml;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Random;
@@ -38,8 +40,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
@@ -51,6 +51,8 @@ import org.xml.sax.SAXParseException;
  * Test case for {@link XSDDocument}.
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
+ * @since 0.1
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 public final class XSDDocumentTest {
 
@@ -61,12 +63,12 @@ public final class XSDDocumentTest {
     @Test
     public void validatesXml() throws Exception {
         final XSD xsd = new XSDDocument(
-            IOUtils.toInputStream(
+            new ByteArrayInputStream(
                 StringUtils.join(
                     "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
                     "<xs:element name='test'/>",
                     " </xs:schema>"
-                )
+                ).getBytes()
             )
         );
         MatcherAssert.assertThat(
@@ -91,8 +93,12 @@ public final class XSDDocumentTest {
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
             "<xs:element name='first'/></xs:schema>"
         );
-        final Collection<SAXParseException> errors = new XSDDocument(xsd)
-            .validate(new StreamSource(IOUtils.toInputStream("<second/>")));
+        final Collection<SAXParseException> errors =
+            new XSDDocument(xsd).validate(
+                new StreamSource(
+                    new ByteArrayInputStream("<second/>".getBytes())
+                )
+            );
         MatcherAssert.assertThat(
             errors,
             Matchers.<SAXParseException>iterableWithSize(1)
@@ -137,8 +143,8 @@ public final class XSDDocumentTest {
             MatcherAssert.assertThat(
                 new XSDDocument(xsd).validate(
                     new StreamSource(
-                        IOUtils.toInputStream(
-                            text.toString(), CharEncoding.UTF_8
+                        new ByteArrayInputStream(
+                            text.toString().getBytes(Charset.forName("UTF-8"))
                         )
                     )
                 ),
@@ -218,16 +224,16 @@ public final class XSDDocumentTest {
                 return null;
             }
         };
-        final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count = count + 1) {
-            executorService.submit(callable);
+        final ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count += 1) {
+            service.submit(callable);
         }
-        executorService.shutdown();
+        service.shutdown();
         MatcherAssert.assertThat(
-            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination((long) timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
-        executorService.shutdownNow();
+        service.shutdownNow();
     }
 
 }

@@ -48,6 +48,7 @@ import lombok.EqualsAndHashCode;
  *
  * @author Carlos Miranda (miranda.cma@gmail.com)
  * @version $Id$
+ * @since 0.1
  */
 @EqualsAndHashCode(of = "content")
 final class TextResource {

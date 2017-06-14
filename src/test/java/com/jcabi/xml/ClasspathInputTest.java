@@ -32,6 +32,7 @@ package com.jcabi.xml;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.w3c.dom.ls.LSInput;
 
 /**
  * Test case for {@link com.jcabi.xml.ClasspathInput}.
@@ -47,9 +48,11 @@ public final class ClasspathInputTest {
      */
     @Test
     public void readsStringFromResourceSuccessfully() throws Exception {
-        final ClasspathInput clInput = new ClasspathInput("Id", "simple.xml");
+        final LSInput input = new ClasspathInput(
+            "Id", "com/jcabi/xml/simple.xml"
+        );
         MatcherAssert.assertThat(
-            clInput.getStringData(),
+            input.getStringData(),
             Matchers.startsWith("<root>")
         );
     }

@@ -32,7 +32,6 @@ package com.jcabi.xml;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -52,6 +51,7 @@ import org.xml.sax.SAXException;
  */
 @ToString
 @EqualsAndHashCode(of = "xml")
+@SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
 final class DomParser {
 
     /**
@@ -105,11 +105,7 @@ final class DomParser {
             doc = this.factory.newDocumentBuilder().parse(
                 new ByteArrayInputStream(this.xml.getBytes("UTF-8"))
             );
-        } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final IOException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final ParserConfigurationException ex) {
+        } catch (final IOException | ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
         } catch (final SAXException ex) {
             throw new IllegalArgumentException(

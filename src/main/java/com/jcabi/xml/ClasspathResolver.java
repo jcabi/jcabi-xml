@@ -33,22 +33,27 @@ import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 
 /**
- * {@link org.w3c.dom.ls.LSResourceResolver} implementation
+ * {@link LSResourceResolver} implementation
  * supporting classpath lookups.
  *
  * @author Adam Siemion (adam.siemion.null@lemonsoftware.pl)
  * @version $Id$
+ * @since 0.1
  */
-class ClasspathResolver implements LSResourceResolver {
+final class ClasspathResolver implements LSResourceResolver {
+
     @Override
     @SuppressWarnings("PMD.UseObjectForClearerAPI")
     // @checkstyle ParameterNumber (1 line)
-    public LSInput resolveResource(final String type, final String namespaceuri,
-        final String publicid, final String systemid, final String baseuri) {
+    public LSInput resolveResource(final String type, final String nspace,
+        final String pid, final String sid, final String base) {
         LSInput input = null;
-        if (systemid != null && getClass().getResource(systemid) != null) {
-            input = new ClasspathInput(publicid, systemid);
+        final ClassLoader loader =
+            Thread.currentThread().getContextClassLoader();
+        if (sid != null && loader.getResource(sid) != null) {
+            input = new ClasspathInput(pid, sid);
         }
         return input;
     }
+
 }

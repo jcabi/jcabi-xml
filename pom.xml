@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Copyright (c) 2012-2017, jcabi.com
  * All rights reserved.
@@ -29,13 +29,13 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.jcabi</groupId>
         <artifactId>jcabi</artifactId>
-        <version>1.21</version>
+        <version>1.23</version>
     </parent>
     <artifactId>jcabi-xml</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -74,6 +74,11 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.cactoos</groupId>
+            <artifactId>cactoos</artifactId>
+            <version>0.5</version>
+        </dependency>
+        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <scope>test</scope>
@@ -87,10 +92,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -119,8 +120,8 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
+                        <source>1.7</source>
+                        <target>1.7</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -220,6 +221,7 @@
                             <excludes combine.children="append">
                                 <exclude>xml:/src/it/settings.xml</exclude>
                                 <exclude>xml:/src/test/resources/com/jcabi/xml/.*</exclude>
+                                <exclude>findbugs:.*</exclude>
                             </excludes>
                         </configuration>
                     </plugin>

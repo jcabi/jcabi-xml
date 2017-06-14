@@ -64,6 +64,19 @@ import org.w3c.dom.Node;
  * the majority of inherited method are not implemented and
  * thow runtime exceptions if being called.
  *
+ * <p>The method {@link #get(int)} throws
+ * {@link ListWrapper.NodeNotFoundException}
+ * if such an element doesn't exist in the list.
+ *
+ * <p>The method {@link #subList(int, int)}
+ * throws {@link ListWrapper.NodeNotFoundException}
+ * when either
+ * {@code start} or {@code end} is bigger than the size of the list. In all
+ * other cases of illegal method call (start is less than zero, end is
+ * less than zero, or start is bigger than end) a standard
+ * {@link IndexOutOfBoundsException} is thrown (by the encapsulated
+ * implementation of {@Link List}).
+ *
  * <p>The class is immutable and thread-safe.
  *
  * @author Yegor Bugayenko (yegor256@gmail.com)
@@ -142,12 +155,6 @@ final class ListWrapper<T> implements List<T> {
         return this.original.containsAll(elements);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The method throws {@link ListWrapper.NodeNotFoundException}
-     * if such an element doesn't exist in the list.
-     */
     @Override
     public T get(final int index) {
         if (index >= this.size()) {
@@ -223,17 +230,6 @@ final class ListWrapper<T> implements List<T> {
         return this.original.size();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>The method throws {@link ListWrapper.NodeNotFoundException}
-     * when either
-     * {@code start} or {@code end} is bigger than the size of the list. In all
-     * other cases of illegal method call (start is less than zero, end is
-     * less than zero, or start is bigger than end) a standard
-     * {@link IndexOutOfBoundsException} is thrown (by the encapsulated
-     * implementation of {@Link List}).
-     */
     @Override
     public List<T> subList(final int start, final int end) {
         if (start >= this.size()) {

@@ -56,6 +56,7 @@ import org.xml.sax.SAXParseException;
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.5
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @EqualsAndHashCode(of = "xsd")
 public final class XSDDocument implements XSD {
@@ -125,6 +126,7 @@ public final class XSDDocument implements XSD {
      * @param stream Input stream
      * @return XSD schema
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static XSD make(final InputStream stream) {
         return new XSDDocument(stream);
     }
@@ -136,6 +138,7 @@ public final class XSDDocument implements XSD {
      * @see #make(InputStream)
      * @since 0.7.4
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static XSD make(final URL url) {
         try {
             return new XSDDocument(url);
@@ -165,16 +168,14 @@ public final class XSDDocument implements XSD {
             );
         }
         final Collection<SAXParseException> errors =
-            new CopyOnWriteArrayList<SAXParseException>();
+            new CopyOnWriteArrayList<>();
         final Validator validator = schema.newValidator();
         validator.setErrorHandler(new ValidationHandler(errors));
         try {
             synchronized (XSDDocument.class) {
                 validator.validate(xml);
             }
-        } catch (final SAXException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final IOException ex) {
+        } catch (final SAXException | IOException ex) {
             throw new IllegalStateException(ex);
         }
         Logger.debug(

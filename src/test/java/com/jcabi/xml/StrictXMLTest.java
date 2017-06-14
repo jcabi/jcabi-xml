@@ -54,10 +54,12 @@ import org.mockito.stubbing.Answer;
  * Test case for {@link StrictXML}.
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
+ * @since 0.1
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({ "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 public final class StrictXMLTest {
 
     /**
@@ -174,16 +176,16 @@ public final class StrictXMLTest {
                 return null;
             }
         };
-        final ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count = count + 1) {
-            executorService.submit(callable);
+        final ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count += 1) {
+            service.submit(callable);
         }
-        executorService.shutdown();
+        service.shutdown();
         MatcherAssert.assertThat(
-            executorService.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
-        executorService.shutdownNow();
+        service.shutdownNow();
         MatcherAssert.assertThat(done.get(), Matchers.equalTo(loop));
     }
 
@@ -230,17 +232,17 @@ public final class StrictXMLTest {
                 StringUtils.join(
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
                     "<payment xmlns=\"http://jcabi.com/schema/xml\" ",
-                        "xmlns:xsi=\"",
-                            "http://www.w3.org/2001/XMLSchema-instance",
-                        "\" ",
-                        "xsi:schemaLocation=\"",
-                            "http://jcabi.com/schema/xml ",
-                                "sample-namespaces.xsd",
-                        "\">",
-                        "<id>333</id>",
-                        "<date>1-Jan-2013</date>",
-                        "<debit>test-1</debit>",
-                        "<credit>test-2</credit>",
+                    "xmlns:xsi=\"",
+                    "http://www.w3.org/2001/XMLSchema-instance",
+                    "\" ",
+                    "xsi:schemaLocation=\"",
+                    "http://jcabi.com/schema/xml ",
+                    "com/jcabi/xml/sample-namespaces.xsd",
+                    "\">",
+                    "<id>333</id>",
+                    "<date>1-Jan-2013</date>",
+                    "<debit>test-1</debit>",
+                    "<credit>test-2</credit>",
                     "</payment>"
                 )
             )

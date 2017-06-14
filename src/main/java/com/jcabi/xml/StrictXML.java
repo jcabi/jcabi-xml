@@ -58,6 +58,7 @@ import org.xml.sax.SAXParseException;
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 0.7
+ * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @EqualsAndHashCode(of = "origin")
 public final class StrictXML implements XML {
@@ -108,8 +109,9 @@ public final class StrictXML implements XML {
      * @param xml XML Document
      * @param errors XML Document errors
      */
-    private StrictXML(final XML xml, final Collection<SAXParseException> errors)
-    {
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+    private StrictXML(final XML xml,
+        final Collection<SAXParseException> errors) {
         if (!errors.isEmpty()) {
             Logger.warn(
                 StrictXML.class,
@@ -166,7 +168,7 @@ public final class StrictXML implements XML {
      */
     private static Iterable<String> print(
         final Collection<SAXParseException> errors) {
-        final Collection<String> lines = new ArrayList<String>(errors.size());
+        final Collection<String> lines = new ArrayList<>(errors.size());
         for (final SAXParseException error : errors) {
             lines.add(
                 String.format(
@@ -215,7 +217,7 @@ public final class StrictXML implements XML {
         final XML xml,
         final Validator validator) {
         final Collection<SAXParseException> errors =
-            new CopyOnWriteArrayList<SAXParseException>();
+            new CopyOnWriteArrayList<>();
         final int max = 3;
         try {
             validator.setErrorHandler(
@@ -240,9 +242,7 @@ public final class StrictXML implements XML {
                     }
                 }
             }
-        } catch (final SAXException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final IOException ex) {
+        } catch (final SAXException | IOException ex) {
             throw new IllegalStateException(ex);
         }
         return errors;
