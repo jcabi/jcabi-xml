@@ -136,6 +136,22 @@ public final class XMLDocumentTest {
     }
 
     /**
+     * XMLDocument preserves DOM structure when executing XPath queries.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void preservesDomStructureWhenXpath() throws Exception {
+        final XML doc = new XMLDocument(
+            IOUtils.toInputStream("<root><item1/><item2/><item3/></root>")
+        );
+        final XML item2Node = doc.nodes("//root/item2").get(0);
+        MatcherAssert.assertThat(
+            item2Node.nodes("..").get(0).xpath("name()").get(0),
+            Matchers.equalTo("root")
+        );
+    }
+
+    /**
      * XMLDocument can convert itself back to XML.
      * @throws Exception If something goes wrong inside
      */
