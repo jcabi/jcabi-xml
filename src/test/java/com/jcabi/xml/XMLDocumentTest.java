@@ -222,6 +222,22 @@ public final class XMLDocumentTest {
     }
 
     /**
+     * XMLDocument preserves DOM structure when executing XPath queries.
+     * @throws Exception If something goes wrong inside
+     */
+    @Test
+    public void preservesDomStructureWhenXpath() throws Exception {
+        final XML doc = new XMLDocument(
+            "<root><item1/><item2/><item3/></root>"
+        );
+        final XML item = doc.nodes("//root/item2").get(0);
+        MatcherAssert.assertThat(
+            item.nodes("..").get(0).xpath("name()").get(0),
+            Matchers.equalTo("root")
+        );
+    }
+
+    /**
      * XMLDocument can print with and without XML header.
      * @throws Exception If something goes wrong inside
      * @since 0.2

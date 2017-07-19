@@ -346,13 +346,15 @@ public final class XMLDocument implements XML {
                 );
             }
         }
-        return new ListWrapper<>(items, this.node(), query);
+        return new ListWrapper<>(items, Node.class.cast(this.cache), query);
     }
 
     @Override
     public XML registerNs(final String prefix, final Object uri) {
         return new XMLDocument(
-            this.node(), this.context.add(prefix, uri), this.leaf
+            Node.class.cast(this.cache),
+            this.context.add(prefix, uri),
+            this.leaf
         );
     }
 
@@ -379,12 +381,16 @@ public final class XMLDocument implements XML {
                 ), ex
             );
         }
-        return new ListWrapper<>(items, this.node(), query);
+        return new ListWrapper<>(items, Node.class.cast(this.cache), query);
     }
 
     @Override
     public XML merge(final NamespaceContext ctx) {
-        return new XMLDocument(this.node(), this.context.merge(ctx), this.leaf);
+        return new XMLDocument(
+            Node.class.cast(this.cache),
+            this.context.merge(ctx),
+            this.leaf
+        );
     }
 
     /**
@@ -438,7 +444,7 @@ public final class XMLDocument implements XML {
                 )
             );
         }
-        return (T) xpath.evaluate(query, this.node(), qname);
+        return (T) xpath.evaluate(query, Node.class.cast(this.cache), qname);
     }
 
     /**
