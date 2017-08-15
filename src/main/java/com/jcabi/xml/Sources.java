@@ -49,8 +49,11 @@ public interface Sources extends URIResolver {
         @Override
         public Source resolve(final String href, final String base) {
             throw new UnsupportedOperationException(
-                // @checkstyle LineLength (1 line)
-                "URI resolving is not configured in XSLDocument, use #with(URIResolver) method"
+                String.format(
+                    // @checkstyle LineLength (1 line)
+                    "Sources.DUMMY#resolve(\"%s\", \"%s\"): URI resolving is not configured in XSLDocument, use #with(URIResolver) method",
+                    href, base
+                )
             );
         }
     };
