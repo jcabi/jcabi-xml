@@ -138,11 +138,27 @@ public final class XSLDocument implements XSL {
     private final transient ArrayMap<String, Object> params;
 
     /**
+     * System ID (base).
+     * @since 0.20
+     */
+    private final transient String sid;
+
+    /**
      * Public ctor, from XML as a source.
      * @param src XSL document body
      */
     public XSLDocument(final XML src) {
-        this(src.toString());
+        this(src, "/");
+    }
+
+    /**
+     * Public ctor, from XML as a source.
+     * @param src XSL document body
+     * @param base SystemId/Base
+     * @since 0.20
+     */
+    public XSLDocument(final XML src, final String base) {
+        this(src.toString(), base);
     }
 
     /**
@@ -152,7 +168,7 @@ public final class XSLDocument implements XSL {
      * @since 0.7.4
      */
     public XSLDocument(final URL url) throws IOException {
-        this(new TextResource(url).toString());
+        this(new TextResource(url).toString(), url.toString());
     }
 
     /**
@@ -162,7 +178,7 @@ public final class XSLDocument implements XSL {
      * @since 0.15
      */
     public XSLDocument(final URI uri) throws IOException {
-        this(new TextResource(uri).toString());
+        this(new TextResource(uri).toString(), uri.toString());
     }
 
     /**
@@ -174,11 +190,31 @@ public final class XSLDocument implements XSL {
     }
 
     /**
+     * Public ctor, from XSL as an input stream.
+     * @param stream XSL input stream
+     * @param base SystemId/Base
+     * @since 0.20
+     */
+    public XSLDocument(final InputStream stream, final String base) {
+        this(new TextResource(stream).toString(), base);
+    }
+
+    /**
      * Public ctor, from XSL as a string.
      * @param src XML document body
      */
     public XSLDocument(final String src) {
         this(src, Sources.DUMMY);
+    }
+
+    /**
+     * Public ctor, from XSL as a string.
+     * @param src XML document body
+     * @param base SystemId/Base
+     * @since 0.20
+     */
+    public XSLDocument(final String src, final String base) {
+        this(src, Sources.DUMMY, base);
     }
 
     /**
@@ -195,14 +231,41 @@ public final class XSLDocument implements XSL {
      * Public ctor, from XSL as a string.
      * @param src XML document body
      * @param srcs Sources
+     * @param base SystemId/Base
+     * @since 0.20
+     */
+    public XSLDocument(final String src, final Sources srcs,
+        final String base) {
+        this(src, srcs, new ArrayMap<String, Object>(), base);
+    }
+
+    /**
+     * Public ctor, from XSL as a string.
+     * @param src XML document body
+     * @param srcs Sources
      * @param map Map of XSL params
      * @since 0.16
      */
     public XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map) {
+        this(src, srcs, map, "/");
+    }
+
+    /**
+     * Public ctor, from XSL as a string.
+     * @param src XML document body
+     * @param srcs Sources
+     * @param map Map of XSL params
+     * @param base SystemId/Base
+     * @since 0.20
+     * @checkstyle ParameterNumberCheck (5 lines)
+     */
+    public XSLDocument(final String src, final Sources srcs,
+        final Map<String, Object> map, final String base) {
         this.xsl = src;
         this.sources = srcs;
         this.params = new ArrayMap<>(map);
+        this.sid = base;
     }
 
     @Override
@@ -300,7 +363,7 @@ public final class XSLDocument implements XSL {
                 factory.setErrorListener(XSLDocument.ERRORS);
                 factory.setURIResolver(this.sources);
                 trans = factory.newTransformer(
-                    new StreamSource(new StringReader(this.xsl))
+                    new StreamSource(new StringReader(this.xsl), this.sid)
                 );
                 trans.setURIResolver(this.sources);
                 for (final Map.Entry<String, Object> ent
