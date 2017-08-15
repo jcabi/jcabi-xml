@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;Objects of this class are immutable and thread-safe.</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor256@gmail.com)</em>
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment"> * @version $Id: 477769716d576bf3881af2259f84fca8e9d09b8b $</em>
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment"> * @version $Id: c29f3871e34e877d04f4ba7482fc8bfc1733b6f5 $</em>
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment"> * @since 0.1</em>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment"> * @checkstyle ClassDataAbstractionCoupling (500 lines)</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment"> * @checkstyle ClassFanOutComplexity (500 lines)</em>
@@ -354,155 +354,161 @@
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>                 );
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>             }
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>         }
-<a class="jxr_linenumber" name="L349" href="#L349">349</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ListWrapper&lt;&gt;(items, <strong class="jxr_keyword">this</strong>.node(), query);
+<a class="jxr_linenumber" name="L349" href="#L349">349</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ListWrapper&lt;&gt;(items, Node.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(<strong class="jxr_keyword">this</strong>.cache), query);
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>     }
 <a class="jxr_linenumber" name="L351" href="#L351">351</a> 
 <a class="jxr_linenumber" name="L352" href="#L352">352</a>     @Override
 <a class="jxr_linenumber" name="L353" href="#L353">353</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XML.html">XML</a> registerNs(<strong class="jxr_keyword">final</strong> String prefix, <strong class="jxr_keyword">final</strong> Object uri) {
 <a class="jxr_linenumber" name="L354" href="#L354">354</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>             <strong class="jxr_keyword">this</strong>.node(), <strong class="jxr_keyword">this</strong>.context.add(prefix, uri), <strong class="jxr_keyword">this</strong>.leaf
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>         );
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     }
-<a class="jxr_linenumber" name="L358" href="#L358">358</a> 
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>     @Override
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>     @SuppressWarnings(<span class="jxr_string">"PMD.AvoidInstantiatingObjectsInLoops"</span>)
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>     <strong class="jxr_keyword">public</strong> List&lt;XML&gt; nodes(<strong class="jxr_keyword">final</strong> String query) {
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>         <strong class="jxr_keyword">final</strong> List&lt;XML&gt; items;
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>             <strong class="jxr_keyword">final</strong> NodeList nodes = <strong class="jxr_keyword">this</strong>.fetch(query, NodeList.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>             items = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(nodes.getLength());
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> idx = 0; idx &lt; nodes.getLength(); ++idx) {
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>                 items.add(
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>                     <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>                         nodes.item(idx),
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>                         <strong class="jxr_keyword">this</strong>.context, <strong class="jxr_keyword">true</strong>
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>                     )
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>                 );
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>             }
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> XPathExpressionException ex) {
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>                 String.format(
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>                     <span class="jxr_string">"invalid XPath query '%s' by %s"</span>,
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>                     query, XMLDocument.XFACTORY.getClass().getName()
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>                 ), ex
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>             );
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>         }
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ListWrapper&lt;&gt;(items, <strong class="jxr_keyword">this</strong>.node(), query);
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>     }
-<a class="jxr_linenumber" name="L384" href="#L384">384</a> 
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>     @Override
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XML.html">XML</a> merge(<strong class="jxr_keyword">final</strong> NamespaceContext ctx) {
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">this</strong>.node(), <strong class="jxr_keyword">this</strong>.context.merge(ctx), <strong class="jxr_keyword">this</strong>.leaf);
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>     }
-<a class="jxr_linenumber" name="L389" href="#L389">389</a> 
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L391" href="#L391">391</a> <em class="jxr_javadoccomment">     * Clones a node and imports it in a new document.</em>
-<a class="jxr_linenumber" name="L392" href="#L392">392</a> <em class="jxr_javadoccomment">     * @param node A node to clone.</em>
-<a class="jxr_linenumber" name="L393" href="#L393">393</a> <em class="jxr_javadoccomment">     * @return A cloned node imported in a dedicated document.</em>
-<a class="jxr_linenumber" name="L394" href="#L394">394</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Node createImportedNode(<strong class="jxr_keyword">final</strong> Node node) {
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>         <strong class="jxr_keyword">final</strong> Document document;
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>             document = XMLDocument.DFACTORY.newDocumentBuilder().newDocument();
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ParserConfigurationException ex) {
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>         }
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>         <strong class="jxr_keyword">final</strong> Node imported = document.importNode(node, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>         document.appendChild(imported);
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>         <strong class="jxr_keyword">return</strong> imported;
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>     }
-<a class="jxr_linenumber" name="L406" href="#L406">406</a> 
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     * Retrieve XPath query result. Supports returning {@link NodeList} and</em>
-<a class="jxr_linenumber" name="L409" href="#L409">409</a> <em class="jxr_javadoccomment">     * {@link String} types.</em>
-<a class="jxr_linenumber" name="L410" href="#L410">410</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L411" href="#L411">411</a> <em class="jxr_javadoccomment">     * &lt;p&gt;An {@link IllegalArgumentException} is thrown if the parameter</em>
-<a class="jxr_linenumber" name="L412" href="#L412">412</a> <em class="jxr_javadoccomment">     * passed is not a valid XPath expression or an unsupported type is</em>
-<a class="jxr_linenumber" name="L413" href="#L413">413</a> <em class="jxr_javadoccomment">     * specified.</em>
-<a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L415" href="#L415">415</a> <em class="jxr_javadoccomment">     * @param &lt;T&gt; The type to return</em>
-<a class="jxr_linenumber" name="L416" href="#L416">416</a> <em class="jxr_javadoccomment">     * @param query XPath query</em>
-<a class="jxr_linenumber" name="L417" href="#L417">417</a> <em class="jxr_javadoccomment">     * @param type The return type</em>
-<a class="jxr_linenumber" name="L418" href="#L418">418</a> <em class="jxr_javadoccomment">     * @return Result of XPath query</em>
-<a class="jxr_linenumber" name="L419" href="#L419">419</a> <em class="jxr_javadoccomment">     * @throws XPathExpressionException If an error occurs when evaluating XPath</em>
-<a class="jxr_linenumber" name="L420" href="#L420">420</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>     <strong class="jxr_keyword">private</strong> &lt;T&gt; T fetch(<strong class="jxr_keyword">final</strong> String query, <strong class="jxr_keyword">final</strong> Class&lt;T&gt; type)
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>         <strong class="jxr_keyword">throws</strong> XPathExpressionException {
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>         <strong class="jxr_keyword">final</strong> XPath xpath;
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>         <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>             xpath = XMLDocument.XFACTORY.newXPath();
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>         }
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>         xpath.setNamespaceContext(<strong class="jxr_keyword">this</strong>.context);
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>         <strong class="jxr_keyword">final</strong> QName qname;
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>         <strong class="jxr_keyword">if</strong> (type.equals(String.<strong class="jxr_keyword">class</strong>)) {
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>             qname = XPathConstants.STRING;
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (type.equals(NodeList.<strong class="jxr_keyword">class</strong>)) {
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>             qname = XPathConstants.NODESET;
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>                 String.format(
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>                     <span class="jxr_string">"Unsupported type: %s"</span>, type.getName()
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>                 )
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>             );
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>         }
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>         <strong class="jxr_keyword">return</strong> (T) xpath.evaluate(query, <strong class="jxr_keyword">this</strong>.node(), qname);
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>     }
-<a class="jxr_linenumber" name="L443" href="#L443">443</a> 
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> <em class="jxr_javadoccomment">     * Transform node to String.</em>
-<a class="jxr_linenumber" name="L446" href="#L446">446</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L447" href="#L447">447</a> <em class="jxr_javadoccomment">     * @param node The DOM node.</em>
-<a class="jxr_linenumber" name="L448" href="#L448">448</a> <em class="jxr_javadoccomment">     * @return String representation</em>
-<a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>     @SuppressWarnings(<span class="jxr_string">"PMD.AvoidDuplicateLiterals"</span>)
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String asString(<strong class="jxr_keyword">final</strong> Node node) {
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>         <strong class="jxr_keyword">final</strong> StringWriter writer = <strong class="jxr_keyword">new</strong> StringWriter();
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>             <strong class="jxr_keyword">final</strong> Transformer trans;
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>             <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>                 trans = XMLDocument.TFACTORY.newTransformer();
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>             }
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>             <em class="jxr_comment">// @checkstyle MultipleStringLiterals (1 line)</em>
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>             trans.setOutputProperty(OutputKeys.INDENT, <span class="jxr_string">"yes"</span>);
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>             trans.setOutputProperty(OutputKeys.VERSION, <span class="jxr_string">"1.0"</span>);
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>             <strong class="jxr_keyword">if</strong> (!(node instanceof Document)) {
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>                 trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, <span class="jxr_string">"yes"</span>);
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>             Node.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(<strong class="jxr_keyword">this</strong>.cache),
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>             <strong class="jxr_keyword">this</strong>.context.add(prefix, uri),
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>             <strong class="jxr_keyword">this</strong>.leaf
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>         );
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>     }
+<a class="jxr_linenumber" name="L360" href="#L360">360</a> 
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>     @Override
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>     @SuppressWarnings(<span class="jxr_string">"PMD.AvoidInstantiatingObjectsInLoops"</span>)
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>     <strong class="jxr_keyword">public</strong> List&lt;XML&gt; nodes(<strong class="jxr_keyword">final</strong> String query) {
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>         <strong class="jxr_keyword">final</strong> List&lt;XML&gt; items;
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>             <strong class="jxr_keyword">final</strong> NodeList nodes = <strong class="jxr_keyword">this</strong>.fetch(query, NodeList.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>             items = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(nodes.getLength());
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> idx = 0; idx &lt; nodes.getLength(); ++idx) {
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>                 items.add(
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>                     <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>                         nodes.item(idx),
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>                         <strong class="jxr_keyword">this</strong>.context, <strong class="jxr_keyword">true</strong>
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>                     )
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>                 );
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>             }
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> XPathExpressionException ex) {
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>                 String.format(
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>                     <span class="jxr_string">"invalid XPath query '%s' by %s"</span>,
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>                     query, XMLDocument.XFACTORY.getClass().getName()
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>                 ), ex
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>             );
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>         }
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ListWrapper&lt;&gt;(items, Node.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(<strong class="jxr_keyword">this</strong>.cache), query);
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>     }
+<a class="jxr_linenumber" name="L386" href="#L386">386</a> 
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>     @Override
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XML.html">XML</a> merge(<strong class="jxr_keyword">final</strong> NamespaceContext ctx) {
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>             Node.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(<strong class="jxr_keyword">this</strong>.cache),
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>             <strong class="jxr_keyword">this</strong>.context.merge(ctx),
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>             <strong class="jxr_keyword">this</strong>.leaf
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>         );
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>     }
+<a class="jxr_linenumber" name="L395" href="#L395">395</a> 
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L397" href="#L397">397</a> <em class="jxr_javadoccomment">     * Clones a node and imports it in a new document.</em>
+<a class="jxr_linenumber" name="L398" href="#L398">398</a> <em class="jxr_javadoccomment">     * @param node A node to clone.</em>
+<a class="jxr_linenumber" name="L399" href="#L399">399</a> <em class="jxr_javadoccomment">     * @return A cloned node imported in a dedicated document.</em>
+<a class="jxr_linenumber" name="L400" href="#L400">400</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Node createImportedNode(<strong class="jxr_keyword">final</strong> Node node) {
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>         <strong class="jxr_keyword">final</strong> Document document;
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>             document = XMLDocument.DFACTORY.newDocumentBuilder().newDocument();
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ParserConfigurationException ex) {
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         }
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>         <strong class="jxr_keyword">final</strong> Node imported = document.importNode(node, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         document.appendChild(imported);
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         <strong class="jxr_keyword">return</strong> imported;
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     }
+<a class="jxr_linenumber" name="L412" href="#L412">412</a> 
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">     * Retrieve XPath query result. Supports returning {@link NodeList} and</em>
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> <em class="jxr_javadoccomment">     * {@link String} types.</em>
+<a class="jxr_linenumber" name="L416" href="#L416">416</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L417" href="#L417">417</a> <em class="jxr_javadoccomment">     * &lt;p&gt;An {@link IllegalArgumentException} is thrown if the parameter</em>
+<a class="jxr_linenumber" name="L418" href="#L418">418</a> <em class="jxr_javadoccomment">     * passed is not a valid XPath expression or an unsupported type is</em>
+<a class="jxr_linenumber" name="L419" href="#L419">419</a> <em class="jxr_javadoccomment">     * specified.</em>
+<a class="jxr_linenumber" name="L420" href="#L420">420</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L421" href="#L421">421</a> <em class="jxr_javadoccomment">     * @param &lt;T&gt; The type to return</em>
+<a class="jxr_linenumber" name="L422" href="#L422">422</a> <em class="jxr_javadoccomment">     * @param query XPath query</em>
+<a class="jxr_linenumber" name="L423" href="#L423">423</a> <em class="jxr_javadoccomment">     * @param type The return type</em>
+<a class="jxr_linenumber" name="L424" href="#L424">424</a> <em class="jxr_javadoccomment">     * @return Result of XPath query</em>
+<a class="jxr_linenumber" name="L425" href="#L425">425</a> <em class="jxr_javadoccomment">     * @throws XPathExpressionException If an error occurs when evaluating XPath</em>
+<a class="jxr_linenumber" name="L426" href="#L426">426</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>     <strong class="jxr_keyword">private</strong> &lt;T&gt; T fetch(<strong class="jxr_keyword">final</strong> String query, <strong class="jxr_keyword">final</strong> Class&lt;T&gt; type)
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>         <strong class="jxr_keyword">throws</strong> XPathExpressionException {
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         <strong class="jxr_keyword">final</strong> XPath xpath;
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>         <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>             xpath = XMLDocument.XFACTORY.newXPath();
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>         }
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>         xpath.setNamespaceContext(<strong class="jxr_keyword">this</strong>.context);
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <strong class="jxr_keyword">final</strong> QName qname;
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>         <strong class="jxr_keyword">if</strong> (type.equals(String.<strong class="jxr_keyword">class</strong>)) {
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>             qname = XPathConstants.STRING;
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (type.equals(NodeList.<strong class="jxr_keyword">class</strong>)) {
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>             qname = XPathConstants.NODESET;
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>                 String.format(
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>                     <span class="jxr_string">"Unsupported type: %s"</span>, type.getName()
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>                 )
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>             );
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         }
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">return</strong> (T) xpath.evaluate(query, Node.<strong class="jxr_keyword">class</strong>.<strong class="jxr_keyword">cast</strong>(<strong class="jxr_keyword">this</strong>.cache), qname);
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>     }
+<a class="jxr_linenumber" name="L449" href="#L449">449</a> 
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L451" href="#L451">451</a> <em class="jxr_javadoccomment">     * Transform node to String.</em>
+<a class="jxr_linenumber" name="L452" href="#L452">452</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L453" href="#L453">453</a> <em class="jxr_javadoccomment">     * @param node The DOM node.</em>
+<a class="jxr_linenumber" name="L454" href="#L454">454</a> <em class="jxr_javadoccomment">     * @return String representation</em>
+<a class="jxr_linenumber" name="L455" href="#L455">455</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>     @SuppressWarnings(<span class="jxr_string">"PMD.AvoidDuplicateLiterals"</span>)
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String asString(<strong class="jxr_keyword">final</strong> Node node) {
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>         <strong class="jxr_keyword">final</strong> StringWriter writer = <strong class="jxr_keyword">new</strong> StringWriter();
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>             <strong class="jxr_keyword">final</strong> Transformer trans;
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>             <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>                 trans = XMLDocument.TFACTORY.newTransformer();
 <a class="jxr_linenumber" name="L463" href="#L463">463</a>             }
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>             <strong class="jxr_keyword">synchronized</strong> (node) {
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 trans.transform(
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>                     <strong class="jxr_keyword">new</strong> DOMSource(node),
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>                     <strong class="jxr_keyword">new</strong> StreamResult(writer)
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>                 );
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>             <em class="jxr_comment">// @checkstyle MultipleStringLiterals (1 line)</em>
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>             trans.setOutputProperty(OutputKeys.INDENT, <span class="jxr_string">"yes"</span>);
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>             trans.setOutputProperty(OutputKeys.VERSION, <span class="jxr_string">"1.0"</span>);
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>             <strong class="jxr_keyword">if</strong> (!(node instanceof Document)) {
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>                 trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, <span class="jxr_string">"yes"</span>);
 <a class="jxr_linenumber" name="L469" href="#L469">469</a>             }
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerConfigurationException ex) {
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerException ex) {
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(ex);
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>         }
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>         <strong class="jxr_keyword">return</strong> writer.toString();
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>     }
-<a class="jxr_linenumber" name="L477" href="#L477">477</a> 
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L479" href="#L479">479</a> <em class="jxr_javadoccomment">     * Transform source to DOM node.</em>
-<a class="jxr_linenumber" name="L480" href="#L480">480</a> <em class="jxr_javadoccomment">     * @param source The source</em>
-<a class="jxr_linenumber" name="L481" href="#L481">481</a> <em class="jxr_javadoccomment">     * @return The node</em>
-<a class="jxr_linenumber" name="L482" href="#L482">482</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Node transform(<strong class="jxr_keyword">final</strong> Source source) {
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">final</strong> DOMResult result = <strong class="jxr_keyword">new</strong> DOMResult();
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>             <strong class="jxr_keyword">final</strong> Transformer trans;
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>             <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>                 trans = XMLDocument.TFACTORY.newTransformer();
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>             }
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>             trans.transform(source, result);
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerException ex) {
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>         }
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>         <strong class="jxr_keyword">return</strong> result.getNode();
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>     }
-<a class="jxr_linenumber" name="L496" href="#L496">496</a> 
-<a class="jxr_linenumber" name="L497" href="#L497">497</a> }
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>             <strong class="jxr_keyword">synchronized</strong> (node) {
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>                 trans.transform(
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>                     <strong class="jxr_keyword">new</strong> DOMSource(node),
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>                     <strong class="jxr_keyword">new</strong> StreamResult(writer)
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>                 );
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>             }
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerConfigurationException ex) {
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerException ex) {
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(ex);
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>         }
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>         <strong class="jxr_keyword">return</strong> writer.toString();
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>     }
+<a class="jxr_linenumber" name="L483" href="#L483">483</a> 
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_javadoccomment">     * Transform source to DOM node.</em>
+<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_javadoccomment">     * @param source The source</em>
+<a class="jxr_linenumber" name="L487" href="#L487">487</a> <em class="jxr_javadoccomment">     * @return The node</em>
+<a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Node transform(<strong class="jxr_keyword">final</strong> Source source) {
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">final</strong> DOMResult result = <strong class="jxr_keyword">new</strong> DOMResult();
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>             <strong class="jxr_keyword">final</strong> Transformer trans;
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>             <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>                 trans = XMLDocument.TFACTORY.newTransformer();
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>             }
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>             trans.transform(source, result);
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerException ex) {
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(ex);
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>         }
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>         <strong class="jxr_keyword">return</strong> result.getNode();
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>     }
+<a class="jxr_linenumber" name="L502" href="#L502">502</a> 
+<a class="jxr_linenumber" name="L503" href="#L503">503</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2017 <a href="http://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
