@@ -42,7 +42,7 @@
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.io.File;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> org.cactoos.io.LengthOfInput;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> org.cactoos.io.LengthOf;
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> org.cactoos.io.TeeInput;
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.MatcherAssert;
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.Matchers;
@@ -52,7 +52,7 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment"> * Test case for {@link TextResource}.</em>
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * @author Carlos Miranda (miranda.cma@gmail.com)</em>
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * @version $Id: 258c124d77d467555974cdb12cdf6c5bfa112d26 $</em>
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * @version $Id: de0e1ea0c29dcf531d86c36a15cd5d2462ee5914 $</em>
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * @since 0.1</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/xml/TextResourceTest.html">TextResourceTest</a> {
@@ -81,7 +81,7 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> readsFileAsText() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">final</strong> String text = <span class="jxr_string">"&lt;a xmlns='urn:foo'&gt;&lt;b&gt;\u0433!&lt;/b&gt;&lt;/a&gt;"</span>;
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">final</strong> File file = <strong class="jxr_keyword">new</strong> File(Files.createTempDir(), <span class="jxr_string">"dummy.xml"</span>);
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">new</strong> LengthOfInput(<strong class="jxr_keyword">new</strong> TeeInput(text, file)).asValue();
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">new</strong> LengthOf(<strong class="jxr_keyword">new</strong> TeeInput(text, file)).value();
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          MatcherAssert.assertThat(
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>              <strong class="jxr_keyword">new</strong> TextResource(file).toString(),
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>              Matchers.is(text)
