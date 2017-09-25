@@ -109,16 +109,18 @@ public final class XSLDocument implements XSL {
      */
     private static final ErrorListener ERRORS = new ErrorListener() {
         @Override
-        public void warning(final TransformerException exception) {
-            Logger.warn(this, exception.getMessageAndLocation());
+        public void warning(final TransformerException warning) {
+            Logger.warn(this, warning.getMessageAndLocation());
         }
         @Override
-        public void error(final TransformerException exception) {
-            Logger.error(this, exception.getMessageAndLocation());
+        public void error(final TransformerException error)
+            throws TransformerException {
+            throw error;
         }
         @Override
-        public void fatalError(final TransformerException exception) {
-            this.error(exception);
+        public void fatalError(final TransformerException error)
+            throws TransformerException {
+            throw error;
         }
     };
 

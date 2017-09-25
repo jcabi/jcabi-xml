@@ -53,7 +53,7 @@ public final class ClasspathInputTest {
         );
         MatcherAssert.assertThat(
             input.getStringData(),
-            Matchers.startsWith("<root>")
+            Matchers.containsString("<root>")
         );
     }
 }
