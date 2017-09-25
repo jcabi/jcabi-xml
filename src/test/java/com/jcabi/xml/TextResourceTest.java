@@ -34,7 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import org.cactoos.io.LengthOfInput;
+import org.cactoos.io.LengthOf;
 import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -73,7 +73,7 @@ public final class TextResourceTest {
     public void readsFileAsText() throws Exception {
         final String text = "<a xmlns='urn:foo'><b>\u0433!</b></a>";
         final File file = new File(Files.createTempDir(), "dummy.xml");
-        new LengthOfInput(new TeeInput(text, file)).asValue();
+        new LengthOf(new TeeInput(text, file)).value();
         MatcherAssert.assertThat(
             new TextResource(file).toString(),
             Matchers.is(text)

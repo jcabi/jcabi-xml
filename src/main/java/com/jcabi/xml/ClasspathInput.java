@@ -35,9 +35,8 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import org.cactoos.Func;
 import org.cactoos.Input;
-import org.cactoos.io.InputAsBytes;
-import org.cactoos.io.ResourceAsInput;
-import org.cactoos.text.BytesAsText;
+import org.cactoos.io.ResourceOf;
+import org.cactoos.text.TextOf;
 import org.w3c.dom.ls.LSInput;
 
 /**
@@ -117,23 +116,21 @@ final class ClasspathInput implements LSInput {
     @Override
     public String getStringData() {
         try {
-            return new BytesAsText(
-                new InputAsBytes(
-                    new ResourceAsInput(
-                        this.systemid,
-                        new Func<String, Input>() {
-                            @Override
-                            public Input apply(final String path) {
-                                throw new IllegalArgumentException(
-                                    String.format(
-                                        // @checkstyle LineLength (1 line)
-                                        "SystemID \"%s\" resource does not exist or can't be opened.",
-                                        path
-                                    )
-                                );
-                            }
+            return new TextOf(
+                new ResourceOf(
+                    this.systemid,
+                    new Func<CharSequence, Input>() {
+                        @Override
+                        public Input apply(final CharSequence path) {
+                            throw new IllegalArgumentException(
+                                String.format(
+                                    // @checkstyle LineLength (1 line)
+                                    "SystemID \"%s\" resource does not exist or can't be opened.",
+                                    path
+                                )
+                            );
                         }
-                    )
+                    }
                 ),
                 Charset.forName("UTF-8")
             ).asString();

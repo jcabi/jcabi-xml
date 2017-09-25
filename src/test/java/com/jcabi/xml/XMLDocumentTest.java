@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
-import org.cactoos.io.LengthOfInput;
+import org.cactoos.io.LengthOf;
 import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -102,12 +102,12 @@ public final class XMLDocumentTest {
     @Test
     public void findsWithXpathWithCustomNamespace() throws Exception {
         final File file = new File(Files.createTempDir(), "x.xml");
-        new LengthOfInput(
+        new LengthOf(
             new TeeInput(
                 "<a xmlns='urn:foo'><b>\u0433!</b></a>",
                 file
             )
-        ).asValue();
+        ).value();
         final XML doc = new XMLDocument(file).registerNs("f", "urn:foo");
         MatcherAssert.assertThat(
             doc.nodes("/f:a/f:b[.='\u0433!']"),
