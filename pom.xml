@@ -74,7 +74,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
-      <version>0.16</version>
+      <version>0.20</version>
     </dependency>
     <dependency>
       <groupId>javax.validation</groupId>
@@ -109,8 +109,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>xml-apis</groupId>
       <artifactId>xml-apis</artifactId>
-      <version>1.4.01</version>
       <!-- don't change it, leave at 1.4.01 -->
+      <version>1.4.01</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
