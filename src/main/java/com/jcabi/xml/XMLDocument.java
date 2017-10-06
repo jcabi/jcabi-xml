@@ -30,11 +30,13 @@
 package com.jcabi.xml;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -207,10 +209,27 @@ public final class XMLDocument implements XML {
      * passed is not in XML format.
      *
      * @param file XML file
-     * @throws IOException In case of I/O problems
+     * @throws FileNotFoundException In case of I/O problems
      */
-    public XMLDocument(final File file) throws IOException {
+    public XMLDocument(final File file) throws FileNotFoundException {
         this(new TextResource(file).toString());
+    }
+
+    /**
+     * Public ctor, from XML in a file.
+     *
+     * <p>The object is created with a default implementation of
+     * {@link NamespaceContext}, which already defines a
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     *
+     * <p>An {@link IllegalArgumentException} is thrown if the parameter
+     * passed is not in XML format.
+     *
+     * @param file XML file
+     * @throws FileNotFoundException In case of I/O problems
+     */
+    public XMLDocument(final Path file) throws FileNotFoundException {
+        this(file.toFile());
     }
 
     /**

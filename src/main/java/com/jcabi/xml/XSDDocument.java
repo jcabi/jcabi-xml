@@ -30,11 +30,14 @@
 package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.xml.XMLConstants;
@@ -90,6 +93,26 @@ public final class XSDDocument implements XSD {
      */
     public XSDDocument(final URL url) throws IOException {
         this(new TextResource(url).toString());
+    }
+
+    /**
+     * Public ctor, from file.
+     * @param file Location of document
+     * @throws FileNotFoundException If fails to read
+     * @since 0.21
+     */
+    public XSDDocument(final Path file) throws FileNotFoundException {
+        this(file.toFile());
+    }
+
+    /**
+     * Public ctor, from file.
+     * @param file Location of document
+     * @throws FileNotFoundException If fails to read
+     * @since 0.21
+     */
+    public XSDDocument(final File file) throws FileNotFoundException {
+        this(new TextResource(file).toString());
     }
 
     /**
