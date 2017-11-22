@@ -109,20 +109,32 @@ public final class XSLDocument implements XSL {
 
     /**
      * Error listener.
+     * @checkstyle AnonInnerLengthCheck (50 lines)
      */
     private static final ErrorListener ERRORS = new ErrorListener() {
         @Override
         public void warning(final TransformerException warning) {
-            Logger.warn(this, warning.getMessageAndLocation());
+            Logger.warn(
+                this, "#warning(): %s",
+                warning.getMessageAndLocation()
+            );
         }
         @Override
         public void error(final TransformerException error)
             throws TransformerException {
+            Logger.error(
+                this, "#error(): %s",
+                error.getMessageAndLocation()
+            );
             throw error;
         }
         @Override
         public void fatalError(final TransformerException error)
             throws TransformerException {
+            Logger.error(
+                this, "#fatalError(): %s",
+                error.getMessageAndLocation()
+            );
             throw error;
         }
     };
