@@ -29,6 +29,8 @@
  */
 package com.jcabi.xml;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import lombok.EqualsAndHashCode;
 
@@ -47,6 +49,15 @@ public final class XSLChain implements XSL {
      * XSL sheets.
      */
     private final transient XSL[] sheets;
+
+    /**
+     * Public ctor.
+     * @param shts Sheets
+     * @since 0.22
+     */
+    public XSLChain(final XSL... shts) {
+        this(Arrays.asList(shts));
+    }
 
     /**
      * Public ctor.
@@ -72,11 +83,19 @@ public final class XSLChain implements XSL {
 
     @Override
     public XSL with(final Sources src) {
-        throw new UnsupportedOperationException("#with()");
+        final Collection<XSL> list = new ArrayList<>(this.sheets.length);
+        for (final XSL sheet : this.sheets) {
+            list.add(sheet.with(src));
+        }
+        return new XSLChain(list);
     }
 
     @Override
     public XSL with(final String name, final Object value) {
-        throw new UnsupportedOperationException("#with(name, value)");
+        final Collection<XSL> list = new ArrayList<>(this.sheets.length);
+        for (final XSL sheet : this.sheets) {
+            list.add(sheet.with(name, value));
+        }
+        return new XSLChain(list);
     }
 }
