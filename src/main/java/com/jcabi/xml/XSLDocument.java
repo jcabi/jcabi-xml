@@ -44,7 +44,6 @@ import java.nio.file.Path;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -106,38 +105,6 @@ public final class XSLDocument implements XSL {
      */
     private static final DocumentBuilderFactory DFACTORY =
         DocumentBuilderFactory.newInstance();
-
-    /**
-     * Error listener.
-     * @checkstyle AnonInnerLengthCheck (50 lines)
-     */
-    private static final ErrorListener ERRORS = new ErrorListener() {
-        @Override
-        public void warning(final TransformerException warning) {
-            Logger.warn(
-                this, "#warning(): %s",
-                warning.getMessageAndLocation()
-            );
-        }
-        @Override
-        public void error(final TransformerException error)
-            throws TransformerException {
-            Logger.error(
-                this, "#error(): %s",
-                error.getMessageAndLocation()
-            );
-            throw error;
-        }
-        @Override
-        public void fatalError(final TransformerException error)
-            throws TransformerException {
-            Logger.error(
-                this, "#fatalError(): %s",
-                error.getMessageAndLocation()
-            );
-            throw error;
-        }
-    };
 
     /**
      * XSL document.
@@ -381,12 +348,12 @@ public final class XSLDocument implements XSL {
         try {
             return baos.toString("UTF-8");
         } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalStateException(ex);
+            throw new IllegalArgumentException(ex);
         }
     }
 
     /**
-     * Tranform XML into result.
+     * Transform XML into result.
      * @param xml XML
      * @param result Result
      * @since 0.11
@@ -396,12 +363,14 @@ public final class XSLDocument implements XSL {
         synchronized (XSLDocument.class) {
             final TransformerFactory factory =
                 TransformerFactory.newInstance();
+            final ConsoleErrorListener errors = new ConsoleErrorListener();
             try {
-                factory.setErrorListener(XSLDocument.ERRORS);
+                factory.setErrorListener(errors);
                 factory.setURIResolver(this.sources);
                 trans = factory.newTransformer(
                     new StreamSource(new StringReader(this.xsl), this.sid)
                 );
+                trans.setErrorListener(errors);
                 trans.setURIResolver(this.sources);
                 for (final Map.Entry<String, Object> ent
                     : this.params.entrySet()) {
@@ -409,18 +378,20 @@ public final class XSLDocument implements XSL {
                 }
                 trans.transform(new DOMSource(xml.node()), result);
             } catch (final TransformerConfigurationException ex) {
-                throw new IllegalStateException(
+                throw new IllegalArgumentException(
                     String.format(
-                        "failed to configure transformer by %s",
-                        factory.getClass().getName()
+                        "Failed to configure transformer by %s: %s",
+                        factory.getClass().getName(),
+                        errors.summary()
                     ),
                     ex
                 );
             } catch (final TransformerException ex) {
-                throw new IllegalStateException(
+                throw new IllegalArgumentException(
                     String.format(
-                        "failed to transform by %s",
-                        factory.getClass().getName()
+                        "Failed to transform by %s: %s",
+                        factory.getClass().getName(),
+                        errors.summary()
                     ),
                     ex
                 );

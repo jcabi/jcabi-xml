@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -214,6 +215,33 @@ public final class XSLDocumentTest {
             xsl.with("faa", 1).applyTo(new XMLDocument("<r0/>")),
             Matchers.equalTo("+1+")
         );
+    }
+
+    /**
+     * XSLDocument can catch XSL error messages.
+     * @throws Exception If something goes wrong inside
+     * @since 0.22
+     */
+    @Test
+    public void catchesXslErrorMessages() throws Exception {
+        try {
+            new XSLDocument(
+                StringUtils.join(
+                    " <xsl:stylesheet",
+                    "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                    "  version='2.0'><xsl:template match='/'>",
+                    "<xsl:message terminate='yes'>",
+                    "<xsl:text>oopsie...</xsl:text>",
+                    " </xsl:message></xsl:template></xsl:stylesheet>"
+                )
+            ).transform(new XMLDocument("<zz1/>"));
+            Assert.fail("Exception expected here");
+        } catch (final IllegalArgumentException ex) {
+            MatcherAssert.assertThat(
+                ex.getLocalizedMessage(),
+                Matchers.containsString("oopsie...")
+            );
+        }
     }
 
 }
