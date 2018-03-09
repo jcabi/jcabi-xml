@@ -50,7 +50,7 @@
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> * Test case for {@link XSLDocument}.</em>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment"> * @author Yegor Bugayenko (yegor256@gmail.com)</em>
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> * @version $Id: 0e3a25feab535a877b8120f38dc53c8c7a3f37f1 $</em>
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> * @version $Id: 56a1713931ed16c7415fc35e91cc59eaa5c610c7 $</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * @since 0.1</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * @checkstyle AbbreviationAsWordInNameCheck (5 lines)</em>
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> */</em>
@@ -170,7 +170,7 @@
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>                 <strong class="jxr_keyword">new</strong> StringBuilder()
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>                     .append(<span class="jxr_string">"&lt;a&gt;"</span>)
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>                     .append(System.lineSeparator())
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>                     .append(<span class="jxr_string">"&lt;b/&gt;"</span>)
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>                     .append(<span class="jxr_string">"   &lt;b/&gt;"</span>)
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>                     .append(System.lineSeparator())
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>                     .append(<span class="jxr_string">"&lt;/a&gt;"</span>)
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>                     .toString()
@@ -214,7 +214,7 @@
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>                 <span class="jxr_string">"&lt;xsl:stylesheet     "</span>,
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>                 <span class="jxr_string">" xmlns:xsl='http://www.w3.org/1999/XSL/Transform'       "</span>,
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>                 <span class="jxr_string">" version='2.0'&gt;&lt;xsl:output method='text'    /&gt;"</span>,
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>                 <span class="jxr_string">"&lt;xsl:param name='faa' as='xs:integer' select='5'/&gt;"</span>,
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>                 <span class="jxr_string">"&lt;xsl:param name='faa' select='5'/&gt;"</span>,
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>                 <span class="jxr_string">"&lt;xsl:template match='/'&gt;+&lt;xsl:value-of select='$faa'/&gt;+"</span>,
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>                 <span class="jxr_string">"&lt;/xsl:template&gt;   &lt;/xsl:stylesheet&gt;  "</span>
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>             )
