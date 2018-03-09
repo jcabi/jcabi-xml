@@ -54,6 +54,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
+import net.sf.saxon.jaxp.TransformerImpl;
+import net.sf.saxon.serialize.MessageWarner;
 import org.w3c.dom.Document;
 
 /**
@@ -66,6 +68,7 @@ import org.w3c.dom.Document;
  * @since 0.4
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
+ * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @EqualsAndHashCode(of = "xsl")
 @SuppressWarnings("PMD.TooManyMethods")
@@ -357,6 +360,7 @@ public final class XSLDocument implements XSL {
      * @param xml XML
      * @param result Result
      * @since 0.11
+     * @link https://stackoverflow.com/questions/4695489/capture-xslmessage-output-in-java
      */
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans;
@@ -372,6 +376,11 @@ public final class XSLDocument implements XSL {
                 );
                 trans.setErrorListener(errors);
                 trans.setURIResolver(this.sources);
+                if (trans instanceof TransformerImpl) {
+                    TransformerImpl.class.cast(trans)
+                        .getUnderlyingController()
+                        .setMessageEmitter(new MessageWarner());
+                }
                 for (final Map.Entry<String, Object> ent
                     : this.params.entrySet()) {
                     trans.setParameter(ent.getKey(), ent.getValue());
