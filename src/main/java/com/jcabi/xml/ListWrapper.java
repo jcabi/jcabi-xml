@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import lombok.EqualsAndHashCode;
 import org.w3c.dom.Node;
 
 /**
@@ -84,10 +83,8 @@ import org.w3c.dom.Node;
  * @since 0.1
  * @param <T> Time of items
  */
-@EqualsAndHashCode(of = { "original", "dom", "xpath" })
 @SuppressWarnings("PMD.TooManyMethods")
 final class ListWrapper<T> implements List<T> {
-
     /**
      * The original list.
      */
@@ -110,6 +107,7 @@ final class ListWrapper<T> implements List<T> {
      * @param addr Address
      */
     ListWrapper(final List<T> list, final Node node, final String addr) {
+        super();
         this.original = list;
         this.dom = node;
         this.xpath = addr;
@@ -198,6 +196,16 @@ final class ListWrapper<T> implements List<T> {
     @Override
     public ListIterator<T> listIterator(final int index) {
         return this.original.listIterator(index);
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        return this.original.equals(other);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.original.hashCode();
     }
 
     @Override

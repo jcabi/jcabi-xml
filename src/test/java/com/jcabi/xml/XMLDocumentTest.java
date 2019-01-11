@@ -33,6 +33,8 @@ import com.google.common.io.Files;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +43,7 @@ import org.cactoos.io.LengthOf;
 import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -72,6 +75,38 @@ public final class XMLDocumentTest {
         MatcherAssert.assertThat(
             doc.xpath("/r/a/text()"),
             Matchers.hasItem("\u0443\u0440\u0430!")
+        );
+    }
+
+    /**
+     * The list returned by xpath
+     * is equal to java.util.List.
+     */
+    @Test
+    public void findWithXpathListEqualsToJavaUtilList() {
+        MatcherAssert.assertThat(
+            new XMLDocument(
+                "<does><not><matter/></not></does>"
+            ).xpath("//missing/text()"),
+            new IsEqual<>(
+                Collections.<String>emptyList()
+            )
+        );
+        MatcherAssert.assertThat(
+            new XMLDocument(
+                "<root><item>first</item><item>second</item></root>"
+            ).xpath("//root/item[1]/text()"),
+            new IsEqual<>(
+                Collections.singletonList("first")
+            )
+        );
+        MatcherAssert.assertThat(
+            new XMLDocument(
+                "<root><item>abc</item><item>def</item></root>"
+            ).xpath("/root/item/text()"),
+            new IsEqual<>(
+                Arrays.asList("abc", "def")
+            )
         );
     }
 
