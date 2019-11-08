@@ -12,7 +12,6 @@
 
 [![jpeek report](http://i.jpeek.org/com.jcabi/jcabi-xml/badge.svg)](http://i.jpeek.org/com.jcabi/jcabi-xml/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
-[![Dependencies](https://www.versioneye.com/user/projects/561a9e86a193340f2f00115e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561a9e86a193340f2f00115e)
 
 More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html).
 Also, read this blog post: [Java XML Parsing Made Easy](http://www.yegor256.com/2014/04/24/java-xml-parsing-and-traversing.html).
@@ -26,11 +25,6 @@ String id = xml.xpath("//order/@id").get(0);
 String name = xml.xpath("//order[@id=4]/text()").get(0);
 System.out.println(xml.toString());
 ```
-
-## Questions?
-
-If you have any questions about the framework, or something doesn't work as expected,
-please [submit an issue here](https://github.com/jcabi/jcabi-xml/issues/new).
 
 ## How to contribute?
 
