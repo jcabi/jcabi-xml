@@ -62,6 +62,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-log</artifactId>
+      <version>0.18.1</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
