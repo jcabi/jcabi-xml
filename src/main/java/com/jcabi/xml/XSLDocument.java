@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2017, jcabi.com
+ * Copyright (c) 2012-2019, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.immutable.ArrayMap;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,6 +40,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -56,6 +56,8 @@ import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
 import net.sf.saxon.jaxp.TransformerImpl;
 import net.sf.saxon.serialize.MessageWarner;
+import org.cactoos.map.MapEntry;
+import org.cactoos.map.MapOf;
 import org.w3c.dom.Document;
 
 /**
@@ -71,7 +73,7 @@ import org.w3c.dom.Document;
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @EqualsAndHashCode(of = "xsl")
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessiveImports"})
 public final class XSLDocument implements XSL {
 
     /**
@@ -122,7 +124,7 @@ public final class XSLDocument implements XSL {
     /**
      * Parameters.
      */
-    private final transient ArrayMap<String, Object> params;
+    private final transient Map<String, Object> params;
 
     /**
      * System ID (base).
@@ -231,7 +233,7 @@ public final class XSLDocument implements XSL {
      * @since 0.9
      */
     public XSLDocument(final String src, final Sources srcs) {
-        this(src, srcs, new ArrayMap<String, Object>());
+        this(src, srcs, new HashMap<String, Object>(0));
     }
 
     /**
@@ -243,7 +245,7 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(final String src, final Sources srcs,
         final String base) {
-        this(src, srcs, new ArrayMap<String, Object>(), base);
+        this(src, srcs, new HashMap<String, Object>(0), base);
     }
 
     /**
@@ -271,7 +273,7 @@ public final class XSLDocument implements XSL {
         final Map<String, Object> map, final String base) {
         this.xsl = src;
         this.sources = srcs;
-        this.params = new ArrayMap<>(map);
+        this.params = new HashMap<>(map);
         this.sid = base;
     }
 
@@ -281,9 +283,11 @@ public final class XSLDocument implements XSL {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public XSL with(final String name, final Object value) {
         return new XSLDocument(
-            this.xsl, this.sources, this.params.with(name, value)
+            this.xsl, this.sources,
+            new MapOf<>(this.params, new MapEntry<>(name, value))
         );
     }
 

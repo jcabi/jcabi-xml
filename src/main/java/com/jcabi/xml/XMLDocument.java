@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2017, jcabi.com
+ * Copyright (c) 2012-2019, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -119,8 +119,7 @@ public final class XMLDocument implements XML {
     private final transient boolean leaf;
 
     /**
-     * Actual XML document node. Needs to be an Object so the class is still
-     * recognized as @Immutable.
+     * Actual XML document node.
      */
     private final transient Object cache;
 
