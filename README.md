@@ -10,7 +10,7 @@
 [![Coverage Status](https://coveralls.io/repos/jcabi/jcabi-xml/badge.svg?branch=__rultor&service=github)](https://coveralls.io/github/jcabi/jcabi-xml?branch=__rultor)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-xml.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-xml)
 
-[![jpeek report](http://i.jpeek.org/com.jcabi/jcabi-xml/badge.svg)](http://i.jpeek.org/com.jcabi/jcabi-xml/)
+[![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-xml/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-xml/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
 
 More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html).
