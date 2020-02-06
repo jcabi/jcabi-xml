@@ -32,8 +32,6 @@ package com.jcabi.xml;
 import com.jcabi.matchers.XhtmlMatchers;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -61,24 +59,6 @@ public final class DomParserTest {
     }
 
     /**
-     * DomParser throws exception when XML is invalid.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test
-    public void throwsWhenInvalidXml() throws Exception {
-        final String xml = "---<a><-- broken XML -->";
-        try {
-            new DomParser(DocumentBuilderFactory.newInstance(), xml);
-            Assert.fail("exception expected");
-        } catch (final IllegalArgumentException ex) {
-            MatcherAssert.assertThat(
-                ex.getMessage(),
-                Matchers.containsString(xml)
-            );
-        }
-    }
-
-    /**
      * DomParser can parse XML text properly.
      * @throws Exception If something goes wrong inside
      */
@@ -91,30 +71,6 @@ public final class DomParserTest {
         MatcherAssert.assertThat(
             parser.document(),
             XhtmlMatchers.hasXPath("/root")
-        );
-    }
-
-    /**
-     * DomParser throws exception when it is not an XML at all.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void throwsWhenNonXmlDocument() throws Exception {
-        new DomParser(
-            DocumentBuilderFactory.newInstance(),
-            "some text, which is not an XML"
-        );
-    }
-
-    /**
-     * DomParser throws exception when input txt is not well-formed XML.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void throwsWhenInvalidElement() throws Exception {
-        new DomParser(
-            DocumentBuilderFactory.newInstance(),
-            "<123/>"
         );
     }
 

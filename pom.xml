@@ -126,61 +126,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <version>1.5</version>
-        <executions>
-          <execution>
-            <id>generate-regexes-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>execute</goal>
-            </goals>
-            <configuration>
-              <properties>
-                <sourcePath>${basedir}/src/main/templates/Patterns.java.template</sourcePath>
-                <destinationPath>${project.build.directory}/generated-sources/java/com/jcabi/xml/Patterns.java</destinationPath>
-              </properties>
-              <classpath>
-                <element>
-                  <groupId>net.sourceforge.reb4j</groupId>
-                  <artifactId>net.sourceforge.reb4j</artifactId>
-                  <version>2.1.0</version>
-                </element>
-                <element>
-                  <groupId>org.apache.commons</groupId>
-                  <artifactId>commons-lang3</artifactId>
-                </element>
-              </classpath>
-              <source>${basedir}/src/main/grv/GeneratePatterns.groovy</source>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.gmaven.runtime</groupId>
-            <artifactId>gmaven-runtime-2.0</artifactId>
-            <version>1.5</version>
-            <exclusions>
-              <exclusion>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.6.0-alpha-1</version>
-          </dependency>
-          <dependency>
-            <groupId>net.sourceforge.reb4j</groupId>
-            <artifactId>net.sourceforge.reb4j</artifactId>
-            <version>2.1.0</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>1.12</version>

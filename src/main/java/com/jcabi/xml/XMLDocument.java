@@ -154,14 +154,37 @@ public final class XMLDocument implements XML {
      * <p>In future versions we will add more namespaces (submit a ticket if
      * you need more of them defined here).
      *
-     * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
-     *
      * @param text XML document body
      */
     public XMLDocument(final String text) {
         this(
             new DomParser(XMLDocument.DFACTORY, text).document(),
+            new XPathContext(),
+            false
+        );
+    }
+
+    /**
+     * Public ctor, from XML as a text.
+     *
+     * <p>The object is created with a default implementation of
+     * {@link NamespaceContext}, which already defines a
+     * number of namespaces, for convenience, including:
+     *
+     * <pre> xhtml: http://www.w3.org/1999/xhtml
+     * xs: http://www.w3.org/2001/XMLSchema
+     * xsi: http://www.w3.org/2001/XMLSchema-instance
+     * xsl: http://www.w3.org/1999/XSL/Transform
+     * svg: http://www.w3.org/2000/svg</pre>
+     *
+     * <p>In future versions we will add more namespaces (submit a ticket if
+     * you need more of them defined here).
+     *
+     * @param data The XML body
+     */
+    public XMLDocument(final byte[] data) {
+        this(
+            new DomParser(XMLDocument.DFACTORY, data).document(),
             new XPathContext(),
             false
         );
