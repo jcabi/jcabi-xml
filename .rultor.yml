@@ -1,5 +1,3 @@
-docker:
-  image: yegor256/java8
 install:
 - sudo gem install pdd -v 0.20.5
 - sudo gem install xcop -v 0.6
