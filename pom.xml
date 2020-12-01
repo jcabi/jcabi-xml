@@ -107,8 +107,8 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>xml-apis</groupId>
       <artifactId>xml-apis</artifactId>
-      <!-- don't change it, leave at 1.4.01 -->
-      <version>1.4.01</version>
+      <!-- don't change it, leave at 2.0.2 -->
+      <version>2.0.2</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
