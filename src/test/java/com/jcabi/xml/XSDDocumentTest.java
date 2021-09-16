@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,8 +49,6 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Test case for {@link XSDDocument}.
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
@@ -112,7 +110,7 @@ public final class XSDDocumentTest {
         })
     public void validatesComplexXml() throws Exception {
         final int loopp = 5;
-        final int size = 10000;
+        final int size = 10_000;
         final int loop = 100;
         final int random = 10;
         final String xsd = StringUtils.join(

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,8 +47,6 @@ import lombok.EqualsAndHashCode;
  *   new FileSources("/tmp/my-resources")
  * );</pre>
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.18
  */
 @EqualsAndHashCode(of = "path")
@@ -83,6 +81,7 @@ public final class FileSources implements Sources {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidFileStream")
     public Source resolve(final String href, final String base)
         throws TransformerException {
         File file = new File(this.path, href);

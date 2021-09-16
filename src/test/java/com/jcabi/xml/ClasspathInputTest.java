@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,6 @@ import org.w3c.dom.ls.LSInput;
 
 /**
  * Test case for {@link com.jcabi.xml.ClasspathInput}.
- * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
  * @since 0.17.3
  */
 public final class ClasspathInputTest {

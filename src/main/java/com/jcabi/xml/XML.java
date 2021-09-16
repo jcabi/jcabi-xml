@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,8 +51,6 @@ import org.w3c.dom.Node;
  *
  * <p>Implementation of this interface must be immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @see XMLDocument
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)

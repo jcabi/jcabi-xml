@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,8 +39,6 @@
  *   &lt;artifactId&gt;jcabi-xml&lt;/artifactId&gt;
  * &lt;/dependency&gt;</pre>
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  * @see <a href="http://www.jcabi.com/jcabi-xml">project website</a>
  */

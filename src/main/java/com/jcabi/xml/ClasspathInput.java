@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,8 +42,6 @@ import org.w3c.dom.ls.LSInput;
 /**
  * {@link LSInput} implementation used by {@link ClasspathResolver}.
  *
- * @author Adam Siemion (adam.siemion.null@lemonsoftware.pl)
- * @version $Id$
  * @since 0.1
  */
 final class ClasspathInput implements LSInput {
@@ -52,6 +50,7 @@ final class ClasspathInput implements LSInput {
      * Public Id.
      */
     private transient String publicid;
+
     /**
      * System Id.
      */

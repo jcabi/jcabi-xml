@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,8 +78,6 @@ import org.w3c.dom.Node;
  *
  * <p>The class is immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  * @param <T> Time of items
  */
@@ -276,6 +274,8 @@ final class ListWrapper<T> implements List<T> {
 
     /**
      * Node not found in XmlDocument.
+     *
+     * @since 0.1
      */
     private static final class NodeNotFoundException
         extends IndexOutOfBoundsException {
@@ -283,6 +283,7 @@ final class ListWrapper<T> implements List<T> {
          * Serialization marker.
          */
         private static final long serialVersionUID = 0x7526FA78EEDAC470L;
+
         /**
          * Public ctor.
          * @param message Error message

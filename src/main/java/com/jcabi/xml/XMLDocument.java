@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2012-2019, jcabi.com
+/*
+ * Copyright (c) 2012-2021, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,8 +67,6 @@ import org.w3c.dom.NodeList;
  *
  * <p>Objects of this class are immutable and thread-safe.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 0.1
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle ClassFanOutComplexity (500 lines)
@@ -459,9 +457,9 @@ public final class XMLDocument implements XML {
      * passed is not a valid XPath expression or an unsupported type is
      * specified.
      *
-     * @param <T> The type to return
      * @param query XPath query
      * @param type The return type
+     * @param <T> The type to return
      * @return Result of XPath query
      * @throws XPathExpressionException If an error occurs when evaluating XPath
      */
