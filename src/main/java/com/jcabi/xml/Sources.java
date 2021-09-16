@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import javax.xml.transform.Source;
 import javax.xml.transform.URIResolver;
 
 /**
@@ -43,17 +42,14 @@ public interface Sources extends URIResolver {
     /**
      * Dummy sources.
      */
-    Sources DUMMY = new Sources() {
-        @Override
-        public Source resolve(final String href, final String base) {
-            throw new UnsupportedOperationException(
-                String.format(
-                    // @checkstyle LineLength (1 line)
-                    "Sources.DUMMY#resolve(\"%s\", \"%s\"): URI resolving is not configured in XSLDocument, use #with(URIResolver) method",
-                    href, base
-                )
-            );
-        }
+    Sources DUMMY = (href, base) -> {
+        throw new UnsupportedOperationException(
+            String.format(
+                // @checkstyle LineLength (1 line)
+                "Sources.DUMMY#resolve(\"%s\", \"%s\"): URI resolving is not configured in XSLDocument, use #with(URIResolver) method",
+                href, base
+            )
+        );
     };
 
 }

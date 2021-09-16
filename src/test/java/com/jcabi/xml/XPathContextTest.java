@@ -30,6 +30,8 @@
 package com.jcabi.xml;
 
 import com.google.common.collect.Lists;
+import java.util.Iterator;
+import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import org.hamcrest.MatcherAssert;
@@ -69,11 +71,15 @@ public final class XPathContextTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void findsPrefixesByNamespace() {
         final String namespace = "simple-short-namespace";
         final NamespaceContext ctx = new XPathContext(namespace, namespace);
+        final List<String> prefixes = Lists.newArrayList(
+            (Iterator<String>) ctx.getPrefixes(namespace)
+        );
         MatcherAssert.assertThat(
-            Lists.newArrayList(ctx.getPrefixes(namespace)),
+            prefixes,
             Matchers.allOf(
                 Matchers.iterableWithSize(2),
                 Matchers.hasItem("ns1"),

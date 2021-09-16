@@ -109,6 +109,17 @@ public final class XSLDocumentTest {
     }
 
     @Test
+    public void transformsWithImportsFromUrl() {
+        final XSL xsl = XSLDocument.make(
+            this.getClass().getResource("first.xsl")
+        ).with(new ClasspathSources(this.getClass()));
+        MatcherAssert.assertThat(
+            xsl.transform(new XMLDocument("<simple-test/>")),
+            XhtmlMatchers.hasXPath("/result[.=6]")
+        );
+    }
+
+    @Test
     public void transformsIntoText() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
