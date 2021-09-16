@@ -32,7 +32,7 @@ package com.jcabi.xml;
 import com.jcabi.matchers.XhtmlMatchers;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link DomParser}.
@@ -42,12 +42,8 @@ import org.junit.Test;
  */
 public final class DomParserTest {
 
-    /**
-     * DomParser can parse XML text properly.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void parsesIncomingXmlDocument() throws Exception {
+    public void parsesIncomingXmlDocument() {
         final String xml = "<a><b>\u0443\u0440\u0430!</b></a>";
         final DomParser parser = new DomParser(
             DocumentBuilderFactory.newInstance(), xml
@@ -58,12 +54,8 @@ public final class DomParserTest {
         );
     }
 
-    /**
-     * DomParser can parse XML text properly.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void parsesIncomingXmlDocumentComment() throws Exception {
+    public void parsesIncomingXmlDocumentComment() {
         final String xml = "<?xml version='1.0'?><!-- test --><root/>";
         final DomParser parser = new DomParser(
             DocumentBuilderFactory.newInstance(), xml
@@ -74,13 +66,9 @@ public final class DomParserTest {
         );
     }
 
-    /**
-     * DomParser allows valid XML formatting.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public void allowsValidXmlFormatting() throws Exception {
+    public void allowsValidXmlFormatting() {
         final String[] texts = new String[] {
             "<?xml version=\"1.0\" encoding='ISO-8895-1'?><a/>",
             "<:a/>",

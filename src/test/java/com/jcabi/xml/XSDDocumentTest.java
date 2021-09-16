@@ -44,7 +44,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -56,12 +56,8 @@ import org.xml.sax.SAXParseException;
  */
 public final class XSDDocumentTest {
 
-    /**
-     * XSDDocument can validate XML.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void validatesXml() throws Exception {
+    public void validatesXml() {
         final XSD xsd = new XSDDocument(
             new ByteArrayInputStream(
                 StringUtils.join(
@@ -83,12 +79,8 @@ public final class XSDDocumentTest {
         );
     }
 
-    /**
-     * XSDDocument can detect schema violations.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void detectsSchemaViolations() throws Exception {
+    public void detectsSchemaViolations() {
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
             "<xs:element name='first'/></xs:schema>"
@@ -101,7 +93,7 @@ public final class XSDDocumentTest {
             );
         MatcherAssert.assertThat(
             errors,
-            Matchers.<SAXParseException>iterableWithSize(1)
+            Matchers.iterableWithSize(1)
         );
         MatcherAssert.assertThat(
             errors.iterator().next().getLineNumber(),

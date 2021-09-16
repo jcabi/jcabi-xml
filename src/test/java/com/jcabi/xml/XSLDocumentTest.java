@@ -36,8 +36,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XSLDocument}.
@@ -48,12 +48,8 @@ import org.junit.Test;
  */
 public final class XSLDocumentTest {
 
-    /**
-     * XSLDocument can make XSL transformations.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void makesXslTransformations() throws Exception {
+    public void makesXslTransformations() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet",
@@ -73,10 +69,6 @@ public final class XSLDocumentTest {
         );
     }
 
-    /**
-     * XSLDocument can make XSL transformations in multiple threads.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
     public void makesXslTransformationsInThreads() throws Exception {
@@ -91,15 +83,10 @@ public final class XSLDocumentTest {
                 "</xsl:template> </xsl:stylesheet>"
             )
         );
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                MatcherAssert.assertThat(
-                    xsl.transform(new XMLDocument("<test/>")),
-                    XhtmlMatchers.hasXPath("/works")
-                );
-            }
-        };
+        final Runnable runnable = () -> MatcherAssert.assertThat(
+            xsl.transform(new XMLDocument("<test/>")),
+            XhtmlMatchers.hasXPath("/works")
+        );
         final ExecutorService service = Executors.newFixedThreadPool(5);
         for (int count = 0; count < loop; count += 1) {
             service.submit(runnable);
@@ -112,12 +99,8 @@ public final class XSLDocumentTest {
         service.shutdownNow();
     }
 
-    /**
-     * XSLDocument can transform with IMPORTs.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void transformsWithImports() throws Exception {
+    public void transformsWithImports() {
         final XSL xsl = new XSLDocument(
             this.getClass().getResourceAsStream("first.xsl")
         ).with(new ClasspathSources(this.getClass()));
@@ -127,13 +110,8 @@ public final class XSLDocumentTest {
         );
     }
 
-    /**
-     * XSLDocument can transform into text.
-     * @throws Exception If something goes wrong inside
-     * @since 0.11
-     */
     @Test
-    public void transformsIntoText() throws Exception {
+    public void transformsIntoText() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet ",
@@ -148,12 +126,8 @@ public final class XSLDocumentTest {
         );
     }
 
-    /**
-     * XSL.STRIP can strip XML.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void stripsXml() throws Exception {
+    public void stripsXml() {
         MatcherAssert.assertThat(
             XSLDocument.STRIP.transform(
                 new XMLDocument("<a>   <b/>  </a>")
@@ -170,13 +144,8 @@ public final class XSLDocumentTest {
         );
     }
 
-    /**
-     * XSLDocument can transform into text, with params.
-     * @throws Exception If something goes wrong inside
-     * @since 0.16
-     */
     @Test
-    public void transformsIntoTextWithParams() throws Exception {
+    public void transformsIntoTextWithParams() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet   ",
@@ -194,13 +163,8 @@ public final class XSLDocumentTest {
         );
     }
 
-    /**
-     * XSLDocument can transform into text, with integer params.
-     * @throws Exception If something goes wrong inside
-     * @since 0.17
-     */
     @Test
-    public void transformsIntoTextWithIntegerParams() throws Exception {
+    public void transformsIntoTextWithIntegerParams() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet     ",
@@ -217,13 +181,8 @@ public final class XSLDocumentTest {
         );
     }
 
-    /**
-     * XSLDocument can catch XSL error messages.
-     * @throws Exception If something goes wrong inside
-     * @since 0.22
-     */
     @Test
-    public void catchesXslErrorMessages() throws Exception {
+    public void catchesXslErrorMessages() {
         try {
             new XSLDocument(
                 StringUtils.join(
@@ -235,7 +194,7 @@ public final class XSLDocumentTest {
                     " </xsl:message></xsl:template></xsl:stylesheet>"
                 )
             ).transform(new XMLDocument("<zz1/>"));
-            Assert.fail("Exception expected here");
+            Assertions.fail("Exception expected here");
         } catch (final IllegalArgumentException ex) {
             MatcherAssert.assertThat(
                 ex.getLocalizedMessage(),

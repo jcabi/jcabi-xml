@@ -29,7 +29,6 @@
  */
 package com.jcabi.xml;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import java.net.SocketException;
 import java.security.SecureRandom;
@@ -45,9 +44,9 @@ import javax.xml.validation.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 /**
@@ -62,12 +61,8 @@ import org.mockito.stubbing.Answer;
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 public final class StrictXMLTest {
 
-    /**
-     * StrictXML can pass a valid document.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void passesValidXmlThrough() throws Exception {
+    public void passesValidXmlThrough() {
         new StrictXML(
             new XMLDocument("<root>passesValidXmlThrough</root>"),
             new XSDDocument(
@@ -80,27 +75,22 @@ public final class StrictXMLTest {
         );
     }
 
-    /**
-     * StrictXML can reject an invalid document.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void rejectsInvalidXmlThrough() throws Exception {
-        new StrictXML(
-            new XMLDocument("<root>not an integer</root>"),
-            new XSDDocument(
-                StringUtils.join(
-                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
-                    "<xs:element name='root' type='xs:integer'/></xs:schema>"
+    @Test
+    public void rejectsInvalidXmlThrough() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new StrictXML(
+                new XMLDocument("<root>not an integer</root>"),
+                new XSDDocument(
+                    StringUtils.join(
+                        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
+                        "<xs:element name='root' type='xs:integer'/></xs:schema>"
+                    )
                 )
             )
         );
     }
 
-    /**
-     * StrictXML passes a valid document using xsi:schemaLocation.
-     * @throws Exception If something goes wrong inside.
-     */
     @Test
     public void passesValidXmlUsingXsiSchemaLocation() throws Exception {
         new StrictXML(
@@ -110,23 +100,18 @@ public final class StrictXMLTest {
         );
     }
 
-    /**
-     * StrictXML rejects an invalid document using xsi:schemaLocation.
-     * @throws Exception If something goes wrong inside.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void rejectsInvalidXmlUsingXsiSchemaLocation() throws Exception {
-        new StrictXML(
-            new XMLDocument(
-                this.getClass().getResource("xsi-schemalocation-invalid.xml")
+    @Test
+    public void rejectsInvalidXmlUsingXsiSchemaLocation() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new StrictXML(
+                new XMLDocument(
+                    this.getClass().getResource("xsi-schemalocation-invalid.xml")
+                )
             )
         );
     }
 
-    /**
-     * StrictXML can validate XML in multiple threads.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     public void validatesMultipleXmlsInThreads() throws Exception {
         final int timeout = 10;
@@ -150,14 +135,9 @@ public final class StrictXMLTest {
                     Collections.singleton("<r>"),
                     Iterables.transform(
                         Collections.nCopies(timeout, 0),
-                        new Function<Integer, String>() {
-                            @Override
-                            public String apply(final Integer pos) {
-                                return String.format(
-                                    "<x>%d</x>", rnd.nextInt(numrun)
-                                );
-                            }
-                        }
+                        pos -> String.format(
+                            "<x>%d</x>", rnd.nextInt(numrun)
+                        )
                     ),
                     Collections.singleton("<x>101</x></r>")
                 ),
@@ -165,16 +145,13 @@ public final class StrictXMLTest {
             )
         );
         final AtomicInteger done = new AtomicInteger();
-        final Callable<Void> callable = new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                try {
-                    new StrictXML(xml, xsd);
-                } catch (final IllegalArgumentException ex) {
-                    done.incrementAndGet();
-                }
-                return null;
+        final Callable<Void> callable = () -> {
+            try {
+                new StrictXML(xml, xsd);
+            } catch (final IllegalArgumentException ex) {
+                done.incrementAndGet();
             }
+            return null;
         };
         final ExecutorService service = Executors.newFixedThreadPool(5);
         for (int count = 0; count < loop; count += 1) {
@@ -189,28 +166,20 @@ public final class StrictXMLTest {
         MatcherAssert.assertThat(done.get(), Matchers.equalTo(loop));
     }
 
-    /**
-     * Passes valid xml with network problems.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     public void passesValidXmlWithNetworkProblems() throws Exception {
         final Validator validator = Mockito.mock(Validator.class);
         final AtomicInteger counter = new AtomicInteger(0);
+        // @checkstyle IllegalThrowsCheck (5 lines)
         Mockito.doAnswer(
-            new Answer<Void>() {
-                // @checkstyle IllegalThrowsCheck (5 lines)
-                @Override
-                public Void answer(final InvocationOnMock invocation)
-                    throws Throwable {
-                    final int attempt = counter.incrementAndGet();
-                    if (attempt == 1 || attempt == 2) {
-                        throw new SocketException(
-                            String.format("Attempt #%s failed", attempt)
-                        );
-                    }
-                    return null;
+            (Answer<Void>) invocation -> {
+                final int attempt = counter.incrementAndGet();
+                if (attempt == 1 || attempt == 2) {
+                    throw new SocketException(
+                        String.format("Attempt #%s failed", attempt)
+                    );
                 }
+                return null;
             }
         ).when(validator).validate(Mockito.any(Source.class));
         new StrictXML(
@@ -221,12 +190,8 @@ public final class StrictXMLTest {
         );
     }
 
-    /**
-     * StrictXML can lookup XSD files from the classpath.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void lookupXsdsFromClasspath() throws Exception {
+    public void lookupXsdsFromClasspath() {
         new StrictXML(
             new XMLDocument(
                 StringUtils.join(
@@ -249,43 +214,40 @@ public final class StrictXMLTest {
         );
     }
 
-    /**
-     * StrictXML can reject the an when
-     * the XSD is not available on the classpath.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void rejectXmlWhenXsdIsNotAvailableOnClasspath() throws Exception {
-        new StrictXML(
-            new XMLDocument(
-                StringUtils.join(
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-                    "<payment xmlns=\"http://jcabi.com/schema/xml\" ",
+    @Test
+    public void rejectXmlWhenXsdIsNotAvailableOnClasspath() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new StrictXML(
+                new XMLDocument(
+                    StringUtils.join(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                        "<payment xmlns=\"http://jcabi.com/schema/xml\" ",
                         "xmlns:xsi=\"",
-                            "http://www.w3.org/2001/XMLSchema-instance",
+                        "http://www.w3.org/2001/XMLSchema-instance",
                         "\" ",
                         "xsi:schemaLocation=\"",
-                            "http://jcabi.com/schema/xml ",
-                                "sample-non-existing.xsd",
+                        "http://jcabi.com/schema/xml ",
+                        "sample-non-existing.xsd",
                         "\">",
                         "<id>333</id>",
                         "<date>1-Jan-2013</date>",
                         "<debit>test-1</debit>",
                         "<credit>test-2</credit>",
-                    "</payment>"
+                        "</payment>"
+                    )
                 )
             )
         );
     }
 
-    /**
-     * StrictXML can handle XML without schemaLocation.
-     * @throws Exception If something goes wrong inside
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void handlesXmlWithoutSchemaLocation() throws Exception {
-        new StrictXML(
-            new XMLDocument("<a></a>")
+    @Test
+    public void handlesXmlWithoutSchemaLocation() {
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> new StrictXML(
+                new XMLDocument("<a></a>")
+            )
         );
     }
 }

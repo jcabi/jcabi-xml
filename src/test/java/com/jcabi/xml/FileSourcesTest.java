@@ -29,13 +29,13 @@
  */
 package com.jcabi.xml;
 
-import com.google.common.io.Files;
 import java.io.File;
+import java.nio.file.Files;
 import org.cactoos.io.LengthOf;
 import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test of FileSources.
@@ -45,13 +45,10 @@ import org.junit.Test;
  */
 public final class FileSourcesTest {
 
-    /**
-     * FileSources can resolve resource.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     public void sourcesResolvedFromDir() throws Exception {
-        final File file = new File(Files.createTempDir(), "dummy.xml");
+        final File file = Files.createTempDirectory("")
+            .resolve("dummy.xml").toFile();
         new LengthOf(new TeeInput("test", file)).value();
         MatcherAssert.assertThat(
             new FileSources().resolve(file.getAbsolutePath(), null),

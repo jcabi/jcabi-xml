@@ -29,16 +29,16 @@
  */
 package com.jcabi.xml;
 
-import com.google.common.io.Files;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import org.cactoos.io.LengthOf;
 import org.cactoos.io.TeeInput;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link TextResource}.
@@ -49,12 +49,8 @@ import org.junit.Test;
  */
 public final class TextResourceTest {
 
-    /**
-     * TextResource should be able to read streams as text.
-     * @throws Exception If something goes wrong.
-     */
     @Test
-    public void readsStreamAsText() throws Exception {
+    public void readsStreamAsText() {
         final String text = "Blah!\u20ac\u2122";
         final InputStream stream = new ByteArrayInputStream(
             text.getBytes(StandardCharsets.UTF_8)
@@ -65,14 +61,11 @@ public final class TextResourceTest {
         );
     }
 
-    /**
-     * TextResource should be able to read files as text.
-     * @throws Exception If something goes wrong.
-     */
     @Test
     public void readsFileAsText() throws Exception {
         final String text = "<a xmlns='urn:foo'><b>\u0433!</b></a>";
-        final File file = new File(Files.createTempDir(), "dummy.xml");
+        final File file = Files.createTempDirectory("")
+            .resolve("dummy.xml").toFile();
         new LengthOf(new TeeInput(text, file)).value();
         MatcherAssert.assertThat(
             new TextResource(file).toString(),

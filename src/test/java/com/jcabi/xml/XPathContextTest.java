@@ -35,7 +35,7 @@ import javax.xml.namespace.NamespaceContext;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XPathContext}.
@@ -45,12 +45,8 @@ import org.junit.Test;
  */
 public final class XPathContextTest {
 
-    /**
-     * XPathContext can find namespaces by prefix.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void findsNamespaceByPrefix() throws Exception {
+    public void findsNamespaceByPrefix() {
         final String prefix = "ns1-foo";
         final String namespace = "hey-it-is-a-namespace";
         final NamespaceContext ctx = new XPathContext()
@@ -62,12 +58,8 @@ public final class XPathContextTest {
         );
     }
 
-    /**
-     * XPathContext can find prefix by namespace.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void findsPrefixByNamespace() throws Exception {
+    public void findsPrefixByNamespace() {
         final String prefix = "ns2-foo";
         final String namespace = "hey-it-is-a-new-namespace";
         final NamespaceContext ctx = new XPathContext()
@@ -79,13 +71,9 @@ public final class XPathContextTest {
         );
     }
 
-    /**
-     * XPathContext can find prefixes by namespace.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     @SuppressWarnings("unchecked")
-    public void findsPrefixesByNamespace() throws Exception {
+    public void findsPrefixesByNamespace() {
         final String namespace = "simple-short-namespace";
         final NamespaceContext ctx = new XPathContext(namespace, namespace);
         MatcherAssert.assertThat(
@@ -98,12 +86,8 @@ public final class XPathContextTest {
         );
     }
 
-    /**
-     * XPathContext can find default namespaces.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void findsDefaultNamespaces() throws Exception {
+    public void findsDefaultNamespaces() {
         final NamespaceContext ctx = new XPathContext();
         MatcherAssert.assertThat(
             ctx.getNamespaceURI("xhtml"),
@@ -131,12 +115,8 @@ public final class XPathContextTest {
         );
     }
 
-    /**
-     * XPathContext can find non-bound namespaces.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void findsNonBoundNamespaces() throws Exception {
+    public void findsNonBoundNamespaces() {
         final NamespaceContext ctx = new XPathContext();
         MatcherAssert.assertThat(
             ctx.getNamespaceURI("some-other-unbound-prefix"),

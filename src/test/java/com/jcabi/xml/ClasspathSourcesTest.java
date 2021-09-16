@@ -31,7 +31,7 @@ package com.jcabi.xml;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test of ClasspathSources.
@@ -41,10 +41,6 @@ import org.junit.Test;
  */
 public final class ClasspathSourcesTest {
 
-    /**
-     * ClasspathSources can resolve resource from base.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     public void sourcesResolvedFromBase() throws Exception {
         MatcherAssert.assertThat(

@@ -33,7 +33,7 @@ import com.jcabi.matchers.XhtmlMatchers;
 import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XSLChain}.
@@ -44,12 +44,8 @@ import org.junit.Test;
  */
 public final class XSLChainTest {
 
-    /**
-     * XSLChain can make XSL transformations.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void makesXslTransformations() throws Exception {
+    public void makesXslTransformations() {
         final XSL first = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet",

@@ -31,7 +31,7 @@ package com.jcabi.xml;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.ls.LSInput;
 
 /**
@@ -41,13 +41,8 @@ import org.w3c.dom.ls.LSInput;
  * @since 0.17.3
  */
 public final class ClasspathInputTest {
-    /**
-     * ClasspathInput can successfully read data as string from
-     * the given resource.
-     * @throws Exception If something goes wrong.
-     */
     @Test
-    public void readsStringFromResourceSuccessfully() throws Exception {
+    public void readsStringFromResourceSuccessfully() {
         final LSInput input = new ClasspathInput(
             "Id", "com/jcabi/xml/simple.xml"
         );
