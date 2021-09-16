@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>jcabi</artifactId>
-    <version>1.6.1</version>
+    <version>1.28.3</version>
   </parent>
   <groupId>com.jcabi.xml</groupId>
   <artifactId>xerces</artifactId>
@@ -43,6 +43,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <groupId>@project.groupId@</groupId>
       <artifactId>@project.artifactId@</artifactId>
       <version>@project.version@</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>

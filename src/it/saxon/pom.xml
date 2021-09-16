@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>jcabi</artifactId>
-    <version>1.6.1</version>
+    <version>1.28.3</version>
   </parent>
   <groupId>com.jcabi.xml</groupId>
   <artifactId>saxon</artifactId>
@@ -54,6 +54,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <artifactId>saxon</artifactId>
       <version>9.1.0.8</version>
       <classifier>dom</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
   </dependencies>
 </project>
