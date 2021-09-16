@@ -29,7 +29,7 @@
  */
 package com.jcabi.xml;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.XMLConstants;
@@ -71,13 +71,14 @@ public final class XPathContextTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void findsPrefixesByNamespace() {
         final String namespace = "simple-short-namespace";
         final NamespaceContext ctx = new XPathContext(namespace, namespace);
-        final List<String> prefixes = Lists.newArrayList(
-            (Iterator<String>) ctx.getPrefixes(namespace)
-        );
+        final List<String> prefixes = new ArrayList<>(0);
+        final Iterator<?> iter = ctx.getPrefixes(namespace);
+        while (iter.hasNext()) {
+            prefixes.add(String.class.cast(iter.next()));
+        }
         MatcherAssert.assertThat(
             prefixes,
             Matchers.allOf(

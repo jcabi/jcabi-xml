@@ -44,6 +44,7 @@ import org.junit.jupiter.api.Test;
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public final class XSLDocumentTest {
 
     @Test
