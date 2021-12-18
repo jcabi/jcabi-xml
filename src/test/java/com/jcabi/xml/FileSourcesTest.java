@@ -31,8 +31,8 @@ package com.jcabi.xml;
 
 import java.io.File;
 import java.nio.file.Files;
-import org.cactoos.io.LengthOf;
 import org.cactoos.io.TeeInput;
+import org.cactoos.scalar.LengthOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

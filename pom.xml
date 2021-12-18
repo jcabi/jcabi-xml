@@ -70,7 +70,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
-      <version>0.20</version>
+      <version>0.50</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>

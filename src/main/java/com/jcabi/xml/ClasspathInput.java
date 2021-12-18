@@ -29,12 +29,9 @@
  */
 package com.jcabi.xml;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
-import org.cactoos.Func;
-import org.cactoos.Input;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.w3c.dom.ls.LSInput;
@@ -118,22 +115,20 @@ final class ClasspathInput implements LSInput {
             return new TextOf(
                 new ResourceOf(
                     this.systemid,
-                    new Func<CharSequence, Input>() {
-                        @Override
-                        public Input apply(final CharSequence path) {
-                            throw new IllegalArgumentException(
-                                String.format(
-                                    // @checkstyle LineLength (1 line)
-                                    "SystemID \"%s\" resource does not exist or can't be opened.",
-                                    path
-                                )
-                            );
-                        }
+                    path -> {
+                        throw new IllegalArgumentException(
+                            String.format(
+                                // @checkstyle LineLength (1 line)
+                                "SystemID \"%s\" resource does not exist or can't be opened.",
+                                path
+                            )
+                        );
                     }
                 ),
                 Charset.forName("UTF-8")
             ).asString();
-        } catch (final IOException ex) {
+            // @checkstyle IllegalCatchCheck (1 line)
+        } catch (final Exception ex) {
             throw new IllegalArgumentException(
                 String.format(
                     "Unable to read input stream of SystemID \"%s\"",
