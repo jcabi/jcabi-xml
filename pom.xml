@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>jcabi</artifactId>
-    <version>1.29.0</version>
+    <version>1.30.0</version>
   </parent>
   <artifactId>jcabi-xml</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -54,15 +54,14 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   </scm>
   <distributionManagement>
     <site>
-      <id>www.jcabi.com</id>
-      <url>s3://www.jcabi.com/jcabi-xml</url>
+      <id>xml.jcabi.com</id>
+      <url>https://xml.jcabi.com/</url>
     </site>
   </distributionManagement>
   <dependencies>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-log</artifactId>
-      <version>0.18.1</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
