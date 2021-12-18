@@ -378,7 +378,11 @@ public final class XSLDocument implements XSL {
                 );
                 trans.setErrorListener(errors);
                 trans.setURIResolver(this.sources);
-                if (trans instanceof TransformerImpl) {
+                if (
+                    "net.sf.saxon.jaxp.TransformerImpl".equals(
+                        trans.getClass().getCanonicalName()
+                    )
+                ) {
                     TransformerImpl.class.cast(trans)
                         .getUnderlyingController()
                         .setMessageEmitter(new MessageWarner());

@@ -101,7 +101,7 @@ public final class StrictXMLTest {
     @Test
     public void rejectsInvalidXmlUsingXsiSchemaLocation() {
         Assertions.assertThrows(
-            IllegalArgumentException.class,
+            IllegalStateException.class,
             () -> new StrictXML(
                 new XMLDocument(
                     this.getClass().getResource("xsi-schemalocation-invalid.xml")
