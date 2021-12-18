@@ -146,9 +146,6 @@ public final class XSLDocumentTest {
                 new StringBuilder()
                     .append("<a>")
                     .append(System.lineSeparator())
-                    .append("   <b/>")
-                    .append(System.lineSeparator())
-                    .append("</a>")
                     .toString()
             )
         );
