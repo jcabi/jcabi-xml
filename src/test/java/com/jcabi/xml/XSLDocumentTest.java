@@ -205,4 +205,19 @@ public final class XSLDocumentTest {
         }
     }
 
+    @Test
+    public void catchesSaxonWarnings() {
+        new XSLDocument(
+            StringUtils.join(
+                " <xsl:stylesheet",
+                "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                "  version='2.0'>",
+                "<xsl:template match='a'></xsl:template>",
+                "<xsl:template match='a'></xsl:template>",
+                "</xsl:stylesheet>"
+            ),
+            "https://example.com/hello.xsl"
+        ).transform(new XMLDocument("<x><a/></x>"));
+    }
+
 }

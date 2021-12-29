@@ -231,7 +231,7 @@ public final class XSLDocument implements XSL {
      * @since 0.9
      */
     public XSLDocument(final String src, final Sources srcs) {
-        this(src, srcs, new HashMap<String, Object>(0));
+        this(src, srcs, new HashMap<>(0));
     }
 
     /**
@@ -243,7 +243,7 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(final String src, final Sources srcs,
         final String base) {
-        this(src, srcs, new HashMap<String, Object>(0), base);
+        this(src, srcs, new HashMap<>(0), base);
     }
 
     /**
