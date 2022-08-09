@@ -8,7 +8,6 @@
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-xml)](http://www.0pdd.com/p?name=jcabi/jcabi-xml)
 [![codecov](https://codecov.io/gh/jcabi/jcabi-xml/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-xml)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-xml.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-xml)
-
 [![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-xml/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-xml/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
 
