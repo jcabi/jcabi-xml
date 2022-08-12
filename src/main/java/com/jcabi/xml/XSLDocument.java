@@ -285,7 +285,7 @@ public final class XSLDocument implements XSL {
     public XSL with(final String name, final Object value) {
         return new XSLDocument(
             this.xsl, this.sources,
-            new MapOf<>(this.params, new MapEntry<>(name, value))
+            new MapOf<String, Object>(this.params, new MapEntry<>(name, value))
         );
     }
 
