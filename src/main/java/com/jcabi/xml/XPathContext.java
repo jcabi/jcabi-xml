@@ -87,7 +87,7 @@ public final class XPathContext implements NamespaceContext {
                 new MapEntry<>("xsl", "http://www.w3.org/1999/XSL/Transform"),
                 new MapEntry<>("svg", "http://www.w3.org/2000/svg")
             ),
-            new ArrayList<NamespaceContext>(0)
+            new ArrayList<>(0)
         );
     }
 
@@ -98,7 +98,7 @@ public final class XPathContext implements NamespaceContext {
     public XPathContext(final Object... namespaces) {
         this(
             XPathContext.namespacesAsMap(namespaces),
-            new ArrayList<NamespaceContext>(0)
+            new ArrayList<>(0)
         );
     }
 
@@ -112,8 +112,8 @@ public final class XPathContext implements NamespaceContext {
     private XPathContext(final Map<String, String> old,
         final String prefix, final Object namespace) {
         this(
-            new MapOf<>(old, new MapEntry<>(prefix, namespace.toString())),
-            new ArrayList<NamespaceContext>(0)
+            new MapOf<String, String>(old, new MapEntry<>(prefix, namespace.toString())),
+            new ArrayList<>(0)
         );
     }
 

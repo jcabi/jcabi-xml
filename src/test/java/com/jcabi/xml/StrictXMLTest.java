@@ -30,6 +30,8 @@
 package com.jcabi.xml;
 
 import com.google.common.collect.Iterables;
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.security.SecureRandom;
 import java.util.Collections;
@@ -45,6 +47,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -58,6 +62,13 @@ import org.mockito.stubbing.Answer;
  */
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 public final class StrictXMLTest {
+
+    @BeforeEach
+    public void weAreOnline() throws IOException {
+        Assumptions.assumeTrue(
+            InetAddress.getByName("w3.org").isReachable(1000)
+        );
+    }
 
     @Test
     public void passesValidXmlThrough() {
