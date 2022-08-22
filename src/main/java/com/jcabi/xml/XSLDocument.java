@@ -54,6 +54,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
+import net.sf.saxon.Version;
 import net.sf.saxon.jaxp.TransformerImpl;
 import net.sf.saxon.serialize.MessageWarner;
 import org.cactoos.map.MapEntry;
@@ -335,11 +336,8 @@ public final class XSLDocument implements XSL {
     public XML transform(final XML xml) {
         final Document target;
         try {
-            target = XSLDocument.DFACTORY.newDocumentBuilder()
-                .newDocument();
-            this.transformInto(
-                xml, new DOMResult(target)
-            );
+            target = XSLDocument.DFACTORY.newDocumentBuilder().newDocument();
+            this.transformInto(xml, new DOMResult(target));
         } catch (final ParserConfigurationException ex) {
             throw new IllegalStateException(ex);
         }
@@ -378,15 +376,7 @@ public final class XSLDocument implements XSL {
                 );
                 trans.setErrorListener(errors);
                 trans.setURIResolver(this.sources);
-                if (
-                    "net.sf.saxon.jaxp.TransformerImpl".equals(
-                        trans.getClass().getCanonicalName()
-                    )
-                ) {
-                    TransformerImpl.class.cast(trans)
-                        .getUnderlyingController()
-                        .setMessageEmitter(new MessageWarner());
-                }
+                XSLDocument.prepare(trans);
                 for (final Map.Entry<String, Object> ent
                     : this.params.entrySet()) {
                     trans.setParameter(ent.getKey(), ent.getValue());
@@ -404,15 +394,44 @@ public final class XSLDocument implements XSL {
             } catch (final TransformerException ex) {
                 throw new IllegalArgumentException(
                     String.format(
-                        "Failed to transform by %s: %s",
+                        "Failed to transform by %s: %s (%s)",
                         factory.getClass().getName(),
-                        errors.summary()
+                        errors.summary(), ex.getMessageAndLocation()
                     ),
                     ex
                 );
             }
         }
         Logger.debug(this, "%s transformed XML", trans.getClass().getName());
+    }
+
+    /**
+     * Prepare it for error logging.
+     * @param trans The transformer
+     */
+    @SuppressWarnings("deprecation")
+    private static void prepare(final Transformer trans) {
+        final String type = trans.getClass().getCanonicalName();
+        if (!"net.sf.saxon.jaxp.TransformerImpl".equals(type)) {
+            return;
+        }
+        if (Version.getStructuredVersionNumber()[0] < 11) {
+            TransformerImpl.class.cast(trans)
+                .getUnderlyingController()
+                .setMessageEmitter(new MessageWarner());
+        }
+        if (Version.getStructuredVersionNumber()[0] >= 11) {
+            TransformerImpl.class.cast(trans)
+                .getUnderlyingController()
+                .setMessageHandler(
+                    message -> Logger.error(
+                        XSLDocument.class,
+                        "%s: %s",
+                        message.getLocation(),
+                        message.toString()
+                    )
+                );
+        }
     }
 
 }

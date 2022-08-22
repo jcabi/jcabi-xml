@@ -185,24 +185,22 @@ public final class XSLDocumentTest {
 
     @Test
     public void catchesXslErrorMessages() {
-        try {
-            new XSLDocument(
-                StringUtils.join(
-                    " <xsl:stylesheet",
-                    "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
-                    "  version='2.0'><xsl:template match='/'>",
-                    "<xsl:message terminate='yes'>",
-                    "<xsl:text>oopsie...</xsl:text>",
-                    " </xsl:message></xsl:template></xsl:stylesheet>"
-                )
-            ).transform(new XMLDocument("<zz1/>"));
-            Assertions.fail("Exception expected here");
-        } catch (final IllegalArgumentException ex) {
-            MatcherAssert.assertThat(
-                ex.getLocalizedMessage(),
-                Matchers.containsString("oopsie...")
-            );
-        }
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                RuntimeException.class,
+                () -> new XSLDocument(
+                    StringUtils.join(
+                        " <xsl:stylesheet",
+                        "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                        "  version='2.0'><xsl:template match='/'>",
+                        "<xsl:message terminate='yes'>",
+                        "<xsl:text>oopsie...</xsl:text>",
+                        " </xsl:message></xsl:template></xsl:stylesheet>"
+                    )
+                ).transform(new XMLDocument("<zz1/>"))
+            ).getLocalizedMessage(),
+            Matchers.containsString("Processing terminated by xsl:message")
+        );
     }
 
     @Test
