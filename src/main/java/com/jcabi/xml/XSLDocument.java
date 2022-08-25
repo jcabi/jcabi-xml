@@ -43,6 +43,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -138,6 +139,13 @@ public final class XSLDocument implements XSL {
      * @since 0.20
      */
     private final transient String sid;
+
+    /**
+     * Cached transformer.
+     * @since 0.26
+     */
+    private final transient AtomicReference<Transformer> cached =
+        new AtomicReference<>();
 
     /**
      * Public ctor, from XML as a source.
@@ -417,27 +425,30 @@ public final class XSLDocument implements XSL {
      * @return The transformer
      */
     private Transformer transformer() {
-        final Transformer trans;
-        synchronized (XSLDocument.TFACTORY) {
-            XSLDocument.TFACTORY.setURIResolver(this.sources);
-            try {
-                trans = XSLDocument.TFACTORY.newTransformer(
-                    new StreamSource(new StringReader(this.xsl), this.sid)
-                );
-            } catch (final TransformerConfigurationException ex) {
-                throw new IllegalArgumentException(
-                    String.format(
-                        "Failed to create transformer by %s",
-                        XSLDocument.TFACTORY.getClass().getName()
-                    ),
-                    ex
-                );
+        if (this.cached.get() == null) {
+            final Transformer trans;
+            synchronized (XSLDocument.TFACTORY) {
+                XSLDocument.TFACTORY.setURIResolver(this.sources);
+                try {
+                    trans = XSLDocument.TFACTORY.newTransformer(
+                        new StreamSource(new StringReader(this.xsl), this.sid)
+                    );
+                } catch (final TransformerConfigurationException ex) {
+                    throw new IllegalArgumentException(
+                        String.format(
+                            "Failed to create transformer by %s",
+                            XSLDocument.TFACTORY.getClass().getName()
+                        ),
+                        ex
+                    );
+                }
             }
+            for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
+                trans.setParameter(ent.getKey(), ent.getValue());
+            }
+            this.cached.set(XSLDocument.forSaxon(trans));
         }
-        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
-            trans.setParameter(ent.getKey(), ent.getValue());
-        }
-        return XSLDocument.forSaxon(trans);
+        return this.cached.get();
     }
 
     /**
