@@ -314,7 +314,6 @@ final class ListWrapper<T> implements List<T> {
             final StringBuilder output = new StringBuilder(length);
             for (int index = 0; index < length; index += 1) {
                 final char character = input.charAt(index);
-                // @checkstyle MagicNumber (1 line)
                 if (character < 32 || character > 0x7f) {
                     output.append(String.format("\\u%X", (int) character));
                 } else {

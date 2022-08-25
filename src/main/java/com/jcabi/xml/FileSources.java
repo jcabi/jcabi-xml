@@ -32,6 +32,8 @@ package com.jcabi.xml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
@@ -81,7 +83,6 @@ public final class FileSources implements Sources {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidFileStream")
     public Source resolve(final String href, final String base)
         throws TransformerException {
         File file = new File(this.path, href);
@@ -94,16 +95,19 @@ public final class FileSources implements Sources {
             if (!file.exists()) {
                 throw new TransformerException(
                     String.format(
-                        "file \"%s\" not found in \"%s\" and in base \"%s\"",
+                        "File \"%s\" not found in \"%s\" and in base \"%s\"",
                         href, this.path, base
                     )
                 );
             }
         }
         try {
-            return new StreamSource(new FileInputStream(file));
-        } catch (final FileNotFoundException ex) {
-            throw new TransformerException(ex);
+            return new StreamSource(Files.newInputStream(file.toPath()));
+        } catch (final IOException ex) {
+            throw new TransformerException(
+                String.format("Can't read from file '%s'", file),
+                ex
+            );
         }
     }
 }

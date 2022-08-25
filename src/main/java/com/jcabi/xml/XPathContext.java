@@ -80,10 +80,7 @@ public final class XPathContext implements NamespaceContext {
             new MapOf<>(
                 new MapEntry<>("xhtml", "http://www.w3.org/1999/xhtml"),
                 new MapEntry<>("xs", "http://www.w3.org/2001/XMLSchema"),
-                new MapEntry<>(
-                    "xsi",
-                    "http://www.w3.org/2001/XMLSchema-instance"
-                ),
+                new MapEntry<>("xsi", "http://www.w3.org/2001/XMLSchema-instance"),
                 new MapEntry<>("xsl", "http://www.w3.org/1999/XSL/Transform"),
                 new MapEntry<>("svg", "http://www.w3.org/2000/svg")
             ),
@@ -200,7 +197,7 @@ public final class XPathContext implements NamespaceContext {
         if (this.map.containsKey(prefix)) {
             throw new IllegalArgumentException(
                 String.format(
-                    "prefix '%s' already registered for namespace '%s'",
+                    "Prefix '%s' already registered for namespace '%s'",
                     prefix,
                     this.map.get(prefix)
                 )

@@ -30,7 +30,7 @@
 package com.jcabi.xml;
 
 import java.io.ByteArrayInputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Random;
@@ -134,7 +134,7 @@ public final class XSDDocumentTest {
                 new XSDDocument(xsd).validate(
                     new StreamSource(
                         new ByteArrayInputStream(
-                            text.toString().getBytes(Charset.forName("UTF-8"))
+                            text.toString().getBytes(StandardCharsets.UTF_8)
                         )
                     )
                 ),

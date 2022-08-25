@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import lombok.EqualsAndHashCode;
 
@@ -117,8 +118,9 @@ final class TextResource {
      * @return The stream content, in String form
      */
     private static String readAsString(final InputStream stream) {
-        final Scanner scanner =
-            new Scanner(stream, "UTF-8").useDelimiter("\\A");
+        final Scanner scanner = new Scanner(
+            stream, StandardCharsets.UTF_8.name()
+        ).useDelimiter("\\A");
         final String result;
         try {
             if (scanner.hasNext()) {

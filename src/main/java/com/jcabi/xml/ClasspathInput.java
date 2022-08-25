@@ -32,6 +32,7 @@ package com.jcabi.xml;
 import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.w3c.dom.ls.LSInput;
@@ -125,7 +126,7 @@ final class ClasspathInput implements LSInput {
                         );
                     }
                 ),
-                Charset.forName("UTF-8")
+                StandardCharsets.UTF_8
             ).asString();
             // @checkstyle IllegalCatchCheck (1 line)
         } catch (final Exception ex) {

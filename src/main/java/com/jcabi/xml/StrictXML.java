@@ -190,7 +190,6 @@ public final class StrictXML implements XML {
     private static String join(final Iterable<?> iterable, final String sep) {
         final Iterator<?> iterator = iterable.iterator();
         final Object first = iterator.next();
-        // @checkstyle MagicNumber (1 line)
         final StringBuilder buf = new StringBuilder(256);
         if (first != null) {
             buf.append(first);
