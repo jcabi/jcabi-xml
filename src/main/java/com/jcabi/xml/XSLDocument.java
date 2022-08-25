@@ -357,50 +357,56 @@ public final class XSLDocument implements XSL {
 
     /**
      * Transform XML into result.
+     *
+     * We create {@link TransformerFactory} here on every transformation
+     * because {@link javax.xml.transform.URIResolver} must be set into
+     * it before making an instance of a transformer. Otherwise, it won't
+     * understand "xsl:import" statements.
+     *
      * @param xml XML
      * @param result Result
      * @since 0.11
      * @link https://stackoverflow.com/questions/4695489/capture-xslmessage-output-in-java
      */
     private void transformInto(final XML xml, final Result result) {
-        final Transformer trans;
+        final TransformerFactory factory;
         synchronized (XSLDocument.class) {
-            final TransformerFactory factory =
-                TransformerFactory.newInstance();
-            final ConsoleErrorListener errors = new ConsoleErrorListener();
-            try {
-                factory.setErrorListener(errors);
-                factory.setURIResolver(this.sources);
-                trans = factory.newTransformer(
-                    new StreamSource(new StringReader(this.xsl), this.sid)
-                );
-                trans.setErrorListener(errors);
-                trans.setURIResolver(this.sources);
-                XSLDocument.prepare(trans);
-                for (final Map.Entry<String, Object> ent
-                    : this.params.entrySet()) {
-                    trans.setParameter(ent.getKey(), ent.getValue());
-                }
-                trans.transform(new DOMSource(xml.node()), result);
-            } catch (final TransformerConfigurationException ex) {
-                throw new IllegalArgumentException(
-                    String.format(
-                        "Failed to configure transformer by %s: %s",
-                        factory.getClass().getName(),
-                        errors.summary()
-                    ),
-                    ex
-                );
-            } catch (final TransformerException ex) {
-                throw new IllegalArgumentException(
-                    String.format(
-                        "Failed to transform by %s: %s (%s)",
-                        factory.getClass().getName(),
-                        errors.summary(), ex.getMessageAndLocation()
-                    ),
-                    ex
-                );
-            }
+            factory = TransformerFactory.newInstance();
+        }
+        final ConsoleErrorListener errors = new ConsoleErrorListener();
+        factory.setURIResolver(this.sources);
+        factory.setErrorListener(errors);
+        final Transformer trans;
+        try {
+            trans = factory.newTransformer(
+                new StreamSource(new StringReader(this.xsl), this.sid)
+            );
+        } catch (final TransformerConfigurationException ex) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create transformer by %s: %s",
+                    factory.getClass().getName(),
+                    errors.summary()
+                ),
+                ex
+            );
+        }
+        XSLDocument.prepare(trans);
+        for (final Map.Entry<String, Object> ent
+            : this.params.entrySet()) {
+            trans.setParameter(ent.getKey(), ent.getValue());
+        }
+        try {
+            trans.transform(new DOMSource(xml.node()), result);
+        } catch (final TransformerException ex) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to transform by %s: %s (%s)",
+                    factory.getClass().getName(),
+                    errors.summary(), ex.getMessageAndLocation()
+                ),
+                ex
+            );
         }
         Logger.debug(this, "%s transformed XML", trans.getClass().getName());
     }

@@ -68,7 +68,6 @@ import org.w3c.dom.NodeList;
  * <p>Objects of this class are immutable and thread-safe.
  *
  * @since 0.1
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  * @checkstyle ClassFanOutComplexity (500 lines)
  * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
@@ -125,7 +124,6 @@ public final class XMLDocument implements XML {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
             try {
                 XMLDocument.DFACTORY.setFeature(
-                    // @checkstyle LineLength (1 line)
                     "http://apache.org/xml/features/nonvalidating/load-external-dtd",
                     false
                 );
@@ -375,7 +373,6 @@ public final class XMLDocument implements XML {
                 );
             } catch (final XPathExpressionException exp) {
                 throw new IllegalArgumentException(
-                    // @checkstyle MultipleStringLiterals (1 line)
                     String.format(
                         "Invalid XPath query '%s' at %s: %s",
                         query, XMLDocument.XFACTORY.getClass().getName(),
@@ -398,7 +395,6 @@ public final class XMLDocument implements XML {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     public List<XML> nodes(final String query) {
         final List<XML> items;
         try {
@@ -415,7 +411,7 @@ public final class XMLDocument implements XML {
         } catch (final XPathExpressionException ex) {
             throw new IllegalArgumentException(
                 String.format(
-                    "invalid XPath query '%s' by %s",
+                    "Invalid XPath query '%s' by %s",
                     query, XMLDocument.XFACTORY.getClass().getName()
                 ), ex
             );
@@ -492,7 +488,6 @@ public final class XMLDocument implements XML {
      * @param node The DOM node.
      * @return String representation
      */
-    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     private static String asString(final Node node) {
         final StringWriter writer = new StringWriter();
         try {
@@ -500,7 +495,6 @@ public final class XMLDocument implements XML {
             synchronized (XMLDocument.class) {
                 trans = XMLDocument.TFACTORY.newTransformer();
             }
-            // @checkstyle MultipleStringLiterals (1 line)
             trans.setOutputProperty(OutputKeys.INDENT, "yes");
             trans.setOutputProperty(OutputKeys.VERSION, "1.0");
             if (!(node instanceof Document)) {
