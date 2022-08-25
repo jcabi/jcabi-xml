@@ -322,18 +322,17 @@
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>             <strong class="jxr_keyword">final</strong> StringBuilder output = <strong class="jxr_keyword">new</strong> StringBuilder(length);
 <a class="jxr_linenumber" name="L315" href="#L315">315</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> index = 0; index &lt; length; index += 1) {
 <a class="jxr_linenumber" name="L316" href="#L316">316</a>                 <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">char</strong> character = input.charAt(index);
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>                 <em class="jxr_comment">// @checkstyle MagicNumber (1 line)</em>
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>                 <strong class="jxr_keyword">if</strong> (character &lt; 32 || character &gt; 0x7f) {
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>                     output.append(String.format(<span class="jxr_string">"&#92;&#92;u%X"</span>, (<strong class="jxr_keyword">int</strong>) character));
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>                     output.append(character);
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>                 }
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>             }
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>             <strong class="jxr_keyword">return</strong> output.toString();
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>         }
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>     }
-<a class="jxr_linenumber" name="L327" href="#L327">327</a> 
-<a class="jxr_linenumber" name="L328" href="#L328">328</a> }
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>                 <strong class="jxr_keyword">if</strong> (character &lt; 32 || character &gt; 0x7f) {
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>                     output.append(String.format(<span class="jxr_string">"&#92;&#92;u%X"</span>, (<strong class="jxr_keyword">int</strong>) character));
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>                 } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>                     output.append(character);
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>                 }
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>             }
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>             <strong class="jxr_keyword">return</strong> output.toString();
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>         }
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>     }
+<a class="jxr_linenumber" name="L326" href="#L326">326</a> 
+<a class="jxr_linenumber" name="L327" href="#L327">327</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
