@@ -284,7 +284,6 @@ public final class XSLDocument implements XSL {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public XSL with(final String name, final Object value) {
         return new XSLDocument(
             this.xsl, this.sources,
@@ -387,39 +386,16 @@ public final class XSLDocument implements XSL {
      * @link https://stackoverflow.com/questions/4695489/capture-xslmessage-output-in-java
      */
     private void transformInto(final XML xml, final Result result) {
-        final TransformerFactory factory;
-        synchronized (XSLDocument.class) {
-            factory = TransformerFactory.newInstance();
-        }
+        final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
-        factory.setURIResolver(this.sources);
-        factory.setErrorListener(errors);
-        final Transformer trans;
-        try {
-            trans = factory.newTransformer(
-                new StreamSource(new StringReader(this.xsl), this.sid)
-            );
-        } catch (final TransformerConfigurationException ex) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "Failed to create transformer by %s: %s",
-                    factory.getClass().getName(),
-                    errors.summary()
-                ),
-                ex
-            );
-        }
-        XSLDocument.prepare(trans);
-        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
-            trans.setParameter(ent.getKey(), ent.getValue());
-        }
+        trans.setErrorListener(errors);
         try {
             trans.transform(new DOMSource(xml.node()), result);
         } catch (final TransformerException ex) {
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to transform by %s: %s (%s)",
-                    factory.getClass().getName(),
+                    trans.getClass().getName(),
                     errors.summary(), ex.getMessageAndLocation()
                 ),
                 ex
@@ -428,6 +404,37 @@ public final class XSLDocument implements XSL {
         if (Logger.isDebugEnabled(this)) {
             Logger.debug(this, "%s transformed XML", trans.getClass().getName());
         }
+    }
+
+    /**
+     * Make a transformer.
+     * @return The transformer
+     */
+    private Transformer transformer() {
+        final TransformerFactory factory;
+        synchronized (XSLDocument.class) {
+            factory = TransformerFactory.newInstance();
+        }
+        factory.setURIResolver(this.sources);
+        final Transformer trans;
+        try {
+            trans = factory.newTransformer(
+                new StreamSource(new StringReader(this.xsl), this.sid)
+            );
+        } catch (final TransformerConfigurationException ex) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create transformer by %s",
+                    factory.getClass().getName()
+                ),
+                ex
+            );
+        }
+        XSLDocument.prepare(trans);
+        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
+            trans.setParameter(ent.getKey(), ent.getValue());
+        }
+        return trans;
     }
 
     /**
