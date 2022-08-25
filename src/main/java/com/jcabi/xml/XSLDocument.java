@@ -434,22 +434,23 @@ public final class XSLDocument implements XSL {
                 );
             }
         }
-        XSLDocument.prepare(trans);
         for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
             trans.setParameter(ent.getKey(), ent.getValue());
         }
-        return trans;
+        return XSLDocument.forSaxon(trans);
     }
 
     /**
-     * Prepare it for error logging.
+     * Prepare it for Saxon.
      * @param trans The transformer
+     * @return The same
+     * @checkstyle ReturnCountCheck (5 lines)
      */
     @SuppressWarnings("deprecation")
-    private static void prepare(final Transformer trans) {
+    private static Transformer forSaxon(final Transformer trans) {
         final String type = trans.getClass().getCanonicalName();
         if (!"net.sf.saxon.jaxp.TransformerImpl".equals(type)) {
-            return;
+            return trans;
         }
         if (Version.getStructuredVersionNumber()[0] < 11) {
             TransformerImpl.class.cast(trans)
@@ -468,6 +469,7 @@ public final class XSLDocument implements XSL {
                     )
                 );
         }
+        return trans;
     }
 
 }
