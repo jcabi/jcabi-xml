@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -72,7 +73,6 @@ import org.w3c.dom.NodeList;
  * @checkstyle ClassFanOutComplexity (500 lines)
  * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
-@EqualsAndHashCode(of = { "xml", "leaf" })
 @SuppressWarnings
     (
         {
@@ -107,11 +107,6 @@ public final class XMLDocument implements XML {
     private final transient XPathContext context;
 
     /**
-     * Encapsulated String representation of this XML document.
-     */
-    private final transient String xml;
-
-    /**
      * Is it a leaf node (Element, not a Document)?
      */
     private final transient boolean leaf;
@@ -119,7 +114,7 @@ public final class XMLDocument implements XML {
     /**
      * Actual XML document node.
      */
-    private final transient Object cache;
+    private final transient Node cache;
 
     static {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
@@ -315,7 +310,6 @@ public final class XMLDocument implements XML {
      */
     private XMLDocument(final Node node, final XPathContext ctx,
         final boolean lfe) {
-        this.xml = XMLDocument.asString(node);
         this.context = ctx;
         this.leaf = lfe;
         this.cache = node;
@@ -323,7 +317,23 @@ public final class XMLDocument implements XML {
 
     @Override
     public String toString() {
-        return this.xml;
+        return XMLDocument.asString(this.cache);
+    }
+
+    @Override
+    public boolean equals(final Object another) {
+        final boolean eql;
+        if (!(another instanceof XML)) {
+            eql = false;
+        } else {
+            eql = this.toString().equals(another.toString());
+        }
+        return eql;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.cache.hashCode();
     }
 
     @Override
@@ -359,7 +369,6 @@ public final class XMLDocument implements XML {
                     && type != (int) Node.CDATA_SECTION_NODE) {
                     throw new IllegalArgumentException(
                         String.format(
-                            // @checkstyle LineLength (1 line)
                             "Only text() nodes or attributes are retrievable with xpath() '%s': %d",
                             query, type
                         )
@@ -435,12 +444,19 @@ public final class XMLDocument implements XML {
      * @return A cloned node imported in a dedicated document.
      */
     private static Node createImportedNode(final Node node) {
-        final Document document;
+        final DocumentBuilder builder;
         try {
-            document = XMLDocument.DFACTORY.newDocumentBuilder().newDocument();
+            builder = XMLDocument.DFACTORY.newDocumentBuilder();
         } catch (final ParserConfigurationException ex) {
-            throw new IllegalStateException(ex);
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create document builder by %s",
+                    XMLDocument.DFACTORY.getClass().getName()
+                ),
+                ex
+            );
         }
+        final Document document = builder.newDocument();
         final Node imported = document.importNode(node, true);
         document.appendChild(imported);
         return imported;

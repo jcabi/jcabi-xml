@@ -32,6 +32,7 @@ package com.jcabi.xml;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import lombok.EqualsAndHashCode;
@@ -99,16 +100,28 @@ final class DomParser {
      * @return The document
      */
     public Document document() {
+        final DocumentBuilder builder;
+        try {
+            builder = this.factory.newDocumentBuilder();
+        } catch (final ParserConfigurationException ex) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create document builder by %s",
+                    this.factory.getClass().getName()
+                ),
+                ex
+            );
+        }
         final Document doc;
         try {
-            doc = this.factory.newDocumentBuilder().parse(
-                new ByteArrayInputStream(this.xml)
-            );
-        } catch (final IOException | ParserConfigurationException ex) {
-            throw new IllegalStateException(ex);
-        } catch (final SAXException ex) {
+            doc = builder.parse(new ByteArrayInputStream(this.xml));
+        } catch (final IOException | SAXException ex) {
             throw new IllegalArgumentException(
-                "Can't parse, most probably the XML is invalid", ex
+                String.format(
+                    "Can't parse by %s, most probably the XML is invalid",
+                    builder.getClass().getName()
+                ),
+                ex
             );
         }
         return doc;
