@@ -45,6 +45,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -475,7 +476,8 @@ public final class XMLDocument implements XML {
         } else {
             throw new IllegalArgumentException(
                 String.format(
-                    "Unsupported type: %s", type.getName()
+                    "Unsupported type: %s",
+                    type.getName()
                 )
             );
         }
@@ -490,26 +492,40 @@ public final class XMLDocument implements XML {
      */
     private static String asString(final Node node) {
         final StringWriter writer = new StringWriter();
+        final Transformer trans;
         try {
-            final Transformer trans;
             synchronized (XMLDocument.class) {
                 trans = XMLDocument.TFACTORY.newTransformer();
             }
-            trans.setOutputProperty(OutputKeys.INDENT, "yes");
-            trans.setOutputProperty(OutputKeys.VERSION, "1.0");
-            if (!(node instanceof Document)) {
-                trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            }
-            synchronized (node) {
-                trans.transform(
-                    new DOMSource(node),
-                    new StreamResult(writer)
-                );
-            }
         } catch (final TransformerConfigurationException ex) {
-            throw new IllegalStateException(ex);
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create transformer by %s",
+                    XMLDocument.TFACTORY.getClass().getName()
+                ),
+                ex
+            );
+        }
+        trans.setOutputProperty(OutputKeys.INDENT, "yes");
+        trans.setOutputProperty(OutputKeys.VERSION, "1.0");
+        if (!(node instanceof Document)) {
+            trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        }
+        final Source source = new DOMSource(node);
+        final Result result = new StreamResult(writer);
+        try {
+            synchronized (node) {
+                trans.transform(source, result);
+            }
         } catch (final TransformerException ex) {
-            throw new IllegalArgumentException(ex);
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to transform %s to %s",
+                    source.getClass().getName(),
+                    result.getClass().getName()
+                ),
+                ex
+            );
         }
         return writer.toString();
     }
@@ -528,7 +544,14 @@ public final class XMLDocument implements XML {
             }
             trans.transform(source, result);
         } catch (final TransformerException ex) {
-            throw new IllegalStateException(ex);
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to transform %s to %s",
+                    source.getClass().getName(),
+                    result.getClass().getName()
+                ),
+                ex
+            );
         }
         return result.getNode();
     }

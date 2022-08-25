@@ -39,9 +39,11 @@ import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
@@ -323,7 +325,13 @@ public final class XSLDocument implements XSL {
         try {
             return new XSLDocument(url);
         } catch (final IOException ex) {
-            throw new IllegalStateException(ex);
+            throw new IllegalStateException(
+                String.format(
+                    "Failed to read from URL '%s'",
+                    url
+                ),
+                ex
+            );
         }
     }
 
@@ -334,13 +342,20 @@ public final class XSLDocument implements XSL {
 
     @Override
     public XML transform(final XML xml) {
-        final Document target;
+        final DocumentBuilder builder;
         try {
-            target = XSLDocument.DFACTORY.newDocumentBuilder().newDocument();
-            this.transformInto(xml, new DOMResult(target));
+            builder = XSLDocument.DFACTORY.newDocumentBuilder();
         } catch (final ParserConfigurationException ex) {
-            throw new IllegalStateException(ex);
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create new XML document by %s",
+                    XSLDocument.DFACTORY.getClass().getName()
+                ),
+                ex
+            );
         }
+        final Document target = builder.newDocument();
+        this.transformInto(xml, new DOMResult(target));
         return new XMLDocument(target);
     }
 
@@ -349,9 +364,12 @@ public final class XSLDocument implements XSL {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         this.transformInto(xml, new StreamResult(baos));
         try {
-            return baos.toString("UTF-8");
+            return baos.toString(StandardCharsets.UTF_8.name());
         } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalArgumentException(ex);
+            throw new IllegalArgumentException(
+                "Failed to convert bytes into UTF-8 string",
+                ex
+            );
         }
     }
 
@@ -392,8 +410,7 @@ public final class XSLDocument implements XSL {
             );
         }
         XSLDocument.prepare(trans);
-        for (final Map.Entry<String, Object> ent
-            : this.params.entrySet()) {
+        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
             trans.setParameter(ent.getKey(), ent.getValue());
         }
         try {
