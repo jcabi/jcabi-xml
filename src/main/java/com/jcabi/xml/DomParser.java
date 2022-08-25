@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -123,6 +124,9 @@ final class DomParser {
                 ),
                 ex
             );
+        }
+        if (Logger.isDebugEnabled(this)) {
+            Logger.debug(this, "%s parsed XML", builder.getClass().getName());
         }
         return doc;
     }

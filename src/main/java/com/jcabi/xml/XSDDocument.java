@@ -199,10 +199,12 @@ public final class XSDDocument implements XSD {
         } catch (final SAXException | IOException ex) {
             throw new IllegalStateException(ex);
         }
-        Logger.debug(
-            this, "%s detected %d error(s)",
-            schema.getClass().getName(), errors.size()
-        );
+        if (Logger.isDebugEnabled(this)) {
+            Logger.debug(
+                this, "%s detected %d error(s)",
+                schema.getClass().getName(), errors.size()
+            );
+        }
         return errors;
     }
 

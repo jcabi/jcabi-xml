@@ -425,7 +425,9 @@ public final class XSLDocument implements XSL {
                 ex
             );
         }
-        Logger.debug(this, "%s transformed XML", trans.getClass().getName());
+        if (Logger.isDebugEnabled(this)) {
+            Logger.debug(this, "%s transformed XML", trans.getClass().getName());
+        }
     }
 
     /**
