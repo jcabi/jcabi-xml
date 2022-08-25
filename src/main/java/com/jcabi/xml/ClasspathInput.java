@@ -31,7 +31,6 @@ package com.jcabi.xml;
 
 import java.io.InputStream;
 import java.io.Reader;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
@@ -119,7 +118,6 @@ final class ClasspathInput implements LSInput {
                     path -> {
                         throw new IllegalArgumentException(
                             String.format(
-                                // @checkstyle LineLength (1 line)
                                 "SystemID \"%s\" resource does not exist or can't be opened.",
                                 path
                             )

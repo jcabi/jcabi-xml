@@ -104,7 +104,6 @@ public final class XMLDocumentTest {
     @Test
     public void findsWithXpathAndNamespaces() {
         final XML doc = new XMLDocument(
-            // @checkstyle LineLength (1 line)
             "<html xmlns='http://www.w3.org/1999/xhtml'><div>\u0443\u0440\u0430!</div></html>"
         );
         MatcherAssert.assertThat(

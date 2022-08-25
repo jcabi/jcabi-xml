@@ -45,7 +45,6 @@ public interface Sources extends URIResolver {
     Sources DUMMY = (href, base) -> {
         throw new UnsupportedOperationException(
             String.format(
-                // @checkstyle LineLength (1 line)
                 "Sources.DUMMY#resolve(\"%s\", \"%s\"): URI resolving is not configured in XSLDocument, use #with(URIResolver) method",
                 href, base
             )
