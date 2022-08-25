@@ -113,6 +113,12 @@ public final class XSLDocument implements XSL {
         DocumentBuilderFactory.newInstance();
 
     /**
+     * Transformer factory.
+     */
+    private static final TransformerFactory TFACTORY =
+        TransformerFactory.newInstance();
+
+    /**
      * XSL document.
      */
     private final transient String xsl;
@@ -411,24 +417,22 @@ public final class XSLDocument implements XSL {
      * @return The transformer
      */
     private Transformer transformer() {
-        final TransformerFactory factory;
-        synchronized (XSLDocument.class) {
-            factory = TransformerFactory.newInstance();
-        }
-        factory.setURIResolver(this.sources);
         final Transformer trans;
-        try {
-            trans = factory.newTransformer(
-                new StreamSource(new StringReader(this.xsl), this.sid)
-            );
-        } catch (final TransformerConfigurationException ex) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "Failed to create transformer by %s",
-                    factory.getClass().getName()
-                ),
-                ex
-            );
+        synchronized (XSLDocument.TFACTORY) {
+            XSLDocument.TFACTORY.setURIResolver(this.sources);
+            try {
+                trans = XSLDocument.TFACTORY.newTransformer(
+                    new StreamSource(new StringReader(this.xsl), this.sid)
+                );
+            } catch (final TransformerConfigurationException ex) {
+                throw new IllegalArgumentException(
+                    String.format(
+                        "Failed to create transformer by %s",
+                        XSLDocument.TFACTORY.getClass().getName()
+                    ),
+                    ex
+                );
+            }
         }
         XSLDocument.prepare(trans);
         for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
