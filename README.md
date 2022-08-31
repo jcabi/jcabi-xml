@@ -1,4 +1,4 @@
-<img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
+<img alt="logo" src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![Managed by Zerocracy](https://www.0crat.com/badge/C3RUBL5H9.svg)](https://www.0crat.com/p/C3RUBL5H9)
@@ -18,9 +18,11 @@ It's a simple wrapper around DOM that makes XML parsing and printing
 easy and simple, for example:
 
 ```java
-XML xml = new XMLDocument("<orders><order id="4">Coffee to go</order></orders>");
-String id = xml.xpath("//order/@id").get(0);
-String name = xml.xpath("//order[@id=4]/text()").get(0);
+XML xml = new XMLDocument(
+  "<cart><item id="4">Coffee to go</item></cart>"
+);
+XML item = xml.nodes("//item[@id=4]").get(0);
+String name = item.xpath("text()").get(0);
 System.out.println(xml.toString());
 ```
 
