@@ -53,10 +53,10 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * @since 0.1</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/xml/TextResourceTest.html">TextResourceTest</a> {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/xml/TextResourceTest.html">TextResourceTest</a> {
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      @Test
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> readsStreamAsText() {
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">void</strong> readsStreamAsText() {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">final</strong> String text = <span class="jxr_string">"Blah!\u20ac\u2122"</span>;
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">final</strong> InputStream stream = <strong class="jxr_keyword">new</strong> ByteArrayInputStream(
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>              text.getBytes(StandardCharsets.UTF_8)
@@ -68,7 +68,7 @@
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      @Test
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> readsFileAsText() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">void</strong> readsFileAsText() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">final</strong> String text = <span class="jxr_string">"&lt;a xmlns='urn:foo'&gt;&lt;b&gt;\u0433!&lt;/b&gt;&lt;/a&gt;"</span>;
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">final</strong> File file = Files.createTempDirectory(<span class="jxr_string">""</span>)
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>              .resolve(<span class="jxr_string">"dummy.xml"</span>).toFile();

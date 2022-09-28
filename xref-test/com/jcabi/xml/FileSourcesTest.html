@@ -49,10 +49,10 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> * Test of FileSources.</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> * @since 0.18</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/xml/FileSourcesTest.html">FileSourcesTest</a> {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/xml/FileSourcesTest.html">FileSourcesTest</a> {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      @Test
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> sourcesResolvedFromDir() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">void</strong> sourcesResolvedFromDir() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">final</strong> File file = Files.createTempDirectory(<span class="jxr_string">""</span>)
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>              .resolve(<span class="jxr_string">"dummy.xml"</span>).toFile();
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">new</strong> LengthOf(<strong class="jxr_keyword">new</strong> TeeInput(<span class="jxr_string">"test"</span>, file)).value();
