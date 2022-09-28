@@ -52,10 +52,10 @@ import org.xml.sax.SAXParseException;
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-public final class XSDDocumentTest {
+final class XSDDocumentTest {
 
     @Test
-    public void validatesXml() {
+    void validatesXml() {
         final XSD xsd = new XSDDocument(
             new ByteArrayInputStream(
                 StringUtils.join(
@@ -78,7 +78,7 @@ public final class XSDDocumentTest {
     }
 
     @Test
-    public void detectsSchemaViolations() {
+    void detectsSchemaViolations() {
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
             "<xs:element name='first'/></xs:schema>"
@@ -99,16 +99,12 @@ public final class XSDDocumentTest {
         );
     }
 
-    /**
-     * XSDDocument can validate complex XML.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
     @SuppressWarnings({
         "PMD.AvoidInstantiatingObjectsInLoops",
         "PMD.InsufficientStringBufferDeclaration"
         })
-    public void validatesComplexXml() throws Exception {
+    void validatesComplexXml() throws Exception {
         final int loopp = 5;
         final int size = 10_000;
         final int loop = 100;
@@ -143,12 +139,8 @@ public final class XSDDocumentTest {
         }
     }
 
-    /**
-     * XSDDocument can validate a long XML.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void validatesLongXml() throws Exception {
+    void validatesLongXml() throws Exception {
         final XSD xsd = new XSDDocument(
             this.getClass().getResource("sample.xsd")
         );
@@ -171,12 +163,8 @@ public final class XSDDocumentTest {
         );
     }
 
-    /**
-     * XSDDocument can validate XML in multiple threads.
-     * @throws Exception If something goes wrong inside
-     */
     @Test
-    public void validatesMultipleXmlsInThreads() throws Exception {
+    void validatesMultipleXmlsInThreads() throws Exception {
         final int random = 100;
         final int loop = 10;
         final int timeout = 30;
@@ -220,7 +208,7 @@ public final class XSDDocumentTest {
         }
         service.shutdown();
         MatcherAssert.assertThat(
-            service.awaitTermination((long) timeout, TimeUnit.SECONDS),
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
         );
         service.shutdownNow();

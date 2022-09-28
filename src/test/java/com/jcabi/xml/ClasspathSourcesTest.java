@@ -37,10 +37,10 @@ import org.junit.jupiter.api.Test;
  * Test of ClasspathSources.
  * @since 0.18
  */
-public final class ClasspathSourcesTest {
+final class ClasspathSourcesTest {
 
     @Test
-    public void sourcesResolvedFromBase() throws Exception {
+    void sourcesResolvedFromBase() throws Exception {
         MatcherAssert.assertThat(
             new ClasspathSources().resolve("simple.xml", "com.jcabi.xml."),
             Matchers.notNullValue()

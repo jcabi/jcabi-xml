@@ -45,10 +45,10 @@ import org.junit.jupiter.api.Test;
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public final class XSLDocumentTest {
+final class XSLDocumentTest {
 
     @Test
-    public void makesXslTransformations() {
+    void makesXslTransformations() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet",
@@ -70,7 +70,7 @@ public final class XSLDocumentTest {
 
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
-    public void makesXslTransformationsInThreads() throws Exception {
+    void makesXslTransformationsInThreads() throws Exception {
         final int loop = 50;
         final int timeout = 30;
         final XSL xsl = new XSLDocument(
@@ -99,7 +99,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void transformsWithImports() {
+    void transformsWithImports() {
         final XSL xsl = new XSLDocument(
             this.getClass().getResourceAsStream("first.xsl")
         ).with(new ClasspathSources(this.getClass()));
@@ -110,7 +110,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void transformsWithImportsFromUrl() {
+    void transformsWithImportsFromUrl() {
         final XSL xsl = XSLDocument.make(
             this.getClass().getResource("first.xsl")
         ).with(new ClasspathSources(this.getClass()));
@@ -121,7 +121,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void transformsIntoText() {
+    void transformsIntoText() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet ",
@@ -137,7 +137,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void stripsXml() {
+    void stripsXml() {
         MatcherAssert.assertThat(
             XSLDocument.STRIP.transform(
                 new XMLDocument("<a>   <b/>  </a>")
@@ -147,7 +147,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void transformsIntoTextWithParams() {
+    void transformsIntoTextWithParams() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet   ",
@@ -166,7 +166,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void transformsIntoTextWithIntegerParams() {
+    void transformsIntoTextWithIntegerParams() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet     ",
@@ -184,7 +184,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void catchesXslErrorMessages() {
+    void catchesXslErrorMessages() {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 RuntimeException.class,
@@ -204,7 +204,7 @@ public final class XSLDocumentTest {
     }
 
     @Test
-    public void catchesSaxonWarnings() {
+    void catchesSaxonWarnings() {
         new XSLDocument(
             StringUtils.join(
                 " <xsl:stylesheet",

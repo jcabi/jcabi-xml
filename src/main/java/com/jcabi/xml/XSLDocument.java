@@ -83,7 +83,7 @@ public final class XSLDocument implements XSL {
      *
      * <p>This will NOT remove
      * existing indentation between Element nodes currently introduced by the
-     * constructor of {@link com.jcabi.xml.XMLDocument}. For example:
+     * constructor of {@link XMLDocument}. For example:
      *
      * <pre>
      * {@code
@@ -403,6 +403,7 @@ public final class XSLDocument implements XSL {
         final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
         trans.setErrorListener(errors);
+        final long start = System.nanoTime();
         try {
             trans.transform(new DOMSource(xml.node()), result);
         } catch (final TransformerException ex) {
@@ -416,7 +417,12 @@ public final class XSLDocument implements XSL {
             );
         }
         if (Logger.isDebugEnabled(this)) {
-            Logger.debug(this, "%s transformed XML", trans.getClass().getName());
+            Logger.debug(
+                this,
+                "%s transformed XML in %[nano]s",
+                trans.getClass().getName(),
+                System.nanoTime() - start
+            );
         }
     }
 
@@ -464,12 +470,12 @@ public final class XSLDocument implements XSL {
             return trans;
         }
         if (Version.getStructuredVersionNumber()[0] < 11) {
-            TransformerImpl.class.cast(trans)
+            ((TransformerImpl) trans)
                 .getUnderlyingController()
                 .setMessageEmitter(new MessageWarner());
         }
         if (Version.getStructuredVersionNumber()[0] >= 11) {
-            TransformerImpl.class.cast(trans)
+            ((TransformerImpl) trans)
                 .getUnderlyingController()
                 .setMessageHandler(
                     message -> Logger.error(

@@ -45,10 +45,10 @@ import org.junit.jupiter.api.Test;
  *
  * @since 0.1
  */
-public final class TextResourceTest {
+final class TextResourceTest {
 
     @Test
-    public void readsStreamAsText() {
+    void readsStreamAsText() {
         final String text = "Blah!\u20ac\u2122";
         final InputStream stream = new ByteArrayInputStream(
             text.getBytes(StandardCharsets.UTF_8)
@@ -60,7 +60,7 @@ public final class TextResourceTest {
     }
 
     @Test
-    public void readsFileAsText() throws Exception {
+    void readsFileAsText() throws Exception {
         final String text = "<a xmlns='urn:foo'><b>\u0433!</b></a>";
         final File file = Files.createTempDirectory("")
             .resolve("dummy.xml").toFile();

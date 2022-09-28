@@ -101,7 +101,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>xml-apis</groupId>
       <artifactId>xml-apis</artifactId>
-      <!-- don't change it, leave at 1.4.01 -->
       <version>2.0.2</version>
       <scope>provided</scope>
     </dependency>
@@ -113,7 +112,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <artifactId>slf4j-reload4j</artifactId>
       <version>2.0.2</version>
       <scope>test</scope>
     </dependency>
@@ -162,10 +161,11 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.21.1</version>
+            <version>0.22.0</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>xml:/src/it/settings.xml</exclude>
+                <exclude>pmd:/src/it/.*</exclude>
                 <exclude>xml:/src/test/resources/com/jcabi/xml/.*</exclude>
                 <exclude>findbugs:.*</exclude>
               </excludes>

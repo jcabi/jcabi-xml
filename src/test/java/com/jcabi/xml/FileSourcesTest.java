@@ -41,10 +41,10 @@ import org.junit.jupiter.api.Test;
  * Test of FileSources.
  * @since 0.18
  */
-public final class FileSourcesTest {
+final class FileSourcesTest {
 
     @Test
-    public void sourcesResolvedFromDir() throws Exception {
+    void sourcesResolvedFromDir() throws Exception {
         final File file = Files.createTempDirectory("")
             .resolve("dummy.xml").toFile();
         new LengthOf(new TeeInput("test", file)).value();

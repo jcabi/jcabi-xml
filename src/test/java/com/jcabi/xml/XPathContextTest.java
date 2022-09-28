@@ -42,10 +42,10 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link XPathContext}.
  * @since 0.1
  */
-public final class XPathContextTest {
+final class XPathContextTest {
 
     @Test
-    public void findsNamespaceByPrefix() {
+    void findsNamespaceByPrefix() {
         final String prefix = "ns1-foo";
         final String namespace = "hey-it-is-a-namespace";
         final NamespaceContext ctx = new XPathContext()
@@ -58,7 +58,7 @@ public final class XPathContextTest {
     }
 
     @Test
-    public void findsPrefixByNamespace() {
+    void findsPrefixByNamespace() {
         final String prefix = "ns2-foo";
         final String namespace = "hey-it-is-a-new-namespace";
         final NamespaceContext ctx = new XPathContext()
@@ -71,13 +71,13 @@ public final class XPathContextTest {
     }
 
     @Test
-    public void findsPrefixesByNamespace() {
+    void findsPrefixesByNamespace() {
         final String namespace = "simple-short-namespace";
         final NamespaceContext ctx = new XPathContext(namespace, namespace);
         final List<String> prefixes = new ArrayList<>(0);
         final Iterator<?> iter = ctx.getPrefixes(namespace);
         while (iter.hasNext()) {
-            prefixes.add(String.class.cast(iter.next()));
+            prefixes.add((String) iter.next());
         }
         MatcherAssert.assertThat(
             prefixes,
@@ -90,7 +90,7 @@ public final class XPathContextTest {
     }
 
     @Test
-    public void findsDefaultNamespaces() {
+    void findsDefaultNamespaces() {
         final NamespaceContext ctx = new XPathContext();
         MatcherAssert.assertThat(
             ctx.getNamespaceURI("xhtml"),
@@ -119,7 +119,7 @@ public final class XPathContextTest {
     }
 
     @Test
-    public void findsNonBoundNamespaces() {
+    void findsNonBoundNamespaces() {
         final NamespaceContext ctx = new XPathContext();
         MatcherAssert.assertThat(
             ctx.getNamespaceURI("some-other-unbound-prefix"),

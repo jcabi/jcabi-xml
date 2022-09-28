@@ -337,7 +337,7 @@ public final class XMLDocument implements XML {
 
     @Override
     public Node node() {
-        final Node casted = Node.class.cast(this.cache);
+        final Node casted = this.cache;
         final Node answer;
         if (casted instanceof Document) {
             answer = casted.cloneNode(true);
@@ -362,7 +362,7 @@ public final class XMLDocument implements XML {
             final NodeList nodes = this.fetch(query, NodeList.class);
             items = new ArrayList<>(nodes.getLength());
             for (int idx = 0; idx < nodes.getLength(); ++idx) {
-                final int type = (int) nodes.item(idx).getNodeType();
+                final int type = nodes.item(idx).getNodeType();
                 if (type != (int) Node.TEXT_NODE
                     && type != (int) Node.ATTRIBUTE_NODE
                     && type != (int) Node.CDATA_SECTION_NODE) {
@@ -391,13 +391,13 @@ public final class XMLDocument implements XML {
                 );
             }
         }
-        return new ListWrapper<>(items, Node.class.cast(this.cache), query);
+        return new ListWrapper<>(items, this.cache, query);
     }
 
     @Override
     public XML registerNs(final String prefix, final Object uri) {
         return new XMLDocument(
-            Node.class.cast(this.cache),
+            this.cache,
             this.context.add(prefix, uri),
             this.leaf
         );
@@ -425,13 +425,13 @@ public final class XMLDocument implements XML {
                 ), ex
             );
         }
-        return new ListWrapper<>(items, Node.class.cast(this.cache), query);
+        return new ListWrapper<>(items, this.cache, query);
     }
 
     @Override
     public XML merge(final NamespaceContext ctx) {
         return new XMLDocument(
-            Node.class.cast(this.cache),
+            this.cache,
             this.context.merge(ctx),
             this.leaf
         );
@@ -496,7 +496,7 @@ public final class XMLDocument implements XML {
                 )
             );
         }
-        return (T) xpath.evaluate(query, Node.class.cast(this.cache), qname);
+        return (T) xpath.evaluate(query, this.cache, qname);
     }
 
     /**

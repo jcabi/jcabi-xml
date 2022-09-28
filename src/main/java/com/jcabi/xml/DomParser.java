@@ -113,6 +113,7 @@ final class DomParser {
                 ex
             );
         }
+        final long start = System.nanoTime();
         final Document doc;
         try {
             doc = builder.parse(new ByteArrayInputStream(this.xml));
@@ -126,7 +127,13 @@ final class DomParser {
             );
         }
         if (Logger.isDebugEnabled(this)) {
-            Logger.debug(this, "%s parsed XML", builder.getClass().getName());
+            Logger.debug(
+                this,
+                "%s parsed %d bytes of XML in %[nano]s",
+                builder.getClass().getName(),
+                this.xml.length,
+                System.nanoTime() - start
+            );
         }
         return doc;
     }

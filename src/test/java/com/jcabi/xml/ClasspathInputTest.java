@@ -35,12 +35,12 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.ls.LSInput;
 
 /**
- * Test case for {@link com.jcabi.xml.ClasspathInput}.
+ * Test case for {@link ClasspathInput}.
  * @since 0.17.3
  */
-public final class ClasspathInputTest {
+final class ClasspathInputTest {
     @Test
-    public void readsStringFromResourceSuccessfully() {
+    void readsStringFromResourceSuccessfully() {
         final LSInput input = new ClasspathInput(
             "Id", "com/jcabi/xml/simple.xml"
         );

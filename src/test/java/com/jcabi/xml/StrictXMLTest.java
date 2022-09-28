@@ -50,6 +50,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
@@ -61,17 +62,17 @@ import org.mockito.stubbing.Answer;
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
-public final class StrictXMLTest {
+final class StrictXMLTest {
 
     @BeforeEach
-    public void weAreOnline() throws IOException {
+    void weAreOnline() throws IOException {
         Assumptions.assumeTrue(
             InetAddress.getByName("w3.org").isReachable(1000)
         );
     }
 
     @Test
-    public void passesValidXmlThrough() {
+    void passesValidXmlThrough() {
         new StrictXML(
             new XMLDocument("<root>passesValidXmlThrough</root>"),
             new XSDDocument(
@@ -85,7 +86,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void rejectsInvalidXmlThrough() {
+    void rejectsInvalidXmlThrough() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> new StrictXML(
@@ -101,7 +102,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void passesValidXmlUsingXsiSchemaLocation() throws Exception {
+    void passesValidXmlUsingXsiSchemaLocation() throws Exception {
         new StrictXML(
             new XMLDocument(
                 this.getClass().getResource("xsi-schemalocation-valid.xml")
@@ -110,7 +111,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void rejectsInvalidXmlUsingXsiSchemaLocation() {
+    void rejectsInvalidXmlUsingXsiSchemaLocation() {
         Assertions.assertThrows(
             IllegalStateException.class,
             () -> new StrictXML(
@@ -122,7 +123,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void validatesMultipleXmlsInThreads() throws Exception {
+    void validatesMultipleXmlsInThreads() throws Exception {
         final int timeout = 10;
         final int numrun = 100;
         final int loop = 50;
@@ -176,7 +177,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void passesValidXmlWithNetworkProblems() throws Exception {
+    void passesValidXmlWithNetworkProblems() throws Exception {
         final Validator validator = Mockito.mock(Validator.class);
         final AtomicInteger counter = new AtomicInteger(0);
         // @checkstyle IllegalThrowsCheck (5 lines)
@@ -190,7 +191,7 @@ public final class StrictXMLTest {
                 }
                 return null;
             }
-        ).when(validator).validate(Mockito.any(Source.class));
+        ).when(validator).validate(ArgumentMatchers.any(Source.class));
         new StrictXML(
             new XMLDocument(
                 "<root>passesValidXmlWithNetworkProblems</root>"
@@ -200,7 +201,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void lookupXsdsFromClasspath() {
+    void lookupXsdsFromClasspath() {
         new StrictXML(
             new XMLDocument(
                 StringUtils.join(
@@ -224,7 +225,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void rejectXmlWhenXsdIsNotAvailableOnClasspath() {
+    void rejectXmlWhenXsdIsNotAvailableOnClasspath() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> new StrictXML(
@@ -251,7 +252,7 @@ public final class StrictXMLTest {
     }
 
     @Test
-    public void handlesXmlWithoutSchemaLocation() {
+    void handlesXmlWithoutSchemaLocation() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> new StrictXML(

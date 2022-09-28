@@ -38,10 +38,10 @@ import org.junit.jupiter.api.Test;
  * Test case for {@link DomParser}.
  * @since 0.1
  */
-public final class DomParserTest {
+final class DomParserTest {
 
     @Test
-    public void parsesIncomingXmlDocument() {
+    void parsesIncomingXmlDocument() {
         final String xml = "<a><b>\u0443\u0440\u0430!</b></a>";
         final DomParser parser = new DomParser(
             DocumentBuilderFactory.newInstance(), xml
@@ -53,7 +53,7 @@ public final class DomParserTest {
     }
 
     @Test
-    public void parsesIncomingXmlDocumentComment() {
+    void parsesIncomingXmlDocumentComment() {
         final String xml = "<?xml version='1.0'?><!-- test --><root/>";
         final DomParser parser = new DomParser(
             DocumentBuilderFactory.newInstance(), xml
@@ -66,8 +66,8 @@ public final class DomParserTest {
 
     @Test
     @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-    public void allowsValidXmlFormatting() {
-        final String[] texts = new String[] {
+    void allowsValidXmlFormatting() {
+        final String[] texts = {
             "<?xml version=\"1.0\" encoding='ISO-8895-1'?><a/>",
             "<:a/>",
             "<ns:a><ns2:test-me/></ns:a>",

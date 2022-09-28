@@ -184,14 +184,14 @@ public final class XSDDocument implements XSD {
             }
         } catch (final SAXException ex) {
             throw new IllegalStateException(
-                String.format("failed to create XSD schema from %s", this.xsd),
+                String.format("Failed to create XSD schema from %s", this.xsd),
                 ex
             );
         }
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<>();
         final Validator validator = schema.newValidator();
-        validator.setErrorHandler(new ValidationHandler(errors));
+        validator.setErrorHandler(new XSDDocument.ValidationHandler(errors));
         try {
             synchronized (XSDDocument.class) {
                 validator.validate(xml);

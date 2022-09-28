@@ -40,10 +40,10 @@ import org.junit.jupiter.api.Test;
  * @since 0.12
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-public final class XSLChainTest {
+final class XSLChainTest {
 
     @Test
-    public void makesXslTransformations() {
+    void makesXslTransformations() {
         final XSL first = new XSLDocument(
             StringUtils.join(
                 "<xsl:stylesheet",

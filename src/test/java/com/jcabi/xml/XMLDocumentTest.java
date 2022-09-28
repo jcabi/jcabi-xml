@@ -56,10 +56,10 @@ import org.w3c.dom.Node;
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.DoNotUseThreads" })
-public final class XMLDocumentTest {
+final class XMLDocumentTest {
 
     @Test
-    public void findsDocumentNodesWithXpath() {
+    void findsDocumentNodesWithXpath() {
         final XML doc = new XMLDocument(
             "<r><a>\u0443\u0440\u0430!</a><a>B</a></r>"
         );
@@ -74,7 +74,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void findWithXpathListEqualsToJavaUtilList() {
+    void findWithXpathListEqualsToJavaUtilList() {
         MatcherAssert.assertThat(
             new XMLDocument(
                 "<does><not><matter/></not></does>"
@@ -102,7 +102,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void findsWithXpathAndNamespaces() {
+    void findsWithXpathAndNamespaces() {
         final XML doc = new XMLDocument(
             "<html xmlns='http://www.w3.org/1999/xhtml'><div>\u0443\u0440\u0430!</div></html>"
         );
@@ -117,7 +117,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void findsWithXpathWithCustomNamespace() throws Exception {
+    void findsWithXpathWithCustomNamespace() throws Exception {
         final File file = Files.createTempDirectory("")
             .resolve("x.xml").toFile();
         new LengthOf(
@@ -138,7 +138,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void findsDocumentNodesWithXpathAndReturnsThem() throws Exception {
+    void findsDocumentNodesWithXpathAndReturnsThem() throws Exception {
         final XML doc = new XMLDocument(
             new ByteArrayInputStream(
                 "<root><a><x>1</x></a><a><x>2</x></a></root>".getBytes()
@@ -155,7 +155,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void convertsItselfToXml() {
+    void convertsItselfToXml() {
         final XML doc = new XMLDocument("<hello><a/></hello>");
         MatcherAssert.assertThat(
             doc.toString(),
@@ -164,7 +164,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void retrievesDomNode() throws Exception {
+    void retrievesDomNode() throws Exception {
         final XML doc = new XMLDocument(
             this.getClass().getResource("simple.xml")
         );
@@ -179,7 +179,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void throwsCustomExceptionWhenXpathNotFound() {
+    void throwsCustomExceptionWhenXpathNotFound() {
         try {
             new XMLDocument("<root/>").xpath("/absent-node/text()").get(0);
             MatcherAssert.assertThat("exception expected here", false);
@@ -195,7 +195,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void throwsWhenXpathQueryIsBroken() {
+    void throwsWhenXpathQueryIsBroken() {
         try {
             new XMLDocument("<root-99/>").xpath("/*/hello()");
             MatcherAssert.assertThat("exception expected", false);
@@ -208,7 +208,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void preservesProcessingInstructions() {
+    void preservesProcessingInstructions() {
         MatcherAssert.assertThat(
             new XMLDocument("<?xml version='1.0'?><?x test?><a/>"),
             Matchers.hasToString(Matchers.containsString("<?x test?>"))
@@ -216,7 +216,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void preservesDomStructureWhenXpath() {
+    void preservesDomStructureWhenXpath() {
         final XML doc = new XMLDocument(
             "<root><item1/><item2/><item3/></root>"
         );
@@ -228,7 +228,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void printsWithAndWithoutXmlHeader() {
+    void printsWithAndWithoutXmlHeader() {
         final XML doc = new XMLDocument("<hey/>");
         MatcherAssert.assertThat(
             doc,
@@ -241,7 +241,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void parsesInMultipleThreads() throws Exception {
+    void parsesInMultipleThreads() throws Exception {
         final int timeout = 10;
         final int loop = 100;
         final Runnable runnable = () -> MatcherAssert.assertThat(
@@ -249,7 +249,7 @@ public final class XMLDocumentTest {
             XhtmlMatchers.hasXPath("/root/hey")
         );
         final ExecutorService service = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count = count + 1) {
+        for (int count = 0; count < loop; count += 1) {
             service.submit(runnable);
         }
         service.shutdown();
@@ -261,7 +261,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void xpathInMultipleThreads() throws Exception {
+    void xpathInMultipleThreads() throws Exception {
         final int timeout = 30;
         final int repeat = 1000;
         final int loop = 50;
@@ -297,7 +297,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void printsInMultipleThreads() throws Exception {
+    void printsInMultipleThreads() throws Exception {
         final int timeout = 30;
         final int repeat = 1000;
         final int loop = 50;
@@ -327,7 +327,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void performsXpathCalculations() {
+    void performsXpathCalculations() {
         final XML xml = new XMLDocument("<x><a/><a/><a/></x>");
         MatcherAssert.assertThat(
             xml.xpath("count(//x/a)"),
@@ -340,7 +340,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void buildsDomNode() {
+    void buildsDomNode() {
         final XML doc = new XMLDocument("<?xml version='1.0'?><f/>");
         MatcherAssert.assertThat(
             doc.node(),
@@ -353,7 +353,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void comparesToAnotherDocument() {
+    void comparesToAnotherDocument() {
         MatcherAssert.assertThat(
             new XMLDocument("<hi>\n<dude>  </dude></hi>"),
             Matchers.equalTo(new XMLDocument("<hi><dude>  </dude></hi>"))
@@ -367,7 +367,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void preservesXmlNamespaces() {
+    void preservesXmlNamespaces() {
         final String xml = "<a xmlns='http://www.w3.org/1999/xhtml'><b/></a>";
         MatcherAssert.assertThat(
             new XMLDocument(xml),
@@ -376,7 +376,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void preservesImmutability() {
+    void preservesImmutability() {
         final XML xml = new XMLDocument("<r1><a/></r1>");
         final Node node = xml.nodes("/r1/a").get(0).node();
         node.appendChild(node.getOwnerDocument().createElement("h9"));
@@ -387,7 +387,7 @@ public final class XMLDocumentTest {
     }
 
     @Test
-    public void appliesXpathToClonedNode() {
+    void appliesXpathToClonedNode() {
         final XML xml = new XMLDocument("<t6><z9 a='433'/></t6>");
         final XML root = xml.nodes("/t6").get(0);
         MatcherAssert.assertThat(
