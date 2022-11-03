@@ -232,7 +232,7 @@ final class XSLDocumentTest {
         final CountDownLatch latch = new CountDownLatch(1);
         final int total = 10;
         final ExecutorService exec = Executors.newFixedThreadPool(total);
-        for (int task = 0; task < 10; ++task) {
+        for (int task = 0; task < total; ++task) {
             exec.submit(
                 () -> {
                     latch.await();
