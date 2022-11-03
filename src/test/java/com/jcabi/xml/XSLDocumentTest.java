@@ -230,12 +230,13 @@ final class XSLDocumentTest {
         );
         final AtomicInteger done = new AtomicInteger(0);
         final CountDownLatch latch = new CountDownLatch(1);
-        final int total = 10;
+        final int total = 50;
         final ExecutorService exec = Executors.newFixedThreadPool(total);
         for (int task = 0; task < total; ++task) {
             exec.submit(
                 () -> {
                     latch.await();
+                    xsl.transform(xml);
                     xsl.transform(xml);
                     done.incrementAndGet();
                     return 0;
