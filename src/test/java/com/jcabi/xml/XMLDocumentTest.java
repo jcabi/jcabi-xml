@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.TeeInput;
 import org.cactoos.scalar.LengthOf;
@@ -298,7 +299,6 @@ final class XMLDocumentTest {
 
     @Test
     void printsInMultipleThreads() throws Exception {
-        final int timeout = 30;
         final int repeat = 1000;
         final int loop = 50;
         final XML xml = new XMLDocument(
@@ -310,17 +310,29 @@ final class XMLDocumentTest {
                 )
             )
         );
-        final Runnable runnable = () -> MatcherAssert.assertThat(
-            xml.toString(),
-            XhtmlMatchers.hasXPath("/root/data/alpha")
-        );
+        final AtomicInteger done = new AtomicInteger();
+        final Runnable runnable = () -> {
+            MatcherAssert.assertThat(
+                xml.toString(),
+                XhtmlMatchers.hasXPath("/root/data/alpha")
+            );
+            done.incrementAndGet();
+        };
         final ExecutorService service = Executors.newFixedThreadPool(5);
         for (int count = 0; count < loop; count += 1) {
             service.submit(runnable);
         }
         service.shutdown();
+        while (true) {
+            if (done.get() == loop) {
+                break;
+            }
+            if (service.awaitTermination(1L, TimeUnit.MILLISECONDS)) {
+                break;
+            }
+        }
         MatcherAssert.assertThat(
-            service.awaitTermination(timeout, TimeUnit.SECONDS),
+            service.awaitTermination(1L, TimeUnit.SECONDS),
             Matchers.is(true)
         );
         service.shutdownNow();
