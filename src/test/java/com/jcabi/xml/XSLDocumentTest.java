@@ -206,6 +206,28 @@ final class XSLDocumentTest {
     }
 
     @Test
+    void printsSystemIdInErrorMessages() {
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                RuntimeException.class,
+                () -> new XSLDocument(
+                    StringUtils.join(
+                        " <xsl:stylesheet",
+                        "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                        "  version='2.0'><xsl:template match='/'>",
+                        "<xsl:value-of select='$xx'/></xsl:template>",
+                        "  </xsl:stylesheet>"
+                    ),
+                    "some-fake-systemId"
+                ).transform(new XMLDocument("<ooo/>"))
+            ).getLocalizedMessage(),
+            Matchers.containsString(
+                "Failed to create transformer by net.sf.saxon.TransformerFactoryImpl"
+            )
+        );
+    }
+
+    @Test
     void catchesSaxonWarnings() {
         new XSLDocument(
             StringUtils.join(
