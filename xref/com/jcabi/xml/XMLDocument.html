@@ -87,7 +87,7 @@
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>              <span class="jxr_string">"PMD.OnlyOneConstructorShouldDoInitialization"</span>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      )
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a> <strong class="jxr_keyword">implements</strong> <a href="../../../com/jcabi/xml/XML.html">XML</a> {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> XMLDocument <strong class="jxr_keyword">implements</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> {
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">     * XPath factory.</em>
@@ -111,7 +111,7 @@
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     * Namespace context to use for {@link #xpath(String)}</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     * and {@link #nodes(String)} methods.</em>
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/xml/XPathContext.html">XPathContext</a> context;
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> XPathContext context;
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> 
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L109" href="#L109">109</a> <em class="jxr_javadoccomment">     * Is it a leaf node (Element, not a Document)?</em>
@@ -144,21 +144,21 @@
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     * {@link NamespaceContext}, which already defines a</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     * number of namespaces, for convenience, including:</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * &lt;pre&gt; xhtml: <a href="http://www.w3.org/1999/xhtm" target="alexandria_uri">http://www.w3.org/1999/xhtm</a>l</em>
-<a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * xs: <a href="http://www.w3.org/2001/XMLSchem" target="alexandria_uri">http://www.w3.org/2001/XMLSchem</a>a</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * xsi: <a href="http://www.w3.org/2001/XMLSchema-instanc" target="alexandria_uri">http://www.w3.org/2001/XMLSchema-instanc</a>e</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     * xsl: <a href="http://www.w3.org/1999/XSL/Transfor" target="alexandria_uri">http://www.w3.org/1999/XSL/Transfor</a>m</em>
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * svg: <a href="http://www.w3.org/2000/svg&lt;/pre&gt" target="alexandria_uri">http://www.w3.org/2000/svg&lt;/pre&gt</a>;</em>
+<a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * &lt;pre&gt; xhtml: <a href="http://www.w3.org/1999/xhtml" target="alexandria_uri">http://www.w3.org/1999/xhtml</a></em>
+<a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * xs: <a href="http://www.w3.org/2001/XMLSchema" target="alexandria_uri">http://www.w3.org/2001/XMLSchema</a></em>
+<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * xsi: <a href="http://www.w3.org/2001/XMLSchema-instance" target="alexandria_uri">http://www.w3.org/2001/XMLSchema-instance</a></em>
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     * xsl: <a href="http://www.w3.org/1999/XSL/Transform" target="alexandria_uri">http://www.w3.org/1999/XSL/Transform</a></em>
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * svg: <a href="http://www.w3.org/2000/svg&lt;/pre&gt;" target="alexandria_uri">http://www.w3.org/2000/svg&lt;/pre&gt;</a></em>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * &lt;p&gt;In future versions we will add more namespaces (submit a ticket if</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * you need more of them defined here).</em>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     * @param text XML document body</em>
 <a class="jxr_linenumber" name="L149" href="#L149">149</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> String text) {
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> String text) {
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">this</strong>(
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>             <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/DomParser.html">DomParser</a>(XMLDocument.DFACTORY, text).document(),
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>             <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XPathContext.html">XPathContext</a>(),
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>             <strong class="jxr_keyword">new</strong> <a name="DomParser" href="../../../com/jcabi/xml/DomParser.html#DomParser">DomParser</a>(XMLDocument.DFACTORY, text).document(),
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>             <strong class="jxr_keyword">new</strong> XPathContext(),
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             false
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         );
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>     }
@@ -170,21 +170,21 @@
 <a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">     * {@link NamespaceContext}, which already defines a</em>
 <a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">     * number of namespaces, for convenience, including:</em>
 <a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     * &lt;pre&gt; xhtml: <a href="http://www.w3.org/1999/xhtm" target="alexandria_uri">http://www.w3.org/1999/xhtm</a>l</em>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a> <em class="jxr_javadoccomment">     * xs: <a href="http://www.w3.org/2001/XMLSchem" target="alexandria_uri">http://www.w3.org/2001/XMLSchem</a>a</em>
-<a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">     * xsi: <a href="http://www.w3.org/2001/XMLSchema-instanc" target="alexandria_uri">http://www.w3.org/2001/XMLSchema-instanc</a>e</em>
-<a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">     * xsl: <a href="http://www.w3.org/1999/XSL/Transfor" target="alexandria_uri">http://www.w3.org/1999/XSL/Transfor</a>m</em>
-<a class="jxr_linenumber" name="L169" href="#L169">169</a> <em class="jxr_javadoccomment">     * svg: <a href="http://www.w3.org/2000/svg&lt;/pre&gt" target="alexandria_uri">http://www.w3.org/2000/svg&lt;/pre&gt</a>;</em>
+<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     * &lt;pre&gt; xhtml: <a href="http://www.w3.org/1999/xhtml" target="alexandria_uri">http://www.w3.org/1999/xhtml</a></em>
+<a class="jxr_linenumber" name="L166" href="#L166">166</a> <em class="jxr_javadoccomment">     * xs: <a href="http://www.w3.org/2001/XMLSchema" target="alexandria_uri">http://www.w3.org/2001/XMLSchema</a></em>
+<a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">     * xsi: <a href="http://www.w3.org/2001/XMLSchema-instance" target="alexandria_uri">http://www.w3.org/2001/XMLSchema-instance</a></em>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">     * xsl: <a href="http://www.w3.org/1999/XSL/Transform" target="alexandria_uri">http://www.w3.org/1999/XSL/Transform</a></em>
+<a class="jxr_linenumber" name="L169" href="#L169">169</a> <em class="jxr_javadoccomment">     * svg: <a href="http://www.w3.org/2000/svg&lt;/pre&gt;" target="alexandria_uri">http://www.w3.org/2000/svg&lt;/pre&gt;</a></em>
 <a class="jxr_linenumber" name="L170" href="#L170">170</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> <em class="jxr_javadoccomment">     * &lt;p&gt;In future versions we will add more namespaces (submit a ticket if</em>
 <a class="jxr_linenumber" name="L172" href="#L172">172</a> <em class="jxr_javadoccomment">     * you need more of them defined here).</em>
 <a class="jxr_linenumber" name="L173" href="#L173">173</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> <em class="jxr_javadoccomment">     * @param data The XML body</em>
 <a class="jxr_linenumber" name="L175" href="#L175">175</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> byte[] data) {
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> byte[] data) {
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">this</strong>(
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/DomParser.html">DomParser</a>(XMLDocument.DFACTORY, data).document(),
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XPathContext.html">XPathContext</a>(),
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">new</strong> <a name="DomParser" href="../../../com/jcabi/xml/DomParser.html#DomParser">DomParser</a>(XMLDocument.DFACTORY, data).document(),
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">new</strong> XPathContext(),
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>             false
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>         );
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>     }
@@ -199,8 +199,8 @@
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     * @param node DOM source</em>
 <a class="jxr_linenumber" name="L192" href="#L192">192</a> <em class="jxr_javadoccomment">     * @since 0.2</em>
 <a class="jxr_linenumber" name="L193" href="#L193">193</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> Node node) {
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">this</strong>(node, <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XPathContext.html">XPathContext</a>(), !(node instanceof Document));
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> Node node) {
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">this</strong>(node, <strong class="jxr_keyword">new</strong> XPathContext(), !(node instanceof Document));
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>     }
 <a class="jxr_linenumber" name="L197" href="#L197">197</a> 
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>     <em class="jxr_javadoccomment">/**</em>
@@ -215,8 +215,8 @@
 <a class="jxr_linenumber" name="L207" href="#L207">207</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L208" href="#L208">208</a> <em class="jxr_javadoccomment">     * @param source Source of XML document</em>
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> Source source) {
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>         <strong class="jxr_keyword">this</strong>(XMLDocument.transform(source), <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XPathContext.html">XPathContext</a>(), false);
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> Source source) {
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>         <strong class="jxr_keyword">this</strong>(XMLDocument.transform(source), <strong class="jxr_keyword">new</strong> XPathContext(), false);
 <a class="jxr_linenumber" name="L212" href="#L212">212</a>     }
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>     <em class="jxr_javadoccomment">/**</em>
@@ -232,8 +232,8 @@
 <a class="jxr_linenumber" name="L224" href="#L224">224</a> <em class="jxr_javadoccomment">     * @param file XML file</em>
 <a class="jxr_linenumber" name="L225" href="#L225">225</a> <em class="jxr_javadoccomment">     * @throws FileNotFoundException In case of I/O problems</em>
 <a class="jxr_linenumber" name="L226" href="#L226">226</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> File file) <strong class="jxr_keyword">throws</strong> FileNotFoundException {
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/TextResource.html">TextResource</a>(file).toString());
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> File file) <strong class="jxr_keyword">throws</strong> FileNotFoundException {
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a name="TextResource" href="../../../com/jcabi/xml/TextResource.html#TextResource">TextResource</a>(file).toString());
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>     }
 <a class="jxr_linenumber" name="L230" href="#L230">230</a> 
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>     <em class="jxr_javadoccomment">/**</em>
@@ -249,7 +249,7 @@
 <a class="jxr_linenumber" name="L241" href="#L241">241</a> <em class="jxr_javadoccomment">     * @param file XML file</em>
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> <em class="jxr_javadoccomment">     * @throws FileNotFoundException In case of I/O problems</em>
 <a class="jxr_linenumber" name="L243" href="#L243">243</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> Path file) <strong class="jxr_keyword">throws</strong> FileNotFoundException {
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> Path file) <strong class="jxr_keyword">throws</strong> FileNotFoundException {
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">this</strong>(file.toFile());
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>     }
 <a class="jxr_linenumber" name="L247" href="#L247">247</a> 
@@ -266,8 +266,8 @@
 <a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">     * @param url The URL to load from</em>
 <a class="jxr_linenumber" name="L259" href="#L259">259</a> <em class="jxr_javadoccomment">     * @throws IOException In case of I/O problems</em>
 <a class="jxr_linenumber" name="L260" href="#L260">260</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> URL url) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/TextResource.html">TextResource</a>(url).toString());
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> URL url) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a name="TextResource" href="../../../com/jcabi/xml/TextResource.html#TextResource">TextResource</a>(url).toString());
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>     }
 <a class="jxr_linenumber" name="L264" href="#L264">264</a> 
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>     <em class="jxr_javadoccomment">/**</em>
@@ -283,8 +283,8 @@
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> <em class="jxr_javadoccomment">     * @param uri The URI to load from</em>
 <a class="jxr_linenumber" name="L276" href="#L276">276</a> <em class="jxr_javadoccomment">     * @throws IOException In case of I/O problems</em>
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> URI uri) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/TextResource.html">TextResource</a>(uri).toString());
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> URI uri) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a name="TextResource" href="../../../com/jcabi/xml/TextResource.html#TextResource">TextResource</a>(uri).toString());
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>     }
 <a class="jxr_linenumber" name="L281" href="#L281">281</a> 
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>     <em class="jxr_javadoccomment">/**</em>
@@ -304,8 +304,8 @@
 <a class="jxr_linenumber" name="L296" href="#L296">296</a> <em class="jxr_javadoccomment">     * @throws IOException In case of I/O problem</em>
 <a class="jxr_linenumber" name="L297" href="#L297">297</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ConstructorOnlyInitializesOrCallOtherConstructors"</span>)
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> InputStream stream) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/TextResource.html">TextResource</a>(stream).toString());
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>     <strong class="jxr_keyword">public</strong> XMLDocument(<strong class="jxr_keyword">final</strong> InputStream stream) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>         <strong class="jxr_keyword">this</strong>(<strong class="jxr_keyword">new</strong> <a name="TextResource" href="../../../com/jcabi/xml/TextResource.html#TextResource">TextResource</a>(stream).toString());
 <a class="jxr_linenumber" name="L301" href="#L301">301</a>         stream.close();
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>     }
 <a class="jxr_linenumber" name="L303" href="#L303">303</a> 
@@ -315,7 +315,7 @@
 <a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     * @param ctx Namespace context</em>
 <a class="jxr_linenumber" name="L308" href="#L308">308</a> <em class="jxr_javadoccomment">     * @param lfe Is it a leaf node?</em>
 <a class="jxr_linenumber" name="L309" href="#L309">309</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>     <strong class="jxr_keyword">private</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(<strong class="jxr_keyword">final</strong> Node node, <strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/xml/XPathContext.html">XPathContext</a> ctx,
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>     <strong class="jxr_keyword">private</strong> XMLDocument(<strong class="jxr_keyword">final</strong> Node node, <strong class="jxr_keyword">final</strong> XPathContext ctx,
 <a class="jxr_linenumber" name="L311" href="#L311">311</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> lfe) {
 <a class="jxr_linenumber" name="L312" href="#L312">312</a>         <strong class="jxr_keyword">this</strong>.context = ctx;
 <a class="jxr_linenumber" name="L313" href="#L313">313</a>         <strong class="jxr_keyword">this</strong>.leaf = lfe;
@@ -330,7 +330,7 @@
 <a class="jxr_linenumber" name="L322" href="#L322">322</a>     @Override
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> equals(<strong class="jxr_keyword">final</strong> Object another) {
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> eql;
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>         <strong class="jxr_keyword">if</strong> (!(another instanceof XML)) {
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>         <strong class="jxr_keyword">if</strong> (!(another instanceof <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a>)) {
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>             eql = false;
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L328" href="#L328">328</a>             eql = <strong class="jxr_keyword">this</strong>.toString().equals(another.toString());
@@ -403,8 +403,8 @@
 <a class="jxr_linenumber" name="L395" href="#L395">395</a>     }
 <a class="jxr_linenumber" name="L396" href="#L396">396</a> 
 <a class="jxr_linenumber" name="L397" href="#L397">397</a>     @Override
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XML.html">XML</a> registerNs(<strong class="jxr_keyword">final</strong> String prefix, <strong class="jxr_keyword">final</strong> Object uri) {
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>     <strong class="jxr_keyword">public</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> registerNs(<strong class="jxr_keyword">final</strong> String prefix, <strong class="jxr_keyword">final</strong> Object uri) {
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XMLDocument(
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>             <strong class="jxr_keyword">this</strong>.cache,
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>             <strong class="jxr_keyword">this</strong>.context.add(prefix, uri),
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>             <strong class="jxr_keyword">this</strong>.leaf
@@ -419,7 +419,7 @@
 <a class="jxr_linenumber" name="L411" href="#L411">411</a>             items = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;(nodes.getLength());
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> idx = 0; idx &lt; nodes.getLength(); ++idx) {
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>                 items.add(
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>                     <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>                     <strong class="jxr_keyword">new</strong> XMLDocument(
 <a class="jxr_linenumber" name="L415" href="#L415">415</a>                         nodes.item(idx),
 <a class="jxr_linenumber" name="L416" href="#L416">416</a>                         <strong class="jxr_keyword">this</strong>.context, <strong class="jxr_keyword">true</strong>
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>                     )
@@ -437,8 +437,8 @@
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>     }
 <a class="jxr_linenumber" name="L430" href="#L430">430</a> 
 <a class="jxr_linenumber" name="L431" href="#L431">431</a>     @Override
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>     <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/xml/XML.html">XML</a> merge(<strong class="jxr_keyword">final</strong> NamespaceContext ctx) {
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../com/jcabi/xml/XMLDocument.html">XMLDocument</a>(
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>     <strong class="jxr_keyword">public</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> merge(<strong class="jxr_keyword">final</strong> NamespaceContext ctx) {
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XMLDocument(
 <a class="jxr_linenumber" name="L434" href="#L434">434</a>             <strong class="jxr_keyword">this</strong>.cache,
 <a class="jxr_linenumber" name="L435" href="#L435">435</a>             <strong class="jxr_keyword">this</strong>.context.merge(ctx),
 <a class="jxr_linenumber" name="L436" href="#L436">436</a>             <strong class="jxr_keyword">this</strong>.leaf
