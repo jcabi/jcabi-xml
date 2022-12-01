@@ -172,7 +172,18 @@ public final class XSLDocument implements XSL {
      * @since 0.7.4
      */
     public XSLDocument(final URL url) throws IOException {
-        this(new TextResource(url).toString(), url.toString());
+        this(url, url.toString());
+    }
+
+    /**
+     * Public ctor, from URL with alternative SystemId.
+     * @param url Location of document
+     * @param base SystemId/Base
+     * @throws IOException If fails to read
+     * @since 0.26.0
+     */
+    public XSLDocument(final URL url, final String base) throws IOException {
+        this(new TextResource(url).toString(), base);
     }
 
     /**
@@ -182,7 +193,19 @@ public final class XSLDocument implements XSL {
      * @since 0.21
      */
     public XSLDocument(final File file) throws FileNotFoundException {
-        this(new TextResource(file).toString(), file.getAbsolutePath());
+        this(file, file.getAbsolutePath());
+    }
+
+    /**
+     * Public ctor, from file  with alternative SystemId.
+     * @param file Location of document
+     * @param base SystemId/Base
+     * @throws FileNotFoundException If fails to read
+     * @since 0.26.0
+     */
+    public XSLDocument(final File file, final String base)
+        throws FileNotFoundException {
+        this(new TextResource(file).toString(), base);
     }
 
     /**
@@ -196,13 +219,36 @@ public final class XSLDocument implements XSL {
     }
 
     /**
+     * Public ctor, from file with custom SystemId.
+     * @param file Location of document
+     * @param base SystemId/Base
+     * @throws FileNotFoundException If fails to read
+     * @since 0.26.0
+     */
+    public XSLDocument(final Path file, final String base)
+        throws FileNotFoundException {
+        this(file.toFile(), base);
+    }
+
+    /**
      * Public ctor, from URI.
      * @param uri Location of document
      * @throws IOException If fails to read
      * @since 0.15
      */
     public XSLDocument(final URI uri) throws IOException {
-        this(new TextResource(uri).toString(), uri.toString());
+        this(uri, uri.toString());
+    }
+
+    /**
+     * Public ctor, from URI.
+     * @param uri Location of document
+     * @param base SystemId/Base
+     * @throws IOException If fails to read
+     * @since 0.26.0
+     */
+    public XSLDocument(final URI uri, final String base) throws IOException {
+        this(new TextResource(uri).toString(), base);
     }
 
     /**
