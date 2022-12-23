@@ -466,8 +466,8 @@ public final class XSLDocument implements XSL {
                 ex
             );
         }
-        if (Logger.isDebugEnabled(this)) {
-            Logger.debug(
+        if (Logger.isTraceEnabled(this)) {
+            Logger.trace(
                 this,
                 "%s transformed XML in %[nano]s",
                 trans.getClass().getName(),

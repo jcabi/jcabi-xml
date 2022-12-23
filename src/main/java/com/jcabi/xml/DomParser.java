@@ -126,8 +126,8 @@ final class DomParser {
                 ex
             );
         }
-        if (Logger.isDebugEnabled(this)) {
-            Logger.debug(
+        if (Logger.isTraceEnabled(this)) {
+            Logger.trace(
                 this,
                 "%s parsed %d bytes of XML in %[nano]s",
                 builder.getClass().getName(),
