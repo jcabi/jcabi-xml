@@ -340,14 +340,15 @@ public final class XSLDocument implements XSL {
 
     @Override
     public XSL with(final Sources src) {
-        return new XSLDocument(this.xsl, src, this.params);
+        return new XSLDocument(this.xsl, src, this.params, this.sid);
     }
 
     @Override
     public XSL with(final String name, final Object value) {
         return new XSLDocument(
             this.xsl, this.sources,
-            new MapOf<String, Object>(this.params, new MapEntry<>(name, value))
+            new MapOf<String, Object>(this.params, new MapEntry<>(name, value)),
+            this.sid
         );
     }
 
@@ -382,7 +383,7 @@ public final class XSLDocument implements XSL {
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static XSL make(final URL url) {
         try {
-            return new XSLDocument(url);
+            return new XSLDocument(url, url.toString());
         } catch (final IOException ex) {
             throw new IllegalStateException(
                 String.format(
