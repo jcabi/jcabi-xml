@@ -348,208 +348,209 @@
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> 
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>     @Override
 <a class="jxr_linenumber" name="L342" href="#L342">342</a>     <strong class="jxr_keyword">public</strong> <a name="XSL" href="../../../com/jcabi/xml/XSL.html#XSL">XSL</a> with(<strong class="jxr_keyword">final</strong> <a name="Sources" href="../../../com/jcabi/xml/Sources.html#Sources">Sources</a> src) {
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XSLDocument(<strong class="jxr_keyword">this</strong>.xsl, src, <strong class="jxr_keyword">this</strong>.params);
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XSLDocument(<strong class="jxr_keyword">this</strong>.xsl, src, <strong class="jxr_keyword">this</strong>.params, <strong class="jxr_keyword">this</strong>.sid);
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>     }
 <a class="jxr_linenumber" name="L345" href="#L345">345</a> 
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>     @Override
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>     <strong class="jxr_keyword">public</strong> <a name="XSL" href="../../../com/jcabi/xml/XSL.html#XSL">XSL</a> with(<strong class="jxr_keyword">final</strong> String name, <strong class="jxr_keyword">final</strong> Object value) {
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XSLDocument(
 <a class="jxr_linenumber" name="L349" href="#L349">349</a>             <strong class="jxr_keyword">this</strong>.xsl, <strong class="jxr_keyword">this</strong>.sources,
-<a class="jxr_linenumber" name="L350" href="#L350">350</a>             <strong class="jxr_keyword">new</strong> MapOf&lt;String, Object&gt;(<strong class="jxr_keyword">this</strong>.params, <strong class="jxr_keyword">new</strong> MapEntry&lt;&gt;(name, value))
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>         );
-<a class="jxr_linenumber" name="L352" href="#L352">352</a>     }
-<a class="jxr_linenumber" name="L353" href="#L353">353</a> 
-<a class="jxr_linenumber" name="L354" href="#L354">354</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     * Make an instance of XSL stylesheet without I/O exceptions.</em>
-<a class="jxr_linenumber" name="L356" href="#L356">356</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L357" href="#L357">357</a> <em class="jxr_javadoccomment">     * &lt;p&gt;This factory method is useful when you need to create</em>
-<a class="jxr_linenumber" name="L358" href="#L358">358</a> <em class="jxr_javadoccomment">     * an instance of XSL stylesheet as a static final variable. In this</em>
-<a class="jxr_linenumber" name="L359" href="#L359">359</a> <em class="jxr_javadoccomment">     * case you can't catch an exception but this method can help, for example:</em>
-<a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L361" href="#L361">361</a> <em class="jxr_javadoccomment">     * &lt;pre&gt; class Foo {</em>
-<a class="jxr_linenumber" name="L362" href="#L362">362</a> <em class="jxr_javadoccomment">     *   private static final XSL STYLESHEET = XSLDocument.make(</em>
-<a class="jxr_linenumber" name="L363" href="#L363">363</a> <em class="jxr_javadoccomment">     *     Foo.class.getResourceAsStream("my-stylesheet.xsl")</em>
-<a class="jxr_linenumber" name="L364" href="#L364">364</a> <em class="jxr_javadoccomment">     *   );</em>
-<a class="jxr_linenumber" name="L365" href="#L365">365</a> <em class="jxr_javadoccomment">     * }&lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L367" href="#L367">367</a> <em class="jxr_javadoccomment">     * @param stream Input stream</em>
-<a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     * @return XSL stylesheet</em>
-<a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ProhibitPublicStaticMethods"</span>)
-<a class="jxr_linenumber" name="L371" href="#L371">371</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a name="XSL" href="../../../com/jcabi/xml/XSL.html#XSL">XSL</a> make(<strong class="jxr_keyword">final</strong> InputStream stream) {
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XSLDocument(stream);
-<a class="jxr_linenumber" name="L373" href="#L373">373</a>     }
-<a class="jxr_linenumber" name="L374" href="#L374">374</a> 
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L376" href="#L376">376</a> <em class="jxr_javadoccomment">     * Make an instance of XSL stylesheet without I/O exceptions.</em>
-<a class="jxr_linenumber" name="L377" href="#L377">377</a> <em class="jxr_javadoccomment">     * @param url URL with content</em>
-<a class="jxr_linenumber" name="L378" href="#L378">378</a> <em class="jxr_javadoccomment">     * @return XSL stylesheet</em>
-<a class="jxr_linenumber" name="L379" href="#L379">379</a> <em class="jxr_javadoccomment">     * @see #make(InputStream)</em>
-<a class="jxr_linenumber" name="L380" href="#L380">380</a> <em class="jxr_javadoccomment">     * @since 0.7.4</em>
-<a class="jxr_linenumber" name="L381" href="#L381">381</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ProhibitPublicStaticMethods"</span>)
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a name="XSL" href="../../../com/jcabi/xml/XSL.html#XSL">XSL</a> make(<strong class="jxr_keyword">final</strong> URL url) {
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XSLDocument(url);
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException ex) {
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>                 String.format(
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>                     <span class="jxr_string">"Failed to read from URL '%s'"</span>,
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>                     url
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>                 ),
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>                 ex
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>             );
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>         }
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>     }
-<a class="jxr_linenumber" name="L396" href="#L396">396</a> 
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>     @Override
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>     <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XMLDocument(<strong class="jxr_keyword">this</strong>.xsl).toString();
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>     }
-<a class="jxr_linenumber" name="L401" href="#L401">401</a> 
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>     @Override
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>     <strong class="jxr_keyword">public</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> transform(<strong class="jxr_keyword">final</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> xml) {
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>         <strong class="jxr_keyword">final</strong> DocumentBuilder builder;
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>             <strong class="jxr_keyword">synchronized</strong> (XSLDocument.DFACTORY) {
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>                 builder = XSLDocument.DFACTORY.newDocumentBuilder();
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>             }
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ParserConfigurationException ex) {
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>                 String.format(
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>                     <span class="jxr_string">"Failed to create new XML document by %s"</span>,
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>                     XSLDocument.DFACTORY.getClass().getName()
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>                 ),
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>                 ex
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>             );
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>         }
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>         <strong class="jxr_keyword">final</strong> Document target = builder.newDocument();
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">this</strong>.transformInto(xml, <strong class="jxr_keyword">new</strong> DOMResult(target));
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XMLDocument(target);
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>     }
-<a class="jxr_linenumber" name="L422" href="#L422">422</a> 
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>     @Override
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>     <strong class="jxr_keyword">public</strong> String applyTo(<strong class="jxr_keyword">final</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> xml) {
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>         <strong class="jxr_keyword">final</strong> ByteArrayOutputStream baos = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <strong class="jxr_keyword">this</strong>.transformInto(xml, <strong class="jxr_keyword">new</strong> StreamResult(baos));
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>             <strong class="jxr_keyword">return</strong> baos.toString(StandardCharsets.UTF_8.name());
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> UnsupportedEncodingException ex) {
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>                 <span class="jxr_string">"Failed to convert bytes into UTF-8 string"</span>,
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>                 ex
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>             );
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         }
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>     }
-<a class="jxr_linenumber" name="L436" href="#L436">436</a> 
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_javadoccomment">     * Transform XML into result.</em>
-<a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L440" href="#L440">440</a> <em class="jxr_javadoccomment">     * We create {@link TransformerFactory} here on every transformation</em>
-<a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_javadoccomment">     * because {@link javax.xml.transform.URIResolver} must be set into</em>
-<a class="jxr_linenumber" name="L442" href="#L442">442</a> <em class="jxr_javadoccomment">     * it before making an instance of a transformer. Otherwise, it won't</em>
-<a class="jxr_linenumber" name="L443" href="#L443">443</a> <em class="jxr_javadoccomment">     * understand "xsl:import" statements.</em>
-<a class="jxr_linenumber" name="L444" href="#L444">444</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> <em class="jxr_javadoccomment">     * @param xml XML</em>
-<a class="jxr_linenumber" name="L446" href="#L446">446</a> <em class="jxr_javadoccomment">     * @param result Result</em>
-<a class="jxr_linenumber" name="L447" href="#L447">447</a> <em class="jxr_javadoccomment">     * @since 0.11</em>
-<a class="jxr_linenumber" name="L448" href="#L448">448</a> <em class="jxr_javadoccomment">     * @link &lt;a href="<a href="https://stackoverflow.com/questions/4695489" target="alexandria_uri">https://stackoverflow.com/questions/4695489</a>"&gt;Relevant SO question&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> transformInto(<strong class="jxr_keyword">final</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> xml, <strong class="jxr_keyword">final</strong> Result result) {
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         <strong class="jxr_keyword">final</strong> Transformer trans = <strong class="jxr_keyword">this</strong>.transformer();
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>         <strong class="jxr_keyword">final</strong> <a name="ConsoleErrorListener" href="../../../com/jcabi/xml/ConsoleErrorListener.html#ConsoleErrorListener">ConsoleErrorListener</a> errors = <strong class="jxr_keyword">new</strong> <a name="ConsoleErrorListener" href="../../../com/jcabi/xml/ConsoleErrorListener.html#ConsoleErrorListener">ConsoleErrorListener</a>();
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>         trans.setErrorListener(errors);
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> start = System.nanoTime();
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>             <strong class="jxr_keyword">synchronized</strong> (XSLDocument.DFACTORY) {
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>                 trans.transform(<strong class="jxr_keyword">new</strong> DOMSource(xml.node()), result);
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>             }
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerException ex) {
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>                 String.format(
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>                     <span class="jxr_string">"Failed to transform by %s: %s (%s)"</span>,
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>                     trans.getClass().getName(),
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>                     errors.summary(), ex.getMessageAndLocation()
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 ),
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 ex
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>             );
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>         }
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>         <strong class="jxr_keyword">if</strong> (Logger.isTraceEnabled(<strong class="jxr_keyword">this</strong>)) {
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>             Logger.trace(
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>                 <strong class="jxr_keyword">this</strong>,
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>                 <span class="jxr_string">"%s transformed XML in %[nano]s"</span>,
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>                 trans.getClass().getName(),
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>                 System.nanoTime() - start
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>             );
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>         }
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>     }
-<a class="jxr_linenumber" name="L478" href="#L478">478</a> 
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L480" href="#L480">480</a> <em class="jxr_javadoccomment">     * Make a transformer.</em>
-<a class="jxr_linenumber" name="L481" href="#L481">481</a> <em class="jxr_javadoccomment">     * @return The transformer</em>
-<a class="jxr_linenumber" name="L482" href="#L482">482</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>     <strong class="jxr_keyword">private</strong> Transformer transformer() {
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">synchronized</strong> (XSLDocument.TFACTORY) {
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.cached.get() == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>                 XSLDocument.TFACTORY.setURIResolver(<strong class="jxr_keyword">this</strong>.sources);
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>                 <strong class="jxr_keyword">final</strong> Transformer trans;
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>                 <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>                     trans = XSLDocument.TFACTORY.newTransformer(
-<a class="jxr_linenumber" name="L490" href="#L490">490</a>                         <strong class="jxr_keyword">new</strong> StreamSource(<strong class="jxr_keyword">new</strong> StringReader(<strong class="jxr_keyword">this</strong>.xsl), <strong class="jxr_keyword">this</strong>.sid)
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>                     );
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>                 } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerConfigurationException ex) {
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>                         String.format(
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>                             <span class="jxr_string">"Failed to create transformer by %s"</span>,
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>                             XSLDocument.TFACTORY.getClass().getName()
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>                         ),
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>                         ex
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>                     );
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>                 }
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Map.Entry&lt;String, Object&gt; ent : <strong class="jxr_keyword">this</strong>.params.entrySet()) {
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>                     trans.setParameter(ent.getKey(), ent.getValue());
-<a class="jxr_linenumber" name="L503" href="#L503">503</a>                 }
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>                 <strong class="jxr_keyword">this</strong>.cached.set(XSLDocument.forSaxon(trans));
-<a class="jxr_linenumber" name="L505" href="#L505">505</a>             }
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>         }
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.cached.get();
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>     }
-<a class="jxr_linenumber" name="L509" href="#L509">509</a> 
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L511" href="#L511">511</a> <em class="jxr_javadoccomment">     * Prepare it for Saxon.</em>
-<a class="jxr_linenumber" name="L512" href="#L512">512</a> <em class="jxr_javadoccomment">     * @param trans The transformer</em>
-<a class="jxr_linenumber" name="L513" href="#L513">513</a> <em class="jxr_javadoccomment">     * @return The same</em>
-<a class="jxr_linenumber" name="L514" href="#L514">514</a> <em class="jxr_javadoccomment">     * @checkstyle ReturnCountCheck (5 lines)</em>
-<a class="jxr_linenumber" name="L515" href="#L515">515</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>     @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
-<a class="jxr_linenumber" name="L517" href="#L517">517</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Transformer forSaxon(<strong class="jxr_keyword">final</strong> Transformer trans) {
-<a class="jxr_linenumber" name="L518" href="#L518">518</a>         <strong class="jxr_keyword">final</strong> String type = trans.getClass().getCanonicalName();
-<a class="jxr_linenumber" name="L519" href="#L519">519</a>         <strong class="jxr_keyword">if</strong> (!<span class="jxr_string">"net.sf.saxon.jaxp.TransformerImpl"</span>.equals(type)) {
-<a class="jxr_linenumber" name="L520" href="#L520">520</a>             <strong class="jxr_keyword">return</strong> trans;
-<a class="jxr_linenumber" name="L521" href="#L521">521</a>         }
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>         <strong class="jxr_keyword">if</strong> (Version.getStructuredVersionNumber()[0] &lt; 11) {
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>             ((TransformerImpl) trans)
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>                 .getUnderlyingController()
-<a class="jxr_linenumber" name="L525" href="#L525">525</a>                 .setMessageEmitter(<strong class="jxr_keyword">new</strong> MessageWarner());
-<a class="jxr_linenumber" name="L526" href="#L526">526</a>         }
-<a class="jxr_linenumber" name="L527" href="#L527">527</a>         <strong class="jxr_keyword">if</strong> (Version.getStructuredVersionNumber()[0] &gt;= 11) {
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>             ((TransformerImpl) trans)
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>                 .getUnderlyingController()
-<a class="jxr_linenumber" name="L530" href="#L530">530</a>                 .setMessageHandler(
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>                     message -&gt; Logger.error(
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>                         XSLDocument.<strong class="jxr_keyword">class</strong>,
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>                         <span class="jxr_string">"%s: %s"</span>,
-<a class="jxr_linenumber" name="L534" href="#L534">534</a>                         message.getLocation(),
-<a class="jxr_linenumber" name="L535" href="#L535">535</a>                         message.toString()
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>                     )
-<a class="jxr_linenumber" name="L537" href="#L537">537</a>                 );
-<a class="jxr_linenumber" name="L538" href="#L538">538</a>         }
-<a class="jxr_linenumber" name="L539" href="#L539">539</a>         <strong class="jxr_keyword">return</strong> trans;
-<a class="jxr_linenumber" name="L540" href="#L540">540</a>     }
-<a class="jxr_linenumber" name="L541" href="#L541">541</a> 
-<a class="jxr_linenumber" name="L542" href="#L542">542</a> }
+<a class="jxr_linenumber" name="L350" href="#L350">350</a>             <strong class="jxr_keyword">new</strong> MapOf&lt;String, Object&gt;(<strong class="jxr_keyword">this</strong>.params, <strong class="jxr_keyword">new</strong> MapEntry&lt;&gt;(name, value)),
+<a class="jxr_linenumber" name="L351" href="#L351">351</a>             <strong class="jxr_keyword">this</strong>.sid
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>         );
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>     }
+<a class="jxr_linenumber" name="L354" href="#L354">354</a> 
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L356" href="#L356">356</a> <em class="jxr_javadoccomment">     * Make an instance of XSL stylesheet without I/O exceptions.</em>
+<a class="jxr_linenumber" name="L357" href="#L357">357</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L358" href="#L358">358</a> <em class="jxr_javadoccomment">     * &lt;p&gt;This factory method is useful when you need to create</em>
+<a class="jxr_linenumber" name="L359" href="#L359">359</a> <em class="jxr_javadoccomment">     * an instance of XSL stylesheet as a static final variable. In this</em>
+<a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_javadoccomment">     * case you can't catch an exception but this method can help, for example:</em>
+<a class="jxr_linenumber" name="L361" href="#L361">361</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L362" href="#L362">362</a> <em class="jxr_javadoccomment">     * &lt;pre&gt; class Foo {</em>
+<a class="jxr_linenumber" name="L363" href="#L363">363</a> <em class="jxr_javadoccomment">     *   private static final XSL STYLESHEET = XSLDocument.make(</em>
+<a class="jxr_linenumber" name="L364" href="#L364">364</a> <em class="jxr_javadoccomment">     *     Foo.class.getResourceAsStream("my-stylesheet.xsl")</em>
+<a class="jxr_linenumber" name="L365" href="#L365">365</a> <em class="jxr_javadoccomment">     *   );</em>
+<a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     * }&lt;/pre&gt;</em>
+<a class="jxr_linenumber" name="L367" href="#L367">367</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     * @param stream Input stream</em>
+<a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     * @return XSL stylesheet</em>
+<a class="jxr_linenumber" name="L370" href="#L370">370</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ProhibitPublicStaticMethods"</span>)
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a name="XSL" href="../../../com/jcabi/xml/XSL.html#XSL">XSL</a> make(<strong class="jxr_keyword">final</strong> InputStream stream) {
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XSLDocument(stream);
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>     }
+<a class="jxr_linenumber" name="L375" href="#L375">375</a> 
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L377" href="#L377">377</a> <em class="jxr_javadoccomment">     * Make an instance of XSL stylesheet without I/O exceptions.</em>
+<a class="jxr_linenumber" name="L378" href="#L378">378</a> <em class="jxr_javadoccomment">     * @param url URL with content</em>
+<a class="jxr_linenumber" name="L379" href="#L379">379</a> <em class="jxr_javadoccomment">     * @return XSL stylesheet</em>
+<a class="jxr_linenumber" name="L380" href="#L380">380</a> <em class="jxr_javadoccomment">     * @see #make(InputStream)</em>
+<a class="jxr_linenumber" name="L381" href="#L381">381</a> <em class="jxr_javadoccomment">     * @since 0.7.4</em>
+<a class="jxr_linenumber" name="L382" href="#L382">382</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>     @SuppressWarnings(<span class="jxr_string">"PMD.ProhibitPublicStaticMethods"</span>)
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a name="XSL" href="../../../com/jcabi/xml/XSL.html#XSL">XSL</a> make(<strong class="jxr_keyword">final</strong> URL url) {
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XSLDocument(url, url.toString());
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException ex) {
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>                 String.format(
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>                     <span class="jxr_string">"Failed to read from URL '%s'"</span>,
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>                     url
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>                 ),
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>                 ex
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>             );
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>         }
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     }
+<a class="jxr_linenumber" name="L397" href="#L397">397</a> 
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>     @Override
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>     <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XMLDocument(<strong class="jxr_keyword">this</strong>.xsl).toString();
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>     }
+<a class="jxr_linenumber" name="L402" href="#L402">402</a> 
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>     @Override
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>     <strong class="jxr_keyword">public</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> transform(<strong class="jxr_keyword">final</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> xml) {
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         <strong class="jxr_keyword">final</strong> DocumentBuilder builder;
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>             <strong class="jxr_keyword">synchronized</strong> (XSLDocument.DFACTORY) {
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>                 builder = XSLDocument.DFACTORY.newDocumentBuilder();
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>             }
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> ParserConfigurationException ex) {
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>                 String.format(
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>                     <span class="jxr_string">"Failed to create new XML document by %s"</span>,
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>                     XSLDocument.DFACTORY.getClass().getName()
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>                 ),
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>                 ex
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>             );
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>         }
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">final</strong> Document target = builder.newDocument();
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>         <strong class="jxr_keyword">this</strong>.transformInto(xml, <strong class="jxr_keyword">new</strong> DOMResult(target));
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XMLDocument(target);
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>     }
+<a class="jxr_linenumber" name="L423" href="#L423">423</a> 
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>     @Override
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>     <strong class="jxr_keyword">public</strong> String applyTo(<strong class="jxr_keyword">final</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> xml) {
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <strong class="jxr_keyword">final</strong> ByteArrayOutputStream baos = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>         <strong class="jxr_keyword">this</strong>.transformInto(xml, <strong class="jxr_keyword">new</strong> StreamResult(baos));
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>             <strong class="jxr_keyword">return</strong> baos.toString(StandardCharsets.UTF_8.name());
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> UnsupportedEncodingException ex) {
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>                 <span class="jxr_string">"Failed to convert bytes into UTF-8 string"</span>,
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>                 ex
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>             );
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>         }
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>     }
+<a class="jxr_linenumber" name="L437" href="#L437">437</a> 
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_javadoccomment">     * Transform XML into result.</em>
+<a class="jxr_linenumber" name="L440" href="#L440">440</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_javadoccomment">     * We create {@link TransformerFactory} here on every transformation</em>
+<a class="jxr_linenumber" name="L442" href="#L442">442</a> <em class="jxr_javadoccomment">     * because {@link javax.xml.transform.URIResolver} must be set into</em>
+<a class="jxr_linenumber" name="L443" href="#L443">443</a> <em class="jxr_javadoccomment">     * it before making an instance of a transformer. Otherwise, it won't</em>
+<a class="jxr_linenumber" name="L444" href="#L444">444</a> <em class="jxr_javadoccomment">     * understand "xsl:import" statements.</em>
+<a class="jxr_linenumber" name="L445" href="#L445">445</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L446" href="#L446">446</a> <em class="jxr_javadoccomment">     * @param xml XML</em>
+<a class="jxr_linenumber" name="L447" href="#L447">447</a> <em class="jxr_javadoccomment">     * @param result Result</em>
+<a class="jxr_linenumber" name="L448" href="#L448">448</a> <em class="jxr_javadoccomment">     * @since 0.11</em>
+<a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_javadoccomment">     * @link &lt;a href="<a href="https://stackoverflow.com/questions/4695489" target="alexandria_uri">https://stackoverflow.com/questions/4695489</a>"&gt;Relevant SO question&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="L450" href="#L450">450</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> transformInto(<strong class="jxr_keyword">final</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> xml, <strong class="jxr_keyword">final</strong> Result result) {
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>         <strong class="jxr_keyword">final</strong> Transformer trans = <strong class="jxr_keyword">this</strong>.transformer();
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>         <strong class="jxr_keyword">final</strong> <a name="ConsoleErrorListener" href="../../../com/jcabi/xml/ConsoleErrorListener.html#ConsoleErrorListener">ConsoleErrorListener</a> errors = <strong class="jxr_keyword">new</strong> <a name="ConsoleErrorListener" href="../../../com/jcabi/xml/ConsoleErrorListener.html#ConsoleErrorListener">ConsoleErrorListener</a>();
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>         trans.setErrorListener(errors);
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> start = System.nanoTime();
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>             <strong class="jxr_keyword">synchronized</strong> (XSLDocument.DFACTORY) {
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>                 trans.transform(<strong class="jxr_keyword">new</strong> DOMSource(xml.node()), result);
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>             }
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerException ex) {
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>                 String.format(
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>                     <span class="jxr_string">"Failed to transform by %s: %s (%s)"</span>,
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>                     trans.getClass().getName(),
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>                     errors.summary(), ex.getMessageAndLocation()
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 ),
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>                 ex
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>             );
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>         }
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         <strong class="jxr_keyword">if</strong> (Logger.isTraceEnabled(<strong class="jxr_keyword">this</strong>)) {
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>             Logger.trace(
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>                 <strong class="jxr_keyword">this</strong>,
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>                 <span class="jxr_string">"%s transformed XML in %[nano]s"</span>,
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>                 trans.getClass().getName(),
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>                 System.nanoTime() - start
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>             );
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>         }
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>     }
+<a class="jxr_linenumber" name="L479" href="#L479">479</a> 
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L481" href="#L481">481</a> <em class="jxr_javadoccomment">     * Make a transformer.</em>
+<a class="jxr_linenumber" name="L482" href="#L482">482</a> <em class="jxr_javadoccomment">     * @return The transformer</em>
+<a class="jxr_linenumber" name="L483" href="#L483">483</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <strong class="jxr_keyword">private</strong> Transformer transformer() {
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>         <strong class="jxr_keyword">synchronized</strong> (XSLDocument.TFACTORY) {
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.cached.get() == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>                 XSLDocument.TFACTORY.setURIResolver(<strong class="jxr_keyword">this</strong>.sources);
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>                 <strong class="jxr_keyword">final</strong> Transformer trans;
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>                 <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>                     trans = XSLDocument.TFACTORY.newTransformer(
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>                         <strong class="jxr_keyword">new</strong> StreamSource(<strong class="jxr_keyword">new</strong> StringReader(<strong class="jxr_keyword">this</strong>.xsl), <strong class="jxr_keyword">this</strong>.sid)
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>                     );
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>                 } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> TransformerConfigurationException ex) {
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>                         String.format(
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>                             <span class="jxr_string">"Failed to create transformer by %s"</span>,
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>                             XSLDocument.TFACTORY.getClass().getName()
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>                         ),
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>                         ex
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>                     );
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>                 }
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>                 <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> Map.Entry&lt;String, Object&gt; ent : <strong class="jxr_keyword">this</strong>.params.entrySet()) {
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>                     trans.setParameter(ent.getKey(), ent.getValue());
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>                 }
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>                 <strong class="jxr_keyword">this</strong>.cached.set(XSLDocument.forSaxon(trans));
+<a class="jxr_linenumber" name="L506" href="#L506">506</a>             }
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>         }
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.cached.get();
+<a class="jxr_linenumber" name="L509" href="#L509">509</a>     }
+<a class="jxr_linenumber" name="L510" href="#L510">510</a> 
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L512" href="#L512">512</a> <em class="jxr_javadoccomment">     * Prepare it for Saxon.</em>
+<a class="jxr_linenumber" name="L513" href="#L513">513</a> <em class="jxr_javadoccomment">     * @param trans The transformer</em>
+<a class="jxr_linenumber" name="L514" href="#L514">514</a> <em class="jxr_javadoccomment">     * @return The same</em>
+<a class="jxr_linenumber" name="L515" href="#L515">515</a> <em class="jxr_javadoccomment">     * @checkstyle ReturnCountCheck (5 lines)</em>
+<a class="jxr_linenumber" name="L516" href="#L516">516</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>     @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
+<a class="jxr_linenumber" name="L518" href="#L518">518</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Transformer forSaxon(<strong class="jxr_keyword">final</strong> Transformer trans) {
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>         <strong class="jxr_keyword">final</strong> String type = trans.getClass().getCanonicalName();
+<a class="jxr_linenumber" name="L520" href="#L520">520</a>         <strong class="jxr_keyword">if</strong> (!<span class="jxr_string">"net.sf.saxon.jaxp.TransformerImpl"</span>.equals(type)) {
+<a class="jxr_linenumber" name="L521" href="#L521">521</a>             <strong class="jxr_keyword">return</strong> trans;
+<a class="jxr_linenumber" name="L522" href="#L522">522</a>         }
+<a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">if</strong> (Version.getStructuredVersionNumber()[0] &lt; 11) {
+<a class="jxr_linenumber" name="L524" href="#L524">524</a>             ((TransformerImpl) trans)
+<a class="jxr_linenumber" name="L525" href="#L525">525</a>                 .getUnderlyingController()
+<a class="jxr_linenumber" name="L526" href="#L526">526</a>                 .setMessageEmitter(<strong class="jxr_keyword">new</strong> MessageWarner());
+<a class="jxr_linenumber" name="L527" href="#L527">527</a>         }
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>         <strong class="jxr_keyword">if</strong> (Version.getStructuredVersionNumber()[0] &gt;= 11) {
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>             ((TransformerImpl) trans)
+<a class="jxr_linenumber" name="L530" href="#L530">530</a>                 .getUnderlyingController()
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>                 .setMessageHandler(
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>                     message -&gt; Logger.error(
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>                         XSLDocument.<strong class="jxr_keyword">class</strong>,
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>                         <span class="jxr_string">"%s: %s"</span>,
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>                         message.getLocation(),
+<a class="jxr_linenumber" name="L536" href="#L536">536</a>                         message.toString()
+<a class="jxr_linenumber" name="L537" href="#L537">537</a>                     )
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>                 );
+<a class="jxr_linenumber" name="L539" href="#L539">539</a>         }
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>         <strong class="jxr_keyword">return</strong> trans;
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>     }
+<a class="jxr_linenumber" name="L542" href="#L542">542</a> 
+<a class="jxr_linenumber" name="L543" href="#L543">543</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2023 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>
