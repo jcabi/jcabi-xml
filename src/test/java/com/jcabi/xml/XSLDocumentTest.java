@@ -200,7 +200,7 @@ final class XSLDocumentTest {
                         " </xsl:message></xsl:template></xsl:stylesheet>"
                     ),
                     "foo"
-                ).transform(new XMLDocument("<zz1/>"))
+                ).with(new ClasspathSources()).transform(new XMLDocument("<zz1/>"))
             ).getLocalizedMessage(),
             Matchers.allOf(
                 Matchers.containsString("Processing terminated by xsl:message"),
@@ -223,7 +223,7 @@ final class XSLDocumentTest {
                         "  </xsl:stylesheet>"
                     ),
                     "some-fake-systemId"
-                ).transform(new XMLDocument("<ooo/>"))
+                ).with(new ClasspathSources()).transform(new XMLDocument("<ooo/>"))
             ).getLocalizedMessage(),
             Matchers.containsString(
                 "Failed to create transformer by net.sf.saxon.TransformerFactoryImpl"
