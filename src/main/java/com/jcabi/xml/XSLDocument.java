@@ -458,11 +458,17 @@ public final class XSLDocument implements XSL {
                 trans.transform(new DOMSource(xml.node()), result);
             }
         } catch (final TransformerException ex) {
+            final StringBuilder summary = new StringBuilder(
+                String.join("; ", errors.summary())
+            );
+            if (!summary.toString().equals(ex.getMessageAndLocation())) {
+                summary.append("; ").append(ex.getMessageAndLocation());
+            }
             throw new IllegalArgumentException(
                 String.format(
-                    "Failed to transform by %s: %s (%s)",
+                    "Failed to transform by %s: %s",
                     trans.getClass().getName(),
-                    errors.summary(), ex.getMessageAndLocation()
+                    summary
                 ),
                 ex
             );

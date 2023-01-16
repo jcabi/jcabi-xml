@@ -198,10 +198,14 @@ final class XSLDocumentTest {
                         "<xsl:message terminate='yes'>",
                         "<xsl:text>oopsie...</xsl:text>",
                         " </xsl:message></xsl:template></xsl:stylesheet>"
-                    )
+                    ),
+                    "foo"
                 ).transform(new XMLDocument("<zz1/>"))
             ).getLocalizedMessage(),
-            Matchers.containsString("Processing terminated by xsl:message")
+            Matchers.allOf(
+                Matchers.containsString("Processing terminated by xsl:message"),
+                Matchers.containsString("by xsl:message at line 1 in foo")
+            )
         );
     }
 

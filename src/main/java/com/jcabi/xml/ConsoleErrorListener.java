@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.TransformerException;
@@ -84,7 +85,7 @@ final class ConsoleErrorListener implements ErrorListener {
      * @return List of errors accumulated
      */
     public Collection<String> summary() {
-        return this.errors;
+        return Collections.unmodifiableCollection(this.errors);
     }
 
 }
