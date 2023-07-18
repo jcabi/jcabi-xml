@@ -35,6 +35,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +57,7 @@ import org.w3c.dom.Node;
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.DoNotUseThreads" })
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads"})
 final class XMLDocumentTest {
 
     @Test
@@ -405,6 +406,17 @@ final class XMLDocumentTest {
         MatcherAssert.assertThat(
             root.xpath("//z9/@a").get(0),
             Matchers.equalTo("433")
+        );
+    }
+
+    @Test
+    void findsXpathWithFunctionThatReturnsSeveralItems() {
+        MatcherAssert.assertThat(
+            "Can't find xpath with function that returns several items",
+            new XMLDocument(
+                "<o><o base='a' ver='1'/><o base='b' ver='2'/></o>")
+                .xpath("//o[@base and @ver]/concat(@base,'|',@ver)"),
+            Matchers.hasItems("a|1", "b|2")
         );
     }
 
