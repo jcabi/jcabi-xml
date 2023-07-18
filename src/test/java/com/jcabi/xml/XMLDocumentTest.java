@@ -40,12 +40,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
+import net.sf.saxon.lib.NamespaceConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.TeeInput;
 import org.cactoos.scalar.LengthOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -411,13 +415,18 @@ final class XMLDocumentTest {
 
     @Test
     void findsXpathWithFunctionThatReturnsSeveralItems() {
+        final IllegalArgumentException exception = Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () ->
+                new XMLDocument(
+                    "<o><o base='a' ver='1'/><o base='b' ver='2'/></o>"
+                ).xpath("//o[@base and @ver]/concat(@base,'|',@ver)"),
+            "XMLDocument throws exception if we are trying to use XPath 2.0 functionality. The current implementation supports only XPath 1.0."
+        );
         MatcherAssert.assertThat(
-            "Can't find xpath with function that returns several items",
-            new XMLDocument(
-                "<o><o base='a' ver='1'/><o base='b' ver='2'/></o>")
-                .xpath("//o[@base and @ver]/concat(@base,'|',@ver)"),
-            Matchers.hasItems("a|1", "b|2")
+            "Message should emphasize that XPath 2.0 features are not supported",
+            exception.getCause().getMessage(),
+            Matchers.equalTo("javax.xml.transform.TransformerException: Unknown nodetype: concat")
         );
     }
-
 }
