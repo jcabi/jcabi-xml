@@ -55,11 +55,11 @@ import org.w3c.dom.Node;
  * Test case for {@link XMLDocument}.
  *
  * @since 0.1
- * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
+ * @checkstyle AbbreviationAsWordInNameCheck (20 lines)
  * @todo #221:30min Implement XPath 2.0 evaluations.
  *  We have to implement XPath 2.0 evaluations in order to support more complex XPath queries.
  *  For example, the following query is not supported:
- *   //o[@base and @ver]/concat(@base,'|',@ver)
+ *  - "//o[@base and @ver]/concat(@base,'|',@ver)"
  *  When we implement XPath 2.0 evaluations, we should remove the @Disabled annotation from
  *  findsXpathWithFunctionThatReturnsSeveralItems test.
  */
