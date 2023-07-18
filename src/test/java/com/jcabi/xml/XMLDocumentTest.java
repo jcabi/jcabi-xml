@@ -45,7 +45,7 @@ import org.cactoos.scalar.LengthOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -56,6 +56,12 @@ import org.w3c.dom.Node;
  *
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
+ * @todo #221:30min Implement XPath 2.0 evaluations.
+ *  We have to implement XPath 2.0 evaluations in order to support more complex XPath queries.
+ *  For example, the following query is not supported:
+ *   //o[@base and @ver]/concat(@base,'|',@ver)
+ *  When we implement XPath 2.0 evaluations, we should remove the @Disabled annotation from
+ *  findsXpathWithFunctionThatReturnsSeveralItems test.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads"})
 final class XMLDocumentTest {
@@ -410,19 +416,14 @@ final class XMLDocumentTest {
     }
 
     @Test
+    @Disabled
     void findsXpathWithFunctionThatReturnsSeveralItems() {
-        final IllegalArgumentException exception = Assertions.assertThrows(
-            IllegalArgumentException.class,
-            () ->
-                new XMLDocument(
-                    "<o><o base='a' ver='1'/><o base='b' ver='2'/></o>"
-                ).xpath("//o[@base and @ver]/concat(@base,'|',@ver)"),
-            "XMLDocument throws exception if we are trying to use XPath 2.0 functionality. The current implementation supports only XPath 1.0."
-        );
         MatcherAssert.assertThat(
-            "Message should emphasize that XPath 2.0 features are not supported",
-            exception.getCause().getMessage(),
-            Matchers.equalTo("javax.xml.transform.TransformerException: Unknown nodetype: concat")
+            "XMLDocument can handle XPath 2.0 feature - XPath evaluation of concat method, but it can't",
+            new XMLDocument(
+                "<o><o base='a' ver='1'/><o base='b' ver='2'/></o>"
+            ).xpath("//o[@base and @ver]/concat(@base,'|',@ver)"),
+            Matchers.hasItems("a|1", "b|2")
         );
     }
 }
