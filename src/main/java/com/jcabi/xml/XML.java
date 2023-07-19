@@ -51,6 +51,19 @@ import org.w3c.dom.Node;
  *
  * <p>Implementation of this interface must be immutable and thread-safe.
  *
+ * <p> In most cases, you can use the {@link XMLDocument} implementation. It
+ * implements all required features and will be sufficient for most practical tasks.
+ * The only problem with that implementation is that it uses javax.xml classes under
+ * the hood. The issue with the default java implementation is that it only supports
+ * XPath 1.0. If you require XPath 2.0 support and beyond, you can use the Saxon
+ * implementation of {@link XML} - {@link SaxonDocument}. It is based on the Saxon
+ * library and supports XPath 2.0 and higher.
+ * You can read more about Java XPath versioning problems in the following threads:
+ * <ul>
+ *   <li><a href="https://stackoverflow.com/questions/6624149/xpath-2-0-for-java-possible">xpath 2.0 for java possible</a></li>
+ *   <li><a href="https://stackoverflow.com/questions/5802895/does-jdk-6-support-all-features-of-xpath-2-0/5803028#5803028">does JDK 6 support all features of XPath 2.0?</a></li>
+ * </ul>
+ *
  * @see XMLDocument
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
