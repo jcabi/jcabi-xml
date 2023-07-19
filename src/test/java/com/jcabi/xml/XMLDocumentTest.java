@@ -56,12 +56,6 @@ import org.w3c.dom.Node;
  *
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (20 lines)
- * @todo #221:30min Implement XPath 2.0 evaluations.
- *  We have to implement XPath 2.0 evaluations in order to support more complex XPath queries.
- *  For example, the following query is not supported:
- *  - "//o[@base and @ver]/concat(@base,'|',@ver)"
- *  When we implement XPath 2.0 evaluations, we should remove the @Disabled annotation from
- *  findsXpathWithFunctionThatReturnsSeveralItems test.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads"})
 final class XMLDocumentTest {
@@ -412,18 +406,6 @@ final class XMLDocumentTest {
         MatcherAssert.assertThat(
             root.xpath("//z9/@a").get(0),
             Matchers.equalTo("433")
-        );
-    }
-
-    @Test
-    @Disabled
-    void findsXpathWithFunctionThatReturnsSeveralItems() {
-        MatcherAssert.assertThat(
-            "XMLDocument can handle XPath 2.0 feature - XPath evaluation of concat method, but it can't",
-            new XMLDocument(
-                "<o><o base='a' ver='1'/><o base='b' ver='2'/></o>"
-            ).xpath("//o[@base and @ver]/concat(@base,'|',@ver)"),
-            Matchers.hasItems("a|1", "b|2")
         );
     }
 }

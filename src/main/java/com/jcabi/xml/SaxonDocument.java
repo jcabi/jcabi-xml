@@ -43,7 +43,14 @@ import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import org.w3c.dom.Node;
 
-public class SaxonDocument implements XML {
+/**
+ * Saxon XML document.
+ *
+ * <p>Objects of this class are immutable, but NOT thread-safe.
+ *
+ * @since 0.28
+ */
+public final class SaxonDocument implements XML {
 
     /**
      * Saxon processor.
@@ -53,7 +60,7 @@ public class SaxonDocument implements XML {
     /**
      * Saxon document builder.
      */
-    private static final DocumentBuilder DOCUMENT_BUILDER = SaxonDocument.SAXON.newDocumentBuilder();
+    private static final DocumentBuilder DOC_BUILDER = SaxonDocument.SAXON.newDocumentBuilder();
 
     /**
      * Saxon XPath compiler.
@@ -69,7 +76,7 @@ public class SaxonDocument implements XML {
     /**
      * Saxon XML document node.
      */
-    private final XdmNode node;
+    private final XdmNode xdm;
 
     /**
      * Public constructor from XML as string text.
@@ -81,17 +88,17 @@ public class SaxonDocument implements XML {
 
     /**
      * Public constructor from Saxon XML document node.
-     * @param node Saxon XML document node.
+     * @param xml Saxon XML document node.
      */
-    public SaxonDocument(final XdmNode node) {
-        this.node = node;
+    public SaxonDocument(final XdmNode xml) {
+        this.xdm = xml;
     }
 
     @Override
     public List<String> xpath(final String query) {
         try {
             final XPathSelector selector = SaxonDocument.XPATH_COMPILER.compile(query).load();
-            selector.setContextItem(this.node);
+            selector.setContextItem(this.xdm);
             return selector.evaluate()
                 .stream()
                 .map(XdmItem::getStringValue)
@@ -139,7 +146,7 @@ public class SaxonDocument implements XML {
      */
     private static XdmNode node(final String text) {
         try {
-            return SaxonDocument.DOCUMENT_BUILDER
+            return SaxonDocument.DOC_BUILDER
                 .build(new StreamSource(new StringReader(text)));
         } catch (final SaxonApiException exception) {
             throw new IllegalArgumentException(
