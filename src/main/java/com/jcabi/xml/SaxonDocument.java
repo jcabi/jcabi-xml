@@ -38,60 +38,114 @@ import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathCompiler;
-import net.sf.saxon.s9api.XPathExecutable;
 import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
-import net.sf.saxon.s9api.XdmValue;
 import org.w3c.dom.Node;
 
 public class SaxonDocument implements XML {
 
-    private final String text;
+    /**
+     * Saxon processor.
+     */
+    private static final Processor SAXON = new Processor(false);
+
+    /**
+     * Saxon document builder.
+     */
+    private static final DocumentBuilder DOCUMENT_BUILDER = SaxonDocument.SAXON.newDocumentBuilder();
+
+    /**
+     * Saxon XPath compiler.
+     */
+    private static final XPathCompiler XPATH_COMPILER = SaxonDocument.SAXON.newXPathCompiler();
+
+    /**
+     * Exception message for unsupported methods.
+     */
+    private static final String UNSUPPORTED =
+        "The %s method is not supported yet. You can use XMLDocument instead or if you need to use Saxon specific features, you can open an issue at https://github.com/jcabi/jcabi-xml";
+
+    /**
+     * Saxon XML document node.
+     */
+    private final XdmNode node;
 
     /**
      * Public constructor from XML as string text.
-     *
      * @param text XML document body.
      */
     public SaxonDocument(final String text) {
-        this.text = text;
+        this(SaxonDocument.node(text));
+    }
+
+    /**
+     * Public constructor from Saxon XML document node.
+     * @param node Saxon XML document node.
+     */
+    public SaxonDocument(final XdmNode node) {
+        this.node = node;
     }
 
     @Override
     public List<String> xpath(final String query) {
-        Processor processor = new Processor(false);
         try {
-            DocumentBuilder builder = processor.newDocumentBuilder();
-            XdmNode doc = builder.build(new StreamSource(new StringReader(text)));
-            XPathCompiler xpathCompiler = processor.newXPathCompiler();
-            XPathExecutable xpathExec = xpathCompiler.compile(query);
-            XPathSelector selector = xpathExec.load();
-            selector.setContextItem(doc);
-            XdmValue result = selector.evaluate();
-            return result.stream().map(XdmItem::getStringValue).collect(Collectors.toList());
-        } catch (SaxonApiException ex) {
-            throw new RuntimeException(ex);
+            final XPathSelector selector = SaxonDocument.XPATH_COMPILER.compile(query).load();
+            selector.setContextItem(this.node);
+            return selector.evaluate()
+                .stream()
+                .map(XdmItem::getStringValue)
+                .collect(Collectors.toList());
+        } catch (final SaxonApiException exception) {
+            throw new IllegalArgumentException(
+                String.format("Can't evaluate the '%s' XPath query with Saxon API", query),
+                exception
+            );
         }
     }
 
     @Override
     public List<XML> nodes(final String query) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "nodes")
+        );
     }
 
     @Override
     public XML registerNs(final String prefix, final Object uri) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "registerNs")
+        );
     }
 
     @Override
     public XML merge(final NamespaceContext context) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "merge")
+        );
     }
 
     @Override
     public Node node() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "node")
+        );
+    }
+
+    /**
+     * Build Saxon XML document node from XML string text.
+     * @param text XML string text.
+     * @return Saxon XML document node.
+     */
+    private static XdmNode node(final String text) {
+        try {
+            return SaxonDocument.DOCUMENT_BUILDER
+                .build(new StreamSource(new StringReader(text)));
+        } catch (final SaxonApiException exception) {
+            throw new IllegalArgumentException(
+                String.format("SaxonDocument can't parse XML: %s", text),
+                exception
+            );
+        }
     }
 }
