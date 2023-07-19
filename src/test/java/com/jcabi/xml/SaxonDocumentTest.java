@@ -40,13 +40,24 @@ import org.junit.jupiter.api.Test;
 final class SaxonDocumentTest {
 
     @Test
-    void findsXpathWithFunctionThatReturnsSeveralItems() {
+    void findsXpathWithConcatFunctionThatReturnsSeveralItems() {
         MatcherAssert.assertThat(
-            "XMLDocument can handle XPath 2.0 feature - XPath evaluation of concat method, but it can't",
+            "SaxonDocument can handle XPath 2.0 feature - XPath evaluation of concat method, but it can't",
             new SaxonDocument(
                 "<o><o base='a' ver='1'/><o base='b' ver='2'/></o>"
             ).xpath("//o[@base and @ver]/concat(@base,'|',@ver)"),
             Matchers.hasItems("a|1", "b|2")
+        );
+    }
+
+    @Test
+    void findsXpathWithStringJoinFunctionThatReturnsSeveralItems() {
+        MatcherAssert.assertThat(
+            "SaxonDocument can handle XPath 2.0 feature - XPath evaluation of string-join method, but it can't",
+            new SaxonDocument(
+                "<o><o base='a'/><o base='b' ver='2'/><o base='c'/></o>"
+            ).xpath("//o[@base]/string-join((@base,@ver),'|')"),
+            Matchers.hasItems("a", "b|2", "c")
         );
     }
 }
