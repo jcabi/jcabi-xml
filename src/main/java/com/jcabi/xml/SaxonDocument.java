@@ -30,6 +30,7 @@
 package com.jcabi.xml;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
@@ -39,7 +40,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.Processor;
@@ -117,24 +117,30 @@ public final class SaxonDocument implements XML {
         this(SaxonDocument.node(new StreamSource(file)));
     }
 
-    public SaxonDocument(final Source source) {
-        this(SaxonDocument.node(new StreamSource(source.getSystemId())));
+    /**
+     * Public constructor from XML reached by URL.
+     * @param url URL of XML document.
+     * @throws IOException If fails.
+     */
+    public SaxonDocument(final URL url) throws IOException {
+        this(SaxonDocument.node(new TextResource(url).toString()));
     }
 
-    public SaxonDocument(final Node node) {
-        this(SaxonDocument.node(node.getTextContent()));
+    /**
+     * Public constructor from XML reached by URI.
+     * @param uri URI of XML document.
+     * @throws IOException If fails.
+     */
+    public SaxonDocument(final URI uri) throws IOException {
+        this(SaxonDocument.node(new TextResource(uri).toString()));
     }
 
-    public SaxonDocument(final URL url) {
-        this.xdm = null;
-    }
-
-    public SaxonDocument(final URI uri) {
-        this.xdm = null;
-    }
-
+    /**
+     * Public constructor from XML as input stream.
+     * @param stream Input stream with XML document.
+     */
     public SaxonDocument(final InputStream stream) {
-        this.xdm = null;
+        this(SaxonDocument.node(new StreamSource(stream)));
     }
 
     /**
@@ -201,13 +207,12 @@ public final class SaxonDocument implements XML {
 
     /**
      * Build Saxon XML document node from XML source.
-     * @param source of XML.
+     * @param source XML.
      * @return Saxon XML document node.
      */
     private static XdmNode node(final StreamSource source) {
         try {
-            return SaxonDocument.DOC_BUILDER
-                .build(source);
+            return SaxonDocument.DOC_BUILDER.build(source);
         } catch (final SaxonApiException exception) {
             throw new IllegalArgumentException(
                 String.format("SaxonDocument can't parse XML from source '%s'", source),

@@ -29,13 +29,16 @@
  */
 package com.jcabi.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -89,6 +92,38 @@ final class SaxonDocumentTest {
         );
     }
 
+    @Test
+    void createsFromUrl() throws IOException {
+        final URL resource = this.getClass().getResource("simple.xml");
+        MatcherAssert.assertThat(
+            String.format(SaxonDocumentTest.ASSERTION_MSG, resource),
+            new SaxonDocument(resource).xpath("//simple"),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void createsFromUri() throws URISyntaxException, IOException {
+        final URI resource = this.getClass().getResource("simple.xml").toURI();
+        MatcherAssert.assertThat(
+            String.format(SaxonDocumentTest.ASSERTION_MSG, resource),
+            new SaxonDocument(resource).xpath("//simple"),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void createsFromStream() {
+        MatcherAssert.assertThat(
+            String.format(SaxonDocumentTest.ASSERTION_MSG, SaxonDocumentTest.DEFAULT_XML),
+            new SaxonDocument(
+                new ByteArrayInputStream(
+                    SaxonDocumentTest.DEFAULT_XML.getBytes(StandardCharsets.UTF_8)
+                )
+            ).xpath("//o[@base]"),
+            Matchers.hasSize(1)
+        );
+    }
 
     @Test
     void findsXpathWithConcatFunctionThatReturnsSeveralItems() {
