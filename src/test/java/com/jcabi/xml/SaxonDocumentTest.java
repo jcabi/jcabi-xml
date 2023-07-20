@@ -29,9 +29,17 @@
  */
 package com.jcabi.xml;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link SaxonDocument}.
@@ -39,9 +47,46 @@ import org.junit.jupiter.api.Test;
  */
 final class SaxonDocumentTest {
 
-    @Test
-    void createsFromFile(){
+    /**
+     * Default XML content for tests.
+     */
+    private static final String DEFAULT_XML = "<o><o base='a'/></o>";
 
+    /**
+     * Default assertion message that will be used in many test assertions.
+     */
+    private static final String ASSERTION_MSG = "Can't create Saxon XML document from '%s'";
+
+    @Test
+    void createsFromFile(@TempDir final Path temp) throws IOException {
+        final Path xml = SaxonDocumentTest.xmlFile(temp);
+        final File file = xml.toFile();
+        MatcherAssert.assertThat(
+            String.format(SaxonDocumentTest.ASSERTION_MSG, file),
+            new SaxonDocument(file).xpath("//o[@base]"),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void createsFromPath(@TempDir final Path temp) throws IOException {
+        final Path xml = SaxonDocumentTest.xmlFile(temp);
+        MatcherAssert.assertThat(
+            String.format(SaxonDocumentTest.ASSERTION_MSG, xml),
+            new SaxonDocument(xml).xpath("//o[@base]"),
+            Matchers.hasSize(1)
+        );
+    }
+
+    @Test
+    void createsFromByteArray() {
+        final Charset utf = StandardCharsets.UTF_8;
+        final byte[] bytes = SaxonDocumentTest.DEFAULT_XML.getBytes(utf);
+        MatcherAssert.assertThat(
+            String.format(SaxonDocumentTest.ASSERTION_MSG, new String(bytes, utf)),
+            new SaxonDocument(bytes).xpath("//o[@base]"),
+            Matchers.hasSize(1)
+        );
     }
 
 
@@ -65,5 +110,17 @@ final class SaxonDocumentTest {
             ).xpath("//o[@base]/string-join((@base,@ver),'|')"),
             Matchers.hasItems("a", "b|2", "c")
         );
+    }
+
+    /**
+     * Creates XML file.
+     * @param temp Temporary directory where file will be created
+     * @return Path to created file
+     * @throws IOException If something goes wrong
+     */
+    private static Path xmlFile(final Path temp) throws IOException {
+        final Path xml = temp.resolve("test.xml");
+        Files.write(xml, SaxonDocumentTest.DEFAULT_XML.getBytes(StandardCharsets.UTF_8));
+        return xml;
     }
 }

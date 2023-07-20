@@ -101,20 +101,28 @@ public final class SaxonDocument implements XML {
         this(SaxonDocument.node(new String(data, StandardCharsets.UTF_8)));
     }
 
-    public SaxonDocument(final Node node) {
-        this(SaxonDocument.node(node.getTextContent()));
+    /**
+     * Public constructor from XML saved in a filesystem.
+     * @param path Path to XML file in a filesystem.
+     */
+    public SaxonDocument(final Path path) {
+        this(path.toFile());
+    }
+
+    /**
+     * Public constructor from XML saved in a filesystem.
+     * @param file XML file in a filesystem.
+     */
+    public SaxonDocument(final File file) {
+        this(SaxonDocument.node(new StreamSource(file)));
     }
 
     public SaxonDocument(final Source source) {
         this(SaxonDocument.node(new StreamSource(source.getSystemId())));
     }
 
-    public SaxonDocument(final Path path) {
-        this(path.toFile());
-    }
-
-    public SaxonDocument(final File file) {
-        this(SaxonDocument.node(new StreamSource(file)));
+    public SaxonDocument(final Node node) {
+        this(SaxonDocument.node(node.getTextContent()));
     }
 
     public SaxonDocument(final URL url) {
