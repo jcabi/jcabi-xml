@@ -29,10 +29,17 @@
  */
 package com.jcabi.xml;
 
+import java.io.File;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.Processor;
@@ -84,6 +91,42 @@ public final class SaxonDocument implements XML {
      */
     public SaxonDocument(final String text) {
         this(SaxonDocument.node(text));
+    }
+
+    /**
+     * Public constructor from XML as byte array.
+     * @param data XML document body as byte array.
+     */
+    public SaxonDocument(final byte[] data) {
+        this(SaxonDocument.node(new String(data, StandardCharsets.UTF_8)));
+    }
+
+    public SaxonDocument(final Node node) {
+        this(SaxonDocument.node(node.getTextContent()));
+    }
+
+    public SaxonDocument(final Source source) {
+        this(SaxonDocument.node(new StreamSource(source.getSystemId())));
+    }
+
+    public SaxonDocument(final Path path) {
+        this(path.toFile());
+    }
+
+    public SaxonDocument(final File file) {
+        this(SaxonDocument.node(new StreamSource(file)));
+    }
+
+    public SaxonDocument(final URL url) {
+        this.xdm = null;
+    }
+
+    public SaxonDocument(final URI uri) {
+        this.xdm = null;
+    }
+
+    public SaxonDocument(final InputStream stream) {
+        this.xdm = null;
     }
 
     /**
@@ -145,12 +188,21 @@ public final class SaxonDocument implements XML {
      * @return Saxon XML document node.
      */
     private static XdmNode node(final String text) {
+        return SaxonDocument.node(new StreamSource(new StringReader(text)));
+    }
+
+    /**
+     * Build Saxon XML document node from XML source.
+     * @param source of XML.
+     * @return Saxon XML document node.
+     */
+    private static XdmNode node(final StreamSource source) {
         try {
             return SaxonDocument.DOC_BUILDER
-                .build(new StreamSource(new StringReader(text)));
+                .build(source);
         } catch (final SaxonApiException exception) {
             throw new IllegalArgumentException(
-                String.format("SaxonDocument can't parse XML: %s", text),
+                String.format("SaxonDocument can't parse XML from source '%s'", source),
                 exception
             );
         }
