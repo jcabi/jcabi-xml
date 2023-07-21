@@ -88,6 +88,7 @@ public final class SaxonDocument implements XML {
     /**
      * Public constructor from XML as string text.
      * @param text XML document body.
+     * @since 0.28.0
      */
     public SaxonDocument(final String text) {
         this(SaxonDocument.node(text));
@@ -96,6 +97,7 @@ public final class SaxonDocument implements XML {
     /**
      * Public constructor from XML as byte array.
      * @param data XML document body as byte array.
+     * @since 0.28.1
      */
     public SaxonDocument(final byte[] data) {
         this(SaxonDocument.node(new String(data, StandardCharsets.UTF_8)));
@@ -104,6 +106,7 @@ public final class SaxonDocument implements XML {
     /**
      * Public constructor from XML saved in a filesystem.
      * @param path Path to XML file in a filesystem.
+     * @since 0.28.1
      */
     public SaxonDocument(final Path path) {
         this(path.toFile());
@@ -112,6 +115,7 @@ public final class SaxonDocument implements XML {
     /**
      * Public constructor from XML saved in a filesystem.
      * @param file XML file in a filesystem.
+     * @since 0.28.1
      */
     public SaxonDocument(final File file) {
         this(SaxonDocument.node(new StreamSource(file)));
@@ -121,6 +125,7 @@ public final class SaxonDocument implements XML {
      * Public constructor from XML reached by URL.
      * @param url URL of XML document.
      * @throws IOException If fails.
+     * @since 0.28.1
      */
     public SaxonDocument(final URL url) throws IOException {
         this(SaxonDocument.node(new TextResource(url).toString()));
@@ -130,6 +135,7 @@ public final class SaxonDocument implements XML {
      * Public constructor from XML reached by URI.
      * @param uri URI of XML document.
      * @throws IOException If fails.
+     * @since 0.28.1
      */
     public SaxonDocument(final URI uri) throws IOException {
         this(SaxonDocument.node(new TextResource(uri).toString()));
@@ -138,6 +144,7 @@ public final class SaxonDocument implements XML {
     /**
      * Public constructor from XML as input stream.
      * @param stream Input stream with XML document.
+     * @since 0.28.1
      */
     public SaxonDocument(final InputStream stream) {
         this(SaxonDocument.node(new StreamSource(stream)));
@@ -146,6 +153,7 @@ public final class SaxonDocument implements XML {
     /**
      * Public constructor from Saxon XML document node.
      * @param xml Saxon XML document node.
+     * @since 0.28.0
      */
     public SaxonDocument(final XdmNode xml) {
         this.xdm = xml;
