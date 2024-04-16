@@ -35,16 +35,20 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
+import org.cactoos.io.ResourceOf;
 import org.cactoos.io.TeeInput;
 import org.cactoos.scalar.LengthOf;
+import org.cactoos.text.FormattedText;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -405,6 +409,22 @@ final class XMLDocumentTest {
         MatcherAssert.assertThat(
             root.xpath("//z9/@a").get(0),
             Matchers.equalTo("433")
+        );
+    }
+
+    @Test
+    @Disabled
+    void extractsSimpleProperties() throws Exception {
+        final XML xml = new XMLDocument(new ResourceOf("com/jcabi/xml/small-pom.xml").stream());
+        final List<XML> nodes = xml.nodes("/project//properties");
+        MatcherAssert.assertThat(
+            new FormattedText(
+                "%s should contain 2 nodes\n\t but was %s",
+                xml,
+                nodes.size()
+            ).toString(),
+            nodes,
+            Matchers.hasSize(2)
         );
     }
 }
