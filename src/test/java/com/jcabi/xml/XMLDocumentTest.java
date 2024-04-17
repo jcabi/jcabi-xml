@@ -48,7 +48,6 @@ import org.cactoos.text.FormattedText;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -413,17 +412,19 @@ final class XMLDocumentTest {
     }
 
     @Test
-    @Disabled
-    void extractsSimpleProperties() throws Exception {
+    void extractsNodesFromPom() throws Exception {
         final XML xml = new XMLDocument(new ResourceOf("com/jcabi/xml/small-pom.xml").stream());
-        final List<XML> nodes = xml.nodes("/project//properties");
+        final List<XML> properties = xml
+            .registerNs("ns1", "http://maven.apache.org/POM/4.0.0")
+            .nodes("/ns1:project/ns1:properties/*");
         MatcherAssert.assertThat(
             new FormattedText(
-                "%s should contain 2 nodes\n\t but was %s",
+                "%s should contain 2 property nodes\n but was %s\n in %s",
                 xml,
-                nodes.size()
+                properties.size(),
+                properties
             ).toString(),
-            nodes,
+            properties,
             Matchers.hasSize(2)
         );
     }
