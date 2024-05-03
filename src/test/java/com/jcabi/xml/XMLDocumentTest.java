@@ -385,6 +385,7 @@ final class XMLDocumentTest {
     @Test
     @Disabled
     void comparesDocumentsWithDifferentIndentations() {
+        // @checkstyle MethodBodyCommentsCheck (4 lines)
         // @todo #1:90min Implement comparison of XML documents with different indentations.
         //  The current implementation of XMLDocument does not ignore different indentations
         //  when comparing two XML documents. We need to implement a comparison that ignores
