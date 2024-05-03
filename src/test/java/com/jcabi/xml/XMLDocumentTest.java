@@ -48,6 +48,7 @@ import org.cactoos.text.FormattedText;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -378,6 +379,20 @@ final class XMLDocumentTest {
             Matchers.not(
                 Matchers.equalTo(new XMLDocument("<hi><man>  </man></hi>"))
             )
+        );
+    }
+
+    @Test
+    @Disabled
+    void comparesDocumentsWithDifferentIndentations() {
+        // @todo #1:90min Implement comparison of XML documents with different indentations.
+        //  The current implementation of XMLDocument does not ignore different indentations
+        //  when comparing two XML documents. We need to implement a comparison that ignores
+        //  different indentations. Don't forget to remove the @Disabled annotation from this test.
+        MatcherAssert.assertThat(
+            "Different indentations should be ignored",
+            new XMLDocument("<program>\n <indentation/></program>"),
+            Matchers.equalTo(new XMLDocument("<program>\n  <indentation/></program>"))
         );
     }
 
