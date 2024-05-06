@@ -433,11 +433,11 @@ final class XMLDocumentTest {
     void stripsUnnecessaryWhiteSpacesWhileParsing() {
         MatcherAssert.assertThat(
             new XMLDocument(
-                "<x>\n    <y>hello</y>\n</x>".getBytes()
+                "<x>\n    <y>hello</y>\n</x>"
             ),
             Matchers.equalTo(
                 new XMLDocument(
-                    "<x>  \n      <y>hello</y>  \n    </x>".getBytes()
+                    "<x>  \n      <y>hello</y>  \n    </x>"
                 )
             )
         );
