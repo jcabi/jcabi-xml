@@ -33,6 +33,6 @@ def log = new File(basedir, 'build.log')
 def fist = new XMLDocument(new File(basedir, 'first.xmir'))
 def same = new XMLDocument(new File(basedir, 'same.xmir'))
 
-assert fist == same
+assert fist.equals(same)
 
 assert log.text.contains("BUILD SUCCESS")

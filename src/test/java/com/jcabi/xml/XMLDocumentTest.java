@@ -383,7 +383,7 @@ final class XMLDocumentTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     void comparesDocumentsWithDifferentIndentations() {
         // @checkstyle MethodBodyCommentsCheck (4 lines)
         // @todo #1:90min Implement comparison of XML documents with different indentations.
