@@ -30,8 +30,8 @@
 import com.jcabi.xml.XMLDocument
 
 def log = new File(basedir, 'build.log')
-def fist = new XMLDocument(new File(basedir, 'first.xmir'))
-def same = new XMLDocument(new File(basedir, 'same.xmir'))
+def fist = new XMLDocument(new File(basedir, 'first.xml'))
+def same = new XMLDocument(new File(basedir, 'same.xml'))
 
 assert fist == same
 
