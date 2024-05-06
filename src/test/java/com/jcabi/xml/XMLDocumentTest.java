@@ -428,4 +428,19 @@ final class XMLDocumentTest {
             Matchers.hasSize(2)
         );
     }
+
+    @Test
+    void stripsUnnecessaryWhiteSpacesWhileParsing() {
+        MatcherAssert.assertThat(
+            new XMLDocument(
+                "<x>\n    <y>hello</y>\n</x>".getBytes()
+            ),
+            Matchers.equalTo(
+                new XMLDocument(
+                    "<x>  \n      <y>hello</y>  \n    </x>".getBytes()
+                )
+            )
+        );
+    }
+
 }
