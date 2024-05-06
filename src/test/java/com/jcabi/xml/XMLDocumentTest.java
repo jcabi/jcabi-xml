@@ -432,6 +432,7 @@ final class XMLDocumentTest {
     @Test
     void stripsUnnecessaryWhiteSpacesWhileParsing() {
         MatcherAssert.assertThat(
+            "Two XML documents are equal to each other",
             new XMLDocument("<x><y>hello</y></x>"),
             Matchers.equalTo(
                 new XMLDocument(
