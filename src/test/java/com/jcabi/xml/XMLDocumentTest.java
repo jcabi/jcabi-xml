@@ -383,7 +383,7 @@ final class XMLDocumentTest {
     }
 
     @Test
-//    @Disabled
+    @Disabled
     void comparesDocumentsWithDifferentIndentations() {
         // @checkstyle MethodBodyCommentsCheck (4 lines)
         // @todo #1:90min Implement comparison of XML documents with different indentations.
@@ -392,8 +392,8 @@ final class XMLDocumentTest {
         //  different indentations. Don't forget to remove the @Disabled annotation from this test.
         MatcherAssert.assertThat(
             "Different indentations should be ignored",
-            new XMLDocument("<program>\n <indentation/></program>"),
-            Matchers.equalTo(new XMLDocument("<program>\n  <indentation/></program>"))
+            new XMLDocument("<program>\n <indentation/>\n</program>"),
+            Matchers.equalTo(new XMLDocument("<program>\n  <indentation/>\n</program>"))
         );
     }
 
