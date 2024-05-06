@@ -115,6 +115,9 @@ public final class XMLDocument implements XML {
      */
     private final transient Node cache;
 
+    /**
+     * Transformer factory to use for {@link #toString()}.
+     */
     private final transient TransformerFactory tfactory;
 
     static {
@@ -157,7 +160,6 @@ public final class XMLDocument implements XML {
         );
     }
 
-
     /**
      * Public ctor, from XML as a text.
      *
@@ -177,7 +179,7 @@ public final class XMLDocument implements XML {
      * @param text XML document body
      * @param factory Transformer factory
      */
-    public XMLDocument(final String text, TransformerFactory factory) {
+    public XMLDocument(final String text, final TransformerFactory factory) {
         this(
             new DomParser(XMLDocument.DFACTORY, text).document(),
             new XPathContext(),
@@ -346,6 +348,14 @@ public final class XMLDocument implements XML {
         this(node, ctx, lfe, XMLDocument.TFACTORY);
     }
 
+    /**
+     * Private ctor.
+     * @param cache The source
+     * @param context Namespace context
+     * @param leaf Is it a leaf node?
+     * @param tfactory Transformer factory
+     * @checkstyle ParameterNumberCheck (5 lines)
+     */
     public XMLDocument(
         final Node cache,
         final XPathContext context,

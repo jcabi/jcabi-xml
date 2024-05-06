@@ -393,13 +393,13 @@ final class XMLDocumentTest {
         //  different indentations. Don't forget to remove the @Disabled annotation from this test.
         final TransformerFactory factory = TransformerFactory.newInstance(
             "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
-            this.getClass().getClassLoader()
+            Thread.currentThread().getContextClassLoader()
         );
         MatcherAssert.assertThat(
             "Different indentations should be ignored",
-            new XMLDocument("<program>\n  <indentation/>\n</program>", factory),
+            new XMLDocument("<program>\n <indentation/>\n</program>", factory),
             Matchers.equalTo(
-                new XMLDocument("<program>\n          <indentation/>\n</program>\n", factory)
+                new XMLDocument("<program>\n  <indentation/>\n</program>\n", factory)
             )
         );
     }
