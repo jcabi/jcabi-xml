@@ -40,6 +40,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.transform.TransformerFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.TeeInput;
@@ -48,6 +49,7 @@ import org.cactoos.text.FormattedText;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -377,6 +379,27 @@ final class XMLDocumentTest {
             new XMLDocument("<hi><man></man></hi>"),
             Matchers.not(
                 Matchers.equalTo(new XMLDocument("<hi><man>  </man></hi>"))
+            )
+        );
+    }
+
+    @Test
+    @Disabled
+    void comparesDocumentsWithDifferentIndentations() {
+        // @checkstyle MethodBodyCommentsCheck (4 lines)
+        // @todo #1:90min Implement comparison of XML documents with different indentations.
+        //  The current implementation of XMLDocument does not ignore different indentations
+        //  when comparing two XML documents. We need to implement a comparison that ignores
+        //  different indentations. Don't forget to remove the @Disabled annotation from this test.
+        final TransformerFactory factory = TransformerFactory.newInstance(
+            "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+            Thread.currentThread().getContextClassLoader()
+        );
+        MatcherAssert.assertThat(
+            "Different indentations should be ignored",
+            new XMLDocument("<program>\n <indentation/>\n</program>", factory),
+            Matchers.equalTo(
+                new XMLDocument("<program>\n  <indentation/>\n</program>\n", factory)
             )
         );
     }

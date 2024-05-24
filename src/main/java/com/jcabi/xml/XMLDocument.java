@@ -115,6 +115,11 @@ public final class XMLDocument implements XML {
      */
     private final transient Node cache;
 
+    /**
+     * Transformer factory to use for {@link #toString()}.
+     */
+    private final transient TransformerFactory tfactory;
+
     static {
         if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
             try {
@@ -152,6 +157,34 @@ public final class XMLDocument implements XML {
             new DomParser(XMLDocument.DFACTORY, text).document(),
             new XPathContext(),
             false
+        );
+    }
+
+    /**
+     * Public ctor, from XML as a text.
+     *
+     * <p>The object is created with a default implementation of
+     * {@link NamespaceContext}, which already defines a
+     * number of namespaces, for convenience, including:
+     *
+     * <pre> xhtml: http://www.w3.org/1999/xhtml
+     * xs: http://www.w3.org/2001/XMLSchema
+     * xsi: http://www.w3.org/2001/XMLSchema-instance
+     * xsl: http://www.w3.org/1999/XSL/Transform
+     * svg: http://www.w3.org/2000/svg</pre>
+     *
+     * <p>In future versions we will add more namespaces (submit a ticket if
+     * you need more of them defined here).
+     *
+     * @param text XML document body
+     * @param factory Transformer factory
+     */
+    public XMLDocument(final String text, final TransformerFactory factory) {
+        this(
+            new DomParser(XMLDocument.DFACTORY, text).document(),
+            new XPathContext(),
+            false,
+            factory
         );
     }
 
@@ -307,16 +340,37 @@ public final class XMLDocument implements XML {
      * @param ctx Namespace context
      * @param lfe Is it a leaf node?
      */
-    private XMLDocument(final Node node, final XPathContext ctx,
-        final boolean lfe) {
-        this.context = ctx;
-        this.leaf = lfe;
-        this.cache = node;
+    private XMLDocument(
+        final Node node,
+        final XPathContext ctx,
+        final boolean lfe
+    ) {
+        this(node, ctx, lfe, XMLDocument.TFACTORY);
+    }
+
+    /**
+     * Private ctor.
+     * @param cache The source
+     * @param context Namespace context
+     * @param leaf Is it a leaf node?
+     * @param tfactory Transformer factory
+     * @checkstyle ParameterNumberCheck (5 lines)
+     */
+    public XMLDocument(
+        final Node cache,
+        final XPathContext context,
+        final boolean leaf,
+        final TransformerFactory tfactory
+    ) {
+        this.context = context;
+        this.leaf = leaf;
+        this.cache = cache;
+        this.tfactory = tfactory;
     }
 
     @Override
     public String toString() {
-        return XMLDocument.asString(this.cache);
+        return this.asString(this.cache);
     }
 
     @Override
@@ -505,18 +559,18 @@ public final class XMLDocument implements XML {
      * @param node The DOM node.
      * @return String representation
      */
-    private static String asString(final Node node) {
+    private String asString(final Node node) {
         final StringWriter writer = new StringWriter();
         final Transformer trans;
         try {
             synchronized (XMLDocument.class) {
-                trans = XMLDocument.TFACTORY.newTransformer();
+                trans = this.tfactory.newTransformer();
             }
         } catch (final TransformerConfigurationException ex) {
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to create transformer by %s",
-                    XMLDocument.TFACTORY.getClass().getName()
+                    this.tfactory.getClass().getName()
                 ),
                 ex
             );
