@@ -1,4 +1,4 @@
-<img alt="logo" src="https://www.jcabi.com/logo-square.svg" width="64px" height="64px" />
+# Simple XML Parsing and Traversing, in Java
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![Managed by Zerocracy](https://www.0crat.com/badge/C3RUBL5H9.svg)](https://www.0crat.com/p/C3RUBL5H9)
@@ -12,7 +12,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
 
 More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html).
-Also, read this blog post: [Java XML Parsing Made Easy](http://www.yegor256.com/2014/04/24/java-xml-parsing-and-traversing.html).
+Also, read this blog post: [Java XML Parsing Made Easy][blog].
 
 It's a simple wrapper around DOM that makes XML parsing and printing
 easy and simple, for example:
@@ -34,6 +34,8 @@ the `master` branch, if they look correct.
 
 Please run Maven build before submitting a pull request:
 
+```bash
+mvn clean install -Pqulice
 ```
-$ mvn clean install -Pqulice
-```
+
+[blog]: http://www.yegor256.com/2014/04/24/java-xml-parsing-and-traversing.html
