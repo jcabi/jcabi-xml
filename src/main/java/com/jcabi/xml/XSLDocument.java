@@ -108,18 +108,6 @@ public final class XSLDocument implements XSL {
     );
 
     /**
-     * DOM document builder factory.
-     */
-    private static final DocumentBuilderFactory DFACTORY =
-        DocumentBuilderFactory.newInstance();
-
-    /**
-     * Transformer factory.
-     */
-    private static final TransformerFactory TFACTORY =
-        TransformerFactory.newInstance();
-
-    /**
      * XSL document.
      */
     private final transient String xsl;
@@ -402,16 +390,15 @@ public final class XSLDocument implements XSL {
 
     @Override
     public XML transform(final XML xml) {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder;
         try {
-            synchronized (XSLDocument.DFACTORY) {
-                builder = XSLDocument.DFACTORY.newDocumentBuilder();
-            }
+            builder = factory.newDocumentBuilder();
         } catch (final ParserConfigurationException ex) {
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to create new XML document by %s",
-                    XSLDocument.DFACTORY.getClass().getName()
+                    factory.getClass().getName()
                 ),
                 ex
             );
@@ -446,7 +433,7 @@ public final class XSLDocument implements XSL {
      * @param xml XML
      * @param result Result
      * @since 0.11
-     * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
+     * @link https://stackoverflow.com/questions/4695489/capture-xslmessage-output-in-java
      */
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
@@ -454,9 +441,7 @@ public final class XSLDocument implements XSL {
         trans.setErrorListener(errors);
         final long start = System.nanoTime();
         try {
-            synchronized (XSLDocument.DFACTORY) {
-                trans.transform(new DOMSource(xml.node()), result);
-            }
+            trans.transform(new DOMSource(xml.node()), result);
         } catch (final TransformerException ex) {
             final StringBuilder summary = new StringBuilder(
                 String.join("; ", errors.summary())
@@ -488,30 +473,26 @@ public final class XSLDocument implements XSL {
      * @return The transformer
      */
     private Transformer transformer() {
-        synchronized (XSLDocument.TFACTORY) {
-            if (this.cached.get() == null) {
-                XSLDocument.TFACTORY.setURIResolver(this.sources);
-                final Transformer trans;
-                try {
-                    trans = XSLDocument.TFACTORY.newTransformer(
-                        new StreamSource(new StringReader(this.xsl), this.sid)
-                    );
-                } catch (final TransformerConfigurationException ex) {
-                    throw new IllegalArgumentException(
-                        String.format(
-                            "Failed to create transformer by %s",
-                            XSLDocument.TFACTORY.getClass().getName()
-                        ),
-                        ex
-                    );
-                }
-                for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
-                    trans.setParameter(ent.getKey(), ent.getValue());
-                }
-                this.cached.set(XSLDocument.forSaxon(trans));
-            }
+        final TransformerFactory factory = TransformerFactory.newInstance();
+        factory.setURIResolver(this.sources);
+        Transformer trans;
+        try {
+            trans = factory.newTransformer(
+                new StreamSource(new StringReader(this.xsl), this.sid)
+            );
+        } catch (final TransformerConfigurationException ex) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create transformer by %s",
+                    factory.getClass().getName()
+                ),
+                ex
+            );
         }
-        return this.cached.get();
+        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
+            trans.setParameter(ent.getKey(), ent.getValue());
+        }
+        return trans;
     }
 
     /**
