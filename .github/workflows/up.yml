@@ -26,29 +26,23 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 # OF THE POSSIBILITY OF SUCH DAMAGE.
 ---
-name: codecov
+name: up
 on:
   push:
-    branches:
-      - master
 jobs:
-  codecov:
+  up:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - run: |-
+          git fetch --tags --force && \
+          latest=$(git tag --sort=creatordate | tail -1) && \
+          sed -E -i "s/<version>[^<]+/<version>${latest}/g" README.md
+      - uses: peter-evans/create-pull-request@v7
         with:
-          distribution: 'temurin'
-          java-version: 11
-      - uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-
-      - run: mvn install -Pjacoco
-      - uses: codecov/codecov-action@v4.0.0-beta.3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./target/site/jacoco/jacoco.xml
-          fail_ci_if_error: true
+          commit-message: 'new version in README'
+          delete-branch: true
+          title: 'New version in README'
+          assignees: yegor256
+          branch: up
+          base: master
