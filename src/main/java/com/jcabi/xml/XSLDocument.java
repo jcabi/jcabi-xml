@@ -433,7 +433,7 @@ public final class XSLDocument implements XSL {
      * @param xml XML
      * @param result Result
      * @since 0.11
-     * @link https://stackoverflow.com/questions/4695489/capture-xslmessage-output-in-java
+     * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
      */
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
