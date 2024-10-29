@@ -468,7 +468,7 @@ public final class XSLDocument implements XSL {
     private Transformer transformer() {
         final TransformerFactory factory = TransformerFactory.newInstance();
         factory.setURIResolver(this.sources);
-        final Transformer trans ;
+        final Transformer trans;
         try {
             trans = factory.newTransformer(
                 new StreamSource(new StringReader(this.xsl), this.sid)
