@@ -40,7 +40,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.xml.transform.TransformerFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.TeeInput;
@@ -391,15 +390,11 @@ final class XMLDocumentTest {
         //  The current implementation of XMLDocument does not ignore different indentations
         //  when comparing two XML documents. We need to implement a comparison that ignores
         //  different indentations. Don't forget to remove the @Disabled annotation from this test.
-        final TransformerFactory factory = TransformerFactory.newInstance(
-            "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
-            Thread.currentThread().getContextClassLoader()
-        );
         MatcherAssert.assertThat(
             "Different indentations should be ignored",
-            new XMLDocument("<program>\n <indentation/>\n</program>", factory),
+            new XMLDocument("<program>\n <indentation/>\n</program>"),
             Matchers.equalTo(
-                new XMLDocument("<program>\n  <indentation/>\n</program>\n", factory)
+                new XMLDocument("<program>\n  <indentation/>\n</program>\n")
             )
         );
     }

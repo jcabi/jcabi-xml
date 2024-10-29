@@ -59,6 +59,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -80,25 +81,6 @@ import org.w3c.dom.NodeList;
         }
     )
 public final class XMLDocument implements XML {
-
-    /**
-     * XPath factory.
-     */
-    private static final XPathFactory XFACTORY =
-        XPathFactory.newInstance();
-
-    /**
-     * Transformer factory.
-     */
-    private static final TransformerFactory TFACTORY =
-        TransformerFactory.newInstance();
-
-    /**
-     * DOM document builder factory.
-     */
-    private static final DocumentBuilderFactory DFACTORY =
-        DocumentBuilderFactory.newInstance();
-
     /**
      * Namespace context to use for {@link #xpath(String)}
      * and {@link #nodes(String)} methods.
@@ -114,25 +96,6 @@ public final class XMLDocument implements XML {
      * Actual XML document node.
      */
     private final transient Node cache;
-
-    /**
-     * Transformer factory to use for {@link #toString()}.
-     */
-    private final transient TransformerFactory tfactory;
-
-    static {
-        if (XMLDocument.DFACTORY.getClass().getName().contains("xerces")) {
-            try {
-                XMLDocument.DFACTORY.setFeature(
-                    "http://apache.org/xml/features/nonvalidating/load-external-dtd",
-                    false
-                );
-            } catch (final ParserConfigurationException ex) {
-                throw new IllegalStateException(ex);
-            }
-        }
-        XMLDocument.DFACTORY.setNamespaceAware(true);
-    }
 
     /**
      * Public ctor, from XML as a text.
@@ -154,37 +117,9 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(final String text) {
         this(
-            new DomParser(XMLDocument.DFACTORY, text).document(),
+            new DomParser(XMLDocument.configuredDFactory(), text).document(),
             new XPathContext(),
             false
-        );
-    }
-
-    /**
-     * Public ctor, from XML as a text.
-     *
-     * <p>The object is created with a default implementation of
-     * {@link NamespaceContext}, which already defines a
-     * number of namespaces, for convenience, including:
-     *
-     * <pre> xhtml: http://www.w3.org/1999/xhtml
-     * xs: http://www.w3.org/2001/XMLSchema
-     * xsi: http://www.w3.org/2001/XMLSchema-instance
-     * xsl: http://www.w3.org/1999/XSL/Transform
-     * svg: http://www.w3.org/2000/svg</pre>
-     *
-     * <p>In future versions we will add more namespaces (submit a ticket if
-     * you need more of them defined here).
-     *
-     * @param text XML document body
-     * @param factory Transformer factory
-     */
-    public XMLDocument(final String text, final TransformerFactory factory) {
-        this(
-            new DomParser(XMLDocument.DFACTORY, text).document(),
-            new XPathContext(),
-            false,
-            factory
         );
     }
 
@@ -208,7 +143,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(final byte[] data) {
         this(
-            new DomParser(XMLDocument.DFACTORY, data).document(),
+            new DomParser(XMLDocument.configuredDFactory(), data).document(),
             new XPathContext(),
             false
         );
@@ -336,41 +271,24 @@ public final class XMLDocument implements XML {
 
     /**
      * Private ctor.
-     * @param node The source
-     * @param ctx Namespace context
-     * @param lfe Is it a leaf node?
-     */
-    private XMLDocument(
-        final Node node,
-        final XPathContext ctx,
-        final boolean lfe
-    ) {
-        this(node, ctx, lfe, XMLDocument.TFACTORY);
-    }
-
-    /**
-     * Private ctor.
      * @param cache The source
      * @param context Namespace context
      * @param leaf Is it a leaf node?
-     * @param tfactory Transformer factory
      * @checkstyle ParameterNumberCheck (5 lines)
      */
-    public XMLDocument(
+    private XMLDocument(
         final Node cache,
         final XPathContext context,
-        final boolean leaf,
-        final TransformerFactory tfactory
+        final boolean leaf
     ) {
         this.context = context;
         this.leaf = leaf;
         this.cache = cache;
-        this.tfactory = tfactory;
     }
 
     @Override
     public String toString() {
-        return this.asString(this.cache);
+        return XMLDocument.asString(this.cache);
     }
 
     @Override
@@ -438,7 +356,7 @@ public final class XMLDocument implements XML {
                 throw new IllegalArgumentException(
                     String.format(
                         "Invalid XPath query '%s' at %s: %s",
-                        query, XMLDocument.XFACTORY.getClass().getName(),
+                        query, XPathFactoryImpl.class.getName(),
                         ex.getLocalizedMessage()
                     ),
                     exp
@@ -475,7 +393,7 @@ public final class XMLDocument implements XML {
             throw new IllegalArgumentException(
                 String.format(
                     "Invalid XPath query '%s' by %s",
-                    query, XMLDocument.XFACTORY.getClass().getName()
+                    query, XPathFactoryImpl.class.getName()
                 ), ex
             );
         }
@@ -497,14 +415,15 @@ public final class XMLDocument implements XML {
      * @return A cloned node imported in a dedicated document.
      */
     private static Node createImportedNode(final Node node) {
+        final DocumentBuilderFactory factory = XMLDocument.configuredDFactory();
         final DocumentBuilder builder;
         try {
-            builder = XMLDocument.DFACTORY.newDocumentBuilder();
+            builder = factory.newDocumentBuilder();
         } catch (final ParserConfigurationException ex) {
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to create document builder by %s",
-                    XMLDocument.DFACTORY.getClass().getName()
+                    factory.getClass().getName()
                 ),
                 ex
             );
@@ -530,12 +449,9 @@ public final class XMLDocument implements XML {
      * @throws XPathExpressionException If an error occurs when evaluating XPath
      */
     @SuppressWarnings("unchecked")
-    private <T> T fetch(final String query, final Class<T> type)
-        throws XPathExpressionException {
-        final XPath xpath;
-        synchronized (XMLDocument.class) {
-            xpath = XMLDocument.XFACTORY.newXPath();
-        }
+    private <T> T fetch(final String query, final Class<T> type) throws XPathExpressionException {
+        final XPathFactory factory = XPathFactory.newInstance();
+        final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(this.context);
         final QName qname;
         if (type.equals(String.class)) {
@@ -559,18 +475,16 @@ public final class XMLDocument implements XML {
      * @param node The DOM node.
      * @return String representation
      */
-    private String asString(final Node node) {
-        final StringWriter writer = new StringWriter();
+    private static String asString(final Node node) {
+        final TransformerFactory factory = TransformerFactory.newInstance();
         final Transformer trans;
         try {
-            synchronized (XMLDocument.class) {
-                trans = this.tfactory.newTransformer();
-            }
+            trans = factory.newTransformer();
         } catch (final TransformerConfigurationException ex) {
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to create transformer by %s",
-                    this.tfactory.getClass().getName()
+                    XPathFactoryImpl.class.getName()
                 ),
                 ex
             );
@@ -581,11 +495,10 @@ public final class XMLDocument implements XML {
             trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         }
         final Source source = new DOMSource(node);
+        final StringWriter writer = new StringWriter();
         final Result result = new StreamResult(writer);
         try {
-            synchronized (node) {
-                trans.transform(source, result);
-            }
+            trans.transform(source, result);
         } catch (final TransformerException ex) {
             throw new IllegalArgumentException(
                 String.format(
@@ -606,11 +519,9 @@ public final class XMLDocument implements XML {
      */
     private static Node transform(final Source source) {
         final DOMResult result = new DOMResult();
+        final TransformerFactory factory = TransformerFactory.newInstance();
         try {
-            final Transformer trans;
-            synchronized (XMLDocument.class) {
-                trans = XMLDocument.TFACTORY.newTransformer();
-            }
+            final Transformer trans = factory.newTransformer();
             trans.transform(source, result);
         } catch (final TransformerException ex) {
             throw new IllegalArgumentException(
@@ -625,4 +536,23 @@ public final class XMLDocument implements XML {
         return result.getNode();
     }
 
+    /**
+     * Create new {@link DocumentBuilderFactory} and configure it.
+     * @return Configured factory
+     */
+    private static DocumentBuilderFactory configuredDFactory() {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        if (factory.getClass().getName().contains("xerces")) {
+            try {
+                factory.setFeature(
+                    "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+                    false
+                );
+            } catch (final ParserConfigurationException ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
+        factory.setNamespaceAware(true);
+        return factory;
+    }
 }
