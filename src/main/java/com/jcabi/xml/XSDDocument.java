@@ -177,11 +177,9 @@ public final class XSDDocument implements XSD {
     public Collection<SAXParseException> validate(final Source xml) {
         final Schema schema;
         try {
-            synchronized (XSDDocument.class) {
-                schema = SchemaFactory
-                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                    .newSchema(new StreamSource(new StringReader(this.xsd)));
-            }
+            schema = SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                .newSchema(new StreamSource(new StringReader(this.xsd)));
         } catch (final SAXException ex) {
             throw new IllegalStateException(
                 String.format("Failed to create XSD schema from %s", this.xsd),
@@ -193,9 +191,7 @@ public final class XSDDocument implements XSD {
         final Validator validator = schema.newValidator();
         validator.setErrorHandler(new XSDDocument.ValidationHandler(errors));
         try {
-            synchronized (XSDDocument.class) {
-                validator.validate(xml);
-            }
+            validator.validate(xml);
         } catch (final SAXException | IOException ex) {
             throw new IllegalStateException(ex);
         }
