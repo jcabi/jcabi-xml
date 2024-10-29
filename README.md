@@ -1,14 +1,12 @@
 # Simple XML Parsing and Traversing, in Java
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![Managed by Zerocracy](https://www.0crat.com/badge/C3RUBL5H9.svg)](https://www.0crat.com/p/C3RUBL5H9)
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-xml)](http://www.rultor.com/p/jcabi/jcabi-xml)
 
 [![mvn](https://github.com/jcabi/jcabi-xml/actions/workflows/mvn.yml/badge.svg)](https://github.com/jcabi/jcabi-xml/actions/workflows/mvn.yml)
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-xml)](http://www.0pdd.com/p?name=jcabi/jcabi-xml)
 [![codecov](https://codecov.io/gh/jcabi/jcabi-xml/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-xml)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-xml.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-xml)
-[![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-xml/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-xml/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
 
 More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html).
