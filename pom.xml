@@ -36,7 +36,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <version>1.39.0</version>
   </parent>
   <artifactId>jcabi-xml</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.29.1</version>
   <name>jcabi-xml</name>
   <description>XML Parsing and Transforming</description>
   <issueManagement>
