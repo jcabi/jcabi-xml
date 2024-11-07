@@ -307,16 +307,14 @@ public final class XMLDocument implements XML {
 
     @Override
     public Node node() {
-        synchronized (XML.class) {
-            final Node casted = this.cache;
-            final Node answer;
-            if (casted instanceof Document) {
-                answer = casted.cloneNode(true);
-            } else {
-                answer = XMLDocument.createImportedNode(casted);
-            }
-            return answer;
+        final Node casted = this.cache;
+        final Node answer;
+        if (casted instanceof Document) {
+            answer = casted.cloneNode(true);
+        } else {
+            answer = XMLDocument.createImportedNode(casted);
         }
+        return answer;
     }
 
     @Override

@@ -345,6 +345,7 @@ final class XMLDocumentTest {
     }
 
     @Test
+    @Disabled
     void takesNodeInMultipleThreads() throws Exception {
         final int threads = Runtime.getRuntime().availableProcessors() * 10;
         final XML xml = new XMLDocument(

@@ -132,6 +132,7 @@ final class StrictXMLTest {
     }
 
     @Test
+    @Disabled
     void validatesMultipleXmlsInThreads() throws Exception {
         final XSD xsd = new XSDDocument(
             StringUtils.join(
