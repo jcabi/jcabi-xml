@@ -30,6 +30,7 @@
 package com.jcabi.xml;
 
 import com.google.common.collect.Iterables;
+import com.yegor256.OnlineMeans;
 import com.yegor256.WeAreOnline;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -107,6 +108,7 @@ final class StrictXMLTest {
 
     @Test
     @ExtendWith(WeAreOnline.class)
+    @OnlineMeans(url = "http://maven.apache.org")
     void passesValidXmlUsingXsiSchemaLocation() throws Exception {
         new StrictXML(
             new XMLDocument(
@@ -117,6 +119,7 @@ final class StrictXMLTest {
 
     @Test
     @ExtendWith(WeAreOnline.class)
+    @OnlineMeans(url = "http://maven.apache.org")
     void rejectsInvalidXmlUsingXsiSchemaLocation() {
         Assertions.assertThrows(
             IllegalStateException.class,
