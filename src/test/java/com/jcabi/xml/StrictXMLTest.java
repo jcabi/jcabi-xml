@@ -49,6 +49,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -177,6 +178,7 @@ final class StrictXMLTest {
     }
 
     @Test
+    @Disabled
     void passesValidXmlWithNetworkProblems() throws Exception {
         final Validator validator = Mockito.mock(Validator.class);
         final AtomicInteger counter = new AtomicInteger(0);

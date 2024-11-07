@@ -61,6 +61,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -73,13 +74,10 @@ import org.w3c.dom.NodeList;
  * @checkstyle ClassFanOutComplexity (500 lines)
  * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
-@SuppressWarnings
-    (
-        {
-            "PMD.ExcessiveImports",
-            "PMD.OnlyOneConstructorShouldDoInitialization"
-        }
-    )
+@SuppressWarnings({
+    "PMD.ExcessiveImports",
+    "PMD.OnlyOneConstructorShouldDoInitialization"
+})
 public final class XMLDocument implements XML {
     /**
      * Namespace context to use for {@link #xpath(String)}
@@ -320,13 +318,10 @@ public final class XMLDocument implements XML {
     }
 
     @Override
-    @SuppressWarnings
-        (
-            {
-                "PMD.ExceptionAsFlowControl",
-                "PMD.PreserveStackTrace"
-            }
-        )
+    @SuppressWarnings({
+        "PMD.ExceptionAsFlowControl",
+        "PMD.PreserveStackTrace"
+    })
     public List<String> xpath(final String query) {
         // @checkstyle FinalLocalVariableCheck (1 line)
         List<String> items;
