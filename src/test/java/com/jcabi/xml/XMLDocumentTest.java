@@ -29,6 +29,7 @@
  */
 package com.jcabi.xml;
 
+import com.google.common.collect.Iterables;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -36,6 +37,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -340,6 +342,52 @@ final class XMLDocumentTest {
             Matchers.is(true)
         );
         service.shutdownNow();
+    }
+
+    @Test
+    void takesNodeInMultipleThreads() throws Exception {
+        final int threads = 50;
+        final XML xml = new XMLDocument(
+            StringUtils.join(
+                Iterables.concat(
+                    Collections.singleton("<r>"),
+                    Iterables.transform(
+                        Collections.nCopies(100, 0),
+                        pos -> String.format("<x>%d</x>", pos)
+                    ),
+                    Collections.singleton("<x>5555</x></r>")
+                ),
+                " "
+            )
+        );
+        final AtomicInteger done = new AtomicInteger();
+        final CountDownLatch latch = new CountDownLatch(threads);
+        final Runnable runnable = () -> {
+            try {
+                MatcherAssert.assertThat(
+                    new XMLDocument(xml.node()).toString(),
+                    Matchers.containsString(">5555<")
+                );
+                done.incrementAndGet();
+            } finally {
+                latch.countDown();
+            }
+        };
+        final ExecutorService service = Executors.newFixedThreadPool(threads);
+        try {
+            for (int thread = 0; thread < threads; ++thread) {
+                service.submit(runnable);
+            }
+            latch.await(1L, TimeUnit.SECONDS);
+            MatcherAssert.assertThat(done.get(), Matchers.equalTo(threads));
+        } finally {
+            service.shutdown();
+            MatcherAssert.assertThat(
+                service.awaitTermination(10L, TimeUnit.SECONDS),
+                Matchers.is(true)
+            );
+            service.shutdownNow();
+        }
     }
 
     @Test

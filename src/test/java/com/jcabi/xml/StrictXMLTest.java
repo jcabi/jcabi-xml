@@ -37,6 +37,7 @@ import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -125,9 +126,6 @@ final class StrictXMLTest {
 
     @Test
     void validatesMultipleXmlsInThreads() throws Exception {
-        final int timeout = 10;
-        final int numrun = 100;
-        final int loop = 50;
         final XSD xsd = new XSDDocument(
             StringUtils.join(
                 "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
@@ -145,9 +143,9 @@ final class StrictXMLTest {
                 Iterables.concat(
                     Collections.singleton("<r>"),
                     Iterables.transform(
-                        Collections.nCopies(timeout, 0),
+                        Collections.nCopies(10, 0),
                         pos -> String.format(
-                            "<x>%d</x>", rnd.nextInt(numrun)
+                            "<x>%d</x>", rnd.nextInt(100)
                         )
                     ),
                     Collections.singleton("<x>101</x></r>")
@@ -156,25 +154,33 @@ final class StrictXMLTest {
             )
         );
         final AtomicInteger done = new AtomicInteger();
+        final int threads = 50;
+        final CountDownLatch latch = new CountDownLatch(threads);
         final Callable<Void> callable = () -> {
             try {
                 new StrictXML(xml, xsd);
             } catch (final IllegalArgumentException ex) {
                 done.incrementAndGet();
+            } finally {
+                latch.countDown();
             }
             return null;
         };
         final ExecutorService service = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count += 1) {
-            service.submit(callable);
+        try {
+            for (int count = 0; count < threads; count += 1) {
+                service.submit(callable);
+            }
+            latch.await(1L, TimeUnit.SECONDS);
+            MatcherAssert.assertThat(done.get(), Matchers.equalTo(threads));
+        } finally {
+            service.shutdown();
+            MatcherAssert.assertThat(
+                service.awaitTermination(10L, TimeUnit.SECONDS),
+                Matchers.is(true)
+            );
+            service.shutdownNow();
         }
-        service.shutdown();
-        MatcherAssert.assertThat(
-            service.awaitTermination(timeout, TimeUnit.SECONDS),
-            Matchers.is(true)
-        );
-        service.shutdownNow();
-        MatcherAssert.assertThat(done.get(), Matchers.equalTo(loop));
     }
 
     @Test
