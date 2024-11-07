@@ -30,6 +30,7 @@
 package com.jcabi.xml;
 
 import com.google.common.collect.Iterables;
+import com.yegor256.WeAreOnline;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -52,6 +53,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -104,6 +106,7 @@ final class StrictXMLTest {
     }
 
     @Test
+    @ExtendWith(WeAreOnline.class)
     void passesValidXmlUsingXsiSchemaLocation() throws Exception {
         new StrictXML(
             new XMLDocument(
@@ -113,6 +116,7 @@ final class StrictXMLTest {
     }
 
     @Test
+    @ExtendWith(WeAreOnline.class)
     void rejectsInvalidXmlUsingXsiSchemaLocation() {
         Assertions.assertThrows(
             IllegalStateException.class,
@@ -154,7 +158,7 @@ final class StrictXMLTest {
             )
         );
         final AtomicInteger done = new AtomicInteger();
-        final int threads = 50;
+        final int threads = Runtime.getRuntime().availableProcessors() * 10;
         final CountDownLatch latch = new CountDownLatch(threads);
         final Callable<Void> callable = () -> {
             try {

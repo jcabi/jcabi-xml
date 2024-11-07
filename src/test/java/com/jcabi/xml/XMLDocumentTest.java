@@ -346,13 +346,13 @@ final class XMLDocumentTest {
 
     @Test
     void takesNodeInMultipleThreads() throws Exception {
-        final int threads = 50;
+        final int threads = Runtime.getRuntime().availableProcessors() * 10;
         final XML xml = new XMLDocument(
             StringUtils.join(
                 Iterables.concat(
                     Collections.singleton("<r>"),
                     Iterables.transform(
-                        Collections.nCopies(100, 0),
+                        Collections.nCopies(1000, 0),
                         pos -> String.format("<x>%d</x>", pos)
                     ),
                     Collections.singleton("<x>5555</x></r>")
