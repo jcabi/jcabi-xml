@@ -29,17 +29,22 @@
  */
 package com.jcabi.xml;
 
+import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -55,15 +60,21 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * Implementation of {@link XML}.
@@ -404,6 +415,62 @@ public final class XMLDocument implements XML {
         );
     }
 
+    @Override
+    public Collection<SAXParseException> validate(final XML xsd) {
+        final Schema schema;
+        try {
+            schema = SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                .newSchema(new StreamSource(new StringReader(xsd.toString())));
+        } catch (final SAXException ex) {
+            throw new IllegalStateException(
+                String.format("Failed to create XSD schema from %s", xsd),
+                ex
+            );
+        }
+        return this.validate(schema);
+    }
+
+    @Override
+    public Collection<SAXParseException> validate() {
+        final Schema schema;
+        try {
+            schema = SchemaFactory
+                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                .newSchema();
+        } catch (final SAXException ex) {
+            throw new IllegalStateException(
+                "Failed to create XSD schema",
+                ex
+            );
+        }
+        return this.validate(schema);
+    }
+
+    /**
+     * Validate against schema.
+     * @param schema The XSD schema
+     * @return List of errors
+     */
+    public Collection<SAXParseException> validate(final Schema schema) {
+        final Collection<SAXParseException> errors =
+            new CopyOnWriteArrayList<>();
+        final Validator validator = schema.newValidator();
+        validator.setErrorHandler(new XMLDocument.ValidationHandler(errors));
+        try {
+            validator.validate(new DOMSource(this.cache));
+        } catch (final SAXException | IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+        if (Logger.isDebugEnabled(this)) {
+            Logger.debug(
+                this, "%s detected %d error(s)",
+                schema.getClass().getName(), errors.size()
+            );
+        }
+        return errors;
+    }
+
     /**
      * Clones a node and imports it in a new document.
      * @param node A node to clone.
@@ -549,5 +616,40 @@ public final class XMLDocument implements XML {
         }
         factory.setNamespaceAware(true);
         return factory;
+    }
+
+    /**
+     * Validation error handler.
+     *
+     * @since 0.1
+     */
+    static final class ValidationHandler implements ErrorHandler {
+        /**
+         * Errors.
+         */
+        private final transient Collection<SAXParseException> errors;
+
+        /**
+         * Constructor.
+         * @param errs Collection of errors
+         */
+        ValidationHandler(final Collection<SAXParseException> errs) {
+            this.errors = errs;
+        }
+
+        @Override
+        public void warning(final SAXParseException error) {
+            this.errors.add(error);
+        }
+
+        @Override
+        public void error(final SAXParseException error) {
+            this.errors.add(error);
+        }
+
+        @Override
+        public void fatalError(final SAXParseException error) {
+            this.errors.add(error);
+        }
     }
 }

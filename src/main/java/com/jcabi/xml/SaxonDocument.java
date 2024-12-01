@@ -37,6 +37,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.xml.namespace.NamespaceContext;
@@ -49,6 +50,7 @@ import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXParseException;
 
 /**
  * Saxon XML document.
@@ -201,6 +203,20 @@ public final class SaxonDocument implements XML {
     public Node node() {
         throw new UnsupportedOperationException(
             String.format(SaxonDocument.UNSUPPORTED, "node")
+        );
+    }
+
+    @Override
+    public Collection<SAXParseException> validate() {
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "validate")
+        );
+    }
+
+    @Override
+    public Collection<SAXParseException> validate(final XML xsd) {
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "validate")
         );
     }
 

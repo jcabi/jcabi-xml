@@ -29,26 +29,17 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.concurrent.CopyOnWriteArrayList;
-import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -57,8 +48,13 @@ import org.xml.sax.SAXParseException;
  * <p>Objects of this class are immutable and thread-safe.
  *
  * @since 0.5
+ * @deprecated This class is deprecated since 0.31.0. Instead, you can
+ *  use {@link StrictXML} with a schema provided in the constructor. Otherwise,
+ *  you can use {@link XMLDocument} and validate the XML against the schema
+ *  via the {@link XMLDocument#validate(XML)} method.
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
+@Deprecated
 @EqualsAndHashCode(of = "xsd")
 public final class XSDDocument implements XSD {
 
@@ -175,33 +171,7 @@ public final class XSDDocument implements XSD {
 
     @Override
     public Collection<SAXParseException> validate(final Source xml) {
-        final Schema schema;
-        try {
-            schema = SchemaFactory
-                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                .newSchema(new StreamSource(new StringReader(this.xsd)));
-        } catch (final SAXException ex) {
-            throw new IllegalStateException(
-                String.format("Failed to create XSD schema from %s", this.xsd),
-                ex
-            );
-        }
-        final Collection<SAXParseException> errors =
-            new CopyOnWriteArrayList<>();
-        final Validator validator = schema.newValidator();
-        validator.setErrorHandler(new XSDDocument.ValidationHandler(errors));
-        try {
-            validator.validate(xml);
-        } catch (final SAXException | IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-        if (Logger.isDebugEnabled(this)) {
-            Logger.debug(
-                this, "%s detected %d error(s)",
-                schema.getClass().getName(), errors.size()
-            );
-        }
-        return errors;
+        return new XMLDocument(xml).validate(new XMLDocument(this.xsd));
     }
 
     /**

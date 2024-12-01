@@ -40,8 +40,13 @@ import org.xml.sax.SAXParseException;
  *
  * @see XSDDocument
  * @since 0.5
+ * @deprecated This class is deprecated since 0.31.0. Instead, you can
+ *  use {@link StrictXML} with a schema provided in the constructor. Otherwise,
+ *  you can use {@link XMLDocument} and validate the XML against the schema
+ *  via the {@link XMLDocument#validate(XML)} method.
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
+@Deprecated
 public interface XSD {
 
     /**

@@ -29,9 +29,8 @@
  */
 package com.jcabi.xerces;
 
+import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
-import com.jcabi.xml.XSD;
-import com.jcabi.xml.XSDDocument;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -60,7 +59,7 @@ public final class XercesSampleTest {
         final int random = 100;
         final int loop = 50;
         final Random rand = new SecureRandom();
-        final XSD xsd = new XSDDocument(
+        final XML xsd = new XMLDocument(
             StringUtils.join(
                 "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
                 "<xs:element name='r'><xs:complexType>",
@@ -77,17 +76,13 @@ public final class XercesSampleTest {
             public Void call() throws Exception {
                 final int cnt = rand.nextInt(random);
                 MatcherAssert.assertThat(
-                    xsd.validate(
-                        new DOMSource(
-                            new XMLDocument(
-                                StringUtils.join(
-                                    "<r>",
-                                    StringUtils.repeat("<x>hey</x>", cnt),
-                                    "</r>"
-                                )
-                            ).node()
+                    new XMLDocument(
+                        StringUtils.join(
+                            "<r>",
+                            StringUtils.repeat("<x>hey</x>", cnt),
+                            "</r>"
                         )
-                    ),
+                    ).validate(xsd),
                     Matchers.hasSize(cnt << 1)
                 );
                 return null;

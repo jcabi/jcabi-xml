@@ -98,8 +98,8 @@ public final class StrictXML implements XML {
      * @param xml XML document
      * @param schema XSD schema
      */
-    public StrictXML(final XML xml, final XSD schema) {
-        this(xml, schema.validate(new DOMSource(xml.node())));
+    public StrictXML(final XML xml, final XML schema) {
+        this(xml, StrictXML.check(xml, schema));
     }
 
     /**
@@ -157,6 +157,26 @@ public final class StrictXML implements XML {
     @Override
     public Node node() {
         return this.origin.node();
+    }
+
+    @Override
+    public Collection<SAXParseException> validate() {
+        return this.origin.validate();
+    }
+
+    @Override
+    public Collection<SAXParseException> validate(final XML xsd) {
+        return this.origin.validate(xsd);
+    }
+
+    /**
+     * Check and return list of errors.
+     * @param xml The XML to check
+     * @param xsd Schema to use
+     * @return List of errors
+     */
+    private static Collection<SAXParseException> check(final XML xml, final XML xsd) {
+        return xml.validate(xsd);
     }
 
     /**
@@ -218,7 +238,7 @@ public final class StrictXML implements XML {
         final int max = 3;
         try {
             validator.setErrorHandler(
-                new XSDDocument.ValidationHandler(errors)
+                new XMLDocument.ValidationHandler(errors)
             );
             final DOMSource dom = new DOMSource(xml.node());
             for (int retry = 1; retry <= max; ++retry) {

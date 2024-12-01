@@ -29,9 +29,11 @@
  */
 package com.jcabi.xml;
 
+import java.util.Collection;
 import java.util.List;
 import javax.xml.namespace.NamespaceContext;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXParseException;
 
 /**
  * XML document.
@@ -149,7 +151,7 @@ public interface XML {
      * Append this namespace context to the existing one.
      *
      * <p>The existing context (inside this object) and the new one provided
-     * will be merged together. The existing context will be have higher
+     * will be merged together. The existing context will have higher
      * priority.
      *
      * @param context The context to append
@@ -162,5 +164,20 @@ public interface XML {
      * @return DOM node
      */
     Node node();
+
+    /**
+     * Validate this XML against the XSD schema inside it.
+     * @return List of errors found
+     * @since 0.31.0
+     */
+    Collection<SAXParseException> validate();
+
+    /**
+     * Validate this XML against the provided XSD schema.
+     * @param xsd The Schema
+     * @return List of errors found
+     * @since 0.31.0
+     */
+    Collection<SAXParseException> validate(XML xsd);
 
 }

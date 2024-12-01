@@ -80,7 +80,7 @@ final class StrictXMLTest {
     void passesValidXmlThrough() {
         new StrictXML(
             new XMLDocument("<root>passesValidXmlThrough</root>"),
-            new XSDDocument(
+            new XMLDocument(
                 StringUtils.join(
                     "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
                     "<xs:element name='root' type='xs:string'/>",
@@ -96,7 +96,7 @@ final class StrictXMLTest {
             IllegalArgumentException.class,
             () -> new StrictXML(
                 new XMLDocument("<root>not an integer</root>"),
-                new XSDDocument(
+                new XMLDocument(
                     StringUtils.join(
                         "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
                         "<xs:element name='root' type='xs:integer'/></xs:schema>"
@@ -134,7 +134,7 @@ final class StrictXMLTest {
     @Test
     @Disabled
     void validatesMultipleXmlsInThreads() throws Exception {
-        final XSD xsd = new XSDDocument(
+        final XML xsd = new XMLDocument(
             StringUtils.join(
                 "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
                 "<xs:element name='r'><xs:complexType><xs:sequence>",

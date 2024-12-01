@@ -33,15 +33,21 @@ import com.google.common.collect.Iterables;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.TeeInput;
@@ -55,6 +61,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXParseException;
 
 /**
  * Test case for {@link XMLDocument}.
@@ -507,6 +514,140 @@ final class XMLDocumentTest {
                 )
             )
         );
+    }
+
+    @Test
+    void validatesXml() throws IOException {
+        final XML xsd = new XMLDocument(
+            new ByteArrayInputStream(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
+                    "<xs:element name='test'/>",
+                    " </xs:schema>"
+                ).getBytes()
+            )
+        );
+        MatcherAssert.assertThat(
+            new XMLDocument("<test/>").validate(xsd),
+            Matchers.empty()
+        );
+        MatcherAssert.assertThat(
+            new XMLDocument("<test></test>").validate(xsd),
+            Matchers.empty()
+        );
+    }
+
+    @Test
+    void detectsSchemaViolations() {
+        final String xsd = StringUtils.join(
+            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+            "<xs:element name='first'/></xs:schema>"
+        );
+        final Collection<SAXParseException> errors =
+            new XMLDocument("<second/>").validate(new XMLDocument(xsd));
+        MatcherAssert.assertThat(
+            errors,
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
+    @SuppressWarnings({
+        "PMD.AvoidInstantiatingObjectsInLoops",
+        "PMD.InsufficientStringBufferDeclaration"
+    })
+    void validatesComplexXml() throws Exception {
+        final int loopp = 5;
+        final int size = 10_000;
+        final int loop = 100;
+        final int random = 10;
+        final String xsd = StringUtils.join(
+            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'  >",
+            "<xs:element name='root'>",
+            "<xs:complexType><xs:sequence>",
+            "<xs:element name='a' type='xs:string' maxOccurs='unbounded' />",
+            "</xs:sequence></xs:complexType>",
+            "</xs:element></xs:schema>"
+        );
+        final StringBuilder text = new StringBuilder(size)
+            .append("<root>");
+        for (int idx = 0; idx < loop; ++idx) {
+            text.append("\n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;")
+                .append(RandomStringUtils.randomAlphanumeric(random))
+                .append("</a>\n\r \t    ");
+        }
+        text.append("</root>");
+        final XML xml = new XMLDocument(text.toString());
+        for (int idx = 0; idx < loopp; ++idx) {
+            MatcherAssert.assertThat(
+                xml.validate(new XMLDocument(xsd)),
+                Matchers.empty()
+            );
+        }
+    }
+
+    @Test
+    void validatesLongXml() throws Exception {
+        final XML xsd = new XMLDocument(
+            this.getClass().getResource("sample.xsd")
+        );
+        MatcherAssert.assertThat(
+            new XMLDocument(
+                StringUtils.join(
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                    "<payment><id>333</id>",
+                    "<date>1-Jan-2013</date>",
+                    "<debit>test-1</debit>",
+                    "<credit>test-2</credit>",
+                    "</payment>"
+                )
+            ).validate(xsd),
+            Matchers.empty()
+        );
+    }
+
+    @Test
+    void validatesMultipleXmlsInThreads() throws Exception {
+        final int random = 100;
+        final int loop = 10;
+        final int timeout = 30;
+        final Random rand = new SecureRandom();
+        final XML xsd = new XMLDocument(
+            StringUtils.join(
+                "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
+                "<xs:element name='r'><xs:complexType>",
+                "<xs:sequence>",
+                "<xs:element name='x' type='xs:integer'",
+                " minOccurs='0' maxOccurs='unbounded'/>",
+                "</xs:sequence></xs:complexType></xs:element>",
+                "</xs:schema>"
+            )
+        );
+        // @checkstyle AnonInnerLengthCheck (50 lines)
+        final Callable<Void> callable = () -> {
+            final int cnt = rand.nextInt(random);
+            MatcherAssert.assertThat(
+                new XMLDocument(
+                    StringUtils.join(
+                        "<r>",
+                        StringUtils.repeat("<x>hey</x>", cnt),
+                        "</r>"
+                    )
+                ).validate(xsd),
+                Matchers.hasSize(cnt << 1)
+            );
+            return null;
+        };
+        final ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count += 1) {
+            service.submit(callable);
+        }
+        service.shutdown();
+        MatcherAssert.assertThat(
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        service.shutdownNow();
     }
 
 }
