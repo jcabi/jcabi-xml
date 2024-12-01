@@ -573,7 +573,7 @@ final class XMLDocumentTest {
             .append("<root>");
         for (int idx = 0; idx < loop; ++idx) {
             text.append("\n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;")
-                .append(RandomStringUtils.randomAlphanumeric(random))
+                .append(RandomStringUtils.secure().nextAlphanumeric(random))
                 .append("</a>\n\r \t    ");
         }
         text.append("</root>");
