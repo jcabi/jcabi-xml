@@ -538,6 +538,14 @@ final class XMLDocumentTest {
     }
 
     @Test
+    void validatesXmlWithoutSchema() {
+        MatcherAssert.assertThat(
+            new XMLDocument("<test/>").validate(),
+            Matchers.not(Matchers.empty())
+        );
+    }
+
+    @Test
     void detectsSchemaViolations() {
         final String xsd = StringUtils.join(
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
