@@ -178,6 +178,18 @@ final class XMLDocumentTest {
     }
 
     @Test
+    void printsWithNamespace() {
+        MatcherAssert.assertThat(
+            new XMLDocument(
+                new XMLDocument(
+                    "<z xmlns:a='hey'><f a:boom='test'/></z>"
+                ).node()
+            ).toString(),
+            Matchers.containsString("a:boom")
+        );
+    }
+
+    @Test
     void retrievesDomNode() throws Exception {
         final XML doc = new XMLDocument(
             this.getClass().getResource("simple.xml")
