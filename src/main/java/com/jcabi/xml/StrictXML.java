@@ -188,16 +188,32 @@ public final class StrictXML implements XML {
         final Collection<SAXParseException> errors) {
         final Collection<String> lines = new ArrayList<>(errors.size());
         for (final SAXParseException error : errors) {
-            lines.add(
-                String.format(
-                    "%d:%d: %s",
-                    error.getLineNumber(),
-                    error.getColumnNumber(),
-                    error.getMessage()
-                )
-            );
+            lines.add(StrictXML.asMessage(error));
         }
         return lines;
+    }
+
+    /**
+     * Turn violation into a message.
+     * @param violation The violation
+     * @return The message
+     */
+    private static String asMessage(final SAXParseException violation) {
+        final StringBuilder msg = new StringBuilder(100);
+        if (violation.getLineNumber() >= 0) {
+            msg.append('#').append(violation.getLineNumber());
+            if (violation.getColumnNumber() >= 0) {
+                msg.append(':').append(violation.getColumnNumber());
+            }
+            msg.append(' ');
+        }
+        msg.append(violation.getLocalizedMessage());
+        if (violation.getException() != null) {
+            msg.append(" (")
+                .append(violation.getException().getClass().getSimpleName())
+                .append(')');
+        }
+        return msg.toString();
     }
 
     /**
