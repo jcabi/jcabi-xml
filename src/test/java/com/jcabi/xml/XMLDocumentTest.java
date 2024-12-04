@@ -63,6 +63,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
@@ -718,7 +719,8 @@ final class XMLDocumentTest {
     }
 
 
-    @Test
+   // ~ 1.6
+    @RepeatedTest(10)
     void createsXmlFromFile(
         @TempDir final Path temp
     ) throws IOException, ParserConfigurationException, SAXException {
@@ -737,10 +739,9 @@ final class XMLDocumentTest {
             );
         }
         final long endSimple = System.nanoTime();
+        final double simple = (endSimple - startSimple) / 1_000_000.0d;
         System.out.println(
-            "Default approach to create XML timing: " + (endSimple - startSimple) / 1_000_000 + " ms");
-
-        Logger.info(this, "Time: %[ms]s", (endSimple - startSimple) / 1000);
+            "Default approach to create XML timing: " + simple + " ms");
         final long start = System.nanoTime();
         for (int i = 0; i < 10_000; ++i) {
             final String actual = new XMLDocument(xml).node()
@@ -751,9 +752,14 @@ final class XMLDocumentTest {
             );
         }
         final long end = System.nanoTime();
+        final double actual = (end - start) / 1_000_000.0d;
         System.out.println(
-            "jcabi-xml approach to create XML timing: " + (end - start) / 1_000_000 + " ms"
+            "jcabi-xml approach to create XML timing: " + actual + " ms"
         );
+        System.out.println(
+            "Simple approach is " + (actual / simple) + " times faster"
+        );
+
     }
 
     private String large() {
