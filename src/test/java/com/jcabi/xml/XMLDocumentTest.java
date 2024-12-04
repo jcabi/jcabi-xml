@@ -30,10 +30,12 @@
 package com.jcabi.xml;
 
 import com.google.common.collect.Iterables;
+import com.jcabi.log.Logger;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -47,6 +49,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.ResourceOf;
@@ -61,6 +65,8 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -670,4 +676,48 @@ final class XMLDocumentTest {
         service.shutdownNow();
     }
 
+
+    @Test
+    void createsManyXmlDocuments() throws ParserConfigurationException, IOException, SAXException {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        String xml = StringUtils.join(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+            "<payment><id>333</id>",
+            "<date>1-Jan-2013</date>",
+            "<debit>test-1</debit>",
+            "<credit>test-2</credit>",
+            "</payment>"
+        );
+        final long startSimple = System.nanoTime();
+        final String expected = "payment";
+        for (int i = 0; i < 10_000; ++i) {
+            final Document parse = factory.newDocumentBuilder()
+                .parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+            final String actual = parse.getFirstChild().getNodeName();
+            MatcherAssert.assertThat(
+                actual,
+                Matchers.equalTo(expected)
+            );
+        }
+        final long endSimple = System.nanoTime();
+        System.out.println(
+            "Default approach to create XML timing: " + (endSimple - startSimple) / 1_000_000 + " ms");
+        Logger.info(this, "Time: %[ms]s", (endSimple - startSimple) / 1000);
+        final long start = System.nanoTime();
+        for (int i = 0; i < 10_000; ++i) {
+            ;
+            final String actual = new XMLDocument(
+                new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
+                .node()
+                .getFirstChild().getNodeName();
+            MatcherAssert.assertThat(
+                actual,
+                Matchers.equalTo(expected)
+            );
+        }
+        final long end = System.nanoTime();
+        System.out.println(
+            "jcabi-xml approach to create XML timing: " + (end - start) / 1_000_000 + " ms"
+        );
+    }
 }
