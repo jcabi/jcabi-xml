@@ -31,8 +31,10 @@ package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Function;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -55,12 +57,14 @@ final class DomParser {
     /**
      * The XML as a text.
      */
-    private final transient byte[] xml;
+//    private final transient byte[] xml;
 
     /**
      * Document builder factory to use for parsing.
      */
     private final transient DocumentBuilderFactory factory;
+
+    private final Parser parser;
 
     /**
      * Public ctor.
@@ -92,7 +96,33 @@ final class DomParser {
      */
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     DomParser(final DocumentBuilderFactory fct, final byte[] bytes) {
-        this.xml = bytes;
+//        this.xml = bytes;
+        this.parser = new Parser() {
+            @Override
+            public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
+                return builder.parse(new ByteArrayInputStream(bytes));
+            }
+
+            @Override
+            public long length() {
+                return bytes.length;
+            }
+        };
+        this.factory = fct;
+    }
+
+    DomParser(final  DocumentBuilderFactory fct, final File file){
+        this.parser = new Parser() {
+            @Override
+            public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
+                return builder.parse(file);
+            }
+
+            @Override
+            public long length() {
+                return file.length();
+            }
+        };
         this.factory = fct;
     }
 
@@ -116,7 +146,8 @@ final class DomParser {
         final long start = System.nanoTime();
         final Document doc;
         try {
-            doc = builder.parse(new ByteArrayInputStream(this.xml));
+//            doc = builder.parse(new ByteArrayInputStream(this.xml));
+            doc = this.parser.apply(builder);
         } catch (final IOException | SAXException ex) {
             throw new IllegalArgumentException(
                 String.format(
@@ -131,11 +162,18 @@ final class DomParser {
                 this,
                 "%s parsed %d bytes of XML in %[nano]s",
                 builder.getClass().getName(),
-                this.xml.length,
+                this.parser.length(),
                 System.nanoTime() - start
             );
         }
         return doc;
+    }
+
+    private interface Parser {
+
+        Document apply(DocumentBuilder builder) throws IOException, SAXException;
+
+        long length();
     }
 
 }

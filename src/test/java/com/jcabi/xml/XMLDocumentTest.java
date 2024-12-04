@@ -719,7 +719,7 @@ final class XMLDocumentTest {
     }
 
 
-   // ~ 1.6
+    // ~ 1.6
     @RepeatedTest(10)
     void createsXmlFromFile(
         @TempDir final Path temp
@@ -772,7 +772,7 @@ final class XMLDocumentTest {
             "<credit>test-2</credit>",
             "</payment>"
         );
-        IntStream.range(0, 100).mapToObj(i -> payment).forEach(builder::append);
+        IntStream.range(0, 1_000).mapToObj(i -> payment).forEach(builder::append);
         return builder.append("</root>").toString();
     }
 

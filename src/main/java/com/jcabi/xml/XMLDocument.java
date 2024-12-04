@@ -203,6 +203,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(final File file) throws FileNotFoundException {
         this(new TextResource(file).toString());
+//        this(new DomParser(XMLDocument.configuredDFactory(), file).document());
     }
 
     /**
