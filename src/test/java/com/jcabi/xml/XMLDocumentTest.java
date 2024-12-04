@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,6 +50,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -62,6 +64,7 @@ import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -680,16 +683,9 @@ final class XMLDocumentTest {
     @Test
     void createsManyXmlDocuments() throws ParserConfigurationException, IOException, SAXException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        String xml = StringUtils.join(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-            "<payment><id>333</id>",
-            "<date>1-Jan-2013</date>",
-            "<debit>test-1</debit>",
-            "<credit>test-2</credit>",
-            "</payment>"
-        );
+        String xml = this.large();
         final long startSimple = System.nanoTime();
-        final String expected = "payment";
+        final String expected = "root";
         for (int i = 0; i < 10_000; ++i) {
             final Document parse = factory.newDocumentBuilder()
                 .parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
@@ -720,4 +716,58 @@ final class XMLDocumentTest {
             "jcabi-xml approach to create XML timing: " + (end - start) / 1_000_000 + " ms"
         );
     }
+
+
+    @Test
+    void createsXmlFromFile(
+        @TempDir final Path temp
+    ) throws IOException, ParserConfigurationException, SAXException {
+        final Path xml = temp.resolve("test.xml");
+        String content = this.large();
+        Files.write(xml, content.getBytes(StandardCharsets.UTF_8));
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final long startSimple = System.nanoTime();
+        final String expected = "root";
+        for (int i = 0; i < 10_000; ++i) {
+            final Document parse = factory.newDocumentBuilder().parse(xml.toFile());
+            final String actual = parse.getFirstChild().getNodeName();
+            MatcherAssert.assertThat(
+                actual,
+                Matchers.equalTo(expected)
+            );
+        }
+        final long endSimple = System.nanoTime();
+        System.out.println(
+            "Default approach to create XML timing: " + (endSimple - startSimple) / 1_000_000 + " ms");
+
+        Logger.info(this, "Time: %[ms]s", (endSimple - startSimple) / 1000);
+        final long start = System.nanoTime();
+        for (int i = 0; i < 10_000; ++i) {
+            final String actual = new XMLDocument(xml).node()
+                .getFirstChild().getNodeName();
+            MatcherAssert.assertThat(
+                actual,
+                Matchers.equalTo(expected)
+            );
+        }
+        final long end = System.nanoTime();
+        System.out.println(
+            "jcabi-xml approach to create XML timing: " + (end - start) / 1_000_000 + " ms"
+        );
+    }
+
+    private String large() {
+        final StringBuilder builder = new StringBuilder(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append("<root>");
+        final String payment = StringUtils.join(
+            "<payment><id>333</id>",
+            "<date>1-Jan-2013</date>",
+            "<debit>test-1</debit>",
+            "<credit>test-2</credit>",
+            "</payment>"
+        );
+        IntStream.range(0, 100).mapToObj(i -> payment).forEach(builder::append);
+        return builder.append("</root>").toString();
+    }
+
 }
