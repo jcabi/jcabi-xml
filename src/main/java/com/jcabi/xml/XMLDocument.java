@@ -68,6 +68,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import net.sf.saxon.trans.SymbolicName;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -126,7 +127,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(final String text) {
         this(
-            new DomParser(XMLDocument.configuredDFactory(), text).document(),
+            new DomParser(FACTORY, text).document(),
             new XPathContext(),
             false
         );
@@ -152,7 +153,7 @@ public final class XMLDocument implements XML {
      */
     public XMLDocument(final byte[] data) {
         this(
-            new DomParser(XMLDocument.configuredDFactory(), data).document(),
+            new DomParser(FACTORY, data).document(),
             new XPathContext(),
             false
         );
@@ -202,8 +203,8 @@ public final class XMLDocument implements XML {
      * @throws FileNotFoundException In case of I/O problems
      */
     public XMLDocument(final File file) throws FileNotFoundException {
-        this(new TextResource(file).toString());
-//        this(new DomParser(XMLDocument.configuredDFactory(), file).document());
+//        this(new TextResource(file).toString());
+        this(new DomParser(FACTORY, file).document());
     }
 
     /**
@@ -322,7 +323,8 @@ public final class XMLDocument implements XML {
         final Node casted = this.cache;
         final Node answer;
         if (casted instanceof Document) {
-            answer = casted.cloneNode(true);
+            answer = casted;
+//            answer = casted.cloneNode(true);
         } else {
             answer = XMLDocument.createImportedNode(casted);
         }
@@ -478,7 +480,7 @@ public final class XMLDocument implements XML {
      * @return A cloned node imported in a dedicated document.
      */
     private static Node createImportedNode(final Node node) {
-        final DocumentBuilderFactory factory = XMLDocument.configuredDFactory();
+        final DocumentBuilderFactory factory = FACTORY;
         final DocumentBuilder builder;
         try {
             builder = factory.newDocumentBuilder();
@@ -598,6 +600,8 @@ public final class XMLDocument implements XML {
         }
         return result.getNode();
     }
+
+    private static final DocumentBuilderFactory FACTORY = XMLDocument.configuredDFactory();
 
     /**
      * Create new {@link DocumentBuilderFactory} and configure it.
