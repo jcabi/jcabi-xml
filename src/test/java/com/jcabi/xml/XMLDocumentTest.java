@@ -30,7 +30,6 @@
 package com.jcabi.xml;
 
 import com.google.common.collect.Iterables;
-import com.jcabi.log.Logger;
 import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -50,9 +49,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.ResourceOf;
@@ -69,8 +68,6 @@ import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -680,102 +677,81 @@ final class XMLDocumentTest {
         service.shutdownNow();
     }
 
-
-    @Test
-    @Disabled
-    void createsManyXmlDocuments() throws ParserConfigurationException, IOException, SAXException {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        String xml = this.large();
-        final long startSimple = System.nanoTime();
-        final String expected = "root";
-        for (int i = 0; i < 10_000; ++i) {
-            final Document parse = factory.newDocumentBuilder()
-                .parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
-            final String actual = parse.getFirstChild().getNodeName();
-            MatcherAssert.assertThat(
-                actual,
-                Matchers.equalTo(expected)
-            );
-        }
-        final long endSimple = System.nanoTime();
-        System.out.println(
-            "Default approach to create XML timing: " + (endSimple - startSimple) / 1_000_000 + " ms");
-        Logger.info(this, "Time: %[ms]s", (endSimple - startSimple) / 1000);
-        final long start = System.nanoTime();
-        for (int i = 0; i < 10_000; ++i) {
-            ;
-            final String actual = new XMLDocument(
-                new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)))
-                .node()
-                .getFirstChild().getNodeName();
-            MatcherAssert.assertThat(
-                actual,
-                Matchers.equalTo(expected)
-            );
-        }
-        final long end = System.nanoTime();
-        System.out.println(
-            "jcabi-xml approach to create XML timing: " + (end - start) / 1_000_000 + " ms"
-        );
-    }
-
-
-    // ~ 1.6
+    /**
+     * This test is disabled because it is a performance test that might be flaky.
+     * @param temp Temporary directory.
+     * @throws IOException If something goes wrong.
+     */
     @RepeatedTest(10)
     @Disabled
-    void createsXmlFromFile(
-        @TempDir final Path temp
-    ) throws IOException, ParserConfigurationException, SAXException {
+    void createsXmlFromFile(@TempDir final Path temp) throws IOException {
         final Path xml = temp.resolve("test.xml");
-        String content = this.large();
-        Files.write(xml, content.getBytes(StandardCharsets.UTF_8));
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        final long startSimple = System.nanoTime();
-        final String expected = "root";
-        for (int i = 0; i < 10_000; ++i) {
-            final Document parse = factory.newDocumentBuilder().parse(xml.toFile());
-            final String actual = parse.getFirstChild().getNodeName();
-            MatcherAssert.assertThat(
-                actual,
-                Matchers.equalTo(expected)
-            );
-        }
-        final long endSimple = System.nanoTime();
-        final double simple = (endSimple - startSimple) / 1_000_000.0d;
-        System.out.println(
-            "Default approach to create XML timing: " + simple + " ms");
-        final long start = System.nanoTime();
-        for (int i = 0; i < 10_000; ++i) {
-            final String actual = new XMLDocument(xml).node()
-                .getFirstChild().getNodeName();
-            MatcherAssert.assertThat(
-                actual,
-                Matchers.equalTo(expected)
-            );
-        }
-        final long end = System.nanoTime();
-        final double actual = (end - start) / 1_000_000.0d;
-        System.out.println(
-            "jcabi-xml approach to create XML timing: " + actual + " ms"
+        Files.write(xml, XMLDocumentTest.large().getBytes(StandardCharsets.UTF_8));
+        final long clear = XMLDocumentTest.measure(
+            () -> DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(xml.toFile())
+                .getFirstChild()
+                .getNodeName()
         );
-        System.out.println(
-            "Simple approach is " + (actual / simple) + " times faster"
+        final long wrapped = XMLDocumentTest.measure(
+            () -> new XMLDocument(xml.toFile()).inner().getFirstChild().getNodeName()
         );
-
+        MatcherAssert.assertThat(
+            String.format(
+                "We expect that jcabi-xml is at max 2 times slower than default approach, time spend on jcabi-xml: %d ms, time spend on default approach: %d ms",
+                wrapped,
+                clear
+            ),
+            wrapped / clear,
+            Matchers.lessThan(2L)
+        );
     }
 
-    private String large() {
-        final StringBuilder builder = new StringBuilder(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append("<root>");
-        final String payment = StringUtils.join(
-            "<payment><id>333</id>",
-            "<date>1-Jan-2013</date>",
-            "<debit>test-1</debit>",
-            "<credit>test-2</credit>",
-            "</payment>"
-        );
-        IntStream.range(0, 1_000).mapToObj(i -> payment).forEach(builder::append);
-        return builder.append("</root>").toString();
+    /**
+     * Measure the time of execution.
+     * @param run The callable to run.
+     * @return Time in milliseconds.
+     * @checkstyle IllegalCatchCheck (20 lines)
+     */
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.PrematureDeclaration"})
+    private static long measure(final Callable<String> run) {
+        final long start = System.nanoTime();
+        if (!IntStream.range(0, 1000).mapToObj(
+            each -> {
+                try {
+                    return run.call();
+                } catch (final Exception exception) {
+                    throw new IllegalStateException(
+                        String.format("Failed to run %s", run), exception
+                    );
+                }
+            }
+        ).allMatch("root"::equals)) {
+            throw new IllegalStateException("Invalid result");
+        }
+        return System.nanoTime() - start / 1_000_000;
+    }
+
+    /**
+     * Generate large XML for tests.
+     * @return Large XML string.
+     */
+    private static String large() {
+        return IntStream.range(0, 100)
+            .mapToObj(
+                i -> StringUtils.join(
+                    "<payment><id>333</id>",
+                    "<date>1-Jan-2013</date>",
+                    "<debit>test-1</debit>",
+                    "<credit>test-2</credit>",
+                    "</payment>"
+                )
+            ).collect(
+                Collectors.joining(
+                    "", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>", "</root>"
+                )
+            );
     }
 
 }

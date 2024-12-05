@@ -31,13 +31,9 @@ package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -100,18 +96,33 @@ final class DomParser {
         this(fct, new BytesSource(bytes));
     }
 
-
+    /**
+     * Public ctor.
+     *
+     * <p>An {@link IllegalArgumentException} may be thrown if the parameter
+     * passed is not in XML format. It doesn't perform a strict validation
+     * and is not guaranteed that an exception will be thrown whenever
+     * the parameter is not XML.
+     *
+     * @param fct Document builder factory to use
+     * @param file The XML as a file
+     */
     DomParser(final DocumentBuilderFactory fct, final File file) {
         this(fct, new FileSource(file));
     }
 
+    /**
+     * Private ctor.
+     * @param factory Document builder factory to use
+     * @param source Source of XML
+     */
     private DomParser(final DocumentBuilderFactory factory, final DocSource source) {
         this.factory = factory;
         this.source = source;
     }
 
     /**
-     * Get document of body.
+     * Get the document body.
      * @return The document
      */
     public Document document() {
@@ -158,8 +169,19 @@ final class DomParser {
      */
     private interface DocSource {
 
+        /**
+         * Parse XML by the builder.
+         * @param builder The builder to use during parsing.
+         * @return The document.
+         * @throws IOException If fails.
+         * @throws SAXException If fails.
+         */
         Document apply(DocumentBuilder builder) throws IOException, SAXException;
 
+        /**
+         * The length of the source.
+         * @return The length.
+         */
         long length();
     }
 

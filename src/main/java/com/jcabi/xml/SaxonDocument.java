@@ -59,6 +59,7 @@ import org.xml.sax.SAXParseException;
  *
  * @since 0.28
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class SaxonDocument implements XML {
 
     /**
