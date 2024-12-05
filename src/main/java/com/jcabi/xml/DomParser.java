@@ -33,8 +33,10 @@ import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -95,6 +97,11 @@ final class DomParser {
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     DomParser(final DocumentBuilderFactory fct, final byte[] bytes) {
         this(fct, new BytesSource(bytes));
+    }
+
+
+    DomParser(final DocumentBuilderFactory fct, final InputStream stream) {
+        this(fct, new StreamSource(stream));
     }
 
     DomParser(final DocumentBuilderFactory fct, final File file) {
@@ -175,6 +182,28 @@ final class DomParser {
         @Override
         public long length() {
             return this.file.length();
+        }
+    }
+
+
+    private static class StreamSource implements DocSource {
+
+        private final InputStream stream;
+
+        public StreamSource(final InputStream stream) {
+            this.stream = stream;
+        }
+
+        @Override
+        public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
+            final Document res = builder.parse(this.stream);
+            this.stream.close();
+            return res;
+        }
+
+        @Override
+        public long length() {
+            return 0;
         }
     }
 

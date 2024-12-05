@@ -165,7 +165,7 @@ public interface XML {
      * This method works exactly the same as {@link #deepCopy()}.
      * @return DOM node
      */
-    @Deprecated
+//    @Deprecated
     Node node();
 
     /**
