@@ -46,8 +46,8 @@ import org.xml.sax.SAXParseException;
  *   // ...
  * }</pre>
  *
- * <p>You can always get DOM node out of this abstraction using {@link #node()}
- * method.
+ * <p>You can always get DOM node out of this abstraction using {@link #inner()}
+ * or {@link #deepCopy()} methods.
  *
  * <p>{@code toString()} must produce a full XML.
  *
@@ -161,9 +161,27 @@ public interface XML {
 
     /**
      * Retrieve DOM node, represented by this wrapper.
-     * @return DOM node
+     * This method works exactly the same as {@link #deepCopy()}.
+     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
+     * @return Deep copy of the inner DOM node.
      */
+    @Deprecated
     Node node();
+
+    /**
+     * Retrieve DOM node, represented by this wrapper.
+     * Pay attention that this method returns inner node, not a deep copy.
+     * It means that any changes to the returned node will affect the original XML.
+     * @return Inner node.
+     */
+    Node inner();
+
+    /**
+     * Retrieve a deep copy of the DOM node, represented by this wrapper.
+     * Might be expensive in terms of performance.
+     * @return Deep copy of the node.
+     */
+    Node deepCopy();
 
     /**
      * Validate this XML against the XSD schema inside it.

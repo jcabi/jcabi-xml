@@ -434,7 +434,7 @@ public final class XSLDocument implements XSL {
         trans.setErrorListener(errors);
         final long start = System.nanoTime();
         try {
-            trans.transform(new DOMSource(xml.node()), result);
+            trans.transform(new DOMSource(xml.inner()), result);
         } catch (final TransformerException ex) {
             final StringBuilder summary = new StringBuilder(
                 String.join("; ", errors.summary())

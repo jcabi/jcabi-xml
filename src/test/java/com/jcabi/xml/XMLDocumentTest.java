@@ -34,7 +34,9 @@ import com.jcabi.matchers.XhtmlMatchers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,6 +49,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.ResourceOf;
@@ -57,7 +62,9 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -183,7 +190,7 @@ final class XMLDocumentTest {
             new XMLDocument(
                 new XMLDocument(
                     "<z xmlns:a='hey'><f a:boom='test'/></z>"
-                ).node()
+                ).inner()
             ).toString(),
             Matchers.containsString("a:boom")
         );
@@ -195,11 +202,11 @@ final class XMLDocumentTest {
             this.getClass().getResource("simple.xml")
         );
         MatcherAssert.assertThat(
-            doc.nodes("/root/simple").get(0).node().getNodeName(),
+            doc.nodes("/root/simple").get(0).inner().getNodeName(),
             Matchers.equalTo("simple")
         );
         MatcherAssert.assertThat(
-            doc.nodes("//simple").get(0).node().getNodeType(),
+            doc.nodes("//simple").get(0).inner().getNodeType(),
             Matchers.equalTo(Node.ELEMENT_NODE)
         );
     }
@@ -385,7 +392,7 @@ final class XMLDocumentTest {
         final Runnable runnable = () -> {
             try {
                 MatcherAssert.assertThat(
-                    new XMLDocument(xml.node()).toString(),
+                    new XMLDocument(xml.inner()).toString(),
                     Matchers.containsString(">5555<")
                 );
                 done.incrementAndGet();
@@ -427,11 +434,11 @@ final class XMLDocumentTest {
     void buildsDomNode() {
         final XML doc = new XMLDocument("<?xml version='1.0'?><f/>");
         MatcherAssert.assertThat(
-            doc.node(),
+            doc.inner(),
             Matchers.instanceOf(Document.class)
         );
         MatcherAssert.assertThat(
-            doc.nodes("/f").get(0).node(),
+            doc.nodes("/f").get(0).inner(),
             Matchers.instanceOf(Element.class)
         );
     }
@@ -479,7 +486,7 @@ final class XMLDocumentTest {
     @Test
     void preservesImmutability() {
         final XML xml = new XMLDocument("<r1><a/></r1>");
-        final Node node = xml.nodes("/r1/a").get(0).node();
+        final Node node = xml.nodes("/r1/a").get(0).deepCopy();
         node.appendChild(node.getOwnerDocument().createElement("h9"));
         MatcherAssert.assertThat(
             xml,
@@ -668,6 +675,83 @@ final class XMLDocumentTest {
             Matchers.is(true)
         );
         service.shutdownNow();
+    }
+
+    /**
+     * This test is disabled because it is a performance test that might be flaky.
+     * @param temp Temporary directory.
+     * @throws IOException If something goes wrong.
+     */
+    @RepeatedTest(10)
+    @Disabled
+    void createsXmlFromFile(@TempDir final Path temp) throws IOException {
+        final Path xml = temp.resolve("test.xml");
+        Files.write(xml, XMLDocumentTest.large().getBytes(StandardCharsets.UTF_8));
+        final long clear = XMLDocumentTest.measure(
+            () -> DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(xml.toFile())
+                .getFirstChild()
+                .getNodeName()
+        );
+        final long wrapped = XMLDocumentTest.measure(
+            () -> new XMLDocument(xml.toFile()).inner().getFirstChild().getNodeName()
+        );
+        MatcherAssert.assertThat(
+            String.format(
+                "We expect that jcabi-xml is at max 2 times slower than default approach, time spend on jcabi-xml: %d ms, time spend on default approach: %d ms",
+                wrapped,
+                clear
+            ),
+            wrapped / clear,
+            Matchers.lessThan(2L)
+        );
+    }
+
+    /**
+     * Measure the time of execution.
+     * @param run The callable to run.
+     * @return Time in milliseconds.
+     * @checkstyle IllegalCatchCheck (20 lines)
+     */
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.PrematureDeclaration"})
+    private static long measure(final Callable<String> run) {
+        final long start = System.nanoTime();
+        if (!IntStream.range(0, 1000).mapToObj(
+            each -> {
+                try {
+                    return run.call();
+                } catch (final Exception exception) {
+                    throw new IllegalStateException(
+                        String.format("Failed to run %s", run), exception
+                    );
+                }
+            }
+        ).allMatch("root"::equals)) {
+            throw new IllegalStateException("Invalid result");
+        }
+        return System.nanoTime() - start / 1_000_000;
+    }
+
+    /**
+     * Generate large XML for tests.
+     * @return Large XML string.
+     */
+    private static String large() {
+        return IntStream.range(0, 100)
+            .mapToObj(
+                i -> StringUtils.join(
+                    "<payment><id>333</id>",
+                    "<date>1-Jan-2013</date>",
+                    "<debit>test-1</debit>",
+                    "<credit>test-2</credit>",
+                    "</payment>"
+                )
+            ).collect(
+                Collectors.joining(
+                    "", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>", "</root>"
+                )
+            );
     }
 
 }

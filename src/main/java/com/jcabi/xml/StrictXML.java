@@ -108,8 +108,10 @@ public final class StrictXML implements XML {
      * @param errors XML Document errors
      */
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
-    private StrictXML(final XML xml,
-        final Collection<SAXParseException> errors) {
+    private StrictXML(
+        final XML xml,
+        final Collection<SAXParseException> errors
+    ) {
         if (!errors.isEmpty()) {
             Logger.warn(
                 StrictXML.class,
@@ -154,9 +156,25 @@ public final class StrictXML implements XML {
         return this.origin.merge(context);
     }
 
-    @Override
+    /**
+     * Retrieve DOM node, represented by this wrapper.
+     * This method works exactly the same as {@link #deepCopy()}.
+     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
+     * @return Deep copy of the inner DOM node.
+     */
+    @Deprecated
     public Node node() {
-        return this.origin.node();
+        return this.origin.deepCopy();
+    }
+
+    @Override
+    public Node inner() {
+        return this.origin.inner();
+    }
+
+    @Override
+    public Node deepCopy() {
+        return this.origin.deepCopy();
     }
 
     @Override
@@ -185,7 +203,8 @@ public final class StrictXML implements XML {
      * @return List of messages to print
      */
     private static Iterable<String> print(
-        final Collection<SAXParseException> errors) {
+        final Collection<SAXParseException> errors
+    ) {
         final Collection<String> lines = new ArrayList<>(errors.size());
         for (final SAXParseException error : errors) {
             lines.add(StrictXML.asMessage(error));
@@ -248,7 +267,8 @@ public final class StrictXML implements XML {
      */
     private static Collection<SAXParseException> validate(
         final XML xml,
-        final Validator validator) {
+        final Validator validator
+    ) {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<>();
         final int max = 3;
@@ -256,7 +276,7 @@ public final class StrictXML implements XML {
             validator.setErrorHandler(
                 new XMLDocument.ValidationHandler(errors)
             );
-            final DOMSource dom = new DOMSource(xml.node());
+            final DOMSource dom = new DOMSource(xml.inner());
             for (int retry = 1; retry <= max; ++retry) {
                 try {
                     validator.validate(dom);
