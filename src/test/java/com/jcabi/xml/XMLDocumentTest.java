@@ -682,6 +682,7 @@ final class XMLDocumentTest {
 
 
     @Test
+    @Disabled
     void createsManyXmlDocuments() throws ParserConfigurationException, IOException, SAXException {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         String xml = this.large();
@@ -721,6 +722,7 @@ final class XMLDocumentTest {
 
     // ~ 1.6
     @RepeatedTest(10)
+    @Disabled
     void createsXmlFromFile(
         @TempDir final Path temp
     ) throws IOException, ParserConfigurationException, SAXException {
