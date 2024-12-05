@@ -46,8 +46,8 @@ import org.xml.sax.SAXParseException;
  *   // ...
  * }</pre>
  *
- * <p>You can always get DOM node out of this abstraction using {@link #node()}
- * method.
+ * <p>You can always get DOM node out of this abstraction using {@link #inner()}
+ * or {@link #deepCopy()} methods.
  *
  * <p>{@code toString()} must produce a full XML.
  *
@@ -165,7 +165,7 @@ public interface XML {
      * This method works exactly the same as {@link #deepCopy()}.
      * @return DOM node
      */
-//    @Deprecated
+    @Deprecated
     Node node();
 
     /**

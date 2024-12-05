@@ -310,14 +310,7 @@ public final class XMLDocument implements XML {
 
     @Override
     public Node node() {
-        final Node casted = this.cache;
-        final Node answer;
-        if (casted instanceof Document) {
-            answer = casted.cloneNode(true);
-        } else {
-            answer = XMLDocument.createImportedNode(casted);
-        }
-        return answer;
+        return this.deepCopy();
     }
 
     @Override
@@ -327,7 +320,14 @@ public final class XMLDocument implements XML {
 
     @Override
     public Node deepCopy() {
-        return this.node();
+        final Node casted = this.cache;
+        final Node answer;
+        if (casted instanceof Document) {
+            answer = casted.cloneNode(true);
+        } else {
+            answer = XMLDocument.createImportedNode(casted);
+        }
+        return answer;
     }
 
     @Override

@@ -190,7 +190,7 @@ final class XMLDocumentTest {
             new XMLDocument(
                 new XMLDocument(
                     "<z xmlns:a='hey'><f a:boom='test'/></z>"
-                ).node()
+                ).inner()
             ).toString(),
             Matchers.containsString("a:boom")
         );
@@ -202,11 +202,11 @@ final class XMLDocumentTest {
             this.getClass().getResource("simple.xml")
         );
         MatcherAssert.assertThat(
-            doc.nodes("/root/simple").get(0).node().getNodeName(),
+            doc.nodes("/root/simple").get(0).inner().getNodeName(),
             Matchers.equalTo("simple")
         );
         MatcherAssert.assertThat(
-            doc.nodes("//simple").get(0).node().getNodeType(),
+            doc.nodes("//simple").get(0).inner().getNodeType(),
             Matchers.equalTo(Node.ELEMENT_NODE)
         );
     }
@@ -392,7 +392,7 @@ final class XMLDocumentTest {
         final Runnable runnable = () -> {
             try {
                 MatcherAssert.assertThat(
-                    new XMLDocument(xml.node()).toString(),
+                    new XMLDocument(xml.inner()).toString(),
                     Matchers.containsString(">5555<")
                 );
                 done.incrementAndGet();
@@ -434,11 +434,11 @@ final class XMLDocumentTest {
     void buildsDomNode() {
         final XML doc = new XMLDocument("<?xml version='1.0'?><f/>");
         MatcherAssert.assertThat(
-            doc.node(),
+            doc.inner(),
             Matchers.instanceOf(Document.class)
         );
         MatcherAssert.assertThat(
-            doc.nodes("/f").get(0).node(),
+            doc.nodes("/f").get(0).inner(),
             Matchers.instanceOf(Element.class)
         );
     }
@@ -486,7 +486,7 @@ final class XMLDocumentTest {
     @Test
     void preservesImmutability() {
         final XML xml = new XMLDocument("<r1><a/></r1>");
-        final Node node = xml.nodes("/r1/a").get(0).node();
+        final Node node = xml.nodes("/r1/a").get(0).deepCopy();
         node.appendChild(node.getOwnerDocument().createElement("h9"));
         MatcherAssert.assertThat(
             xml,

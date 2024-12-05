@@ -158,7 +158,7 @@ public final class StrictXML implements XML {
 
     @Override
     public Node node() {
-        return this.origin.node();
+        return this.origin.deepCopy();
     }
 
     @Override
@@ -270,7 +270,7 @@ public final class StrictXML implements XML {
             validator.setErrorHandler(
                 new XMLDocument.ValidationHandler(errors)
             );
-            final DOMSource dom = new DOMSource(xml.node());
+            final DOMSource dom = new DOMSource(xml.inner());
             for (int retry = 1; retry <= max; ++retry) {
                 try {
                     validator.validate(dom);
