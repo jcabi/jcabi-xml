@@ -161,9 +161,9 @@ public interface XML {
 
     /**
      * Retrieve DOM node, represented by this wrapper.
-     * This method is deprecated, use {@link #inner()} ()} and {@link #deepCopy()} methods instead.
      * This method works exactly the same as {@link #deepCopy()}.
-     * @return DOM node
+     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
+     * @return Deep copy of the inner DOM node.
      */
     @Deprecated
     Node node();
