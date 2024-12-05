@@ -34,7 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.function.Function;
+import java.nio.file.Path;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -51,20 +51,18 @@ import org.xml.sax.SAXException;
  * @since 0.1
  */
 @ToString
-@EqualsAndHashCode(of = "xml")
+@EqualsAndHashCode
 final class DomParser {
-
-    /**
-     * The XML as a text.
-     */
-//    private final transient byte[] xml;
 
     /**
      * Document builder factory to use for parsing.
      */
     private final transient DocumentBuilderFactory factory;
 
-    private final Parser parser;
+    /**
+     * Source of XML.
+     */
+    private final DocSource source;
 
     /**
      * Public ctor.
@@ -80,7 +78,7 @@ final class DomParser {
      * @param txt The XML in text (in UTF-8)
      */
     DomParser(final DocumentBuilderFactory fct, final String txt) {
-        this(fct, txt.getBytes(StandardCharsets.UTF_8));
+        this(fct, new BytesSource(txt));
     }
 
     /**
@@ -96,34 +94,16 @@ final class DomParser {
      */
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     DomParser(final DocumentBuilderFactory fct, final byte[] bytes) {
-//        this.xml = bytes;
-        this.parser = new Parser() {
-            @Override
-            public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
-                return builder.parse(new ByteArrayInputStream(bytes));
-            }
-
-            @Override
-            public long length() {
-                return bytes.length;
-            }
-        };
-        this.factory = fct;
+        this(fct, new BytesSource(bytes));
     }
 
-    DomParser(final  DocumentBuilderFactory fct, final File file){
-        this.parser = new Parser() {
-            @Override
-            public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
-                return builder.parse(file);
-            }
+    DomParser(final DocumentBuilderFactory fct, final File file) {
+        this(fct, new FileSource(file));
+    }
 
-            @Override
-            public long length() {
-                return file.length();
-            }
-        };
-        this.factory = fct;
+    private DomParser(final DocumentBuilderFactory factory, final DocSource source) {
+        this.factory = factory;
+        this.source = source;
     }
 
     /**
@@ -146,8 +126,7 @@ final class DomParser {
         final long start = System.nanoTime();
         final Document doc;
         try {
-//            doc = builder.parse(new ByteArrayInputStream(this.xml));
-            doc = this.parser.apply(builder);
+            doc = this.source.apply(builder);
         } catch (final IOException | SAXException ex) {
             throw new IllegalArgumentException(
                 String.format(
@@ -162,18 +141,64 @@ final class DomParser {
                 this,
                 "%s parsed %d bytes of XML in %[nano]s",
                 builder.getClass().getName(),
-                this.parser.length(),
+                this.source.length(),
                 System.nanoTime() - start
             );
         }
         return doc;
     }
 
-    private interface Parser {
+    private interface DocSource {
 
         Document apply(DocumentBuilder builder) throws IOException, SAXException;
 
         long length();
     }
 
+    private static class FileSource implements DocSource {
+
+        private final File file;
+
+        private FileSource(final Path path) {
+            this(path.toFile());
+        }
+
+        private FileSource(final File file) {
+            this.file = file;
+        }
+
+        @Override
+        public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
+            return builder.parse(this.file);
+        }
+
+        @Override
+        public long length() {
+            return this.file.length();
+        }
+    }
+
+
+    private static class BytesSource implements DocSource {
+
+        private final byte[] xml;
+
+        private BytesSource(final String xml) {
+            this(xml.getBytes(StandardCharsets.UTF_8));
+        }
+
+        private BytesSource(final byte[] xml) {
+            this.xml = xml;
+        }
+
+        @Override
+        public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
+            return builder.parse(new ByteArrayInputStream(this.xml));
+        }
+
+        @Override
+        public long length() {
+            return xml.length;
+        }
+    }
 }

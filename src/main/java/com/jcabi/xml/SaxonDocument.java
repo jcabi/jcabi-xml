@@ -207,6 +207,20 @@ public final class SaxonDocument implements XML {
     }
 
     @Override
+    public Node inner() {
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "inner")
+        );
+    }
+
+    @Override
+    public Node deepCopy() {
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "deepCopy")
+        );
+    }
+
+    @Override
     public Collection<SAXParseException> validate() {
         throw new UnsupportedOperationException(
             String.format(SaxonDocument.UNSUPPORTED, "validate")

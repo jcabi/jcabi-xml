@@ -68,7 +68,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import net.sf.saxon.trans.SymbolicName;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -323,12 +322,21 @@ public final class XMLDocument implements XML {
         final Node casted = this.cache;
         final Node answer;
         if (casted instanceof Document) {
-            answer = casted;
-//            answer = casted.cloneNode(true);
+            answer = casted.cloneNode(true);
         } else {
             answer = XMLDocument.createImportedNode(casted);
         }
         return answer;
+    }
+
+    @Override
+    public Node inner() {
+        return this.cache;
+    }
+
+    @Override
+    public Node deepCopy() {
+        return this.node();
     }
 
     @Override

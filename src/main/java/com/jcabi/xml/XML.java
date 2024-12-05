@@ -161,9 +161,27 @@ public interface XML {
 
     /**
      * Retrieve DOM node, represented by this wrapper.
+     * This method is deprecated, use {@link #inner()} ()} and {@link #deepCopy()} methods instead.
+     * This method works exactly the same as {@link #deepCopy()}.
      * @return DOM node
      */
+    @Deprecated
     Node node();
+
+    /**
+     * Retrieve DOM node, represented by this wrapper.
+     * Pay attention that this method returns inner node, not a deep copy.
+     * It means that any changes to the returned node will affect the original XML.
+     * @return Inner node.
+     */
+    Node inner();
+
+    /**
+     * Retrieve a deep copy of the DOM node, represented by this wrapper.
+     * Might be expensive in terms of performance.
+     * @return Deep copy of the node.
+     */
+    Node deepCopy();
 
     /**
      * Validate this XML against the XSD schema inside it.

@@ -108,8 +108,10 @@ public final class StrictXML implements XML {
      * @param errors XML Document errors
      */
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
-    private StrictXML(final XML xml,
-        final Collection<SAXParseException> errors) {
+    private StrictXML(
+        final XML xml,
+        final Collection<SAXParseException> errors
+    ) {
         if (!errors.isEmpty()) {
             Logger.warn(
                 StrictXML.class,
@@ -160,6 +162,16 @@ public final class StrictXML implements XML {
     }
 
     @Override
+    public Node inner() {
+        return this.origin.inner();
+    }
+
+    @Override
+    public Node deepCopy() {
+        return this.origin.deepCopy();
+    }
+
+    @Override
     public Collection<SAXParseException> validate() {
         return this.origin.validate();
     }
@@ -185,7 +197,8 @@ public final class StrictXML implements XML {
      * @return List of messages to print
      */
     private static Iterable<String> print(
-        final Collection<SAXParseException> errors) {
+        final Collection<SAXParseException> errors
+    ) {
         final Collection<String> lines = new ArrayList<>(errors.size());
         for (final SAXParseException error : errors) {
             lines.add(StrictXML.asMessage(error));
@@ -248,7 +261,8 @@ public final class StrictXML implements XML {
      */
     private static Collection<SAXParseException> validate(
         final XML xml,
-        final Validator validator) {
+        final Validator validator
+    ) {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<>();
         final int max = 3;
