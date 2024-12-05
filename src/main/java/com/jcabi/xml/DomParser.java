@@ -31,6 +31,7 @@ package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -100,10 +101,6 @@ final class DomParser {
     }
 
 
-    DomParser(final DocumentBuilderFactory fct, final InputStream stream) {
-        this(fct, new StreamSource(stream));
-    }
-
     DomParser(final DocumentBuilderFactory fct, final File file) {
         this(fct, new FileSource(file));
     }
@@ -155,6 +152,10 @@ final class DomParser {
         return doc;
     }
 
+    /**
+     * Source of XML.
+     * @since 0.32
+     */
     private interface DocSource {
 
         Document apply(DocumentBuilder builder) throws IOException, SAXException;
@@ -162,15 +163,22 @@ final class DomParser {
         long length();
     }
 
+    /**
+     * File source of XML from a file.
+     * @since 0.32
+     */
     private static class FileSource implements DocSource {
 
+        /**
+         * The file.
+         */
         private final File file;
 
-        private FileSource(final Path path) {
-            this(path.toFile());
-        }
-
-        private FileSource(final File file) {
+        /**
+         * Public ctor.
+         * @param file The file.
+         */
+        FileSource(final File file) {
             this.file = file;
         }
 
@@ -185,38 +193,30 @@ final class DomParser {
         }
     }
 
-
-    private static class StreamSource implements DocSource {
-
-        private final InputStream stream;
-
-        public StreamSource(final InputStream stream) {
-            this.stream = stream;
-        }
-
-        @Override
-        public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
-            final Document res = builder.parse(this.stream);
-            this.stream.close();
-            return res;
-        }
-
-        @Override
-        public long length() {
-            return 0;
-        }
-    }
-
-
+    /**
+     * Bytes source of XML.
+     * @since 0.32
+     */
     private static class BytesSource implements DocSource {
 
+        /**
+         * Bytes of the XML.
+         */
         private final byte[] xml;
 
-        private BytesSource(final String xml) {
+        /**
+         * Public ctor.
+         * @param xml Bytes of the XML.
+         */
+        BytesSource(final String xml) {
             this(xml.getBytes(StandardCharsets.UTF_8));
         }
 
-        private BytesSource(final byte[] xml) {
+        /**
+         * Public ctor.
+         * @param xml Bytes of the XML.
+         */
+        BytesSource(final byte[] xml) {
             this.xml = xml;
         }
 
@@ -227,7 +227,7 @@ final class DomParser {
 
         @Override
         public long length() {
-            return xml.length;
+            return this.xml.length;
         }
     }
 }

@@ -184,6 +184,23 @@ public final class XMLDocument implements XML {
     }
 
     /**
+     * Public ctor, from XML in a file.
+     *
+     * <p>The object is created with a default implementation of
+     * {@link NamespaceContext}, which already defines a
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     *
+     * <p>An {@link IllegalArgumentException} is thrown if the parameter
+     * passed is not in XML format.
+     *
+     * @param file XML file
+     * @throws FileNotFoundException In case of I/O problems
+     */
+    public XMLDocument(final Path file) throws FileNotFoundException {
+        this(new DomParser(XMLDocument.configuredDFactory(), file.toFile()).document());
+    }
+
+    /**
      * Public ctor, from input stream.
      *
      * <p>The object is created with a default implementation of
@@ -201,24 +218,8 @@ public final class XMLDocument implements XML {
      */
     @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public XMLDocument(final InputStream stream) throws IOException {
-        this(new DomParser(XMLDocument.configuredDFactory(), stream).document());
-    }
-
-    /**
-     * Public ctor, from XML in a file.
-     *
-     * <p>The object is created with a default implementation of
-     * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
-     *
-     * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
-     *
-     * @param file XML file
-     * @throws FileNotFoundException In case of I/O problems
-     */
-    public XMLDocument(final Path file) throws FileNotFoundException {
-        this(new DomParser(XMLDocument.configuredDFactory(), file.toFile()).document());
+        this(new TextResource(stream).toString());
+        stream.close();
     }
 
     /**
