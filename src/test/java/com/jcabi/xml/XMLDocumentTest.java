@@ -579,6 +579,25 @@ final class XMLDocumentTest {
     }
 
     @Test
+    void validatesAndDetectsTwice() {
+        final XML xml = new XMLDocument("<second/>");
+        final XML xsd = new XMLDocument(
+            StringUtils.join(
+                "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                "<xs:element name='first'/></xs:schema>"
+            )
+        );
+        MatcherAssert.assertThat(
+            xml.validate(xsd),
+            Matchers.iterableWithSize(1)
+        );
+        MatcherAssert.assertThat(
+            xml.validate(xsd),
+            Matchers.iterableWithSize(1)
+        );
+    }
+
+    @Test
     @SuppressWarnings({
         "PMD.AvoidInstantiatingObjectsInLoops",
         "PMD.InsufficientStringBufferDeclaration"
