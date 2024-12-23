@@ -134,6 +134,24 @@ final class StrictXMLTest {
     }
 
     @Test
+    void printsInnerXmlToString() {
+        final String xml = "<root>just</root>";
+        MatcherAssert.assertThat(
+            "StrictXML must print inner XML",
+            new StrictXML(
+                new XMLDocument(xml),
+                new XMLDocument(
+                    StringUtils.join(
+                        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
+                        "<xs:element name='root' type='xs:string'/></xs:schema>"
+                    )
+                )
+            ).toString(),
+            Matchers.containsString(xml)
+        );
+    }
+
+    @Test
     @Disabled
     void validatesMultipleXmlsInThreads() throws Exception {
         final XML xsd = new XMLDocument(
