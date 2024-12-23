@@ -148,7 +148,7 @@ public final class StrictXML implements XML {
 
     @Override
     public String toString() {
-        return this.origin.toString();
+        return this.origin.value().toString();
     }
 
     @Override
