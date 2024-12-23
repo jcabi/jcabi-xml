@@ -94,7 +94,7 @@ final class StrictXMLTest {
     void rejectsInvalidXmlThrough() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> new StrictXML(
+            new StrictXML(
                 new XMLDocument("<root>not an integer</root>"),
                 new XMLDocument(
                     StringUtils.join(
@@ -102,7 +102,8 @@ final class StrictXMLTest {
                         "<xs:element name='root' type='xs:integer'/></xs:schema>"
                     )
                 )
-            )
+            )::inner,
+            "An exception should have been thrown if XML does not match to XSD schema"
         );
     }
 
@@ -127,7 +128,8 @@ final class StrictXMLTest {
                 new XMLDocument(
                     this.getClass().getResource("xsi-schemalocation-invalid.xml")
                 )
-            )
+            ).inner(),
+            "An exception should have been thrown if schema location is invalid"
         );
     }
 
@@ -244,7 +246,7 @@ final class StrictXMLTest {
     void rejectXmlWhenXsdIsNotAvailableOnClasspath() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> new StrictXML(
+            new StrictXML(
                 new XMLDocument(
                     StringUtils.join(
                         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
@@ -263,7 +265,8 @@ final class StrictXMLTest {
                         "</payment>"
                     )
                 )
-            )
+            )::inner,
+            "An exception should have been thrown if XSD is not available on classpath"
         );
     }
 
@@ -271,9 +274,10 @@ final class StrictXMLTest {
     void handlesXmlWithoutSchemaLocation() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> new StrictXML(
+            new StrictXML(
                 new XMLDocument("<a></a>")
-            )
+            )::inner,
+            "An exception should have been thrown if XML does not contain a schema location"
         );
     }
 }

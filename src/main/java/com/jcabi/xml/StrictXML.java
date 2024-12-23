@@ -43,6 +43,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
+import org.cactoos.Scalar;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Unchecked;
 import org.w3c.dom.Node;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
@@ -64,7 +67,7 @@ public final class StrictXML implements XML {
     /**
      * Original XML document.
      */
-    private final transient XML origin;
+    private final transient Unchecked<XML> origin;
 
     /**
      * Public ctor.
@@ -90,7 +93,7 @@ public final class StrictXML implements XML {
      * @param val Custom validator
      */
     public StrictXML(final XML xml, final Validator val) {
-        this(xml, StrictXML.validate(xml, val));
+        this(xml, () -> StrictXML.validate(xml, val));
     }
 
     /**
@@ -99,36 +102,48 @@ public final class StrictXML implements XML {
      * @param schema XSD schema
      */
     public StrictXML(final XML xml, final XML schema) {
-        this(xml, StrictXML.check(xml, schema));
+        this(xml, () -> StrictXML.check(xml, schema));
     }
 
     /**
      * Private ctor.
      * @param xml XML Document
-     * @param errors XML Document errors
+     * @param errs XML Document errors function
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     private StrictXML(
         final XML xml,
-        final Collection<SAXParseException> errors
+        final Scalar<Collection<SAXParseException>> errs
     ) {
-        if (!errors.isEmpty()) {
-            Logger.warn(
-                StrictXML.class,
-                "%d XML validation error(s):\n  %s\n%s",
-                errors.size(),
-                StrictXML.join(StrictXML.print(errors), "\n  "),
-                xml
-            );
-            throw new IllegalArgumentException(
-                String.format(
-                    "%d error(s) in XML document: %s",
-                    errors.size(),
-                    StrictXML.join(StrictXML.print(errors), ";")
-                )
-            );
-        }
-        this.origin = xml;
+        this(
+            () -> {
+                final Collection<SAXParseException> errors = errs.value();
+                if (!errors.isEmpty()) {
+                    Logger.warn(
+                        StrictXML.class,
+                        "%d XML validation error(s):\n  %s\n%s",
+                        errors.size(),
+                        StrictXML.join(StrictXML.print(errors), "\n  "),
+                        xml
+                    );
+                    throw new IllegalArgumentException(
+                        String.format(
+                            "%d error(s) in XML document: %s",
+                            errors.size(),
+                            StrictXML.join(StrictXML.print(errors), ";")
+                        )
+                    );
+                }
+                return xml;
+            }
+        );
+    }
+
+    /**
+     * Default ctor.
+     * @param xml XML supplier
+     */
+    private StrictXML(final Scalar<XML> xml) {
+        this.origin = new Unchecked<>(new Sticky<>(xml));
     }
 
     @Override
@@ -138,22 +153,22 @@ public final class StrictXML implements XML {
 
     @Override
     public List<String> xpath(final String query) {
-        return this.origin.xpath(query);
+        return this.origin.value().xpath(query);
     }
 
     @Override
     public List<XML> nodes(final String query) {
-        return this.origin.nodes(query);
+        return this.origin.value().nodes(query);
     }
 
     @Override
     public XML registerNs(final String prefix, final Object uri) {
-        return this.origin.registerNs(prefix, uri);
+        return this.origin.value().registerNs(prefix, uri);
     }
 
     @Override
     public XML merge(final NamespaceContext context) {
-        return this.origin.merge(context);
+        return this.origin.value().merge(context);
     }
 
     /**
@@ -164,27 +179,27 @@ public final class StrictXML implements XML {
      */
     @Deprecated
     public Node node() {
-        return this.origin.deepCopy();
+        return this.origin.value().deepCopy();
     }
 
     @Override
     public Node inner() {
-        return this.origin.inner();
+        return this.origin.value().inner();
     }
 
     @Override
     public Node deepCopy() {
-        return this.origin.deepCopy();
+        return this.origin.value().deepCopy();
     }
 
     @Override
     public Collection<SAXParseException> validate() {
-        return this.origin.validate();
+        return this.origin.value().validate();
     }
 
     @Override
     public Collection<SAXParseException> validate(final XML xsd) {
-        return this.origin.validate(xsd);
+        return this.origin.value().validate(xsd);
     }
 
     /**
