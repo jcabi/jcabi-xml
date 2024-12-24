@@ -29,35 +29,20 @@
  */
 package com.jcabi.xml;
 
-import com.google.common.collect.Iterables;
 import com.yegor256.OnlineMeans;
+import com.yegor256.Together;
 import com.yegor256.WeAreOnline;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.security.SecureRandom;
-import java.util.Collections;
-import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import javax.xml.transform.Source;
-import javax.xml.validation.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
 
 /**
  * Test case for {@link StrictXML}.
@@ -68,7 +53,6 @@ import org.mockito.stubbing.Answer;
  */
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
 final class StrictXMLTest {
-
     @BeforeEach
     void weAreOnline() throws IOException {
         Assumptions.assumeTrue(
@@ -78,15 +62,18 @@ final class StrictXMLTest {
 
     @Test
     void passesValidXmlThrough() {
-        new StrictXML(
-            new XMLDocument("<root>passesValidXmlThrough</root>"),
-            new XMLDocument(
-                StringUtils.join(
-                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-                    "<xs:element name='root' type='xs:string'/>",
-                    "</xs:schema>"
+        Assertions.assertDoesNotThrow(
+            new StrictXML(
+                new XMLDocument("<root>RootXML</root>"),
+                new XMLDocument(
+                    StringUtils.join(
+                        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                        "<xs:element name='root' type='xs:string'/>",
+                        "</xs:schema>"
+                    )
                 )
-            )
+            )::inner,
+            "XML should be validated without errors"
         );
     }
 
@@ -95,11 +82,12 @@ final class StrictXMLTest {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             new StrictXML(
-                new XMLDocument("<root>not an integer</root>"),
+                new XMLDocument("<root>string</root>"),
                 new XMLDocument(
                     StringUtils.join(
-                        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
-                        "<xs:element name='root' type='xs:integer'/></xs:schema>"
+                        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                        "<xs:element name='root' type='xs:integer'/>",
+                        "</xs:schema>"
                     )
                 )
             )::inner,
@@ -111,10 +99,13 @@ final class StrictXMLTest {
     @ExtendWith(WeAreOnline.class)
     @OnlineMeans(url = "http://maven.apache.org")
     void passesValidXmlUsingXsiSchemaLocation() throws Exception {
-        new StrictXML(
-            new XMLDocument(
-                this.getClass().getResource("xsi-schemalocation-valid.xml")
-            )
+        Assertions.assertDoesNotThrow(
+            new StrictXML(
+                new XMLDocument(
+                    this.getClass().getResource("xsi-schemalocation-valid.xml")
+                )
+            )::inner,
+            "XML with path to schema should be validated without errors"
         );
     }
 
@@ -142,8 +133,9 @@ final class StrictXMLTest {
                 new XMLDocument(xml),
                 new XMLDocument(
                     StringUtils.join(
-                        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
-                        "<xs:element name='root' type='xs:string'/></xs:schema>"
+                        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                        "<xs:element name='root' type='xs:string'/>",
+                        "</xs:schema>"
                     )
                 )
             ).toString(),
@@ -151,112 +143,72 @@ final class StrictXMLTest {
         );
     }
 
-    @Test
-    @Disabled
-    void validatesMultipleXmlsInThreads() throws Exception {
-        final XML xsd = new XMLDocument(
-            StringUtils.join(
-                "<xs:schema xmlns:xs ='http://www.w3.org/2001/XMLSchema' >",
-                "<xs:element name='r'><xs:complexType><xs:sequence>",
-                "<xs:element name='x' maxOccurs='unbounded'><xs:simpleType>",
-                "<xs:restriction base='xs:integer'>",
-                "<xs:maxInclusive value='100'/></xs:restriction>",
-                "</xs:simpleType></xs:element>",
-                "</xs:sequence></xs:complexType></xs:element></xs:schema>"
+    @RepeatedTest(60)
+    void doesNotFailOnFetchingInMultipleThreadsFromTheSameDocument() {
+        final XML xml = new StrictXML(
+            new XMLDocument("<root>RootXML</root>"),
+            new XMLDocument(
+                StringUtils.join(
+                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                    "<xs:element name='root' type='xs:string'/>",
+                    "</xs:schema>"
+                )
             )
         );
-        final Random rnd = new SecureRandom();
-        final XML xml = new XMLDocument(
-            StringUtils.join(
-                Iterables.concat(
-                    Collections.singleton("<r>"),
-                    Iterables.transform(
-                        Collections.nCopies(10, 0),
-                        pos -> String.format(
-                            "<x>%d</x>", rnd.nextInt(100)
-                        )
-                    ),
-                    Collections.singleton("<x>101</x></r>")
-                ),
-                " "
-            )
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> xml.nodes("/root")
+            )::asList,
+            "StrictXML must not fail on fetching in multiple threads from the same document"
         );
-        final AtomicInteger done = new AtomicInteger();
-        final int threads = Runtime.getRuntime().availableProcessors() * 10;
-        final CountDownLatch latch = new CountDownLatch(threads);
-        final Callable<Void> callable = () -> {
-            try {
-                new StrictXML(xml, xsd);
-            } catch (final IllegalArgumentException ex) {
-                done.incrementAndGet();
-            } finally {
-                latch.countDown();
-            }
-            return null;
-        };
-        final ExecutorService service = Executors.newFixedThreadPool(5);
-        try {
-            for (int count = 0; count < threads; count += 1) {
-                service.submit(callable);
-            }
-            latch.await(1L, TimeUnit.SECONDS);
-            MatcherAssert.assertThat(done.get(), Matchers.equalTo(threads));
-        } finally {
-            service.shutdown();
-            MatcherAssert.assertThat(
-                service.awaitTermination(10L, TimeUnit.SECONDS),
-                Matchers.is(true)
-            );
-            service.shutdownNow();
-        }
     }
 
-    @Test
-    @Disabled
-    void passesValidXmlWithNetworkProblems() throws Exception {
-        final Validator validator = Mockito.mock(Validator.class);
-        final AtomicInteger counter = new AtomicInteger(0);
-        // @checkstyle IllegalThrowsCheck (5 lines)
-        Mockito.doAnswer(
-            (Answer<Void>) invocation -> {
-                final int attempt = counter.incrementAndGet();
-                if (attempt == 1 || attempt == 2) {
-                    throw new SocketException(
-                        String.format("Attempt #%s failed", attempt)
+    @RepeatedTest(60)
+    void doesNotFailOnFetchingInMultipleThreadsFromDifferentDocuments() {
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> {
+                    final XML xml = new StrictXML(
+                        new XMLDocument("<root>RootXML</root>"),
+                        new XMLDocument(
+                            StringUtils.join(
+                                "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                                "<xs:element name='root' type='xs:string'/>",
+                                "</xs:schema>"
+                            )
+                        )
                     );
+                    return xml.nodes("/root");
                 }
-                return null;
-            }
-        ).when(validator).validate(ArgumentMatchers.any(Source.class));
-        new StrictXML(
-            new XMLDocument(
-                "<root>passesValidXmlWithNetworkProblems</root>"
-            ),
-            validator
+            )::asList,
+            "StrictXML must not fail on fetching in multiple threads from different document"
         );
     }
 
     @Test
     void lookupXsdsFromClasspath() {
-        new StrictXML(
-            new XMLDocument(
-                StringUtils.join(
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-                    "<payment xmlns=\"http://jcabi.com/schema/xml\" ",
-                    "xmlns:xsi=\"",
-                    "http://www.w3.org/2001/XMLSchema-instance",
-                    "\" ",
-                    "xsi:schemaLocation=\"",
-                    "http://jcabi.com/schema/xml ",
-                    "com/jcabi/xml/sample-namespaces.xsd",
-                    "\">",
-                    "<id>333</id>",
-                    "<date>1-Jan-2013</date>",
-                    "<debit>test-1</debit>",
-                    "<credit>test-2</credit>",
-                    "</payment>"
+        Assertions.assertDoesNotThrow(
+            new StrictXML(
+                new XMLDocument(
+                    StringUtils.join(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+                        "<payment xmlns=\"http://jcabi.com/schema/xml\" ",
+                        "xmlns:xsi=\"",
+                        "http://www.w3.org/2001/XMLSchema-instance",
+                        "\" ",
+                        "xsi:schemaLocation=\"",
+                        "http://jcabi.com/schema/xml ",
+                        "com/jcabi/xml/sample-namespaces.xsd",
+                        "\">",
+                        "<id>333</id>",
+                        "<date>1-Jan-2013</date>",
+                        "<debit>test-1</debit>",
+                        "<credit>test-2</credit>",
+                        "</payment>"
+                    )
                 )
-            )
+            )::inner,
+            "StrictXML should not have failed on validation via classpath"
         );
     }
 

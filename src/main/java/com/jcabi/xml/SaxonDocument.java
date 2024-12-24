@@ -50,6 +50,7 @@ import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import org.w3c.dom.Node;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -228,7 +229,7 @@ public final class SaxonDocument implements XML {
     }
 
     @Override
-    public Collection<SAXParseException> validate() {
+    public Collection<SAXParseException> validate(final LSResourceResolver resolver) {
         throw new UnsupportedOperationException(
             String.format(SaxonDocument.UNSUPPORTED, "validate")
         );

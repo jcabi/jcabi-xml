@@ -29,8 +29,8 @@
  */
 package com.jcabi.xml;
 
-import com.google.common.collect.Iterables;
 import com.jcabi.matchers.XhtmlMatchers;
+import com.yegor256.Together;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +44,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -61,6 +60,7 @@ import org.cactoos.text.FormattedText;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsEqual;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -78,6 +78,16 @@ import org.xml.sax.SAXParseException;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads"})
 final class XMLDocumentTest {
+    /**
+     * Root XSD.
+     */
+    private static final XML XSD = new XMLDocument(
+        StringUtils.join(
+            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+            "<xs:element name='root' type='xs:string'/>",
+            "</xs:schema>"
+        )
+    );
 
     @Test
     void findsDocumentNodesWithXpath() {
@@ -119,6 +129,74 @@ final class XMLDocumentTest {
             new IsEqual<>(
                 Arrays.asList("abc", "def")
             )
+        );
+    }
+
+    @RepeatedTest(60)
+    void doesNotFailOnFetchingInMultipleThreadsFromTheSameDocument() {
+        final XML xml = new XMLDocument("<a></a>");
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> xml.nodes("/a")
+            )::asList,
+            "XMLDocument must not fail on fetching in multiple threads from the same document"
+        );
+    }
+
+    @RepeatedTest(60)
+    void doesNotFailOnFetchingInMultipleThreadsFromDifferentDocuments() {
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> {
+                    final XML xmir = new XMLDocument("<a></a>");
+                    return xmir.nodes("/a");
+                }
+            )::asList,
+            "XMLDocument must not fail on fetching in multiple threads from different documents"
+        );
+    }
+
+    @RepeatedTest(60)
+    void doesNotFailOnXsdValidationInMultipleThreadsWithTheSameDocumentAndXsd() {
+        final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> xml.validate(XMLDocumentTest.XSD)
+            )::asList,
+            "XMLDocument should not fail on validation in multiple threads with the same document and XSD"
+        );
+    }
+
+    @RepeatedTest(60)
+    void doesNotFailOnXsdValidationInMultipleThreadsWithDifferentDocumentAndXsd() {
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> {
+                    final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
+                    final XML xsd = new XMLDocument(
+                        StringUtils.join(
+                            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                            "<xs:element name='root' type='xs:string'/>",
+                            "</xs:schema>"
+                        )
+                    );
+                    return xml.validate(xsd);
+                }
+            )::asList,
+            "XMLDocument should not fail on validation in multiple threads with different document and XSD"
+        );
+    }
+
+    @RepeatedTest(60)
+    void doesNotFailOnXsdValidationInMultipleThreadsWithDifferentDocumentAndTheSameXsd() {
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> {
+                    final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
+                    return xml.validate(XMLDocumentTest.XSD);
+                }
+            )::asList,
+            "XMLDocument should not fail on validation in multiple threads with different document and the same XSD"
         );
     }
 
@@ -371,53 +449,6 @@ final class XMLDocumentTest {
     }
 
     @Test
-    @Disabled
-    void takesNodeInMultipleThreads() throws Exception {
-        final int threads = Runtime.getRuntime().availableProcessors() * 10;
-        final XML xml = new XMLDocument(
-            StringUtils.join(
-                Iterables.concat(
-                    Collections.singleton("<r>"),
-                    Iterables.transform(
-                        Collections.nCopies(1000, 0),
-                        pos -> String.format("<x>%d</x>", pos)
-                    ),
-                    Collections.singleton("<x>5555</x></r>")
-                ),
-                " "
-            )
-        );
-        final AtomicInteger done = new AtomicInteger();
-        final CountDownLatch latch = new CountDownLatch(threads);
-        final Runnable runnable = () -> {
-            try {
-                MatcherAssert.assertThat(
-                    new XMLDocument(xml.inner()).toString(),
-                    Matchers.containsString(">5555<")
-                );
-                done.incrementAndGet();
-            } finally {
-                latch.countDown();
-            }
-        };
-        final ExecutorService service = Executors.newFixedThreadPool(threads);
-        try {
-            for (int thread = 0; thread < threads; ++thread) {
-                service.submit(runnable);
-            }
-            latch.await(1L, TimeUnit.SECONDS);
-            MatcherAssert.assertThat(done.get(), Matchers.equalTo(threads));
-        } finally {
-            service.shutdown();
-            MatcherAssert.assertThat(
-                service.awaitTermination(10L, TimeUnit.SECONDS),
-                Matchers.is(true)
-            );
-            service.shutdownNow();
-        }
-    }
-
-    @Test
     void performsXpathCalculations() {
         final XML xml = new XMLDocument("<x><a/><a/><a/></x>");
         MatcherAssert.assertThat(
@@ -553,14 +584,6 @@ final class XMLDocumentTest {
         MatcherAssert.assertThat(
             new XMLDocument("<test></test>").validate(xsd),
             Matchers.empty()
-        );
-    }
-
-    @Test
-    void validatesXmlWithoutSchema() {
-        MatcherAssert.assertThat(
-            new XMLDocument("<test/>").validate(),
-            Matchers.not(Matchers.empty())
         );
     }
 
@@ -772,5 +795,4 @@ final class XMLDocumentTest {
                 )
             );
     }
-
 }

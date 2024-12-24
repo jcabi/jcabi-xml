@@ -61,7 +61,6 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import javax.xml.xpath.XPath;
@@ -72,6 +71,7 @@ import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -425,45 +425,51 @@ public final class XMLDocument implements XML {
 
     @Override
     public Collection<SAXParseException> validate(final XML xsd) {
-        final Schema schema;
-        try {
-            schema = SchemaFactory
-                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                .newSchema(new StreamSource(new StringReader(xsd.toString())));
-        } catch (final SAXException ex) {
-            throw new IllegalStateException(
-                String.format("Failed to create XSD schema from %s", xsd),
-                ex
-            );
+        synchronized (xsd) {
+            final Validator validator;
+            try {
+                validator = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                    .newSchema(new StreamSource(new StringReader(xsd.toString())))
+                    .newValidator();
+            } catch (final SAXException ex) {
+                throw new IllegalStateException(
+                    String.format("Failed to create XSD schema from %s", xsd),
+                    ex
+                );
+            }
+            return this.validate(validator);
         }
-        return this.validate(schema);
     }
 
     @Override
-    public Collection<SAXParseException> validate() {
-        final Schema schema;
-        try {
-            schema = SchemaFactory
-                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                .newSchema();
-        } catch (final SAXException ex) {
-            throw new IllegalStateException(
-                "Failed to create XSD schema",
-                ex
-            );
+    public Collection<SAXParseException> validate(final LSResourceResolver resolver) {
+        synchronized (resolver) {
+            final Validator validator;
+            try {
+                validator = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                    .newSchema()
+                    .newValidator();
+                validator.setResourceResolver(resolver);
+            } catch (final SAXException ex) {
+                throw new IllegalStateException(
+                    "Failed to create XSD schema",
+                    ex
+                );
+            }
+            return this.validate(validator);
         }
-        return this.validate(schema);
     }
 
     /**
-     * Validate against schema.
-     * @param schema The XSD schema
+     * Validate through validator.
+     * @param validator Validator
      * @return List of errors
      */
-    public Collection<SAXParseException> validate(final Schema schema) {
+    private Collection<SAXParseException> validate(final Validator validator) {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<>();
-        final Validator validator = schema.newValidator();
         validator.setErrorHandler(new XMLDocument.ValidationHandler(errors));
         try {
             validator.validate(new DOMSource(this.cache));
@@ -473,7 +479,7 @@ public final class XMLDocument implements XML {
         if (Logger.isDebugEnabled(this)) {
             Logger.debug(
                 this, "%s detected %d error(s)",
-                schema.getClass().getName(), errors.size()
+                validator.getClass().getName(), errors.size()
             );
         }
         return errors;
@@ -536,7 +542,9 @@ public final class XMLDocument implements XML {
                 )
             );
         }
-        return (T) xpath.evaluate(query, this.cache, qname);
+        synchronized (this.cache) {
+            return (T) xpath.evaluate(query, this.cache, qname);
+        }
     }
 
     /**
