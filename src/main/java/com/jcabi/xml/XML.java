@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.xml.namespace.NamespaceContext;
 import org.w3c.dom.Node;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -185,10 +186,11 @@ public interface XML {
 
     /**
      * Validate this XML against the XSD schema inside it.
+     * @param resolver XSD schema resolver
      * @return List of errors found
      * @since 0.31.0
      */
-    Collection<SAXParseException> validate();
+    Collection<SAXParseException> validate(LSResourceResolver resolver);
 
     /**
      * Validate this XML against the provided XSD schema.
@@ -197,5 +199,4 @@ public interface XML {
      * @since 0.31.0
      */
     Collection<SAXParseException> validate(XML xsd);
-
 }

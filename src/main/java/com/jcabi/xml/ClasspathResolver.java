@@ -42,16 +42,19 @@ final class ClasspathResolver implements LSResourceResolver {
 
     @Override
     @SuppressWarnings("PMD.UseObjectForClearerAPI")
-    // @checkstyle ParameterNumber (1 line)
-    public LSInput resolveResource(final String type, final String nspace,
-        final String pid, final String sid, final String base) {
+    // @checkstyle ParameterNumber (10 lines)
+    public LSInput resolveResource(
+        final String type,
+        final String nspace,
+        final String pid,
+        final String sid,
+        final String base
+    ) {
         LSInput input = null;
-        final ClassLoader loader =
-            Thread.currentThread().getContextClassLoader();
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         if (sid != null && loader.getResource(sid) != null) {
             input = new ClasspathInput(pid, sid);
         }
         return input;
     }
-
 }

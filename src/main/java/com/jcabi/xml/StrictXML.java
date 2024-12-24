@@ -30,25 +30,17 @@
 package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
-import java.io.IOException;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 import lombok.EqualsAndHashCode;
 import org.cactoos.Scalar;
 import org.cactoos.scalar.Sticky;
 import org.cactoos.scalar.Unchecked;
 import org.w3c.dom.Node;
 import org.w3c.dom.ls.LSResourceResolver;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -84,16 +76,7 @@ public final class StrictXML implements XML {
      * @since 0.19
      */
     public StrictXML(final XML xml, final LSResourceResolver resolver) {
-        this(xml, StrictXML.newValidator(resolver));
-    }
-
-    /**
-     * Public ctor.
-     * @param xml XML document
-     * @param val Custom validator
-     */
-    public StrictXML(final XML xml, final Validator val) {
-        this(xml, () -> StrictXML.validate(xml, val));
+        this(xml, () -> xml.validate(resolver));
     }
 
     /**
@@ -102,7 +85,7 @@ public final class StrictXML implements XML {
      * @param schema XSD schema
      */
     public StrictXML(final XML xml, final XML schema) {
-        this(xml, () -> StrictXML.check(xml, schema));
+        this(xml, () -> xml.validate(schema));
     }
 
     /**
@@ -193,23 +176,13 @@ public final class StrictXML implements XML {
     }
 
     @Override
-    public Collection<SAXParseException> validate() {
-        return this.origin.value().validate();
+    public Collection<SAXParseException> validate(final LSResourceResolver resolver) {
+        return this.origin.value().validate(resolver);
     }
 
     @Override
     public Collection<SAXParseException> validate(final XML xsd) {
         return this.origin.value().validate(xsd);
-    }
-
-    /**
-     * Check and return list of errors.
-     * @param xml The XML to check
-     * @param xsd Schema to use
-     * @return List of errors
-     */
-    private static Collection<SAXParseException> check(final XML xml, final XML xsd) {
-        return xml.validate(xsd);
     }
 
     /**
@@ -272,65 +245,5 @@ public final class StrictXML implements XML {
             }
         }
         return buf.toString();
-    }
-
-    /**
-     * Validate XML without external schema.
-     * @param xml XML Document
-     * @param validator XML Validator
-     * @return List of validation errors
-     */
-    private static Collection<SAXParseException> validate(
-        final XML xml,
-        final Validator validator
-    ) {
-        final Collection<SAXParseException> errors =
-            new CopyOnWriteArrayList<>();
-        final int max = 3;
-        try {
-            validator.setErrorHandler(
-                new XMLDocument.ValidationHandler(errors)
-            );
-            final DOMSource dom = new DOMSource(xml.inner());
-            for (int retry = 1; retry <= max; ++retry) {
-                try {
-                    validator.validate(dom);
-                    break;
-                } catch (final SocketException ex) {
-                    Logger.error(
-                        StrictXML.class,
-                        "Try #%d of %d failed: %s: %s",
-                        retry,
-                        max,
-                        ex.getClass().getName(),
-                        ex.getMessage()
-                    );
-                    if (retry == max) {
-                        throw new IllegalStateException(ex);
-                    }
-                }
-            }
-        } catch (final SAXException | IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-        return errors;
-    }
-
-    /**
-     * Creates a new validator.
-     * @param resolver The resolver for resources
-     * @return A new validator
-     */
-    private static Validator newValidator(final LSResourceResolver resolver) {
-        try {
-            final Validator validator = SchemaFactory
-                .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                .newSchema()
-                .newValidator();
-            validator.setResourceResolver(resolver);
-            return validator;
-        } catch (final SAXException ex) {
-            throw new IllegalStateException(ex);
-        }
     }
 }
