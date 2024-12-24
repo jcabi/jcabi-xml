@@ -34,6 +34,8 @@ import com.yegor256.Together;
 import com.yegor256.WeAreOnline;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -182,6 +184,27 @@ final class StrictXMLTest {
                 }
             )::asList,
             "StrictXML must not fail on fetching in multiple threads from different document"
+        );
+    }
+
+    @RepeatedTest(60)
+    void doesNotFailOnFetchingInMultipleThreadsFromSameDocumentWithClasspathResolver() {
+        final Path xsd = Paths.get(
+            "src/test/resources/com/jcabi/xml/root.xsd"
+        ).toAbsolutePath();
+        final XML xml = new XMLDocument(
+            StringUtils.join(
+                "<root",
+                " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"",
+                " xsi:noNamespaceSchemaLocation=\"file:///",
+                xsd.toString(),
+                "\">just</root>"
+            )
+        );
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> new StrictXML(xml).inner()
+            )::asList
         );
     }
 
