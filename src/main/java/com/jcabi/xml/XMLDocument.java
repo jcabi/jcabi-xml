@@ -425,7 +425,7 @@ public final class XMLDocument implements XML {
 
     @Override
     public Collection<SAXParseException> validate(final XML xsd) {
-        synchronized (xsd) {
+        synchronized (XMLDocument.class) {
             final Validator validator;
             try {
                 validator = SchemaFactory
@@ -444,7 +444,7 @@ public final class XMLDocument implements XML {
 
     @Override
     public Collection<SAXParseException> validate(final LSResourceResolver resolver) {
-        synchronized (resolver) {
+        synchronized (XMLDocument.class) {
             final Validator validator;
             try {
                 validator = SchemaFactory

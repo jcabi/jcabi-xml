@@ -81,12 +81,10 @@ final class XMLDocumentTest {
     /**
      * Root XSD.
      */
-    private static final XML XSD = new XMLDocument(
-        StringUtils.join(
-            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-            "<xs:element name='root' type='xs:string'/>",
-            "</xs:schema>"
-        )
+    private static final String XSD = StringUtils.join(
+        "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+        "<xs:element name='root' type='xs:string'/>",
+        "</xs:schema>"
     );
 
     @Test
@@ -159,9 +157,21 @@ final class XMLDocumentTest {
     @RepeatedTest(60)
     void doesNotFailOnXsdValidationInMultipleThreadsWithTheSameDocumentAndXsd() {
         final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
+        final XML xsd = new XMLDocument(XMLDocumentTest.XSD);
         Assertions.assertDoesNotThrow(
             new Together<>(
-                thread -> xml.validate(XMLDocumentTest.XSD)
+                thread -> xml.validate(xsd)
+            )::asList,
+            "XMLDocument should not fail on validation in multiple threads with the same document and XSD"
+        );
+    }
+
+    @RepeatedTest(60)
+    void doesNotFailOnXsdValidationInMultipleThreadsWithTheSameDocumentAndDifferentXsd() {
+        final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
+        Assertions.assertDoesNotThrow(
+            new Together<>(
+                thread -> xml.validate(new XMLDocument(XMLDocumentTest.XSD))
             )::asList,
             "XMLDocument should not fail on validation in multiple threads with the same document and XSD"
         );
@@ -173,13 +183,7 @@ final class XMLDocumentTest {
             new Together<>(
                 thread -> {
                     final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
-                    final XML xsd = new XMLDocument(
-                        StringUtils.join(
-                            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-                            "<xs:element name='root' type='xs:string'/>",
-                            "</xs:schema>"
-                        )
-                    );
+                    final XML xsd = new XMLDocument(XMLDocumentTest.XSD);
                     return xml.validate(xsd);
                 }
             )::asList,
@@ -189,11 +193,12 @@ final class XMLDocumentTest {
 
     @RepeatedTest(60)
     void doesNotFailOnXsdValidationInMultipleThreadsWithDifferentDocumentAndTheSameXsd() {
+        final XML xsd = new XMLDocument(XMLDocumentTest.XSD);
         Assertions.assertDoesNotThrow(
             new Together<>(
                 thread -> {
                     final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
-                    return xml.validate(XMLDocumentTest.XSD);
+                    return xml.validate(xsd);
                 }
             )::asList,
             "XMLDocument should not fail on validation in multiple threads with different document and the same XSD"
@@ -567,34 +572,22 @@ final class XMLDocumentTest {
     }
 
     @Test
-    void validatesXml() throws IOException {
-        final XML xsd = new XMLDocument(
-            new ByteArrayInputStream(
-                StringUtils.join(
-                    "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' >",
-                    "<xs:element name='test'/>",
-                    " </xs:schema>"
-                ).getBytes()
-            )
-        );
+    void validatesXml() {
+        final XML xsd = new XMLDocument(XMLDocumentTest.XSD);
         MatcherAssert.assertThat(
-            new XMLDocument("<test/>").validate(xsd),
+            new XMLDocument("<root/>").validate(xsd),
             Matchers.empty()
         );
         MatcherAssert.assertThat(
-            new XMLDocument("<test></test>").validate(xsd),
+            new XMLDocument("<root></root>").validate(xsd),
             Matchers.empty()
         );
     }
 
     @Test
     void detectsSchemaViolations() {
-        final String xsd = StringUtils.join(
-            "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-            "<xs:element name='first'/></xs:schema>"
-        );
         final Collection<SAXParseException> errors =
-            new XMLDocument("<second/>").validate(new XMLDocument(xsd));
+            new XMLDocument("<second/>").validate(new XMLDocument(XMLDocumentTest.XSD));
         MatcherAssert.assertThat(
             errors,
             Matchers.iterableWithSize(1)
@@ -604,12 +597,7 @@ final class XMLDocumentTest {
     @Test
     void validatesAndDetectsTwice() {
         final XML xml = new XMLDocument("<second/>");
-        final XML xsd = new XMLDocument(
-            StringUtils.join(
-                "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
-                "<xs:element name='first'/></xs:schema>"
-            )
-        );
+        final XML xsd = new XMLDocument(XMLDocumentTest.XSD);
         MatcherAssert.assertThat(
             xml.validate(xsd),
             Matchers.iterableWithSize(1)
