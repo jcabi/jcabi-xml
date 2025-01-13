@@ -82,7 +82,13 @@ final class XMLNavigator implements Navigator {
 
     @Override
     public Optional<String> text() {
-        return Optional.ofNullable(this.cache).map(Node::getTextContent);
+        final Optional<String> result;
+        if (this.cache.getNodeType() == Node.DOCUMENT_NODE) {
+            result = Optional.of("");
+        } else {
+            result = Optional.of(this.cache).map(Node::getTextContent);
+        }
+        return result;
     }
 
     @Override

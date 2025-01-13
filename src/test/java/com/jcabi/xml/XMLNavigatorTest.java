@@ -43,7 +43,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 final class XMLNavigatorTest {
 
     @ParameterizedTest
-    @MethodSource("elementPaths")
+    @MethodSource({"elementPaths", "attributePaths"})
     void retrievesTextFromElements(final Navigator navigator, final String expected) {
         MatcherAssert.assertThat(
             "We expect the text to be retrieved correctly",
@@ -51,7 +51,7 @@ final class XMLNavigatorTest {
                 () -> new IllegalStateException(
                     String.format("Text not found in navigator %s", navigator)
                 )
-            ),
+            ).replaceAll(" ", "").trim(),
             Matchers.equalTo(expected)
         );
     }
@@ -78,20 +78,20 @@ final class XMLNavigatorTest {
         return Stream.of(
             Arguments.of(
                 xml.navigate(),
-                "version1.2.3"
+                ""
             ),
             Arguments.of(
                 xml.navigate()
                     .child("program")
                     .child("metas"),
-                "version1.2.3"
+                "version\n1.2.3"
             ),
             Arguments.of(
                 xml.navigate()
                     .child("program")
                     .child("metas")
                     .child("meta"),
-                "version1.2.3"
+                "version\n1.2.3"
             ),
             Arguments.of(
                 xml.navigate()
@@ -112,5 +112,57 @@ final class XMLNavigatorTest {
         );
     }
 
-
+    /**
+     * Provide navigators to test.
+     * This method provides a stream of arguments to the test method:
+     * {@link #retrievesTextFromElements(Navigator, String)}.
+     * @return Stream of arguments.
+     */
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
+    private static Stream<Arguments> attributePaths() {
+        final XML xml = new XMLDocument(
+            String.join(
+                "\n",
+                "<program progattr='1'><metas>",
+                "  <meta metarg='2'>",
+                "    <head harg='3'>version</head>",
+                "    <tail targ='4'>1.2.3</tail>",
+                "  </meta></metas></program>"
+            )
+        );
+        return Stream.of(
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .attribute("progattr"),
+                "1"
+            ),
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .child("metas")
+                    .child("meta")
+                    .attribute("metarg"),
+                "2"
+            ),
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .child("metas")
+                    .child("meta")
+                    .child("head")
+                    .attribute("harg"),
+                "3"
+            ),
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .child("metas")
+                    .child("meta")
+                    .child("tail")
+                    .attribute("targ"),
+                "4"
+            )
+        );
+    }
 }
