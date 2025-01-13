@@ -199,4 +199,11 @@ public interface XML {
      * @since 0.31.0
      */
     Collection<SAXParseException> validate(XML xsd);
+
+    /**
+     * Navigate over the XML document.
+     * @return Navigator to navigate over the XML document.
+     * @since 0.33.0
+     */
+    Navigator navigate();
 }

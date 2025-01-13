@@ -242,6 +242,13 @@ public final class SaxonDocument implements XML {
         );
     }
 
+    @Override
+    public Navigator navigate() {
+        throw new UnsupportedOperationException(
+            String.format(SaxonDocument.UNSUPPORTED, "navigate")
+        );
+    }
+
     /**
      * Build Saxon XML document node from XML string text.
      * @param text XML string text.
