@@ -38,6 +38,7 @@ import org.w3c.dom.NodeList;
  * XML navigator.
  * Allows navigating through an XML document.
  * @since 0.33
+ * @checkstyle AbbreviationAsWordInNameCheck (3 lines)
  */
 final class XMLNavigator implements Navigator {
 
@@ -48,7 +49,7 @@ final class XMLNavigator implements Navigator {
 
     /**
      * Ctor.
-     * @param xml
+     * @param xml XML document node.
      */
     XMLNavigator(final Node xml) {
         this.cache = xml;

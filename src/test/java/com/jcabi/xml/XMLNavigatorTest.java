@@ -39,6 +39,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Test case for {@link XMLNavigator}.
  * @since 0.33
+ * @checkstyle AbbreviationAsWordInNameCheck (3 lines)
  */
 final class XMLNavigatorTest {
 
@@ -75,6 +76,8 @@ final class XMLNavigatorTest {
                 "</metas></program>"
             )
         );
+        final String program = "program";
+        final String metas = "metas";
         return Stream.of(
             Arguments.of(
                 xml.navigate(),
@@ -82,29 +85,29 @@ final class XMLNavigatorTest {
             ),
             Arguments.of(
                 xml.navigate()
-                    .child("program")
-                    .child("metas"),
+                    .child(program)
+                    .child(metas),
                 "version\n1.2.3"
             ),
             Arguments.of(
                 xml.navigate()
-                    .child("program")
-                    .child("metas")
+                    .child(program)
+                    .child(metas)
                     .child("meta"),
                 "version\n1.2.3"
             ),
             Arguments.of(
                 xml.navigate()
-                    .child("program")
-                    .child("metas")
+                    .child(program)
+                    .child(metas)
                     .child("meta")
                     .child("head"),
                 "version"
             ),
             Arguments.of(
                 xml.navigate()
-                    .child("program")
-                    .child("metas")
+                    .child(program)
+                    .child(metas)
                     .child("meta")
                     .child("tail"),
                 "1.2.3"
@@ -123,43 +126,40 @@ final class XMLNavigatorTest {
         final XML xml = new XMLDocument(
             String.join(
                 "\n",
-                "<program progattr='1'><metas>",
-                "  <meta metarg='2'>",
-                "    <head harg='3'>version</head>",
-                "    <tail targ='4'>1.2.3</tail>",
-                "  </meta></metas></program>"
+                "<prog progattr='1'>",
+                "  <m metarg='2'>",
+                "    <h harg='3'>version</h>",
+                "    <t targ='4'>1.2.3</t>",
+                "  </m></prog>"
             )
         );
         return Stream.of(
             Arguments.of(
                 xml.navigate()
-                    .child("program")
+                    .child("prog")
                     .attribute("progattr"),
                 "1"
             ),
             Arguments.of(
                 xml.navigate()
-                    .child("program")
-                    .child("metas")
-                    .child("meta")
+                    .child("prog")
+                    .child("m")
                     .attribute("metarg"),
                 "2"
             ),
             Arguments.of(
                 xml.navigate()
-                    .child("program")
-                    .child("metas")
-                    .child("meta")
-                    .child("head")
+                    .child("prog")
+                    .child("m")
+                    .child("h")
                     .attribute("harg"),
                 "3"
             ),
             Arguments.of(
                 xml.navigate()
-                    .child("program")
-                    .child("metas")
-                    .child("meta")
-                    .child("tail")
+                    .child("prog")
+                    .child("m")
+                    .child("t")
                     .attribute("targ"),
                 "4"
             )
