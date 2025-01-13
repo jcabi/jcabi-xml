@@ -29,8 +29,10 @@
  */
 package com.jcabi.xml;
 
+import java.util.Objects;
 import java.util.Optional;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * XML navigator.
@@ -54,16 +56,37 @@ final class XMLNavigator implements Navigator {
 
     @Override
     public Navigator child(final String element) {
-        return null;
+        final NodeList nodes = this.cache.getChildNodes();
+        for (int idx = 0; idx < nodes.getLength(); ++idx) {
+            final Node node = nodes.item(idx);
+            if (node.getNodeType() == Node.ELEMENT_NODE
+                && node.getNodeName().equals(element)) {
+                return new XMLNavigator(node);
+            }
+        }
+        throw new IllegalStateException(
+            String.format("Element '%s' not found in '%s'", element, this)
+        );
     }
 
     @Override
     public Navigator attribute(final String name) {
-        return null;
+        final Node item = this.cache.getAttributes().getNamedItem(name);
+        if (Objects.nonNull(item)) {
+            return new XMLNavigator(item);
+        }
+        throw new IllegalStateException(
+            String.format("Attribute '%s' not found in '%s'", name, this)
+        );
     }
 
     @Override
     public Optional<String> text() {
-        return Optional.empty();
+        return Optional.ofNullable(this.cache).map(Node::getTextContent);
+    }
+
+    @Override
+    public String toString() {
+        return new XMLDocument(this.cache).toString();
     }
 }

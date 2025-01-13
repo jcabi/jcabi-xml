@@ -43,11 +43,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 final class XMLNavigatorTest {
 
     @ParameterizedTest
-    @MethodSource("paths")
-    void retrievesTextCorrectly(final Navigator navigator, final String expected) {
+    @MethodSource("elementPaths")
+    void retrievesTextFromElements(final Navigator navigator, final String expected) {
         MatcherAssert.assertThat(
             "We expect the text to be retrieved correctly",
-            navigator.text().orElseThrow(() -> new IllegalStateException("Text not found")),
+            navigator.text().orElseThrow(
+                () -> new IllegalStateException(
+                    String.format("Text not found in navigator %s", navigator)
+                )
+            ),
             Matchers.equalTo(expected)
         );
     }
@@ -55,11 +59,11 @@ final class XMLNavigatorTest {
     /**
      * Provide navigators to test.
      * This method provides a stream of arguments to the test method:
-     * {@link #retrievesTextCorrectly(Navigator, String)}.
+     * {@link #retrievesTextFromElements(Navigator, String)}.
      * @return Stream of arguments.
      */
     @SuppressWarnings("PMD.UnusedPrivateMethod")
-    private static Stream<Arguments> paths() {
+    private static Stream<Arguments> elementPaths() {
         final XML xml = new XMLDocument(
             String.join(
                 "\n",
@@ -72,11 +76,39 @@ final class XMLNavigatorTest {
             )
         );
         return Stream.of(
-            Arguments.of(xml.navigate(), "version1.2.3"),
-            Arguments.of(xml.navigate().child("metas"), "version1.2.3"),
-            Arguments.of(xml.navigate().child("metas").child("meta"), "version1.2.3"),
-            Arguments.of(xml.navigate().child("metas").child("meta").child("head"), "version"),
-            Arguments.of(xml.navigate().child("metas").child("meta").child("tail"), "1.2.3")
+            Arguments.of(
+                xml.navigate(),
+                "version1.2.3"
+            ),
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .child("metas"),
+                "version1.2.3"
+            ),
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .child("metas")
+                    .child("meta"),
+                "version1.2.3"
+            ),
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .child("metas")
+                    .child("meta")
+                    .child("head"),
+                "version"
+            ),
+            Arguments.of(
+                xml.navigate()
+                    .child("program")
+                    .child("metas")
+                    .child("meta")
+                    .child("tail"),
+                "1.2.3"
+            )
         );
     }
 
