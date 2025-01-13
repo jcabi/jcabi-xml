@@ -185,6 +185,11 @@ public final class StrictXML implements XML {
         return this.origin.value().validate(xsd);
     }
 
+    @Override
+    public Navigator navigate() {
+        return this.origin.value().navigate();
+    }
+
     /**
      * Convert errors to lines.
      * @param errors The errors

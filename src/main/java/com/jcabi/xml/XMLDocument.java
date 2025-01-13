@@ -443,6 +443,11 @@ public final class XMLDocument implements XML {
     }
 
     @Override
+    public Navigator navigate() {
+        return new XMLNavigator(this.cache);
+    }
+
+    @Override
     public Collection<SAXParseException> validate(final LSResourceResolver resolver) {
         synchronized (XMLDocument.class) {
             final Validator validator;
