@@ -30,15 +30,15 @@
 package com.jcabi.xml;
 
 import com.jcabi.matchers.XhtmlMatchers;
-import java.util.concurrent.CountDownLatch;
+import com.yegor256.Together;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -246,7 +246,7 @@ final class XSLDocumentTest {
         ).transform(new XMLDocument("<x><a/></x>"));
     }
 
-    @Test
+    @RepeatedTest(10)
     void transformsInManyThreads() throws Exception {
         final XSL xsl = new XSLDocument(
             this.getClass().getResourceAsStream("first.xsl")
@@ -254,25 +254,14 @@ final class XSLDocumentTest {
         final XML xml = new XMLDocument(
             this.getClass().getResourceAsStream("simple.xml")
         );
-        final AtomicInteger done = new AtomicInteger(0);
-        final CountDownLatch latch = new CountDownLatch(1);
         final int total = 50;
-        final ExecutorService exec = Executors.newFixedThreadPool(total);
-        for (int task = 0; task < total; ++task) {
-            exec.submit(
-                () -> {
-                    latch.await();
-                    xsl.transform(xml);
-                    xsl.transform(xml);
-                    done.incrementAndGet();
-                    return 0;
-                }
-            );
-        }
-        latch.countDown();
-        exec.shutdown();
-        exec.awaitTermination(1L, TimeUnit.MINUTES);
-        MatcherAssert.assertThat(done.get(), Matchers.equalTo(total));
+        MatcherAssert.assertThat(
+            new Together<>(
+                total,
+                t -> xsl.transform(xml)
+            ).asList().size(),
+            Matchers.equalTo(total)
+        );
     }
 
 }
