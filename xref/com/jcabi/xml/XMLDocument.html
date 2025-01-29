@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../apidocs/com/jcabi/xml/XMLDocument.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright (c) 2012-2024, jcabi.com</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright (c) 2012-2025, jcabi.com</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> * All rights reserved.</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * Redistribution and use in source and binary forms, with or without</em>
@@ -433,7 +433,7 @@
 <a class="jxr_linenumber" name="L425" href="#L425">425</a> 
 <a class="jxr_linenumber" name="L426" href="#L426">426</a>     @Override
 <a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">public</strong> Collection&lt;SAXParseException&gt; validate(<strong class="jxr_keyword">final</strong> <a name="XML" href="../../../com/jcabi/xml/XML.html#XML">XML</a> xsd) {
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>         <strong class="jxr_keyword">synchronized</strong> (xsd) {
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>         <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>             <strong class="jxr_keyword">final</strong> Validator validator;
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>             <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L431" href="#L431">431</a>                 validator = SchemaFactory
@@ -452,7 +452,7 @@
 <a class="jxr_linenumber" name="L444" href="#L444">444</a> 
 <a class="jxr_linenumber" name="L445" href="#L445">445</a>     @Override
 <a class="jxr_linenumber" name="L446" href="#L446">446</a>     <strong class="jxr_keyword">public</strong> Collection&lt;SAXParseException&gt; validate(<strong class="jxr_keyword">final</strong> LSResourceResolver resolver) {
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">synchronized</strong> (resolver) {
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">synchronized</strong> (XMLDocument.<strong class="jxr_keyword">class</strong>) {
 <a class="jxr_linenumber" name="L448" href="#L448">448</a>             <strong class="jxr_keyword">final</strong> Validator validator;
 <a class="jxr_linenumber" name="L449" href="#L449">449</a>             <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L450" href="#L450">450</a>                 validator = SchemaFactory
@@ -679,6 +679,6 @@
 <a class="jxr_linenumber" name="L671" href="#L671">671</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2024 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2012&#x2013;2025 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
 </body>
 </html>
