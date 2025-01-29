@@ -38,7 +38,7 @@ import org.w3c.dom.ls.LSResourceResolver;
  *
  * @since 0.1
  */
-final class ClasspathResolver implements LSResourceResolver {
+public final class ClasspathResolver implements LSResourceResolver {
 
     @Override
     @SuppressWarnings("PMD.UseObjectForClearerAPI")

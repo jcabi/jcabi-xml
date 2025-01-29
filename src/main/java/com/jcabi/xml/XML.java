@@ -186,6 +186,10 @@ public interface XML {
 
     /**
      * Validate this XML against the XSD schema inside it.
+     *
+     * <p>If you don't have your own resolver, try using
+     * {@link ClasspathResolver}.</p>
+     *
      * @param resolver XSD schema resolver
      * @return List of errors found
      * @since 0.31.0
