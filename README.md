@@ -8,6 +8,7 @@
 [![codecov](https://codecov.io/gh/jcabi/jcabi-xml/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-xml)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-xml.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-xml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-xml)
+[![libs.tech recommends](https://libs.tech/project/13717355/badge.svg)](https://libs.tech/project/13717355/jcabi-xml)
 
 More details are here: [xml.jcabi.com](http://xml.jcabi.com/index.html).
 Also, read this blog post: [Java XML Parsing Made Easy][blog].
