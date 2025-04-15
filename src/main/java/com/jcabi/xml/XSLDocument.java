@@ -441,6 +441,8 @@ public final class XSLDocument implements XSL {
      */
     private Transformer transformer() {
         final TransformerFactory factory = TransformerFactory.newInstance();
+        final ConsoleErrorListener errors = new ConsoleErrorListener();
+        factory.setErrorListener(errors);
         factory.setURIResolver(this.sources);
         final Transformer trans;
         try {
@@ -458,6 +460,15 @@ public final class XSLDocument implements XSL {
         }
         for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
             trans.setParameter(ent.getKey(), ent.getValue());
+        }
+        if (!errors.summary().isEmpty()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to compile stylesheet by %s: %s",
+                    trans.getClass().getName(),
+                    errors.summary()
+                )
+            );
         }
         return trans;
     }

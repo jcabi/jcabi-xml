@@ -9,7 +9,6 @@ import com.yegor256.Together;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import javax.xml.transform.TransformerException;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -186,7 +185,7 @@ final class XSLDocumentTest {
     }
 
     @Test
-    void catchesXslWarnings() {
+    void catchesXslWarningsDuringCompilation() {
         MatcherAssert.assertThat(
             Assertions.assertThrows(
                 RuntimeException.class,
@@ -196,7 +195,6 @@ final class XSLDocumentTest {
                         .transform(new XMLDocument("<f/>"))
             ).getLocalizedMessage(),
             Matchers.allOf(
-                Matchers.containsString("Warning at xsl:stylesheet on line 31 column 139"),
                 Matchers.containsString(
                     "Stylesheet module file:/second.xsl is included or imported more than once"
                 )
