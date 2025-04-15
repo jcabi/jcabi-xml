@@ -117,9 +117,9 @@ public final class XPathContext implements NamespaceContext {
             }
         }
         if (namespace == null) {
-            if (prefix.equals(XMLConstants.XML_NS_PREFIX)) {
+            if (XMLConstants.XML_NS_PREFIX.equals(prefix)) {
                 namespace = XMLConstants.XML_NS_URI;
-            } else if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+            } else if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
                 namespace = XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
             } else {
                 namespace = XMLConstants.NULL_NS_URI;
@@ -153,10 +153,10 @@ public final class XPathContext implements NamespaceContext {
                 prefixes.add(iterator.next().toString());
             }
         }
-        if (namespace.equals(XMLConstants.XML_NS_URI)) {
+        if (XMLConstants.XML_NS_URI.equals(namespace)) {
             prefixes.add(XMLConstants.XML_NS_PREFIX);
         }
-        if (namespace.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace)) {
             prefixes.add(XMLConstants.XMLNS_ATTRIBUTE);
         }
         return Collections.unmodifiableList(prefixes).iterator();
@@ -201,7 +201,7 @@ public final class XPathContext implements NamespaceContext {
      * @return Namespaces as map
      */
     private static Map<String, String> namespacesAsMap(
-        final Object...namespaces) {
+        final Object... namespaces) {
         final ConcurrentMap<String, String> map =
             new ConcurrentHashMap<>(namespaces.length);
         for (int pos = 0; pos < namespaces.length; ++pos) {

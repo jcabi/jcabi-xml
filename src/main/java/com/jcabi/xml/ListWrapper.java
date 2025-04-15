@@ -13,6 +13,7 @@ import org.w3c.dom.Node;
 
 /**
  * Wrapper of {@link List}.
+ * @param <T> Time of items
  *
  * <p>This wrapper is our internal implementation of a {@link List}. The only
  * purpose of this wrapper is to throw our own custom exception when the client
@@ -54,7 +55,6 @@ import org.w3c.dom.Node;
  * <p>The class is immutable and thread-safe.
  *
  * @since 0.1
- * @param <T> Time of items
  */
 @SuppressWarnings("PMD.TooManyMethods")
 final class ListWrapper<T> implements List<T> {

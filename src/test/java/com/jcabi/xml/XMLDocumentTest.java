@@ -49,9 +49,18 @@ import org.xml.sax.SAXParseException;
  * Test case for {@link XMLDocument}.
  *
  * @since 0.1
+ * @todo #301:35min Remove suppression of "PMD.JUnitAssertionsShouldIncludeMessage" warning.
+ *  For now its suppressed, but it would be great to add assertion message in each test, and
+ *  enable the check. Don't forget to enable it in {@link XSLDocumentTest},
+ *  {@link XPathContextTest} as well.
  * @checkstyle AbbreviationAsWordInNameCheck (20 lines)
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads"})
+@SuppressWarnings({
+    "PMD.TooManyMethods",
+    "PMD.DoNotUseThreads",
+    "PMD.JUnitAssertionsShouldIncludeMessage",
+    "PMD.GodClass"
+})
 final class XMLDocumentTest {
     /**
      * Root XSD.
@@ -331,6 +340,7 @@ final class XMLDocumentTest {
         );
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     @Test
     void parsesInMultipleThreads() throws Exception {
         final int timeout = 10;
@@ -351,6 +361,7 @@ final class XMLDocumentTest {
         service.shutdownNow();
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     @Test
     void xpathInMultipleThreads() throws Exception {
         final int timeout = 30;
@@ -387,6 +398,7 @@ final class XMLDocumentTest {
         service.shutdownNow();
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     @Test
     void printsInMultipleThreads() throws Exception {
         final int repeat = 1000;
@@ -638,6 +650,7 @@ final class XMLDocumentTest {
         );
     }
 
+    @SuppressWarnings("PMD.CloseResource")
     @Test
     void validatesMultipleXmlsInThreads() throws Exception {
         final int random = 100;

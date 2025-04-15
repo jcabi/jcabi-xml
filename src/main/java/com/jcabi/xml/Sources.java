@@ -17,6 +17,7 @@ public interface Sources extends URIResolver {
     /**
      * Dummy sources.
      */
+    @SuppressWarnings("PMD.ConstantsInInterface")
     Sources DUMMY = (href, base) -> {
         throw new UnsupportedOperationException(
             String.format(

@@ -24,6 +24,7 @@ final class FileSourcesTest {
             .resolve("dummy.xml").toFile();
         new LengthOf(new TeeInput("test", file)).value();
         MatcherAssert.assertThat(
+            "File source was not present, but it should",
             new FileSources().resolve(file.getAbsolutePath(), null),
             Matchers.notNullValue()
         );

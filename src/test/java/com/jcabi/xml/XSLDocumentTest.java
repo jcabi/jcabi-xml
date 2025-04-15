@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.JUnitAssertionsShouldIncludeMessage"})
 final class XSLDocumentTest {
 
     @Test
@@ -46,7 +46,7 @@ final class XSLDocumentTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.DoNotUseThreads")
+    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
     void makesXslTransformationsInThreads() throws Exception {
         final int loop = 50;
         final int timeout = 30;

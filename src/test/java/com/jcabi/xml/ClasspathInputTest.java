@@ -20,6 +20,7 @@ final class ClasspathInputTest {
             "Id", "com/jcabi/xml/simple.xml"
         );
         MatcherAssert.assertThat(
+            "Input XML does not contains expected string, but it should",
             input.getStringData(),
             Matchers.containsString("<root>")
         );

@@ -84,6 +84,7 @@ final class ClasspathInput implements LSInput {
         return null;
     }
 
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
     public String getStringData() {
         try {

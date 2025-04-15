@@ -56,16 +56,17 @@ public final class ClasspathSources implements Sources {
     }
 
     @Override
+    @SuppressWarnings("PMD.CloseResource")
     public Source resolve(final String href, final String base)
         throws TransformerException {
         InputStream stream = this.getClass().getResourceAsStream(
             String.format(ClasspathSources.PATTERN, this.prefix, href)
         );
         if (stream == null) {
-            stream = this.getClass().getResourceAsStream(
+            final InputStream fallback = this.getClass().getResourceAsStream(
                 String.format(ClasspathSources.PATTERN, base, href)
             );
-            if (stream == null) {
+            if (fallback == null) {
                 throw new TransformerException(
                     String.format(
                         "Resource \"%s\" not found in classpath with prefix \"%s\" and base \"%s\"",
@@ -73,6 +74,7 @@ public final class ClasspathSources implements Sources {
                     )
                 );
             }
+            stream = fallback;
         }
         return new StreamSource(stream);
     }

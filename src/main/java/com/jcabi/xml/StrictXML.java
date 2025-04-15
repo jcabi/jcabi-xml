@@ -28,6 +28,7 @@ import org.xml.sax.SAXParseException;
  * @since 0.7
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
+@SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = "origin")
 public final class StrictXML implements XML {
 
@@ -132,10 +133,12 @@ public final class StrictXML implements XML {
     /**
      * Retrieve DOM node, represented by this wrapper.
      * This method works exactly the same as {@link #deepCopy()}.
-     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
      * @return Deep copy of the inner DOM node.
+     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
+     * @checkstyle NoJavadocForOverriddenMethodsCheck (5 lines)
      */
     @Deprecated
+    @Override
     public Node node() {
         return this.origin.value().deepCopy();
     }
