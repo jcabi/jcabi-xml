@@ -46,7 +46,7 @@ final class XSLDocumentTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.DoNotUseThreads")
+    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
     void makesXslTransformationsInThreads() throws Exception {
         final int loop = 50;
         final int timeout = 30;
