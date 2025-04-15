@@ -63,17 +63,16 @@ final class XSLDocumentTest {
             xsl.transform(new XMLDocument("<test/>")),
             XhtmlMatchers.hasXPath("/works")
         );
-        try (ExecutorService service = Executors.newFixedThreadPool(5)) {
-            for (int count = 0; count < loop; count += 1) {
-                service.submit(runnable);
-            }
-            service.shutdown();
-            MatcherAssert.assertThat(
-                service.awaitTermination(timeout, TimeUnit.SECONDS),
-                Matchers.is(true)
-            );
-            service.shutdownNow();
+        final ExecutorService service = Executors.newFixedThreadPool(5);
+        for (int count = 0; count < loop; count += 1) {
+            service.submit(runnable);
         }
+        service.shutdown();
+        MatcherAssert.assertThat(
+            service.awaitTermination(timeout, TimeUnit.SECONDS),
+            Matchers.is(true)
+        );
+        service.shutdownNow();
     }
 
     @Test
