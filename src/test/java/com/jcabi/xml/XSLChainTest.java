@@ -38,6 +38,7 @@ final class XSLChainTest {
             )
         );
         MatcherAssert.assertThat(
+            "XPath result node does not match with expected, but it should",
             new XSLChain(Arrays.asList(first, second)).transform(
                 new XMLDocument("<a/>")
             ),

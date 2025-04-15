@@ -147,7 +147,7 @@ public final class XSLDocument implements XSL {
      * @throws FileNotFoundException If fails to read
      * @since 0.21
      */
-    public XSLDocument(final File file) throws FileNotFoundException {
+    public XSLDocument(final File file) throws IOException {
         this(file, file.getAbsolutePath());
     }
 
@@ -155,11 +155,9 @@ public final class XSLDocument implements XSL {
      * Public ctor, from file  with alternative SystemId.
      * @param file Location of document
      * @param base SystemId/Base
-     * @throws FileNotFoundException If fails to read
      * @since 0.26.0
      */
-    public XSLDocument(final File file, final String base)
-        throws FileNotFoundException {
+    public XSLDocument(final File file, final String base) throws IOException {
         this(new TextResource(file).toString(), base);
     }
 
@@ -169,7 +167,7 @@ public final class XSLDocument implements XSL {
      * @throws FileNotFoundException If fails to read
      * @since 0.21
      */
-    public XSLDocument(final Path file) throws FileNotFoundException {
+    public XSLDocument(final Path file) throws IOException {
         this(file.toFile());
     }
 
@@ -181,7 +179,7 @@ public final class XSLDocument implements XSL {
      * @since 0.26.0
      */
     public XSLDocument(final Path file, final String base)
-        throws FileNotFoundException {
+        throws IOException {
         this(file.toFile(), base);
     }
 
@@ -402,6 +400,7 @@ public final class XSLDocument implements XSL {
      * @since 0.11
      * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
      */
+    @SuppressWarnings("PMD.PrematureDeclaration")
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
@@ -468,7 +467,7 @@ public final class XSLDocument implements XSL {
      * @return The same
      * @checkstyle ReturnCountCheck (5 lines)
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "PMD.UnusedPrivateMethod", "PMD.OnlyOneReturn"})
     private static Transformer forSaxon(final Transformer trans) {
         final String type = trans.getClass().getCanonicalName();
         if (!"net.sf.saxon.jaxp.TransformerImpl".equals(type)) {

@@ -62,7 +62,9 @@ import org.xml.sax.SAXParseException;
  */
 @SuppressWarnings({
     "PMD.ExcessiveImports",
-    "PMD.OnlyOneConstructorShouldDoInitialization"
+    "PMD.OnlyOneConstructorShouldDoInitialization",
+    "PMD.TooManyMethods",
+    "PMD.GodClass"
 })
 public final class XMLDocument implements XML {
     /**
@@ -270,10 +272,10 @@ public final class XMLDocument implements XML {
     @Override
     public boolean equals(final Object another) {
         final boolean eql;
-        if (!(another instanceof XML)) {
-            eql = false;
-        } else {
+        if (another instanceof XML) {
             eql = this.toString().equals(another.toString());
+        } else {
+            eql = false;
         }
         return eql;
     }
@@ -286,9 +288,11 @@ public final class XMLDocument implements XML {
     /**
      * Retrieve DOM node, represented by this wrapper.
      * This method works exactly the same as {@link #deepCopy()}.
-     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
      * @return Deep copy of the inner DOM node.
+     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
+     * @checkstyle NoJavadocForOverriddenMethodsCheck (5 lines)
      */
+    @Override
     @Deprecated
     public Node node() {
         return this.deepCopy();

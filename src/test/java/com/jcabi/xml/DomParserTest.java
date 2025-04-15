@@ -22,6 +22,7 @@ final class DomParserTest {
             DocumentBuilderFactory.newInstance(), xml
         );
         MatcherAssert.assertThat(
+            "XPath result node does not match with expected",
             parser.document(),
             XhtmlMatchers.hasXPath("/a/b")
         );
@@ -34,6 +35,7 @@ final class DomParserTest {
             DocumentBuilderFactory.newInstance(), xml
         );
         MatcherAssert.assertThat(
+            "XPath result node does not match with expected",
             parser.document(),
             XhtmlMatchers.hasXPath("/root")
         );

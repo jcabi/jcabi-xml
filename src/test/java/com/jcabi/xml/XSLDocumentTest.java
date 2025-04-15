@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.JUnitAssertionsShouldIncludeMessage"})
 final class XSLDocumentTest {
 
     @Test
@@ -63,16 +63,17 @@ final class XSLDocumentTest {
             xsl.transform(new XMLDocument("<test/>")),
             XhtmlMatchers.hasXPath("/works")
         );
-        final ExecutorService service = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
+        try (ExecutorService service = Executors.newFixedThreadPool(5)) {
+            for (int count = 0; count < loop; count += 1) {
+                service.submit(runnable);
+            }
+            service.shutdown();
+            MatcherAssert.assertThat(
+                service.awaitTermination(timeout, TimeUnit.SECONDS),
+                Matchers.is(true)
+            );
+            service.shutdownNow();
         }
-        service.shutdown();
-        MatcherAssert.assertThat(
-            service.awaitTermination(timeout, TimeUnit.SECONDS),
-            Matchers.is(true)
-        );
-        service.shutdownNow();
     }
 
     @Test

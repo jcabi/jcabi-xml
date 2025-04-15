@@ -49,9 +49,18 @@ import org.xml.sax.SAXParseException;
  * Test case for {@link XMLDocument}.
  *
  * @since 0.1
+ * @todo #301:35min Remove suppression of "PMD.JUnitAssertionsShouldIncludeMessage" warning.
+ *  For now its suppressed, but it would be great to add assertion message in each test, and
+ *  enable the check. Don't forget to enable it in {@link XSLDocumentTest},
+ *  {@link XPathContextTest} as well.
  * @checkstyle AbbreviationAsWordInNameCheck (20 lines)
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads"})
+@SuppressWarnings({
+    "PMD.TooManyMethods",
+    "PMD.DoNotUseThreads",
+    "PMD.JUnitAssertionsShouldIncludeMessage",
+    "PMD.GodClass"
+})
 final class XMLDocumentTest {
     /**
      * Root XSD.
@@ -339,16 +348,17 @@ final class XMLDocumentTest {
             new XMLDocument("<root><hey/></root>"),
             XhtmlMatchers.hasXPath("/root/hey")
         );
-        final ExecutorService service = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
+        try (ExecutorService service = Executors.newFixedThreadPool(5)) {
+            for (int count = 0; count < loop; count += 1) {
+                service.submit(runnable);
+            }
+            service.shutdown();
+            MatcherAssert.assertThat(
+                service.awaitTermination(timeout, TimeUnit.SECONDS),
+                Matchers.is(true)
+            );
+            service.shutdownNow();
         }
-        service.shutdown();
-        MatcherAssert.assertThat(
-            service.awaitTermination(timeout, TimeUnit.SECONDS),
-            Matchers.is(true)
-        );
-        service.shutdownNow();
     }
 
     @Test
@@ -375,16 +385,17 @@ final class XMLDocumentTest {
                 Matchers.iterableWithSize(1)
             );
         };
-        final ExecutorService service = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
+        try (ExecutorService service = Executors.newFixedThreadPool(5)) {
+            for (int count = 0; count < loop; count += 1) {
+                service.submit(runnable);
+            }
+            service.shutdown();
+            MatcherAssert.assertThat(
+                service.awaitTermination(timeout, TimeUnit.SECONDS),
+                Matchers.is(true)
+            );
+            service.shutdownNow();
         }
-        service.shutdown();
-        MatcherAssert.assertThat(
-            service.awaitTermination(timeout, TimeUnit.SECONDS),
-            Matchers.is(true)
-        );
-        service.shutdownNow();
     }
 
     @Test
@@ -408,24 +419,25 @@ final class XMLDocumentTest {
             );
             done.incrementAndGet();
         };
-        final ExecutorService service = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
-        }
-        service.shutdown();
-        while (true) {
-            if (done.get() == loop) {
-                break;
+        try (ExecutorService service = Executors.newFixedThreadPool(5)) {
+            for (int count = 0; count < loop; count += 1) {
+                service.submit(runnable);
             }
-            if (service.awaitTermination(1L, TimeUnit.MILLISECONDS)) {
-                break;
+            service.shutdown();
+            while (true) {
+                if (done.get() == loop) {
+                    break;
+                }
+                if (service.awaitTermination(1L, TimeUnit.MILLISECONDS)) {
+                    break;
+                }
             }
+            MatcherAssert.assertThat(
+                service.awaitTermination(1L, TimeUnit.SECONDS),
+                Matchers.is(true)
+            );
+            service.shutdownNow();
         }
-        MatcherAssert.assertThat(
-            service.awaitTermination(1L, TimeUnit.SECONDS),
-            Matchers.is(true)
-        );
-        service.shutdownNow();
     }
 
     @Test
@@ -670,16 +682,17 @@ final class XMLDocumentTest {
             );
             return null;
         };
-        final ExecutorService service = Executors.newFixedThreadPool(5);
-        for (int count = 0; count < loop; count += 1) {
-            service.submit(callable);
+        try (ExecutorService service = Executors.newFixedThreadPool(5)) {
+            for (int count = 0; count < loop; count += 1) {
+                service.submit(callable);
+            }
+            service.shutdown();
+            MatcherAssert.assertThat(
+                service.awaitTermination(timeout, TimeUnit.SECONDS),
+                Matchers.is(true)
+            );
+            service.shutdownNow();
         }
-        service.shutdown();
-        MatcherAssert.assertThat(
-            service.awaitTermination(timeout, TimeUnit.SECONDS),
-            Matchers.is(true)
-        );
-        service.shutdownNow();
     }
 
     /**

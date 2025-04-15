@@ -70,7 +70,7 @@ public final class XSDDocument implements XSD {
      * @throws FileNotFoundException If fails to read
      * @since 0.21
      */
-    public XSDDocument(final Path file) throws FileNotFoundException {
+    public XSDDocument(final Path file) throws IOException {
         this(file.toFile());
     }
 
@@ -80,7 +80,7 @@ public final class XSDDocument implements XSD {
      * @throws FileNotFoundException If fails to read
      * @since 0.21
      */
-    public XSDDocument(final File file) throws FileNotFoundException {
+    public XSDDocument(final File file) throws IOException {
         this(new TextResource(file).toString());
     }
 

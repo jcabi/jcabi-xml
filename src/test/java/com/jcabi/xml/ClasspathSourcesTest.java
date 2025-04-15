@@ -17,6 +17,7 @@ final class ClasspathSourcesTest {
     @Test
     void sourcesResolvedFromBase() throws Exception {
         MatcherAssert.assertThat(
+            "Resolved classpath source was not present, but it should be",
             new ClasspathSources().resolve("simple.xml", "com.jcabi.xml."),
             Matchers.notNullValue()
         );

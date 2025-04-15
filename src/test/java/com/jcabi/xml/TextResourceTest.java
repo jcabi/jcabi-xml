@@ -29,6 +29,7 @@ final class TextResourceTest {
             text.getBytes(StandardCharsets.UTF_8)
         );
         MatcherAssert.assertThat(
+            "Text does not match, but it should",
             new TextResource(stream).toString(),
             Matchers.is(text)
         );
@@ -41,6 +42,7 @@ final class TextResourceTest {
             .resolve("dummy.xml").toFile();
         new LengthOf(new TeeInput(text, file)).value();
         MatcherAssert.assertThat(
+            "Text does not match, but it should",
             new TextResource(file).toString(),
             Matchers.is(text)
         );

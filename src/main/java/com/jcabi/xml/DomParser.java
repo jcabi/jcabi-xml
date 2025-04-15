@@ -100,6 +100,7 @@ final class DomParser {
      * Get the document body.
      * @return The document
      */
+    @SuppressWarnings("PMD.PrematureDeclaration")
     public Document document() {
         final DocumentBuilder builder;
         try {
@@ -213,6 +214,7 @@ final class DomParser {
          * Public ctor.
          * @param xml Bytes of the XML.
          */
+        @SuppressWarnings("PMD.ArrayIsStoredDirectly")
         BytesSource(final byte[] xml) {
             this.xml = xml;
         }

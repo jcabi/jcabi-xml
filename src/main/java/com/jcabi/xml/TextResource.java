@@ -6,13 +6,13 @@ package com.jcabi.xml;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Scanner;
 import lombok.EqualsAndHashCode;
 
@@ -56,10 +56,10 @@ final class TextResource {
      * @param file File to represent as text.
      * @throws FileNotFoundException If file not found
      */
-    TextResource(final File file) throws FileNotFoundException {
+    TextResource(final File file) throws IOException {
         this(
             TextResource.readAsString(
-                new BufferedInputStream(new FileInputStream(file))
+                new BufferedInputStream(Files.newInputStream(file.toPath()))
             )
         );
     }
@@ -93,18 +93,15 @@ final class TextResource {
      * @return The stream content, in String form
      */
     private static String readAsString(final InputStream stream) {
-        final Scanner scanner = new Scanner(
-            stream, StandardCharsets.UTF_8.name()
-        ).useDelimiter("\\A");
         final String result;
-        try {
+        try (Scanner scanner = new Scanner(
+            stream, StandardCharsets.UTF_8.name()
+        ).useDelimiter("\\A")) {
             if (scanner.hasNext()) {
                 result = scanner.next();
             } else {
                 result = "";
             }
-        } finally {
-            scanner.close();
         }
         return result;
     }

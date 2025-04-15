@@ -37,7 +37,7 @@ public final class XSLChain implements XSL {
      * @param shts Sheets
      */
     public XSLChain(final Collection<XSL> shts) {
-        this.sheets = shts.toArray(new XSL[shts.size()]);
+        this.sheets = shts.toArray(new XSL[0]);
     }
 
     @Override
