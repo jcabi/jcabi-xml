@@ -25,36 +25,30 @@ final class ConsoleErrorListener implements ErrorListener {
         new CopyOnWriteArrayList<>();
 
     @Override
-    public void warning(final TransformerException warning)
-        throws TransformerException {
+    public void warning(final TransformerException warning) {
         Logger.warn(
             this, "#warning(): %s",
             warning.getMessageAndLocation()
         );
         this.errors.add(warning.getMessageAndLocation());
-        throw warning;
     }
 
     @Override
-    public void error(final TransformerException error)
-        throws TransformerException {
+    public void error(final TransformerException error) {
         Logger.error(
             this, "#error(): %s",
             error.getMessageAndLocation()
         );
         this.errors.add(error.getMessageAndLocation());
-        throw error;
     }
 
     @Override
-    public void fatalError(final TransformerException error)
-        throws TransformerException {
+    public void fatalError(final TransformerException error) {
         Logger.error(
             this, "#fatalError(): %s",
             error.getMessageAndLocation()
         );
         this.errors.add(error.getMessageAndLocation());
-        throw error;
     }
 
     /**
