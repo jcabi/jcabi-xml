@@ -192,7 +192,8 @@ final class XSLDocumentTest {
                 () ->
                     new XSLDocument(this.getClass().getResourceAsStream("multiple-imports.xsl"))
                         .with(new ClasspathSources(this.getClass()))
-                        .transform(new XMLDocument("<f/>"))
+                        .transform(new XMLDocument("<f/>")),
+                "Warnings was not thrown, but they should"
             ).getLocalizedMessage(),
             Matchers.allOf(
                 Matchers.containsString(
