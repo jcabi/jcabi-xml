@@ -2,5 +2,15 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["xml-apis"],
+      "matchManagers": ["maven"],
+      "matchDatasources": ["maven"],
+      "matchDepNames": ["xml-apis"],
+      "matchDepTypes": ["dependencies"],
+      "enabled": false
+    }
   ]
 }
