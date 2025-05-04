@@ -3,14 +3,5 @@
   "extends": [
     "config:base"
   ],
-  "packageRules": [
-    {
-      "matchPackageNames": ["xml-apis"],
-      "matchManagers": ["maven"],
-      "matchDatasources": ["maven"],
-      "matchDepNames": ["xml-apis"],
-      "matchDepTypes": ["dependencies"],
-      "enabled": false
-    }
-  ]
+  "ignoreDeps": ["xml-apis:xml-apis"]
 }
