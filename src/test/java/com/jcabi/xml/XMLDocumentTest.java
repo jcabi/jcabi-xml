@@ -140,11 +140,11 @@ final class XMLDocumentTest {
 
     @RepeatedTest(60)
     void doesNotFailOnXsdValidationInMultipleThreadsWithTheSameDocumentAndXsd() {
-        final XML xml = new XMLDocument("<root>passesValidXmlThrough</root>");
-        final XML xsd = new XMLDocument(XMLDocumentTest.XSD);
         Assertions.assertDoesNotThrow(
             new Together<>(
-                thread -> xml.validate(xsd)
+                thread -> new XMLDocument("<root>passesValidXmlThrough</root>").validate(
+                    new XMLDocument(XMLDocumentTest.XSD)
+                )
             )::asList,
             "XMLDocument should not fail on validation in multiple threads with the same document and XSD"
         );
@@ -214,7 +214,7 @@ final class XMLDocumentTest {
                 file
             )
         ).value();
-        final XML doc = new XMLDocument(file).registerNs("f", "urn:foo");
+        final XML doc = XMLDocument.make(file).registerNs("f", "urn:foo");
         MatcherAssert.assertThat(
             doc.nodes("/f:a/f:b[.='\u0433!']"),
             Matchers.hasSize(1)
@@ -264,8 +264,8 @@ final class XMLDocumentTest {
     }
 
     @Test
-    void retrievesDomNode() throws Exception {
-        final XML doc = new XMLDocument(
+    void retrievesDomNode() {
+        final XML doc = XMLDocument.make(
             this.getClass().getResource("simple.xml")
         );
         MatcherAssert.assertThat(

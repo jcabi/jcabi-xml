@@ -264,6 +264,81 @@ public final class XMLDocument implements XML {
         this.cache = cache;
     }
 
+    /**
+     * Factory method, to avoid checked exceptions.
+     * @param file The path of the XML
+     * @return XML
+     * @since 0.35.0
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static XML make(final File file) {
+        try {
+            return new XMLDocument(file);
+        } catch (final FileNotFoundException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+    }
+
+    /**
+     * Factory method, to avoid checked exceptions.
+     * @param file The path of the XML
+     * @return XML
+     * @since 0.35.0
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static XML make(final Path file) {
+        try {
+            return new XMLDocument(file);
+        } catch (final FileNotFoundException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+    }
+
+    /**
+     * Factory method, to avoid checked exceptions.
+     * @param uri The URI of the XML
+     * @return XML
+     * @since 0.35.0
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static XML make(final URI uri) {
+        try {
+            return new XMLDocument(uri);
+        } catch (final IOException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+    }
+
+    /**
+     * Factory method, to avoid checked exceptions.
+     * @param url The URL of the XML
+     * @return XML
+     * @since 0.35.0
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static XML make(final URL url) {
+        try {
+            return new XMLDocument(url);
+        } catch (final IOException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+    }
+
+    /**
+     * Factory method, to avoid checked exceptions.
+     * @param stream The input stream with the XML
+     * @return XML
+     * @since 0.35.0
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static XML make(final InputStream stream) {
+        try {
+            return new XMLDocument(stream);
+        } catch (final IOException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+    }
+
     @Override
     public String toString() {
         return XMLDocument.asString(this.cache);
