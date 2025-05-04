@@ -3,5 +3,7 @@
   "extends": [
     "config:base"
   ],
-  "ignoreDeps": ["xml-apis:xml-apis"]
+  "ignoreDeps": [
+    "xml-apis:xml-apis"
+  ]
 }
