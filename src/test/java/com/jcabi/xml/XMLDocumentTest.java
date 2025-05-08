@@ -601,7 +601,7 @@ final class XMLDocumentTest {
         "PMD.InsufficientStringBufferDeclaration"
     })
     void validatesComplexXml() throws Exception {
-        final int loopp = 5;
+        final int iloop = 5;
         final int size = 10_000;
         final int loop = 100;
         final int random = 10;
@@ -622,7 +622,7 @@ final class XMLDocumentTest {
         }
         text.append("</root>");
         final XML xml = new XMLDocument(text.toString());
-        for (int idx = 0; idx < loopp; ++idx) {
+        for (int idx = 0; idx < iloop; ++idx) {
             MatcherAssert.assertThat(
                 xml.validate(new XMLDocument(xsd)),
                 Matchers.empty()
