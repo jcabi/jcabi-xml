@@ -37,7 +37,7 @@ import org.w3c.dom.Node;
  *
  * <p>{@link ListWrapper} is an unmodifiable list, that's why
  * the majority of inherited method are not implemented and
- * thow runtime exceptions if being called.
+ * throw runtime exceptions if being called.
  *
  * <p>The method {@link #get(int)} throws
  * {@link ListWrapper.NodeNotFoundException}
