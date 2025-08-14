@@ -33,7 +33,7 @@
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>jcabi</artifactId>
-    <version>1.40.0</version>
+    <version>1.40.1</version>
   </parent>
   <groupId>com.jcabi.xml</groupId>
   <artifactId>groovy</artifactId>
