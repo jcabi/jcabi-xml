@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * SPDX-FileCopyrightText: Copyright (c) 2012-2025 Yegor Bugayenko
+ * SPDX-FileCopyrightText: Copyright (c) 2012-2026 Yegor Bugayenko
  * SPDX-License-Identifier: MIT
 -->
 <xs:schema xmlns="http://jcabi.com/schema/xml" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://jcabi.com/schema/xml" elementFormDefault="qualified">
