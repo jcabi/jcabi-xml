@@ -28,7 +28,7 @@ public final class ClasspathResolver implements LSResourceResolver {
         LSInput input = null;
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         if (sid != null && loader.getResource(sid) != null) {
-            input = new ClasspathInput(pid, sid);
+            input = new ClasspathInput(pid, sid, null, base);
         }
         return input;
     }
