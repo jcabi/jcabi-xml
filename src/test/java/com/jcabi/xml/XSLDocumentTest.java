@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.JUnitAssertionsShouldIncludeMessage"})
+@SuppressWarnings("PMD.TooManyMethods")
 final class XSLDocumentTest {
 
     @Test
