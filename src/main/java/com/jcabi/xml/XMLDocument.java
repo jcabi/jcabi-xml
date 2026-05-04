@@ -61,10 +61,11 @@ import org.xml.sax.SAXParseException;
  * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
 @SuppressWarnings({
-    "PMD.ExcessiveImports",
     "PMD.OnlyOneConstructorShouldDoInitialization",
     "PMD.TooManyMethods",
-    "PMD.GodClass"
+    "PMD.GodClass",
+    "PMD.CouplingBetweenObjects",
+    "PMD.AvoidSynchronizedStatement"
 })
 public final class XMLDocument implements XML {
     /**
@@ -391,10 +392,7 @@ public final class XMLDocument implements XML {
     }
 
     @Override
-    @SuppressWarnings({
-        "PMD.ExceptionAsFlowControl",
-        "PMD.PreserveStackTrace"
-    })
+    @SuppressWarnings("PMD.PreserveStackTrace")
     public List<String> xpath(final String query) {
         // @checkstyle FinalLocalVariableCheck (1 line)
         List<String> items;
@@ -403,9 +401,9 @@ public final class XMLDocument implements XML {
             items = new ArrayList<>(nodes.getLength());
             for (int idx = 0; idx < nodes.getLength(); ++idx) {
                 final int type = nodes.item(idx).getNodeType();
-                if (type != (int) Node.TEXT_NODE
-                    && type != (int) Node.ATTRIBUTE_NODE
-                    && type != (int) Node.CDATA_SECTION_NODE) {
+                if (type != Node.TEXT_NODE
+                    && type != Node.ATTRIBUTE_NODE
+                    && type != Node.CDATA_SECTION_NODE) {
                     throw new IllegalArgumentException(
                         String.format(
                             "Only text() nodes or attributes are retrievable with xpath() '%s': %d",

@@ -176,12 +176,7 @@ public final class SaxonDocument implements XML {
         );
     }
 
-    /**
-     * Retrieve DOM node, represented by this wrapper.
-     * This method works exactly the same as {@link #deepCopy()}.
-     * @return Deep copy of the inner DOM node.
-     * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
-     */
+    @Override
     @Deprecated
     public Node node() {
         throw new UnsupportedOperationException(

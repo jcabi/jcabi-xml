@@ -49,17 +49,13 @@ import org.xml.sax.SAXParseException;
  * Test case for {@link XMLDocument}.
  *
  * @since 0.1
- * @todo #301:35min Remove suppression of "PMD.JUnitAssertionsShouldIncludeMessage" warning.
- *  For now its suppressed, but it would be great to add assertion message in each test, and
- *  enable the check. Don't forget to enable it in {@link XSLDocumentTest},
- *  {@link XPathContextTest} as well.
  * @checkstyle AbbreviationAsWordInNameCheck (20 lines)
  */
 @SuppressWarnings({
     "PMD.TooManyMethods",
-    "PMD.DoNotUseThreads",
-    "PMD.JUnitAssertionsShouldIncludeMessage",
-    "PMD.GodClass"
+    "PMD.GodClass",
+    "PMD.UnitTestContainsTooManyAsserts",
+    "PMD.UnnecessaryLocalRule"
 })
 final class XMLDocumentTest {
     /**
@@ -229,7 +225,8 @@ final class XMLDocumentTest {
     void findsDocumentNodesWithXpathAndReturnsThem() throws Exception {
         final XML doc = new XMLDocument(
             new ByteArrayInputStream(
-                "<root><a><x>1</x></a><a><x>2</x></a></root>".getBytes()
+                "<root><a><x>1</x></a><a><x>2</x></a></root>"
+                    .getBytes(StandardCharsets.UTF_8)
             )
         );
         MatcherAssert.assertThat(
@@ -280,18 +277,18 @@ final class XMLDocumentTest {
 
     @Test
     void throwsCustomExceptionWhenXpathNotFound() {
-        try {
-            new XMLDocument("<root/>").xpath("/absent-node/text()").get(0);
-            MatcherAssert.assertThat("exception expected here", false);
-        } catch (final IndexOutOfBoundsException ex) {
-            MatcherAssert.assertThat(
-                ex.getMessage(),
-                Matchers.allOf(
-                    Matchers.containsString("/absent-node/text("),
-                    Matchers.containsString("<root/")
-                )
-            );
-        }
+        final IndexOutOfBoundsException error = Assertions.assertThrows(
+            IndexOutOfBoundsException.class,
+            () -> new XMLDocument("<root/>").xpath("/absent-node/text()").get(0),
+            "IndexOutOfBoundsException expected when xpath returns no nodes"
+        );
+        MatcherAssert.assertThat(
+            error.getMessage(),
+            Matchers.allOf(
+                Matchers.containsString("/absent-node/text("),
+                Matchers.containsString("<root/")
+            )
+        );
     }
 
     @Test
@@ -596,10 +593,6 @@ final class XMLDocumentTest {
     }
 
     @Test
-    @SuppressWarnings({
-        "PMD.AvoidInstantiatingObjectsInLoops",
-        "PMD.InsufficientStringBufferDeclaration"
-    })
     void validatesComplexXml() throws Exception {
         final int iloop = 5;
         final int size = 10_000;
@@ -732,7 +725,7 @@ final class XMLDocumentTest {
      * @return Time in milliseconds.
      * @checkstyle IllegalCatchCheck (20 lines)
      */
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.PrematureDeclaration"})
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private static long measure(final Callable<String> run) {
         final long start = System.nanoTime();
         if (!IntStream.range(0, 1000).mapToObj(

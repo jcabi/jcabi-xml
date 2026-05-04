@@ -7,12 +7,14 @@ package com.jcabi.xml;
 import com.jcabi.matchers.XhtmlMatchers;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link DomParser}.
  * @since 0.1
  */
+@SuppressWarnings("PMD.UnnecessaryLocalRule")
 final class DomParserTest {
 
     @Test
@@ -42,7 +44,6 @@ final class DomParserTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
     void allowsValidXmlFormatting() {
         final String[] texts = {
             "<?xml version=\"1.0\" encoding='ISO-8895-1'?><a/>",
@@ -53,9 +54,12 @@ final class DomParserTest {
             "<something>\uFFFD</something>",
         };
         for (final String text : texts) {
-            new DomParser(
-                DocumentBuilderFactory.newInstance(),
-                text
+            Assertions.assertDoesNotThrow(
+                () -> new DomParser(
+                    DocumentBuilderFactory.newInstance(),
+                    text
+                ),
+                () -> String.format("Should accept valid XML: %s", text)
             );
         }
     }

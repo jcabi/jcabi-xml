@@ -22,6 +22,7 @@ import org.xml.sax.SAXParseException;
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
 @Deprecated
+@FunctionalInterface
 public interface XSD {
 
     /**
