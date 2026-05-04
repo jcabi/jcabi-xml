@@ -100,7 +100,6 @@ final class ClasspathInput implements LSInput {
     }
 
     @Override
-    @SuppressWarnings("PMD.BooleanGetMethodName")
     public boolean getCertifiedText() {
         return this.certified;
     }
@@ -115,7 +114,7 @@ final class ClasspathInput implements LSInput {
         return this.encoding;
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.ExceptionAsFlowControl"})
     @Override
     public String getStringData() {
         try {

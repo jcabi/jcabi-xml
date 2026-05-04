@@ -242,7 +242,6 @@ final class ListWrapper<T> implements List<T> {
     }
 
     @Override
-    @SuppressWarnings("PMD.UseVarargs")
     public <E> E[] toArray(final E[] array) {
         return this.original.toArray(array);
     }

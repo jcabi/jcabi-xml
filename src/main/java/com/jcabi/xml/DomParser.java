@@ -66,7 +66,6 @@ final class DomParser {
      * @param fct Document builder factory to use
      * @param bytes The XML in bytes
      */
-    @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     DomParser(final DocumentBuilderFactory fct, final byte[] bytes) {
         this(fct, new BytesSource(bytes));
     }
@@ -100,7 +99,7 @@ final class DomParser {
      * Get the document body.
      * @return The document
      */
-    @SuppressWarnings("PMD.PrematureDeclaration")
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     public Document document() {
         final DocumentBuilder builder;
         try {
