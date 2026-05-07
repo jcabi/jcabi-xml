@@ -358,6 +358,20 @@ final class XMLDocumentTest {
         service.shutdownNow();
     }
 
+    @RepeatedTest(5)
+    void parsesConsistentlyInMultipleThreads() {
+        final int total = 50;
+        MatcherAssert.assertThat(
+            "All concurrent XML parsings must complete and produce matching XPath results",
+            new Together<>(
+                total,
+                thread -> new XMLDocument("<root><hey/></root>")
+                    .nodes("/root/hey").size()
+            ).asList(),
+            Matchers.everyItem(Matchers.equalTo(1))
+        );
+    }
+
     @SuppressWarnings("PMD.CloseResource")
     @Test
     void xpathInMultipleThreads() throws Exception {
