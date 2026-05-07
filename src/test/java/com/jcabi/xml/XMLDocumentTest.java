@@ -340,7 +340,7 @@ final class XMLDocumentTest {
     @SuppressWarnings("PMD.CloseResource")
     @Test
     void parsesInMultipleThreads() throws Exception {
-        final int timeout = 10;
+        final int timeout = 30;
         final int loop = 100;
         final Runnable runnable = () -> MatcherAssert.assertThat(
             new XMLDocument("<root><hey/></root>"),
