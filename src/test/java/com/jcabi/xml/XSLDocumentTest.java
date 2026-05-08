@@ -247,6 +247,23 @@ final class XSLDocumentTest {
         );
     }
 
+    @Test
+    void emptyStylesheetExtractsTextContent() {
+        final XSL xsl = new XSLDocument(
+            StringUtils.join(
+                "<xsl:stylesheet  ",
+                " xmlns:xsl='http://www.w3.org/1999/XSL/Transform' ",
+                " version='2.0' >",
+                "</xsl:stylesheet>"
+            )
+        );
+        MatcherAssert.assertThat(
+            "Empty stylesheet should apply XSLT default templates and return text content",
+            xsl.applyTo(new XMLDocument("<a><b>hello</b><c>world</c></a>")),
+            Matchers.containsString("helloworld")
+        );
+    }
+
     @RepeatedTest(10)
     void transformsInManyThreads() throws Exception {
         final XSL xsl = new XSLDocument(
