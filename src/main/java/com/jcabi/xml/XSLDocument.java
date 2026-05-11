@@ -49,7 +49,6 @@ import org.w3c.dom.Document;
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @EqualsAndHashCode(of = "xsl")
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.ExcessiveImports"})
 public final class XSLDocument implements XSL {
 
     /**
@@ -400,7 +399,7 @@ public final class XSLDocument implements XSL {
      * @since 0.11
      * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
      */
-    @SuppressWarnings("PMD.PrematureDeclaration")
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
@@ -480,8 +479,9 @@ public final class XSLDocument implements XSL {
      */
     @SuppressWarnings({"deprecation", "PMD.UnusedPrivateMethod", "PMD.OnlyOneReturn"})
     private static Transformer forSaxon(final Transformer trans) {
-        final String type = trans.getClass().getCanonicalName();
-        if (!"net.sf.saxon.jaxp.TransformerImpl".equals(type)) {
+        if (!"net.sf.saxon.jaxp.TransformerImpl".equals(
+            trans.getClass().getCanonicalName()
+        )) {
             return trans;
         }
         if (Version.getStructuredVersionNumber()[0] < 11) {

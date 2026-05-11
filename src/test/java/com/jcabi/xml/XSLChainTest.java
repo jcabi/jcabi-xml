@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
  * @since 0.12
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
+@SuppressWarnings("PMD.UnnecessaryLocalRule")
 final class XSLChainTest {
 
     @Test

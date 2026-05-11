@@ -12,6 +12,7 @@ import javax.xml.transform.URIResolver;
  * @since 0.9
  * @checkstyle InterfaceIsType (500 lines)
  */
+@FunctionalInterface
 public interface Sources extends URIResolver {
 
     /**

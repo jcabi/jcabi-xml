@@ -19,9 +19,13 @@ import org.junit.jupiter.api.Test;
 /**
  * Test case for {@link XSLDocument}.
  * @since 0.1
- * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
+ * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.JUnitAssertionsShouldIncludeMessage"})
+@SuppressWarnings({
+    "PMD.TooManyMethods",
+    "PMD.UnitTestContainsTooManyAsserts",
+    "PMD.UnnecessaryLocalRule"
+})
 final class XSLDocumentTest {
 
     @Test
@@ -46,7 +50,7 @@ final class XSLDocumentTest {
     }
 
     @Test
-    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
+    @SuppressWarnings("PMD.CloseResource")
     void makesXslTransformationsInThreads() throws Exception {
         final int loop = 50;
         final int timeout = 30;
@@ -227,17 +231,37 @@ final class XSLDocumentTest {
 
     @Test
     void catchesSaxonWarnings() {
-        new XSLDocument(
+        Assertions.assertDoesNotThrow(
+            () -> new XSLDocument(
+                StringUtils.join(
+                    " <xsl:stylesheet",
+                    "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                    "  version='2.0'>",
+                    "<xsl:template match='a'></xsl:template>",
+                    "<xsl:template match='a'></xsl:template>",
+                    "</xsl:stylesheet>"
+                ),
+                "https://example.com/hello.xsl"
+            ).transform(new XMLDocument("<x><a/></x>")),
+            "XSLDocument must not propagate Saxon's duplicate-template warning"
+        );
+    }
+
+    @Test
+    void emptyStylesheetExtractsTextContent() {
+        final XSL xsl = new XSLDocument(
             StringUtils.join(
-                " <xsl:stylesheet",
-                "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
-                "  version='2.0'>",
-                "<xsl:template match='a'></xsl:template>",
-                "<xsl:template match='a'></xsl:template>",
+                "<xsl:stylesheet  ",
+                " xmlns:xsl='http://www.w3.org/1999/XSL/Transform' ",
+                " version='2.0' >",
                 "</xsl:stylesheet>"
-            ),
-            "https://example.com/hello.xsl"
-        ).transform(new XMLDocument("<x><a/></x>"));
+            )
+        );
+        MatcherAssert.assertThat(
+            "Empty stylesheet should apply XSLT default templates and return text content",
+            xsl.applyTo(new XMLDocument("<a><b>hello</b><c>world</c></a>")),
+            Matchers.containsString("helloworld")
+        );
     }
 
     @RepeatedTest(10)
