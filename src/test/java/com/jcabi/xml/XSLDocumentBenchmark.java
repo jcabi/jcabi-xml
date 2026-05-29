@@ -26,7 +26,7 @@ import org.openjdk.jmh.annotations.Warmup;
  * </ul>
  *
  * @since 0.35.0
- * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
+ * @checkstyle AbbreviationAsWordInNameCheck (15 lines)
  * @checkstyle NonStaticMethodCheck (100 lines)
  */
 @Fork(1)
@@ -35,7 +35,6 @@ import org.openjdk.jmh.annotations.Warmup;
 @Warmup(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @State(Scope.Benchmark)
-@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class XSLDocumentBenchmark {
 
     /**

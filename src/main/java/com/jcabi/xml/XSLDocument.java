@@ -32,11 +32,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
-import net.sf.saxon.Version;
-import net.sf.saxon.jaxp.TransformerImpl;
-import net.sf.saxon.serialize.MessageWarner;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Synced;
+import org.cactoos.scalar.Unchecked;
 import org.w3c.dom.Document;
 
 /**
@@ -50,6 +50,7 @@ import org.w3c.dom.Document;
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @EqualsAndHashCode(of = "xsl")
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public final class XSLDocument implements XSL {
 
     /**
@@ -105,7 +106,7 @@ public final class XSLDocument implements XSL {
     /**
      * Compiled stylesheet, cached on first use.
      */
-    private transient Templates compiled;
+    private final transient Unchecked<Templates> templates;
 
     /**
      * Public ctor, from XML as a source.
@@ -290,10 +291,7 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map, final String base) {
-        this.xsl = src;
-        this.sources = srcs;
-        this.params = new HashMap<>(map);
-        this.sid = base;
+        this(src, srcs, new HashMap<>(map), base, XSLDocument.load(srcs, src, base));
     }
 
     /**
@@ -307,12 +305,12 @@ public final class XSLDocument implements XSL {
      */
     private XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map, final String base,
-        final Templates tmpl) {
+        final Unchecked<Templates> tmpl) {
         this.xsl = src;
         this.sources = srcs;
         this.params = new HashMap<>(map);
         this.sid = base;
-        this.compiled = tmpl;
+        this.templates = tmpl;
     }
 
     @Override
@@ -322,14 +320,12 @@ public final class XSLDocument implements XSL {
 
     @Override
     public XSL with(final String name, final Object value) {
-        if (this.compiled == null) {
-            this.compiled = this.compile();
-        }
         return new XSLDocument(
-            this.xsl, this.sources,
+            this.xsl,
+            this.sources,
             new MapOf<String, Object>(this.params, new MapEntry<>(name, value)),
             this.sid,
-            this.compiled
+            this.templates
         );
     }
 
@@ -422,6 +418,7 @@ public final class XSLDocument implements XSL {
      * @param result Result
      * @since 0.11
      */
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
@@ -460,15 +457,16 @@ public final class XSLDocument implements XSL {
      * @return The transformer
      */
     private Transformer transformer() {
-        if (this.compiled == null) {
-            this.compiled = this.compile();
-        }
+        final Templates templ = this.templates.value();
         final Transformer trans;
         try {
-            trans = this.compiled.newTransformer();
+            trans = templ.newTransformer();
         } catch (final TransformerConfigurationException ex) {
             throw new IllegalArgumentException(
-                "Failed to instantiate transformer from compiled stylesheet",
+                String.format(
+                    "Failed to create transformer by %s",
+                    templ.getClass().getName()
+                ),
                 ex
             );
         }
@@ -480,25 +478,49 @@ public final class XSLDocument implements XSL {
     }
 
     /**
+     * Lazy-load and cache the compiled {@link Templates} object.
+     * @param sources URI resolver for xsl:import/xsl:include
+     * @param xsl XSL document body
+     * @param sid System ID (base)
+     * @return Cached compiled stylesheet
+     */
+    private static Unchecked<Templates> load(
+        final Sources sources,
+        final String xsl,
+        final String sid
+    ) {
+        return new Unchecked<>(
+            new Synced<>(new Sticky<>(() -> XSLDocument.doLoad(sources, xsl, sid)))
+        );
+    }
+
+    /**
      * Compile the stylesheet to a reusable {@link Templates} object.
      *
-     * We create {@link TransformerFactory} here during compilation
+     * <p>We create {@link TransformerFactory} here during compilation
      * because {@link javax.xml.transform.URIResolver} must be set into
      * it before making an instance of a transformer. Otherwise, it won't
      * understand "xsl:import" statements.
      *
+     * @param sources URI resolver for xsl:import/xsl:include
+     * @param xsl XSL document body
+     * @param sid System ID (base)
      * @return Compiled stylesheet
      * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
      */
-    private Templates compile() {
+    private static Templates doLoad(
+        final Sources sources,
+        final String xsl,
+        final String sid
+    ) {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
         factory.setErrorListener(errors);
-        factory.setURIResolver(this.sources);
+        factory.setURIResolver(sources);
         final Templates tmpl;
         try {
             tmpl = factory.newTemplates(
-                new StreamSource(new StringReader(this.xsl), this.sid)
+                new StreamSource(new StringReader(xsl), sid)
             );
         } catch (final TransformerConfigurationException ex) {
             throw new IllegalArgumentException(
@@ -520,38 +542,4 @@ public final class XSLDocument implements XSL {
         }
         return tmpl;
     }
-
-    /**
-     * Prepare it for Saxon.
-     * @param trans The transformer
-     * @return The same
-     * @checkstyle ReturnCountCheck (5 lines)
-     */
-    @SuppressWarnings({"deprecation", "PMD.UnusedPrivateMethod", "PMD.OnlyOneReturn"})
-    private static Transformer forSaxon(final Transformer trans) {
-        if (!"net.sf.saxon.jaxp.TransformerImpl".equals(
-            trans.getClass().getCanonicalName()
-        )) {
-            return trans;
-        }
-        if (Version.getStructuredVersionNumber()[0] < 11) {
-            ((TransformerImpl) trans)
-                .getUnderlyingController()
-                .setMessageEmitter(new MessageWarner());
-        }
-        if (Version.getStructuredVersionNumber()[0] >= 11) {
-            ((TransformerImpl) trans)
-                .getUnderlyingController()
-                .setMessageHandler(
-                    message -> Logger.error(
-                        XSLDocument.class,
-                        "%s: %s",
-                        message.getLocation(),
-                        message.toString()
-                    )
-                );
-        }
-        return trans;
-    }
-
 }
