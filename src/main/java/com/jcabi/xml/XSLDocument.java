@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
+import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -31,11 +32,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import lombok.EqualsAndHashCode;
-import net.sf.saxon.Version;
-import net.sf.saxon.jaxp.TransformerImpl;
-import net.sf.saxon.serialize.MessageWarner;
 import org.cactoos.map.MapEntry;
 import org.cactoos.map.MapOf;
+import org.cactoos.scalar.Sticky;
+import org.cactoos.scalar.Synced;
+import org.cactoos.scalar.Unchecked;
 import org.w3c.dom.Document;
 
 /**
@@ -49,6 +50,7 @@ import org.w3c.dom.Document;
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @EqualsAndHashCode(of = "xsl")
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public final class XSLDocument implements XSL {
 
     /**
@@ -100,6 +102,11 @@ public final class XSLDocument implements XSL {
      * @since 0.20
      */
     private final transient String sid;
+
+    /**
+     * Compiled stylesheet, cached on first use.
+     */
+    private final transient Unchecked<Templates> templates;
 
     /**
      * Public ctor, from XML as a source.
@@ -284,10 +291,26 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map, final String base) {
+        this(src, srcs, new HashMap<>(map), base, XSLDocument.load(srcs, src, base));
+    }
+
+    /**
+     * Private ctor that carries a pre-compiled stylesheet into a new instance.
+     * @param src XSL document body
+     * @param srcs Sources
+     * @param map Map of XSL params
+     * @param base SystemId/Base
+     * @param tmpl Already-compiled stylesheet to reuse
+     * @checkstyle ParameterNumberCheck (5 lines)
+     */
+    private XSLDocument(final String src, final Sources srcs,
+        final Map<String, Object> map, final String base,
+        final Unchecked<Templates> tmpl) {
         this.xsl = src;
         this.sources = srcs;
         this.params = new HashMap<>(map);
         this.sid = base;
+        this.templates = tmpl;
     }
 
     @Override
@@ -298,9 +321,11 @@ public final class XSLDocument implements XSL {
     @Override
     public XSL with(final String name, final Object value) {
         return new XSLDocument(
-            this.xsl, this.sources,
+            this.xsl,
+            this.sources,
             new MapOf<String, Object>(this.params, new MapEntry<>(name, value)),
-            this.sid
+            this.sid,
+            this.templates
         );
     }
 
@@ -389,15 +414,9 @@ public final class XSLDocument implements XSL {
     /**
      * Transform XML into result.
      *
-     * We create {@link TransformerFactory} here on every transformation
-     * because {@link javax.xml.transform.URIResolver} must be set into
-     * it before making an instance of a transformer. Otherwise, it won't
-     * understand "xsl:import" statements.
-     *
      * @param xml XML
      * @param result Result
      * @since 0.11
-     * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
      */
     @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private void transformInto(final XML xml, final Result result) {
@@ -434,18 +453,74 @@ public final class XSLDocument implements XSL {
     }
 
     /**
-     * Make a transformer.
+     * Make a transformer from the cached compiled stylesheet.
      * @return The transformer
      */
     private Transformer transformer() {
+        final Templates templ = this.templates.value();
+        final Transformer trans;
+        try {
+            trans = templ.newTransformer();
+        } catch (final TransformerConfigurationException ex) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Failed to create transformer by %s",
+                    templ.getClass().getName()
+                ),
+                ex
+            );
+        }
+        trans.setURIResolver(this.sources);
+        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
+            trans.setParameter(ent.getKey(), ent.getValue());
+        }
+        return trans;
+    }
+
+    /**
+     * Lazy-load and cache the compiled {@link Templates} object.
+     * @param sources URI resolver for xsl:import/xsl:include
+     * @param xsl XSL document body
+     * @param sid System ID (base)
+     * @return Cached compiled stylesheet
+     */
+    private static Unchecked<Templates> load(
+        final Sources sources,
+        final String xsl,
+        final String sid
+    ) {
+        return new Unchecked<>(
+            new Synced<>(new Sticky<>(() -> XSLDocument.doLoad(sources, xsl, sid)))
+        );
+    }
+
+    /**
+     * Compile the stylesheet to a reusable {@link Templates} object.
+     *
+     * <p>We create {@link TransformerFactory} here during compilation
+     * because {@link javax.xml.transform.URIResolver} must be set into
+     * it before making an instance of a transformer. Otherwise, it won't
+     * understand "xsl:import" statements.
+     *
+     * @param sources URI resolver for xsl:import/xsl:include
+     * @param xsl XSL document body
+     * @param sid System ID (base)
+     * @return Compiled stylesheet
+     * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
+     */
+    private static Templates doLoad(
+        final Sources sources,
+        final String xsl,
+        final String sid
+    ) {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
         factory.setErrorListener(errors);
-        factory.setURIResolver(this.sources);
-        final Transformer trans;
+        factory.setURIResolver(sources);
+        final Templates tmpl;
         try {
-            trans = factory.newTransformer(
-                new StreamSource(new StringReader(this.xsl), this.sid)
+            tmpl = factory.newTemplates(
+                new StreamSource(new StringReader(xsl), sid)
             );
         } catch (final TransformerConfigurationException ex) {
             throw new IllegalArgumentException(
@@ -456,52 +531,15 @@ public final class XSLDocument implements XSL {
                 ex
             );
         }
-        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
-            trans.setParameter(ent.getKey(), ent.getValue());
-        }
         if (!errors.summary().isEmpty()) {
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to compile stylesheet by %s: %s",
-                    trans.getClass().getName(),
+                    factory.getClass().getName(),
                     errors.summary()
                 )
             );
         }
-        return trans;
+        return tmpl;
     }
-
-    /**
-     * Prepare it for Saxon.
-     * @param trans The transformer
-     * @return The same
-     * @checkstyle ReturnCountCheck (5 lines)
-     */
-    @SuppressWarnings({"deprecation", "PMD.UnusedPrivateMethod", "PMD.OnlyOneReturn"})
-    private static Transformer forSaxon(final Transformer trans) {
-        if (!"net.sf.saxon.jaxp.TransformerImpl".equals(
-            trans.getClass().getCanonicalName()
-        )) {
-            return trans;
-        }
-        if (Version.getStructuredVersionNumber()[0] < 11) {
-            ((TransformerImpl) trans)
-                .getUnderlyingController()
-                .setMessageEmitter(new MessageWarner());
-        }
-        if (Version.getStructuredVersionNumber()[0] >= 11) {
-            ((TransformerImpl) trans)
-                .getUnderlyingController()
-                .setMessageHandler(
-                    message -> Logger.error(
-                        XSLDocument.class,
-                        "%s: %s",
-                        message.getLocation(),
-                        message.toString()
-                    )
-                );
-        }
-        return trans;
-    }
-
 }

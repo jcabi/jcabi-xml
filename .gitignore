@@ -9,3 +9,5 @@
 local-repo/
 node_modules/
 target/
+.factorypath
+.aidy/
