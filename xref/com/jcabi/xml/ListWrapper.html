@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>ListWrapper xref</title>
 <link type="text/css" rel="stylesheet" href="../../../stylesheet.css" />
@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../apidocs/com/jcabi/xml/ListWrapper.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * SPDX-FileCopyrightText: Copyright (c) 2012-2025 Yegor Bugayenko</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * SPDX-FileCopyrightText: Copyright (c) 2012-2026 Yegor Bugayenko</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> * SPDX-License-Identifier: MIT</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> */</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">package</strong> com.jcabi.xml;
@@ -45,7 +45,7 @@
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;{@link ListWrapper} is an unmodifiable list, that's why</em>
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * the majority of inherited method are not implemented and</em>
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * thow runtime exceptions if being called.</em>
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * throw runtime exceptions if being called.</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;The method {@link #get(int)} throws</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> * {@link ListWrapper.NodeNotFoundException}</em>
@@ -250,66 +250,65 @@
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>     }
 <a class="jxr_linenumber" name="L243" href="#L243">243</a> 
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>     @Override
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>     @SuppressWarnings(<span class="jxr_string">"PMD.UseVarargs"</span>)
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>     <strong class="jxr_keyword">public</strong> &lt;E&gt; E[] toArray(<strong class="jxr_keyword">final</strong> E[] array) {
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.original.toArray(array);
-<a class="jxr_linenumber" name="L248" href="#L248">248</a>     }
-<a class="jxr_linenumber" name="L249" href="#L249">249</a> 
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L251" href="#L251">251</a> <em class="jxr_javadoccomment">     * Node not found in XmlDocument.</em>
-<a class="jxr_linenumber" name="L252" href="#L252">252</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
-<a class="jxr_linenumber" name="L254" href="#L254">254</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> NodeNotFoundException
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>         <strong class="jxr_keyword">extends</strong> IndexOutOfBoundsException {
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">         * Serialization marker.</em>
-<a class="jxr_linenumber" name="L259" href="#L259">259</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 0x7526FA78EEDAC470L;
-<a class="jxr_linenumber" name="L261" href="#L261">261</a> 
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L263" href="#L263">263</a> <em class="jxr_javadoccomment">         * Public ctor.</em>
-<a class="jxr_linenumber" name="L264" href="#L264">264</a> <em class="jxr_javadoccomment">         * @param message Error message</em>
-<a class="jxr_linenumber" name="L265" href="#L265">265</a> <em class="jxr_javadoccomment">         * @param node The XML with error</em>
-<a class="jxr_linenumber" name="L266" href="#L266">266</a> <em class="jxr_javadoccomment">         * @param query The query in XPath</em>
-<a class="jxr_linenumber" name="L267" href="#L267">267</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         NodeNotFoundException(<strong class="jxr_keyword">final</strong> String message, <strong class="jxr_keyword">final</strong> Node node,
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>             <strong class="jxr_keyword">final</strong> CharSequence query) {
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>             <strong class="jxr_keyword">super</strong>(
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>                 Logger.format(
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>                     <span class="jxr_string">"XPath '%s' not found in '%[text]s': %s"</span>,
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>                     ListWrapper.NodeNotFoundException.escapeUnicode(query),
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>                     ListWrapper.NodeNotFoundException.escapeUnicode(
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>                         <strong class="jxr_keyword">new</strong> XMLDocument(node).toString()
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>                 ),
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>                     message
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>             )
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>             );
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>         }
-<a class="jxr_linenumber" name="L281" href="#L281">281</a> 
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L283" href="#L283">283</a> <em class="jxr_javadoccomment">         * Escape unicode characters.</em>
-<a class="jxr_linenumber" name="L284" href="#L284">284</a> <em class="jxr_javadoccomment">         * @param input Input string</em>
-<a class="jxr_linenumber" name="L285" href="#L285">285</a> <em class="jxr_javadoccomment">         * @return Escaped output</em>
-<a class="jxr_linenumber" name="L286" href="#L286">286</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String escapeUnicode(<strong class="jxr_keyword">final</strong> CharSequence input) {
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> length = input.length();
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>             <strong class="jxr_keyword">final</strong> StringBuilder output = <strong class="jxr_keyword">new</strong> StringBuilder(length);
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> index = 0; index &lt; length; index += 1) {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>                 <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">char</strong> character = input.charAt(index);
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>                 <strong class="jxr_keyword">if</strong> (character &lt; 32 || character &gt; 0x7f) {
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>                     output.append(String.format(<span class="jxr_string">"&#92;&#92;u%X"</span>, (<strong class="jxr_keyword">int</strong>) character));
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>                     output.append(character);
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>                 }
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             }
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>             <strong class="jxr_keyword">return</strong> output.toString();
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         }
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>     }
-<a class="jxr_linenumber" name="L301" href="#L301">301</a> 
-<a class="jxr_linenumber" name="L302" href="#L302">302</a> }
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>     <strong class="jxr_keyword">public</strong> &lt;E&gt; E[] toArray(<strong class="jxr_keyword">final</strong> E[] array) {
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.original.toArray(array);
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>     }
+<a class="jxr_linenumber" name="L248" href="#L248">248</a> 
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L250" href="#L250">250</a> <em class="jxr_javadoccomment">     * Node not found in XmlDocument.</em>
+<a class="jxr_linenumber" name="L251" href="#L251">251</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L252" href="#L252">252</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
+<a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> NodeNotFoundException
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <strong class="jxr_keyword">extends</strong> IndexOutOfBoundsException {
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L257" href="#L257">257</a> <em class="jxr_javadoccomment">         * Serialization marker.</em>
+<a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 0x7526FA78EEDAC470L;
+<a class="jxr_linenumber" name="L260" href="#L260">260</a> 
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L262" href="#L262">262</a> <em class="jxr_javadoccomment">         * Public ctor.</em>
+<a class="jxr_linenumber" name="L263" href="#L263">263</a> <em class="jxr_javadoccomment">         * @param message Error message</em>
+<a class="jxr_linenumber" name="L264" href="#L264">264</a> <em class="jxr_javadoccomment">         * @param node The XML with error</em>
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> <em class="jxr_javadoccomment">         * @param query The query in XPath</em>
+<a class="jxr_linenumber" name="L266" href="#L266">266</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>         NodeNotFoundException(<strong class="jxr_keyword">final</strong> String message, <strong class="jxr_keyword">final</strong> Node node,
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>             <strong class="jxr_keyword">final</strong> CharSequence query) {
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>             <strong class="jxr_keyword">super</strong>(
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>                 Logger.format(
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>                     <span class="jxr_string">"XPath '%s' not found in '%[text]s': %s"</span>,
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>                     ListWrapper.NodeNotFoundException.escapeUnicode(query),
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>                     ListWrapper.NodeNotFoundException.escapeUnicode(
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>                         <strong class="jxr_keyword">new</strong> XMLDocument(node).toString()
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 ),
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>                     message
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>             )
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>             );
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         }
+<a class="jxr_linenumber" name="L280" href="#L280">280</a> 
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L282" href="#L282">282</a> <em class="jxr_javadoccomment">         * Escape unicode characters.</em>
+<a class="jxr_linenumber" name="L283" href="#L283">283</a> <em class="jxr_javadoccomment">         * @param input Input string</em>
+<a class="jxr_linenumber" name="L284" href="#L284">284</a> <em class="jxr_javadoccomment">         * @return Escaped output</em>
+<a class="jxr_linenumber" name="L285" href="#L285">285</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String escapeUnicode(<strong class="jxr_keyword">final</strong> CharSequence input) {
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> length = input.length();
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>             <strong class="jxr_keyword">final</strong> StringBuilder output = <strong class="jxr_keyword">new</strong> StringBuilder(length);
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> index = 0; index &lt; length; index += 1) {
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>                 <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">char</strong> character = input.charAt(index);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>                 <strong class="jxr_keyword">if</strong> (character &lt; 32 || character &gt; 0x7f) {
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>                     output.append(String.format(<span class="jxr_string">"&#92;&#92;u%X"</span>, (<strong class="jxr_keyword">int</strong>) character));
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>                 } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>                     output.append(character);
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>                 }
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>             }
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>             <strong class="jxr_keyword">return</strong> output.toString();
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         }
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>     }
+<a class="jxr_linenumber" name="L300" href="#L300">300</a> 
+<a class="jxr_linenumber" name="L301" href="#L301">301</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2012&#x2013;2025 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
+<div id="footer">© 2012–2026 <a href="https://www.jcabi.com">jcabi.com</a></div>
 </body>
 </html>

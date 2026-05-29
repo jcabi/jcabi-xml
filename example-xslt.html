@@ -1,109 +1,121 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
     <head>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>jcabi-xml &#x2013; How to apply XSL to XML</title>
-        <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css"/>
-                    <meta name="author" content="Yegor Bugayenko" />
-                                                    <script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>How to apply XSL to XML – jcabi-xml</title>
+        <link media="all" rel="stylesheet" type="text/css" href="./css/jcabi.css">
+                    <meta name="author" content="Yegor Bugayenko">
+                                            <link rel="icon" href="https://www.jcabi.com/favicon.ico">
+                                        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1963507-23"></script>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'UA-1963507-23');
+                </script>
+                            <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin=anonymous></script>
         <script src="./js/jcabi.js"></script>
     </head>
     <body>
                 <div class="page" itemscope="" itemtype="http://schema.org/BlogPosting">
             <nav class="menu-section">
-                <ul class="menu" id="menu">
-                                                                                    <li>
-                            <span>Overview</span>
-                                                            <ul>
-                                                                                                    <li >
-                            <span>                        <a href="index.html" title="Introduction">Introduction</a>
+                <div>
+                    <ul class="menu" id="menu">
+                                                                                                    <li>
+                                <span>Overview</span>
+                                                                    <ul>
+                                                                                                                <li >
+                                <span>                        <a href="index.html" title="Introduction">Introduction</a>
         </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li >
-                            <span>                        <a href="apidocs-0.35.0/index.html" title="JavaDoc 0.35.0">JavaDoc 0.35.0</a>
+                                                                                                                                                                                        <ul>
+                                                                            </ul>
+                                                            </li>
+                                                                                                                                        <li >
+                                <span>                        <a href="apidocs-0.36.0/index.html" title="JavaDoc 0.36.0">JavaDoc 0.36.0</a>
         </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li >
-                            <span>                        <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
+                                                                                                                                                                                        <ul>
+                                                                            </ul>
+                                                            </li>
+                                                                                                                                        <li >
+                                <span>                        <a href="cobertura/index.html" title="Test coverage">Test coverage</a>
         </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li >
-                            <span>                        <a href="https://github.com/jcabi/jcabi-xml/releases" title="Release History">Release History</a>
+                                                                                                                                                                                        <ul>
+                                                                            </ul>
+                                                            </li>
+                                                                                                                                        <li >
+                                <span>                        <a href="https://github.com/jcabi/jcabi-xml/releases" title="Release History">Release History</a>
         </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                        </ul>
-                                                    </li>
-                                            <li>
-                            <span>Examples</span>
-                                                            <ul>
-                                                                                                    <li >
-                            <span>                        <a href="example-parsing.html" title="Parsing XML">Parsing XML</a>
+                                                                                                                                                                                        <ul>
+                                                                            </ul>
+                                                            </li>
+                                                                                                    </ul>
+                                                            </li>
+                                                    <li>
+                                <span>Examples</span>
+                                                                    <ul>
+                                                                                                                <li >
+                                <span>                        <a href="example-parsing.html" title="Parsing XML">Parsing XML</a>
         </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li  class='active' >
-                            <span>                        <a href="example-xslt.html" title="XSL Transforming">XSL Transforming</a>
+                                                                                                                                                                                        <ul>
+                                                                            </ul>
+                                                            </li>
+                                                                                                                                        <li  class='active' >
+                                <span>                        <a href="example-xslt.html" title="XSL Transforming">XSL Transforming</a>
         </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                                                        <li >
-                            <span>                        <a href="example-xsd.html" title="XSD Schema Validation">XSD Schema Validation</a>
+                                                                                                                                                                                        <ul>
+                                                                            </ul>
+                                                            </li>
+                                                                                                                                        <li >
+                                <span>                        <a href="example-xsd.html" title="XSD Schema Validation">XSD Schema Validation</a>
         </span>
-                                                                                                                                                                <ul>
-                                                                    </ul>
-                                                    </li>
-                                                                                        </ul>
-                                                    </li>
-                                            <li>
-                            <span>Project Documentation</span>
-                                                            <ul>
-                                                                                                    <li >
-                            <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
+                                                                                                                                                                                        <ul>
+                                                                            </ul>
+                                                            </li>
+                                                                                                    </ul>
+                                                            </li>
+                                                    <li>
+                                <span>Project Documentation</span>
+                                                                    <ul>
+                                                                                                                <li >
+                                <span>                        <a href="project-info.html" title="Project Information">Project Information</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
-                                                                                                                        <li >
-                            <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </li>
+                                                                                                                                        <li >
+                                <span>                        <a href="project-reports.html" title="Project Reports">Project Reports</a>
         </span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </li>
-                                                                                        </ul>
-                                                    </li>
-                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </li>
+                                                                                                    </ul>
+                                                            </li>
+                                            </ul>
+                </div>
+                <div class="signature">
+                    Made by
+                    <a href="https://github.com/jcabi/jcabi-maven-skin">jcabi-maven-skin</a>
+                    2.0.1.
+                </div>
             </nav>
             <div class="right-side">
                 <main>
                     <div class="content">
                         <header>
                             <div class="logo">
-                                <a href="https://xml.jcabi.com/"
-                                    title=" logo ">
-                                    <img src="../logo-square.svg"
+                                <a href="../"
+                                    title=" jcabi ">
+                                                                        <img src="https://jcabi.com/logo-square.svg"
                                         alt="jcabi"
                                                                                     width="64"
                                                                                                                             height="64"
                                                                                 itemprop="image"
-                                    />
-                                </a>
+                                    >                                </a>
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.35.0</strong>
+                                    <strong itemprop="version">0.36.0</strong>
                                 </li>
                                 <li>
-                                    
-                                    <time itemprop="datePublished" datetime="2025-05-04T01:39:54Z">
-                                        
-                                        04-May-2025
+                                    <time itemprop="datePublished" datetime="2026-05-29">
+                                        29-May-2026
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -111,14 +123,13 @@
                         </header>
                         <div id="here-goes-menu" class="menu-off"></div>
                                                                             <a href="https://github.com/jcabi/jcabi-xml">
-                                <img src="https://www.jcabi.com/fork-me.svg" class="fork-me"/>
+                                <img src="https://www.jcabi.com/fork-me.svg" class="fork-me">
                             </a>
                                                 <article itemprop="articleBody">
-                            <section>
-<h2><a name="How_to_apply_XSL_to_XML"></a>How to apply XSL to XML</h2>
-<p>You need two classes: <a href="./apidocs-0.35.0/com/jcabi/xml/XMLDocument.html"><code>XMLDocument</code></a> and <a href="./apidocs-0.35.0/com/jcabi/xml/XSLDocument.html"><code>XSLDocument</code></a> which implement <a href="./apidocs-0.35.0/com/jcabi/xml/XML.html"><code>XML</code></a> and <a href="./apidocs-0.35.0/com/jcabi/xml/XSL.html"><code>XSL</code></a> interfaces respectfully. They work with your default DOM implementation. For example:</p>
-<div class="source">
-<pre>import com.jcabi.xml.XML;
+                            <section><a id="How_to_apply_XSL_to_XML"></a>
+<h1>How to apply XSL to XML</h1>
+<p>You need two classes: <a href="./apidocs-0.36.0/com/jcabi/xml/XMLDocument.html"><code>XMLDocument</code></a> and <a href="./apidocs-0.36.0/com/jcabi/xml/XSLDocument.html"><code>XSLDocument</code></a> which implement <a href="./apidocs-0.36.0/com/jcabi/xml/XML.html"><code>XML</code></a> and <a href="./apidocs-0.36.0/com/jcabi/xml/XSL.html"><code>XSL</code></a> interfaces respectfully. They work with your default DOM implementation. For example:</p>
+<pre><code>import com.jcabi.xml.XML;
 import com.jcabi.xml.XMLDocument;
 import com.jcabi.xml.XSL;
 import com.jcabi.xml.XSLDocument;
@@ -135,20 +146,19 @@ public class Main {
     XML second = new XSLDocument(xsl).transform(first);
     System.out.println(second.toString());
   }
-}</pre></div>
+}</code></pre>
 <p>Prints:</p>
-<div class="source">
-<pre>&lt;name&gt;Coffee to go&lt;/name&gt;</pre></div></section>
+<pre><code>&lt;name&gt;Coffee to go&lt;/name&gt;</code></pre></section>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2025
+                                                                            2012-2026
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
-                    <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
+                    <div><a href="https://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
                 </footer>
             </div>
         </div>
