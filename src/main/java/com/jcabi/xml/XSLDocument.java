@@ -22,6 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
+import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -100,6 +101,11 @@ public final class XSLDocument implements XSL {
      * @since 0.20
      */
     private final transient String sid;
+
+    /**
+     * Compiled stylesheet, cached on first use.
+     */
+    private transient Templates compiled;
 
     /**
      * Public ctor, from XML as a source.
@@ -290,6 +296,25 @@ public final class XSLDocument implements XSL {
         this.sid = base;
     }
 
+    /**
+     * Private ctor that carries a pre-compiled stylesheet into a new instance.
+     * @param src XSL document body
+     * @param srcs Sources
+     * @param map Map of XSL params
+     * @param base SystemId/Base
+     * @param tmpl Already-compiled stylesheet to reuse
+     * @checkstyle ParameterNumberCheck (5 lines)
+     */
+    private XSLDocument(final String src, final Sources srcs,
+        final Map<String, Object> map, final String base,
+        final Templates tmpl) {
+        this.xsl = src;
+        this.sources = srcs;
+        this.params = new HashMap<>(map);
+        this.sid = base;
+        this.compiled = tmpl;
+    }
+
     @Override
     public XSL with(final Sources src) {
         return new XSLDocument(this.xsl, src, this.params, this.sid);
@@ -297,10 +322,14 @@ public final class XSLDocument implements XSL {
 
     @Override
     public XSL with(final String name, final Object value) {
+        if (this.compiled == null) {
+            this.compiled = this.compile();
+        }
         return new XSLDocument(
             this.xsl, this.sources,
             new MapOf<String, Object>(this.params, new MapEntry<>(name, value)),
-            this.sid
+            this.sid,
+            this.compiled
         );
     }
 
@@ -389,17 +418,10 @@ public final class XSLDocument implements XSL {
     /**
      * Transform XML into result.
      *
-     * We create {@link TransformerFactory} here on every transformation
-     * because {@link javax.xml.transform.URIResolver} must be set into
-     * it before making an instance of a transformer. Otherwise, it won't
-     * understand "xsl:import" statements.
-     *
      * @param xml XML
      * @param result Result
      * @since 0.11
-     * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
      */
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
@@ -434,17 +456,48 @@ public final class XSLDocument implements XSL {
     }
 
     /**
-     * Make a transformer.
+     * Make a transformer from the cached compiled stylesheet.
      * @return The transformer
      */
     private Transformer transformer() {
+        if (this.compiled == null) {
+            this.compiled = this.compile();
+        }
+        final Transformer trans;
+        try {
+            trans = this.compiled.newTransformer();
+        } catch (final TransformerConfigurationException ex) {
+            throw new IllegalArgumentException(
+                "Failed to instantiate transformer from compiled stylesheet",
+                ex
+            );
+        }
+        trans.setURIResolver(this.sources);
+        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
+            trans.setParameter(ent.getKey(), ent.getValue());
+        }
+        return trans;
+    }
+
+    /**
+     * Compile the stylesheet to a reusable {@link Templates} object.
+     *
+     * We create {@link TransformerFactory} here during compilation
+     * because {@link javax.xml.transform.URIResolver} must be set into
+     * it before making an instance of a transformer. Otherwise, it won't
+     * understand "xsl:import" statements.
+     *
+     * @return Compiled stylesheet
+     * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
+     */
+    private Templates compile() {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
         factory.setErrorListener(errors);
         factory.setURIResolver(this.sources);
-        final Transformer trans;
+        final Templates tmpl;
         try {
-            trans = factory.newTransformer(
+            tmpl = factory.newTemplates(
                 new StreamSource(new StringReader(this.xsl), this.sid)
             );
         } catch (final TransformerConfigurationException ex) {
@@ -456,19 +509,16 @@ public final class XSLDocument implements XSL {
                 ex
             );
         }
-        for (final Map.Entry<String, Object> ent : this.params.entrySet()) {
-            trans.setParameter(ent.getKey(), ent.getValue());
-        }
         if (!errors.summary().isEmpty()) {
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to compile stylesheet by %s: %s",
-                    trans.getClass().getName(),
+                    factory.getClass().getName(),
                     errors.summary()
                 )
             );
         }
-        return trans;
+        return tmpl;
     }
 
     /**
