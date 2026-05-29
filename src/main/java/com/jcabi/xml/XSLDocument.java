@@ -50,7 +50,7 @@ import org.w3c.dom.Document;
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @EqualsAndHashCode(of = "xsl")
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.TooManyMethods")
 public final class XSLDocument implements XSL {
 
     /**
@@ -83,6 +83,25 @@ public final class XSLDocument implements XSL {
     );
 
     /**
+     * Per-thread builder — {@link DocumentBuilder} is not thread-safe, so each
+     * thread keeps its own instance. The factory and builder are created lazily
+     * on the first {@link #transform} call in each thread, avoiding any risk of
+     * circular class-initialization when the factory's ServiceLoader scan runs.
+     */
+    private static final ThreadLocal<DocumentBuilder> DBUILDER =
+        ThreadLocal.withInitial(
+            () -> {
+                try {
+                    return DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                } catch (final ParserConfigurationException ex) {
+                    throw new IllegalStateException(
+                        "Failed to create DocumentBuilder", ex
+                    );
+                }
+            }
+        );
+
+    /**
      * XSL document.
      */
     private final transient String xsl;
@@ -107,6 +126,12 @@ public final class XSLDocument implements XSL {
      * Compiled stylesheet, cached on first use.
      */
     private final transient Unchecked<Templates> templates;
+
+    /**
+     * Formatted (pretty-printed) string form, cached on first use.
+     * Since {@code xsl} is immutable the result never changes.
+     */
+    private final transient Unchecked<String> formatted;
 
     /**
      * Public ctor, from XML as a source.
@@ -291,7 +316,11 @@ public final class XSLDocument implements XSL {
      */
     public XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map, final String base) {
-        this(src, srcs, new HashMap<>(map), base, XSLDocument.load(srcs, src, base));
+        this(
+            src, srcs, new HashMap<>(map), base,
+            XSLDocument.load(srcs, src, base),
+            XSLDocument.format(src)
+        );
     }
 
     /**
@@ -301,16 +330,18 @@ public final class XSLDocument implements XSL {
      * @param map Map of XSL params
      * @param base SystemId/Base
      * @param tmpl Already-compiled stylesheet to reuse
+     * @param fmt Already-allocated formatted-string scalar to reuse
      * @checkstyle ParameterNumberCheck (5 lines)
      */
     private XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map, final String base,
-        final Unchecked<Templates> tmpl) {
+        final Unchecked<Templates> tmpl, final Unchecked<String> fmt) {
         this.xsl = src;
         this.sources = srcs;
         this.params = new HashMap<>(map);
         this.sid = base;
         this.templates = tmpl;
+        this.formatted = fmt;
     }
 
     @Override
@@ -325,7 +356,8 @@ public final class XSLDocument implements XSL {
             this.sources,
             new MapOf<String, Object>(this.params, new MapEntry<>(name, value)),
             this.sid,
-            this.templates
+            this.templates,
+            this.formatted
         );
     }
 
@@ -374,25 +406,12 @@ public final class XSLDocument implements XSL {
 
     @Override
     public String toString() {
-        return new XMLDocument(this.xsl).toString();
+        return this.formatted.value();
     }
 
     @Override
     public XML transform(final XML xml) {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        final DocumentBuilder builder;
-        try {
-            builder = factory.newDocumentBuilder();
-        } catch (final ParserConfigurationException ex) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "Failed to create new XML document by %s",
-                    factory.getClass().getName()
-                ),
-                ex
-            );
-        }
-        final Document target = builder.newDocument();
+        final Document target = XSLDocument.DBUILDER.get().newDocument();
         this.transformInto(xml, new DOMResult(target));
         return new XMLDocument(target);
     }
@@ -475,6 +494,17 @@ public final class XSLDocument implements XSL {
             trans.setParameter(ent.getKey(), ent.getValue());
         }
         return trans;
+    }
+
+    /**
+     * Lazy pretty-printed string form of an XSL document.
+     * @param xsl XSL document body
+     * @return Cached formatted string
+     */
+    private static Unchecked<String> format(final String xsl) {
+        return new Unchecked<>(
+            new Sticky<>(() -> new XMLDocument(xsl).toString())
+        );
     }
 
     /**

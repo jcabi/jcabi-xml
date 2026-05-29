@@ -97,4 +97,15 @@ public class XSLDocumentBenchmark {
             .transform(XSLDocumentBenchmark.INPUT);
     }
 
+    /**
+     * {@link XSLDocument#toString()} on a reused instance.
+     * The result is computed once and returned from a
+     * {@link org.cactoos.scalar.Sticky} cache on every subsequent call.
+     * @return Formatted XSL string
+     */
+    @Benchmark
+    public final String toStringCached() {
+        return XSLDocumentBenchmark.XSL.toString();
+    }
+
 }
