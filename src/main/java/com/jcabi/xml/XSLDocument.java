@@ -503,7 +503,7 @@ public final class XSLDocument implements XSL {
      */
     private static Unchecked<String> format(final String xsl) {
         return new Unchecked<>(
-            new Sticky<>(() -> new XMLDocument(xsl).toString())
+            new Synced<>(new Sticky<>(() -> new XMLDocument(xsl).toString()))
         );
     }
 
