@@ -290,7 +290,23 @@
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>         );
 <a class="jxr_linenumber" name="L283" href="#L283">283</a>     }
 <a class="jxr_linenumber" name="L284" href="#L284">284</a> 
-<a class="jxr_linenumber" name="L285" href="#L285">285</a> }
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     @RepeatedTest(10)
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>     <strong class="jxr_keyword">void</strong> returnsNonNullToStringInManyThreads() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <strong class="jxr_keyword">final</strong> XSL xsl = <strong class="jxr_keyword">new</strong> XSLDocument(
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>             <strong class="jxr_keyword">this</strong>.getClass().getResourceAsStream(<span class="jxr_string">"first.xsl"</span>)
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>         );
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> total = 50;
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         MatcherAssert.assertThat(
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>             <span class="jxr_string">"toString() must never return null under concurrent access"</span>,
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>             <strong class="jxr_keyword">new</strong> Together&lt;&gt;(
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>                 total,
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>                 t -&gt; xsl.toString()
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>             ).asList(),
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>             Matchers.everyItem(Matchers.notNullValue())
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         );
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>     }
+<a class="jxr_linenumber" name="L300" href="#L300">300</a> 
+<a class="jxr_linenumber" name="L301" href="#L301">301</a> }
 </pre>
 <hr/>
 <div id="footer">© 2012–2026 <a href="https://www.jcabi.com">jcabi.com</a></div>
