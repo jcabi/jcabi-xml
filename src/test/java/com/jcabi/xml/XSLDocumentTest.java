@@ -282,4 +282,20 @@ final class XSLDocumentTest {
         );
     }
 
+    @RepeatedTest(10)
+    void returnsNonNullToStringInManyThreads() throws Exception {
+        final XSL xsl = new XSLDocument(
+            this.getClass().getResourceAsStream("first.xsl")
+        );
+        final int total = 50;
+        MatcherAssert.assertThat(
+            "toString() must never return null under concurrent access",
+            new Together<>(
+                total,
+                t -> xsl.toString()
+            ).asList(),
+            Matchers.everyItem(Matchers.notNullValue())
+        );
+    }
+
 }
