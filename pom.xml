@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- * SPDX-FileCopyrightText: Copyright (c) 2012-2026 Yegor Bugayenko
- * SPDX-License-Identifier: MIT
+* SPDX-FileCopyrightText: Copyright (c) 2012-2026 Yegor Bugayenko
+* SPDX-License-Identifier: MIT
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -162,11 +162,11 @@
         <artifactId>maven-invoker-plugin</artifactId>
         <configuration>
           <!--
-            @todo #1:90min Enable Groovy Integration Test
-             The Groovy integration test is disabled because it fails.
-             The problem is that the XMLDocument#equals method is
-             indentation-aware, but it shouldn't be.
-             We need to fix it and enable the test.
+          @todo #1:90min Enable Groovy Integration Test
+          The Groovy integration test is disabled because it fails.
+          The problem is that the XMLDocument#equals method is
+          indentation-aware, but it shouldn't be.
+          We need to fix it and enable the test.
           -->
           <pomExcludes>groovy/pom.xml</pomExcludes>
         </configuration>
