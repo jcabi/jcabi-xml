@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 /**
  * Sources in file system.
  *
- * If you have some resources in files, just configure your
+ * <p>If you have some resources in files, just configure your
  * XSL with this "sources":
  *
  * <pre> XSL xsl = new XSLDocument(input).with(

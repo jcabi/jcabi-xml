@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,6 +22,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -47,17 +49,16 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Test case for {@link XMLDocument}.
- *
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (20 lines)
  */
 @SuppressWarnings({
-    "PMD.TooManyMethods",
     "PMD.GodClass",
     "PMD.UnitTestContainsTooManyAsserts",
     "PMD.UnnecessaryLocalRule"
 })
 final class XMLDocumentTest {
+
     /**
      * Root XSD.
      */
@@ -70,7 +71,7 @@ final class XMLDocumentTest {
     @Test
     void findsDocumentNodesWithXpath() {
         final XML doc = new XMLDocument(
-            "<r><a>\u0443\u0440\u0430!</a><a>B</a></r>"
+            "<r><a>ура!</a><a>B</a></r>"
         );
         MatcherAssert.assertThat(
             doc.xpath("//a/text()"),
@@ -78,7 +79,7 @@ final class XMLDocumentTest {
         );
         MatcherAssert.assertThat(
             doc.xpath("/r/a/text()"),
-            Matchers.hasItem("\u0443\u0440\u0430!")
+            Matchers.hasItem("ура!")
         );
     }
 
@@ -188,14 +189,14 @@ final class XMLDocumentTest {
     @Test
     void findsWithXpathAndNamespaces() {
         final XML doc = new XMLDocument(
-            "<html xmlns='http://www.w3.org/1999/xhtml'><div>\u0443\u0440\u0430!</div></html>"
+            "<html xmlns='http://www.w3.org/1999/xhtml'><div>ура!</div></html>"
         );
         MatcherAssert.assertThat(
             doc.nodes("/xhtml:html/xhtml:div"),
             Matchers.hasSize(1)
         );
         MatcherAssert.assertThat(
-            doc.nodes("//xhtml:div[.='\u0443\u0440\u0430!']"),
+            doc.nodes("//xhtml:div[.='ура!']"),
             Matchers.hasSize(1)
         );
     }
@@ -206,18 +207,18 @@ final class XMLDocumentTest {
             .resolve("x.xml").toFile();
         new LengthOf(
             new TeeInput(
-                "<a xmlns='urn:foo'><b>\u0433!</b></a>",
+                "<a xmlns='urn:foo'><b>г!</b></a>",
                 file
             )
         ).value();
         final XML doc = XMLDocument.make(file).registerNs("f", "urn:foo");
         MatcherAssert.assertThat(
-            doc.nodes("/f:a/f:b[.='\u0433!']"),
+            doc.nodes("/f:a/f:b[.='г!']"),
             Matchers.hasSize(1)
         );
         MatcherAssert.assertThat(
             doc.xpath("//f:b/text()").get(0),
-            Matchers.equalTo("\u0433!")
+            Matchers.equalTo("г!")
         );
     }
 
@@ -347,10 +348,14 @@ final class XMLDocumentTest {
             XhtmlMatchers.hasXPath("/root/hey")
         );
         final ExecutorService service = Executors.newFixedThreadPool(5);
+        final Collection<Future<?>> futures = new ArrayList<>(loop);
         for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
+            futures.add(service.submit(runnable));
         }
         service.shutdown();
+        for (final Future<?> future : futures) {
+            future.get();
+        }
         MatcherAssert.assertThat(
             service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
@@ -382,7 +387,7 @@ final class XMLDocumentTest {
             String.format(
                 "<a><b>test text</b><c>%s</c></a>",
                 StringUtils.repeat(
-                    "<beta>some text \u20ac</beta> ",
+                    "<beta>some text €</beta> ",
                     repeat
                 )
             )
@@ -398,10 +403,14 @@ final class XMLDocumentTest {
             );
         };
         final ExecutorService service = Executors.newFixedThreadPool(5);
+        final Collection<Future<?>> futures = new ArrayList<>(loop);
         for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
+            futures.add(service.submit(runnable));
         }
         service.shutdown();
+        for (final Future<?> future : futures) {
+            future.get();
+        }
         MatcherAssert.assertThat(
             service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
@@ -418,7 +427,7 @@ final class XMLDocumentTest {
             String.format(
                 "<root><data>%s</data></root>",
                 StringUtils.repeat(
-                    "<alpha>some text \u20ac</alpha> ",
+                    "<alpha>some text €</alpha> ",
                     repeat
                 )
             )
@@ -432,10 +441,14 @@ final class XMLDocumentTest {
             done.incrementAndGet();
         };
         final ExecutorService service = Executors.newFixedThreadPool(5);
+        final Collection<Future<?>> futures = new ArrayList<>(loop);
         for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
+            futures.add(service.submit(runnable));
         }
         service.shutdown();
+        for (final Future<?> future : futures) {
+            future.get();
+        }
         while (true) {
             if (done.get() == loop) {
                 break;
@@ -480,7 +493,7 @@ final class XMLDocumentTest {
     @Test
     void comparesToAnotherDocument() {
         MatcherAssert.assertThat(
-            new XMLDocument("<hi>\n<dude>  </dude></hi>"),
+            new XMLDocument(String.format("<hi>%n<dude>  </dude></hi>")),
             Matchers.equalTo(new XMLDocument("<hi><dude>  </dude></hi>"))
         );
         MatcherAssert.assertThat(
@@ -501,9 +514,13 @@ final class XMLDocumentTest {
         //  different indentations. Don't forget to remove the @Disabled annotation from this test.
         MatcherAssert.assertThat(
             "Different indentations should be ignored",
-            new XMLDocument("<program>\n <indentation/>\n</program>"),
+            new XMLDocument(
+                String.format("<program>%n <indentation/>%n</program>")
+            ),
             Matchers.equalTo(
-                new XMLDocument("<program>\n  <indentation/>\n</program>\n")
+                new XMLDocument(
+                    String.format("<program>%n  <indentation/>%n</program>%n")
+                )
             )
         );
     }
@@ -546,7 +563,7 @@ final class XMLDocumentTest {
             .nodes("/ns1:project/ns1:properties/*");
         MatcherAssert.assertThat(
             new FormattedText(
-                "%s should contain 2 property nodes\n but was %s\n in %s",
+                "%s should contain 2 property nodes%n but was %s%n in %s",
                 xml,
                 properties.size(),
                 properties
@@ -563,7 +580,7 @@ final class XMLDocumentTest {
             new XMLDocument("<x><y>hello</y></x>"),
             Matchers.equalTo(
                 new XMLDocument(
-                    "<x>  \n\n\n      <y>hello</y  >  \n    </x >"
+                    String.format("<x>  %n%n%n      <y>hello</y  >  %n    </x >")
                 )
             )
         );
@@ -623,9 +640,9 @@ final class XMLDocumentTest {
         final StringBuilder text = new StringBuilder(size)
             .append("<root>");
         for (int idx = 0; idx < loop; ++idx) {
-            text.append("\n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;")
+            text.append(String.format("%n<a>\t&lt;&gt;&amp;&quot;&#09;&#x0A;"))
                 .append(RandomStringUtils.secure().nextAlphanumeric(random))
-                .append("</a>\n\r \t    ");
+                .append(String.format("</a>%n \t    "));
         }
         text.append("</root>");
         final XML xml = new XMLDocument(text.toString());
@@ -675,7 +692,6 @@ final class XMLDocumentTest {
                 "</xs:schema>"
             )
         );
-        // @checkstyle AnonInnerLengthCheck (50 lines)
         final Callable<Void> callable = () -> {
             final int cnt = rand.nextInt(random);
             MatcherAssert.assertThat(
@@ -691,10 +707,14 @@ final class XMLDocumentTest {
             return null;
         };
         final ExecutorService service = Executors.newFixedThreadPool(5);
+        final Collection<Future<?>> futures = new ArrayList<>(loop);
         for (int count = 0; count < loop; count += 1) {
-            service.submit(callable);
+            futures.add(service.submit(callable));
         }
         service.shutdown();
+        for (final Future<?> future : futures) {
+            future.get();
+        }
         MatcherAssert.assertThat(
             service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
@@ -704,7 +724,7 @@ final class XMLDocumentTest {
 
     /**
      * This test is disabled because it is a performance test that might be flaky.
-     * @param temp Temporary directory.
+     * @param temp Temporary directory
      * @throws IOException If something goes wrong.
      */
     @RepeatedTest(10)
@@ -735,8 +755,8 @@ final class XMLDocumentTest {
 
     /**
      * Measure the time of execution.
-     * @param run The callable to run.
-     * @return Time in milliseconds.
+     * @param run The callable to run
+     * @return Time in milliseconds
      * @checkstyle IllegalCatchCheck (20 lines)
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
@@ -760,22 +780,21 @@ final class XMLDocumentTest {
 
     /**
      * Generate large XML for tests.
-     * @return Large XML string.
+     * @return Large XML string
      */
     private static String large() {
-        return IntStream.range(0, 100)
-            .mapToObj(
-                i -> StringUtils.join(
-                    "<payment><id>333</id>",
-                    "<date>1-Jan-2013</date>",
-                    "<debit>test-1</debit>",
-                    "<credit>test-2</credit>",
-                    "</payment>"
-                )
-            ).collect(
-                Collectors.joining(
-                    "", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>", "</root>"
-                )
-            );
+        return IntStream.range(0, 100).mapToObj(
+            i -> StringUtils.join(
+                "<payment><id>333</id>",
+                "<date>1-Jan-2013</date>",
+                "<debit>test-1</debit>",
+                "<credit>test-2</credit>",
+                "</payment>"
+            )
+        ).collect(
+            Collectors.joining(
+                "", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>", "</root>"
+            )
+        );
     }
 }

@@ -16,6 +16,7 @@ import org.w3c.dom.ls.LSInput;
  */
 @SuppressWarnings("PMD.UnnecessaryLocalRule")
 final class ClasspathInputTest {
+
     /**
      * Path of an XML resource available on the classpath in tests.
      */

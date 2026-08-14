@@ -45,5 +45,4 @@ public interface XSL {
      * @since 0.16
      */
     XSL with(String name, Object value);
-
 }

@@ -46,5 +46,4 @@ final class XSLChainTest {
             XhtmlMatchers.hasXPath("/twice")
         );
     }
-
 }

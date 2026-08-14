@@ -28,7 +28,6 @@ import org.xml.sax.SAXParseException;
  * @since 0.7
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-@SuppressWarnings("PMD.TooManyMethods")
 @EqualsAndHashCode(of = "origin")
 public final class StrictXML implements XML {
 
@@ -79,9 +78,9 @@ public final class StrictXML implements XML {
                 if (!errors.isEmpty()) {
                     Logger.warn(
                         StrictXML.class,
-                        "%d XML validation error(s):\n  %s\n%s",
+                        "%d XML validation error(s):%n  %s%n%s",
                         errors.size(),
-                        StrictXML.join(StrictXML.print(errors), "\n  "),
+                        StrictXML.join(StrictXML.print(errors), String.format("%n  ")),
                         xml
                     );
                     throw new IllegalArgumentException(
@@ -133,7 +132,7 @@ public final class StrictXML implements XML {
     /**
      * Retrieve DOM node, represented by this wrapper.
      * This method works exactly the same as {@link #deepCopy()}.
-     * @return Deep copy of the inner DOM node.
+     * @return Deep copy of the inner DOM node
      * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
      * @checkstyle NoJavadocForOverriddenMethodsCheck (5 lines)
      */
@@ -204,9 +203,9 @@ public final class StrictXML implements XML {
     /**
      * Joins many objects' string representations with the given separator
      * string. The separator will not be appended to the beginning or the end.
-     * @param iterable Iterable of objects.
-     * @param sep Separator string.
-     * @return Joined string.
+     * @param iterable Iterable of objects
+     * @param sep Separator string
+     * @return Joined string
      */
     private static String join(final Iterable<?> iterable, final String sep) {
         final Iterator<?> iterator = iterable.iterator();

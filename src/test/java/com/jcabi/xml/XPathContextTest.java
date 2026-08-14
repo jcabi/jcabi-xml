@@ -102,5 +102,4 @@ final class XPathContextTest {
             Matchers.equalTo(XMLConstants.NULL_NS_URI)
         );
     }
-
 }

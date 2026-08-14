@@ -6,14 +6,15 @@ package com.jcabi.xml;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Scanner;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -33,19 +34,12 @@ final class TextResource {
     private final transient String content;
 
     /**
-     * Private constructor, used for initializing the field text content.
-     * @param text The text content
-     */
-    private TextResource(final String text) {
-        this.content = text;
-    }
-
-    /**
      * Public constructor, represent an InputStream as a text resource.
      *
      * <p>The provided input stream will be closed automatically after
      * getting data from it.
-     * @param stream Stream to represent as text.
+     *
+     * @param stream Stream to represent as text
      */
     TextResource(final InputStream stream) {
         this(TextResource.readAsString(stream));
@@ -53,8 +47,8 @@ final class TextResource {
 
     /**
      * Public constructor, represent a File as a text resource.
-     * @param file File to represent as text.
-     * @throws FileNotFoundException If file not found
+     * @param file File to represent as text
+     * @throws IOException If file not found
      */
     TextResource(final File file) throws IOException {
         this(
@@ -66,7 +60,7 @@ final class TextResource {
 
     /**
      * Public constructor, represent a URL location as a text resource.
-     * @param url URL to represent as text.
+     * @param url URL to represent as text
      * @throws IOException If an IO problem occurs.
      */
     TextResource(final URL url) throws IOException {
@@ -75,11 +69,19 @@ final class TextResource {
 
     /**
      * Public constructor, represent a URI location as a text resource.
-     * @param uri URI to represent as text.
+     * @param uri URI to represent as text
      * @throws IOException If an IO problem occurs.
      */
     TextResource(final URI uri) throws IOException {
         this(TextResource.readAsString(uri.toURL()));
+    }
+
+    /**
+     * Private constructor, used for initializing the field text content.
+     * @param text The text content
+     */
+    private TextResource(final String text) {
+        this.content = text;
     }
 
     @Override
@@ -93,17 +95,17 @@ final class TextResource {
      * @return The stream content, in String form
      */
     private static String readAsString(final InputStream stream) {
-        final String result;
-        try (Scanner scanner = new Scanner(
-            stream, StandardCharsets.UTF_8.name()
-        ).useDelimiter("\\A")) {
-            if (scanner.hasNext()) {
-                result = scanner.next();
-            } else {
-                result = "";
-            }
+        final StringWriter writer = new StringWriter();
+        try (
+            Reader reader = new InputStreamReader(
+                stream, StandardCharsets.UTF_8
+            )
+        ) {
+            reader.transferTo(writer);
+        } catch (final IOException ex) {
+            throw new IllegalStateException("Failed to read the resource", ex);
         }
-        return result;
+        return writer.toString();
     }
 
     /**

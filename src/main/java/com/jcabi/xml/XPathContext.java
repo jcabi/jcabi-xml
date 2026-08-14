@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -91,8 +90,8 @@ public final class XPathContext implements NamespaceContext {
 
     /**
      * Private ctor.
-     * @param mapping Mapping to set.
-     * @param ctxs Context to set.
+     * @param mapping Mapping to set
+     * @param ctxs Context to set
      */
     private XPathContext(final Map<String, String> mapping,
         final List<NamespaceContext> ctxs) {
@@ -140,8 +139,8 @@ public final class XPathContext implements NamespaceContext {
 
     @Override
     public Iterator<String> getPrefixes(final String namespace) {
-        final List<String> prefixes = new LinkedList<>();
-        for (final ConcurrentMap.Entry<String, String> entry
+        final List<String> prefixes = new ArrayList<>(0);
+        for (final Map.Entry<String, String> entry
             : this.map.entrySet()) {
             if (entry.getValue().equals(namespace)) {
                 prefixes.add(entry.getKey());
@@ -212,5 +211,4 @@ public final class XPathContext implements NamespaceContext {
         }
         return new HashMap<>(map);
     }
-
 }

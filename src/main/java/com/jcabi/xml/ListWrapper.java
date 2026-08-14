@@ -13,7 +13,6 @@ import org.w3c.dom.Node;
 
 /**
  * Wrapper of {@link List}.
- * @param <T> Time of items
  *
  * <p>This wrapper is our internal implementation of a {@link List}. The only
  * purpose of this wrapper is to throw our own custom exception when the client
@@ -50,14 +49,15 @@ import org.w3c.dom.Node;
  * other cases of illegal method call (start is less than zero, end is
  * less than zero, or start is bigger than end) a standard
  * {@link IndexOutOfBoundsException} is thrown (by the encapsulated
- * implementation of {@Link List}).
+ * implementation of {@link List}).
  *
  * <p>The class is immutable and thread-safe.
  *
+ * @param <T> Time of items
  * @since 0.1
  */
-@SuppressWarnings("PMD.TooManyMethods")
 final class ListWrapper<T> implements List<T> {
+
     /**
      * The original list.
      */
@@ -80,7 +80,6 @@ final class ListWrapper<T> implements List<T> {
      * @param addr Address
      */
     ListWrapper(final List<T> list, final Node node, final String addr) {
-        super();
         this.original = list;
         this.dom = node;
         this.xpath = addr;
@@ -248,11 +247,11 @@ final class ListWrapper<T> implements List<T> {
 
     /**
      * Node not found in XmlDocument.
-     *
      * @since 0.1
      */
     private static final class NodeNotFoundException
         extends IndexOutOfBoundsException {
+
         /**
          * Serialization marker.
          */
@@ -272,9 +271,9 @@ final class ListWrapper<T> implements List<T> {
                     ListWrapper.NodeNotFoundException.escapeUnicode(query),
                     ListWrapper.NodeNotFoundException.escapeUnicode(
                         new XMLDocument(node).toString()
-                ),
+                    ),
                     message
-            )
+                )
             );
         }
 
@@ -288,7 +287,7 @@ final class ListWrapper<T> implements List<T> {
             final StringBuilder output = new StringBuilder(length);
             for (int index = 0; index < length; index += 1) {
                 final char character = input.charAt(index);
-                if (character < 32 || character > 0x7f) {
+                if (character < 32 || character > 0x7F) {
                     output.append(String.format("\\u%X", (int) character));
                 } else {
                     output.append(character);
@@ -297,5 +296,4 @@ final class ListWrapper<T> implements List<T> {
             return output.toString();
         }
     }
-
 }

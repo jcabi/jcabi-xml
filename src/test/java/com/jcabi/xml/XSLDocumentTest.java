@@ -6,8 +6,11 @@ package com.jcabi.xml;
 
 import com.jcabi.matchers.XhtmlMatchers;
 import com.yegor256.Together;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
@@ -22,7 +25,6 @@ import org.junit.jupiter.api.Test;
  * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
 @SuppressWarnings({
-    "PMD.TooManyMethods",
     "PMD.UnitTestContainsTooManyAsserts",
     "PMD.UnnecessaryLocalRule"
 })
@@ -68,10 +70,14 @@ final class XSLDocumentTest {
             XhtmlMatchers.hasXPath("/works")
         );
         final ExecutorService service = Executors.newFixedThreadPool(5);
+        final Collection<Future<?>> futures = new ArrayList<>(loop);
         for (int count = 0; count < loop; count += 1) {
-            service.submit(runnable);
+            futures.add(service.submit(runnable));
         }
         service.shutdown();
+        for (final Future<?> future : futures) {
+            future.get();
+        }
         MatcherAssert.assertThat(
             service.awaitTermination(timeout, TimeUnit.SECONDS),
             Matchers.is(true)
@@ -123,7 +129,7 @@ final class XSLDocumentTest {
             XSLDocument.STRIP.transform(
                 new XMLDocument("<a>   <b/>  </a>")
             ).toString(),
-            Matchers.containsString("<a>\n")
+            Matchers.containsString(String.format("<a>%n"))
         );
     }
 
@@ -297,5 +303,4 @@ final class XSLDocumentTest {
             Matchers.everyItem(Matchers.notNullValue())
         );
     }
-
 }

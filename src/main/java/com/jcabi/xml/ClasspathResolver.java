@@ -10,14 +10,11 @@ import org.w3c.dom.ls.LSResourceResolver;
 /**
  * {@link LSResourceResolver} implementation
  * supporting classpath lookups.
- *
  * @since 0.1
  */
 public final class ClasspathResolver implements LSResourceResolver {
 
     @Override
-    @SuppressWarnings("PMD.UseObjectForClearerAPI")
-    // @checkstyle ParameterNumber (10 lines)
     public LSInput resolveResource(
         final String type,
         final String nspace,

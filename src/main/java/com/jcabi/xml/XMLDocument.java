@@ -61,13 +61,12 @@ import org.xml.sax.SAXParseException;
  * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */
 @SuppressWarnings({
-    "PMD.OnlyOneConstructorShouldDoInitialization",
-    "PMD.TooManyMethods",
     "PMD.GodClass",
     "PMD.CouplingBetweenObjects",
     "PMD.AvoidSynchronizedStatement"
 })
 public final class XMLDocument implements XML {
+
     /**
      * Namespace context to use for {@link #xpath(String)}
      * and {@link #nodes(String)} methods.
@@ -194,10 +193,8 @@ public final class XMLDocument implements XML {
      * @param stream The input stream, which will be closed automatically
      * @throws IOException In case of I/O problem
      */
-    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
     public XMLDocument(final InputStream stream) throws IOException {
         this(new TextResource(stream).toString());
-        stream.close();
     }
 
     /**
@@ -253,7 +250,6 @@ public final class XMLDocument implements XML {
      * @param cache The source
      * @param context Namespace context
      * @param leaf Is it a leaf node?
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     private XMLDocument(
         final Node cache,
@@ -364,12 +360,13 @@ public final class XMLDocument implements XML {
     /**
      * Retrieve DOM node, represented by this wrapper.
      * This method works exactly the same as {@link #deepCopy()}.
-     * @return Deep copy of the inner DOM node.
+     * @return Deep copy of the inner DOM node
      * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
      * @checkstyle NoJavadocForOverriddenMethodsCheck (5 lines)
      */
     @Override
     @Deprecated
+    @SuppressWarnings("InlineMeSuggester")
     public Node node() {
         return this.deepCopy();
     }
@@ -394,7 +391,6 @@ public final class XMLDocument implements XML {
     @Override
     @SuppressWarnings("PMD.PreserveStackTrace")
     public List<String> xpath(final String query) {
-        // @checkstyle FinalLocalVariableCheck (1 line)
         List<String> items;
         try {
             final NodeList nodes = this.fetch(query, NodeList.class);
@@ -539,8 +535,8 @@ public final class XMLDocument implements XML {
 
     /**
      * Clones a node and imports it in a new document.
-     * @param node A node to clone.
-     * @return A cloned node imported in a dedicated document.
+     * @param node A node to clone
+     * @return A cloned node imported in a dedicated document
      */
     private static Node createImportedNode(final Node node) {
         final DocumentBuilderFactory factory = XMLDocument.configuredDFactory();
@@ -601,8 +597,7 @@ public final class XMLDocument implements XML {
 
     /**
      * Transform node to String.
-     *
-     * @param node The DOM node.
+     * @param node The DOM node
      * @return String representation
      */
     private static String asString(final Node node) {
@@ -628,7 +623,9 @@ public final class XMLDocument implements XML {
         final StringWriter writer = new StringWriter();
         final Result result = new StreamResult(writer);
         try {
-            trans.transform(source, result);
+            synchronized (node) {
+                trans.transform(source, result);
+            }
         } catch (final TransformerException ex) {
             throw new IllegalArgumentException(
                 String.format(
@@ -688,10 +685,10 @@ public final class XMLDocument implements XML {
 
     /**
      * Validation error handler.
-     *
      * @since 0.1
      */
     static final class ValidationHandler implements ErrorHandler {
+
         /**
          * Errors.
          */

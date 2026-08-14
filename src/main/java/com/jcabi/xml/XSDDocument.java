@@ -5,7 +5,6 @@
 package com.jcabi.xml;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -47,14 +46,6 @@ public final class XSDDocument implements XSD {
     }
 
     /**
-     * Public ctor, from XSD as a string.
-     * @param src XSD document body
-     */
-    public XSDDocument(final String src) {
-        this.xsd = src;
-    }
-
-    /**
      * Public ctor, from URL.
      * @param url Location of document
      * @throws IOException If fails to read
@@ -67,7 +58,7 @@ public final class XSDDocument implements XSD {
     /**
      * Public ctor, from file.
      * @param file Location of document
-     * @throws FileNotFoundException If fails to read
+     * @throws IOException If fails to read
      * @since 0.21
      */
     public XSDDocument(final Path file) throws IOException {
@@ -77,7 +68,7 @@ public final class XSDDocument implements XSD {
     /**
      * Public ctor, from file.
      * @param file Location of document
-     * @throws FileNotFoundException If fails to read
+     * @throws IOException If fails to read
      * @since 0.21
      */
     public XSDDocument(final File file) throws IOException {
@@ -100,6 +91,14 @@ public final class XSDDocument implements XSD {
      */
     public XSDDocument(final InputStream stream) {
         this(new TextResource(stream).toString());
+    }
+
+    /**
+     * Public ctor, from XSD as a string.
+     * @param src XSD document body
+     */
+    public XSDDocument(final String src) {
+        this.xsd = src;
     }
 
     /**
@@ -151,10 +150,10 @@ public final class XSDDocument implements XSD {
 
     /**
      * Validation error handler.
-     *
      * @since 0.1
      */
     static final class ValidationHandler implements ErrorHandler {
+
         /**
          * Errors.
          */
@@ -183,5 +182,4 @@ public final class XSDDocument implements XSD {
             this.errors.add(error);
         }
     }
-
 }

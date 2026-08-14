@@ -14,7 +14,6 @@ import org.w3c.dom.ls.LSInput;
 
 /**
  * {@link LSInput} implementation used by {@link ClasspathResolver}.
- *
  * @since 0.1
  */
 final class ClasspathInput implements LSInput {
@@ -59,7 +58,6 @@ final class ClasspathInput implements LSInput {
      * @param sysid System id
      * @param enc Encoding to use when reading the resource
      * @param base Base URI
-     * @checkstyle ParameterNumberCheck (3 lines)
      */
     ClasspathInput(final String pubid, final String sysid,
         final String enc, final String base) {
@@ -114,7 +112,7 @@ final class ClasspathInput implements LSInput {
         return this.encoding;
     }
 
-    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.ExceptionAsFlowControl"})
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
     public String getStringData() {
         try {

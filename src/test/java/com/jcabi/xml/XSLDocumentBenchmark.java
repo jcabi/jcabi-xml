@@ -20,9 +20,9 @@ import org.openjdk.jmh.annotations.Warmup;
  *
  * <p>Three scenarios:
  * <ul>
- *   <li>{@link #reuseInstance} — same {@link XSLDocument} reused every call</li>
- *   <li>{@link #withParamEachCall} — new instance via {@code .with()} each call</li>
- *   <li>{@link #freshInstanceEachCall} — brand-new {@link XSLDocument} every call</li>
+ * <li>{@link #reuseInstance} — same {@link XSLDocument} reused every call</li>
+ * <li>{@link #withParamEachCall} — new instance via {@code .with()} each call</li>
+ * <li>{@link #freshInstanceEachCall} — brand-new {@link XSLDocument} every call</li>
  * </ul>
  *
  * @since 0.35.0
@@ -63,7 +63,7 @@ public class XSLDocumentBenchmark {
     /**
      * Reused XSL instance.
      */
-    private static final XSL XSL = new XSLDocument(
+    private static final XSL SHEET = new XSLDocument(
         XSLDocumentBenchmark.STYLESHEET
     );
 
@@ -73,7 +73,7 @@ public class XSLDocumentBenchmark {
      */
     @Benchmark
     public final XML reuseInstance() {
-        return XSLDocumentBenchmark.XSL.transform(XSLDocumentBenchmark.INPUT);
+        return XSLDocumentBenchmark.SHEET.transform(XSLDocumentBenchmark.INPUT);
     }
 
     /**
@@ -82,7 +82,7 @@ public class XSLDocumentBenchmark {
      */
     @Benchmark
     public final XML withParamEachCall() {
-        return XSLDocumentBenchmark.XSL
+        return XSLDocumentBenchmark.SHEET
             .with("step", 1)
             .transform(XSLDocumentBenchmark.INPUT);
     }
@@ -105,7 +105,6 @@ public class XSLDocumentBenchmark {
      */
     @Benchmark
     public final String toStringCached() {
-        return XSLDocumentBenchmark.XSL.toString();
+        return XSLDocumentBenchmark.SHEET.toString();
     }
-
 }

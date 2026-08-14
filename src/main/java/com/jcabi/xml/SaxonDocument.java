@@ -35,7 +35,6 @@ import org.xml.sax.SAXParseException;
  *
  * @since 0.28
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class SaxonDocument implements XML {
 
     /**
@@ -66,7 +65,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML as string text.
-     * @param text XML document body.
+     * @param text XML document body
      * @since 0.28.0
      */
     public SaxonDocument(final String text) {
@@ -75,7 +74,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML as byte array.
-     * @param data XML document body as byte array.
+     * @param data XML document body as byte array
      * @since 0.28.1
      */
     public SaxonDocument(final byte[] data) {
@@ -84,7 +83,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML saved in a filesystem.
-     * @param path Path to XML file in a filesystem.
+     * @param path Path to XML file in a filesystem
      * @since 0.28.1
      */
     public SaxonDocument(final Path path) {
@@ -93,7 +92,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML saved in a filesystem.
-     * @param file XML file in a filesystem.
+     * @param file XML file in a filesystem
      * @since 0.28.1
      */
     public SaxonDocument(final File file) {
@@ -102,7 +101,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML reached by URL.
-     * @param url URL of XML document.
+     * @param url URL of XML document
      * @throws IOException If fails.
      * @since 0.28.1
      */
@@ -112,7 +111,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML reached by URI.
-     * @param uri URI of XML document.
+     * @param uri URI of XML document
      * @throws IOException If fails.
      * @since 0.28.1
      */
@@ -122,7 +121,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML as input stream.
-     * @param stream Input stream with XML document.
+     * @param stream Input stream with XML document
      * @since 0.28.1
      */
     public SaxonDocument(final InputStream stream) {
@@ -131,7 +130,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from Saxon XML document node.
-     * @param xml Saxon XML document node.
+     * @param xml Saxon XML document node
      * @since 0.28.0
      */
     public SaxonDocument(final XdmNode xml) {
@@ -214,8 +213,8 @@ public final class SaxonDocument implements XML {
 
     /**
      * Build Saxon XML document node from XML string text.
-     * @param text XML string text.
-     * @return Saxon XML document node.
+     * @param text XML string text
+     * @return Saxon XML document node
      */
     private static XdmNode node(final String text) {
         return SaxonDocument.node(new StreamSource(new StringReader(text)));
@@ -223,8 +222,8 @@ public final class SaxonDocument implements XML {
 
     /**
      * Build Saxon XML document node from XML source.
-     * @param source XML.
-     * @return Saxon XML document node.
+     * @param source XML
+     * @return Saxon XML document node
      */
     private static XdmNode node(final StreamSource source) {
         try {

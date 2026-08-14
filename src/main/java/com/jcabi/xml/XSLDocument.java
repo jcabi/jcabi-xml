@@ -7,11 +7,9 @@ package com.jcabi.xml;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -45,12 +43,10 @@ import org.w3c.dom.Document;
  * <p>Objects of this class are immutable and thread-safe.
  *
  * @since 0.4
- * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
- * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
  */
 @EqualsAndHashCode(of = "xsl")
-@SuppressWarnings("PMD.TooManyMethods")
+// @checkstyle AbbreviationAsWordInNameCheck (1 line)
 public final class XSLDocument implements XSL {
 
     /**
@@ -62,18 +58,18 @@ public final class XSLDocument implements XSL {
      *
      * <pre>
      * {@code
-     * &lt;a&gt;
-     *           &lt;b> TXT &lt;/b>
-     *    &lt;/a>}
+     * <a>
+     *           <b> TXT </b>
+     *    </a>}
      * </pre>
      *
-     * becomes
+     * <p>becomes
      *
      * <pre>
      * {@code
-     * &lt;a>
-     *     &lt;b> TXT &lt;/b>
-     * &lt;/a>}
+     * <a>
+     *     <b> TXT </b>
+     * </a>}
      * </pre>
      *
      * @since 0.14
@@ -175,7 +171,7 @@ public final class XSLDocument implements XSL {
     /**
      * Public ctor, from file.
      * @param file Location of document
-     * @throws FileNotFoundException If fails to read
+     * @throws IOException If fails to read
      * @since 0.21
      */
     public XSLDocument(final File file) throws IOException {
@@ -195,7 +191,7 @@ public final class XSLDocument implements XSL {
     /**
      * Public ctor, from file.
      * @param file Location of document
-     * @throws FileNotFoundException If fails to read
+     * @throws IOException If fails to read
      * @since 0.21
      */
     public XSLDocument(final Path file) throws IOException {
@@ -206,11 +202,10 @@ public final class XSLDocument implements XSL {
      * Public ctor, from file with custom SystemId.
      * @param file Location of document
      * @param base SystemId/Base
-     * @throws FileNotFoundException If fails to read
+     * @throws IOException If fails to read
      * @since 0.26.0
      */
-    public XSLDocument(final Path file, final String base)
-        throws IOException {
+    public XSLDocument(final Path file, final String base) throws IOException {
         this(file.toFile(), base);
     }
 
@@ -312,7 +307,6 @@ public final class XSLDocument implements XSL {
      * @param map Map of XSL params
      * @param base SystemId/Base
      * @since 0.20
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     public XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map, final String base) {
@@ -331,7 +325,6 @@ public final class XSLDocument implements XSL {
      * @param base SystemId/Base
      * @param tmpl Already-compiled stylesheet to reuse
      * @param fmt Already-allocated formatted-string scalar to reuse
-     * @checkstyle ParameterNumberCheck (5 lines)
      */
     private XSLDocument(final String src, final Sources srcs,
         final Map<String, Object> map, final String base,
@@ -420,24 +413,15 @@ public final class XSLDocument implements XSL {
     public String applyTo(final XML xml) {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         this.transformInto(xml, new StreamResult(baos));
-        try {
-            return baos.toString(StandardCharsets.UTF_8.name());
-        } catch (final UnsupportedEncodingException ex) {
-            throw new IllegalArgumentException(
-                "Failed to convert bytes into UTF-8 string",
-                ex
-            );
-        }
+        return baos.toString(StandardCharsets.UTF_8);
     }
 
     /**
      * Transform XML into result.
-     *
      * @param xml XML
      * @param result Result
      * @since 0.11
      */
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();

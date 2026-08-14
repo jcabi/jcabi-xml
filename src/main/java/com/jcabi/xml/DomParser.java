@@ -52,7 +52,7 @@ final class DomParser {
      * @param txt The XML in text (in UTF-8)
      */
     DomParser(final DocumentBuilderFactory fct, final String txt) {
-        this(fct, new BytesSource(txt));
+        this(fct, new DomParser.BytesSource(txt));
     }
 
     /**
@@ -67,7 +67,7 @@ final class DomParser {
      * @param bytes The XML in bytes
      */
     DomParser(final DocumentBuilderFactory fct, final byte[] bytes) {
-        this(fct, new BytesSource(bytes));
+        this(fct, new DomParser.BytesSource(bytes));
     }
 
     /**
@@ -82,7 +82,7 @@ final class DomParser {
      * @param file The XML as a file
      */
     DomParser(final DocumentBuilderFactory fct, final File file) {
-        this(fct, new FileSource(file));
+        this(fct, new DomParser.FileSource(file));
     }
 
     /**
@@ -99,8 +99,7 @@ final class DomParser {
      * Get the document body.
      * @return The document
      */
-    @SuppressWarnings("PMD.UnnecessaryLocalRule")
-    public Document document() {
+    Document document() {
         final DocumentBuilder builder;
         try {
             builder = this.factory.newDocumentBuilder();
@@ -146,8 +145,8 @@ final class DomParser {
 
         /**
          * Parse XML by the builder.
-         * @param builder The builder to use during parsing.
-         * @return The document.
+         * @param builder The builder to use during parsing
+         * @return The document
          * @throws IOException If fails.
          * @throws SAXException If fails.
          */
@@ -155,7 +154,7 @@ final class DomParser {
 
         /**
          * The length of the source.
-         * @return The length.
+         * @return The length
          */
         long length();
     }
@@ -173,7 +172,7 @@ final class DomParser {
 
         /**
          * Public ctor.
-         * @param file The file.
+         * @param file The file
          */
         FileSource(final File file) {
             this.file = file;
@@ -203,7 +202,7 @@ final class DomParser {
 
         /**
          * Public ctor.
-         * @param xml Bytes of the XML.
+         * @param xml Bytes of the XML
          */
         BytesSource(final String xml) {
             this(xml.getBytes(StandardCharsets.UTF_8));
@@ -211,7 +210,7 @@ final class DomParser {
 
         /**
          * Public ctor.
-         * @param xml Bytes of the XML.
+         * @param xml Bytes of the XML
          */
         @SuppressWarnings("PMD.ArrayIsStoredDirectly")
         BytesSource(final byte[] xml) {

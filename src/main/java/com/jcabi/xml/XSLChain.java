@@ -5,13 +5,12 @@
 package com.jcabi.xml;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import lombok.EqualsAndHashCode;
 
 /**
  * Chain of {@link XSL} stylesheets.
- *
  * @since 0.12
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
@@ -21,7 +20,7 @@ public final class XSLChain implements XSL {
     /**
      * XSL sheets.
      */
-    private final transient XSL[] sheets;
+    private final transient List<XSL> sheets;
 
     /**
      * Public ctor.
@@ -29,7 +28,7 @@ public final class XSLChain implements XSL {
      * @since 0.22
      */
     public XSLChain(final XSL... shts) {
-        this(Arrays.asList(shts));
+        this(List.of(shts));
     }
 
     /**
@@ -37,7 +36,15 @@ public final class XSLChain implements XSL {
      * @param shts Sheets
      */
     public XSLChain(final Collection<XSL> shts) {
-        this.sheets = shts.toArray(new XSL[0]);
+        this(List.copyOf(shts));
+    }
+
+    /**
+     * Private ctor.
+     * @param shts Sheets
+     */
+    private XSLChain(final List<XSL> shts) {
+        this.sheets = shts;
     }
 
     @Override
@@ -56,7 +63,7 @@ public final class XSLChain implements XSL {
 
     @Override
     public XSL with(final Sources src) {
-        final Collection<XSL> list = new ArrayList<>(this.sheets.length);
+        final Collection<XSL> list = new ArrayList<>(this.sheets.size());
         for (final XSL sheet : this.sheets) {
             list.add(sheet.with(src));
         }
@@ -65,7 +72,7 @@ public final class XSLChain implements XSL {
 
     @Override
     public XSL with(final String name, final Object value) {
-        final Collection<XSL> list = new ArrayList<>(this.sheets.length);
+        final Collection<XSL> list = new ArrayList<>(this.sheets.size());
         for (final XSL sheet : this.sheets) {
             list.add(sheet.with(name, value));
         }

@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link TextResource}.
- *
  * @since 0.1
  */
 @SuppressWarnings("PMD.UnnecessaryLocalRule")
@@ -25,7 +24,7 @@ final class TextResourceTest {
 
     @Test
     void readsStreamAsText() {
-        final String text = "Blah!\u20ac\u2122";
+        final String text = "Blah!€™";
         final InputStream stream = new ByteArrayInputStream(
             text.getBytes(StandardCharsets.UTF_8)
         );
@@ -38,7 +37,7 @@ final class TextResourceTest {
 
     @Test
     void readsFileAsText() throws Exception {
-        final String text = "<a xmlns='urn:foo'><b>\u0433!</b></a>";
+        final String text = "<a xmlns='urn:foo'><b>г!</b></a>";
         final File file = Files.createTempDirectory("")
             .resolve("dummy.xml").toFile();
         new LengthOf(new TeeInput(text, file)).value();
@@ -48,5 +47,4 @@ final class TextResourceTest {
             Matchers.is(text)
         );
     }
-
 }

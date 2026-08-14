@@ -27,10 +27,8 @@ public interface XSD {
 
     /**
      * Validate XML.
-     *
      * @param xml Source XML document
      * @return Collection of problems found (empty if no problems)
      */
     Collection<SAXParseException> validate(Source xml);
-
 }

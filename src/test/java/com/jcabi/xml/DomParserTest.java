@@ -19,7 +19,7 @@ final class DomParserTest {
 
     @Test
     void parsesIncomingXmlDocument() {
-        final String xml = "<a><b>\u0443\u0440\u0430!</b></a>";
+        final String xml = "<a><b>ура!</b></a>";
         final DomParser parser = new DomParser(
             DocumentBuilderFactory.newInstance(), xml
         );
@@ -50,8 +50,8 @@ final class DomParserTest {
             "<:a/>",
             "<ns:a><ns2:test-me/></ns:a>",
             "<_a/>",
-            "<\u00c0a/>",
-            "<something>\uFFFD</something>",
+            "<Àa/>",
+            "<something>�</something>",
         };
         for (final String text : texts) {
             Assertions.assertDoesNotThrow(
@@ -63,5 +63,4 @@ final class DomParserTest {
             );
         }
     }
-
 }

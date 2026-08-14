@@ -24,16 +24,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 /**
  * Test case for {@link StrictXML}.
  * @since 0.1
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
- * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
- * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals", "PMD.UnnecessaryLocalRule"})
+@SuppressWarnings("PMD.UnnecessaryLocalRule")
+// @checkstyle AbbreviationAsWordInNameCheck (1 line)
 final class StrictXMLTest {
+
     @BeforeEach
     void weAreOnline() throws IOException {
         Assumptions.assumeTrue(
-            InetAddress.getByName("w3.org").isReachable(1000)
+            InetAddress.getAllByName("w3.org")[0].isReachable(1000)
         );
     }
 
