@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -29,6 +30,11 @@ import org.junit.jupiter.api.Test;
     "PMD.UnnecessaryLocalRule"
 })
 final class XSLDocumentTest {
+
+    /**
+     * Any line break, in any of its platform spellings.
+     */
+    private static final Pattern BREAK = Pattern.compile("\\R");
 
     @Test
     void makesXslTransformations() {
@@ -126,9 +132,11 @@ final class XSLDocumentTest {
     @Test
     void stripsXml() {
         MatcherAssert.assertThat(
-            XSLDocument.STRIP.transform(
-                new XMLDocument("<a>   <b/>  </a>")
-            ).toString(),
+            XSLDocumentTest.BREAK.matcher(
+                XSLDocument.STRIP.transform(
+                    new XMLDocument("<a>   <b/>  </a>")
+                ).toString()
+            ).replaceAll(System.lineSeparator()),
             Matchers.containsString(String.format("<a>%n"))
         );
     }
