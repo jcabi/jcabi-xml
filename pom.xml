@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.6.0-jre</version>
+      <version>33.7.1-jre</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -188,7 +188,7 @@
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.30.11</version>
+            <version>0.30.14</version>
           </plugin>
         </plugins>
       </build>
