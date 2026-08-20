@@ -122,12 +122,6 @@ final class SaxonDocumentTest {
         );
     }
 
-    /**
-     * Creates XML file.
-     * @param temp Temporary directory where file will be created
-     * @return Path to created file
-     * @throws IOException If something goes wrong
-     */
     private static Path xmlFile(final Path temp) throws IOException {
         final Path xml = temp.resolve("test.xml");
         Files.write(xml, SaxonDocumentTest.DEFAULT_XML.getBytes(StandardCharsets.UTF_8));

@@ -178,10 +178,6 @@ final class ClasspathInput implements LSInput {
         );
     }
 
-    /**
-     * Charset to use when reading the resource.
-     * @return Charset, or UTF-8 if no encoding was set
-     */
     private Charset charset() {
         final Charset cset;
         if (this.encoding == null) {

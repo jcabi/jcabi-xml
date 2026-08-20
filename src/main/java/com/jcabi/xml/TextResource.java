@@ -89,11 +89,6 @@ final class TextResource {
         return this.content;
     }
 
-    /**
-     * Reads an entire stream's contents into a string.
-     * @param stream The stream to read
-     * @return The stream content, in String form
-     */
     private static String readAsString(final InputStream stream) {
         final StringWriter writer = new StringWriter();
         try (
@@ -108,12 +103,6 @@ final class TextResource {
         return writer.toString();
     }
 
-    /**
-     * Reads URI contents into a string.
-     * @param url The URL to read
-     * @return The stream content, in String form
-     * @throws IOException if an IO exception occurs
-     */
     private static String readAsString(final URL url) throws IOException {
         return TextResource.readAsString(
             new BufferedInputStream(url.openStream())

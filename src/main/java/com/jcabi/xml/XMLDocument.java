@@ -47,7 +47,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ls.LSResourceResolver;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -510,15 +509,10 @@ public final class XMLDocument implements XML {
         }
     }
 
-    /**
-     * Validate through validator.
-     * @param validator Validator
-     * @return List of errors
-     */
     private Collection<SAXParseException> validate(final Validator validator) {
         final Collection<SAXParseException> errors =
             new CopyOnWriteArrayList<>();
-        validator.setErrorHandler(new XMLDocument.ValidationHandler(errors));
+        validator.setErrorHandler(new ValidationHandler(errors));
         try {
             validator.validate(new DOMSource(this.cache));
         } catch (final SAXException | IOException ex) {
@@ -533,11 +527,6 @@ public final class XMLDocument implements XML {
         return errors;
     }
 
-    /**
-     * Clones a node and imports it in a new document.
-     * @param node A node to clone
-     * @return A cloned node imported in a dedicated document
-     */
     private static Node createImportedNode(final Node node) {
         final DocumentBuilderFactory factory = XMLDocument.configuredDFactory();
         final DocumentBuilder builder;
@@ -558,20 +547,6 @@ public final class XMLDocument implements XML {
         return imported;
     }
 
-    /**
-     * Retrieve XPath query result. Supports returning {@link NodeList} and
-     * {@link String} types.
-     *
-     * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not a valid XPath expression or an unsupported type is
-     * specified.
-     *
-     * @param query XPath query
-     * @param type The return type
-     * @param <T> The type to return
-     * @return Result of XPath query
-     * @throws XPathExpressionException If an error occurs when evaluating XPath
-     */
     @SuppressWarnings("unchecked")
     private <T> T fetch(final String query, final Class<T> type) throws XPathExpressionException {
         final XPathFactory factory = XPathFactory.newInstance();
@@ -595,11 +570,6 @@ public final class XMLDocument implements XML {
         }
     }
 
-    /**
-     * Transform node to String.
-     * @param node The DOM node
-     * @return String representation
-     */
     private static String asString(final Node node) {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final Transformer trans;
@@ -639,11 +609,6 @@ public final class XMLDocument implements XML {
         return writer.toString();
     }
 
-    /**
-     * Transform source to DOM node.
-     * @param source The source
-     * @return The node
-     */
     private static Node transform(final Source source) {
         final DOMResult result = new DOMResult();
         final TransformerFactory factory = TransformerFactory.newInstance();
@@ -663,10 +628,6 @@ public final class XMLDocument implements XML {
         return result.getNode();
     }
 
-    /**
-     * Create new {@link DocumentBuilderFactory} and configure it.
-     * @return Configured factory
-     */
     private static DocumentBuilderFactory configuredDFactory() {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         if (factory.getClass().getName().contains("xerces")) {
@@ -681,40 +642,5 @@ public final class XMLDocument implements XML {
         }
         factory.setNamespaceAware(true);
         return factory;
-    }
-
-    /**
-     * Validation error handler.
-     * @since 0.1
-     */
-    static final class ValidationHandler implements ErrorHandler {
-
-        /**
-         * Errors.
-         */
-        private final transient Collection<SAXParseException> errors;
-
-        /**
-         * Constructor.
-         * @param errs Collection of errors
-         */
-        ValidationHandler(final Collection<SAXParseException> errs) {
-            this.errors = errs;
-        }
-
-        @Override
-        public void warning(final SAXParseException error) {
-            this.errors.add(error);
-        }
-
-        @Override
-        public void error(final SAXParseException error) {
-            this.errors.add(error);
-        }
-
-        @Override
-        public void fatalError(final SAXParseException error) {
-            this.errors.add(error);
-        }
     }
 }

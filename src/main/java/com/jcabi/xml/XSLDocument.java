@@ -416,12 +416,6 @@ public final class XSLDocument implements XSL {
         return baos.toString(StandardCharsets.UTF_8);
     }
 
-    /**
-     * Transform XML into result.
-     * @param xml XML
-     * @param result Result
-     * @since 0.11
-     */
     private void transformInto(final XML xml, final Result result) {
         final Transformer trans = this.transformer();
         final ConsoleErrorListener errors = new ConsoleErrorListener();
@@ -455,10 +449,6 @@ public final class XSLDocument implements XSL {
         }
     }
 
-    /**
-     * Make a transformer from the cached compiled stylesheet.
-     * @return The transformer
-     */
     private Transformer transformer() {
         final Templates templ = this.templates.value();
         final Transformer trans;
@@ -480,24 +470,12 @@ public final class XSLDocument implements XSL {
         return trans;
     }
 
-    /**
-     * Lazy pretty-printed string form of an XSL document.
-     * @param xsl XSL document body
-     * @return Cached formatted string
-     */
     private static Unchecked<String> format(final String xsl) {
         return new Unchecked<>(
             new Synced<>(new Sticky<>(() -> new XMLDocument(xsl).toString()))
         );
     }
 
-    /**
-     * Lazy-load and cache the compiled {@link Templates} object.
-     * @param sources URI resolver for xsl:import/xsl:include
-     * @param xsl XSL document body
-     * @param sid System ID (base)
-     * @return Cached compiled stylesheet
-     */
     private static Unchecked<Templates> load(
         final Sources sources,
         final String xsl,
@@ -508,20 +486,6 @@ public final class XSLDocument implements XSL {
         );
     }
 
-    /**
-     * Compile the stylesheet to a reusable {@link Templates} object.
-     *
-     * <p>We create {@link TransformerFactory} here during compilation
-     * because {@link javax.xml.transform.URIResolver} must be set into
-     * it before making an instance of a transformer. Otherwise, it won't
-     * understand "xsl:import" statements.
-     *
-     * @param sources URI resolver for xsl:import/xsl:include
-     * @param xsl XSL document body
-     * @param sid System ID (base)
-     * @return Compiled stylesheet
-     * @link <a href="https://stackoverflow.com/questions/4695489">Relevant SO question</a>
-     */
     private static Templates doLoad(
         final Sources sources,
         final String xsl,

@@ -162,11 +162,6 @@ public final class StrictXML implements XML {
         return this.origin.value().validate(xsd);
     }
 
-    /**
-     * Convert errors to lines.
-     * @param errors The errors
-     * @return List of messages to print
-     */
     private static Iterable<String> print(
         final Collection<SAXParseException> errors
     ) {
@@ -177,11 +172,6 @@ public final class StrictXML implements XML {
         return lines;
     }
 
-    /**
-     * Turn violation into a message.
-     * @param violation The violation
-     * @return The message
-     */
     private static String asMessage(final SAXParseException violation) {
         final StringBuilder msg = new StringBuilder(100);
         if (violation.getLineNumber() >= 0) {
@@ -200,13 +190,6 @@ public final class StrictXML implements XML {
         return msg.toString();
     }
 
-    /**
-     * Joins many objects' string representations with the given separator
-     * string. The separator will not be appended to the beginning or the end.
-     * @param iterable Iterable of objects
-     * @param sep Separator string
-     * @return Joined string
-     */
     private static String join(final Iterable<?> iterable, final String sep) {
         final Iterator<?> iterator = iterable.iterator();
         final Object first = iterator.next();

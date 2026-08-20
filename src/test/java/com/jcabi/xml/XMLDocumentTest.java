@@ -753,12 +753,7 @@ final class XMLDocumentTest {
         );
     }
 
-    /**
-     * Measure the time of execution.
-     * @param run The callable to run
-     * @return Time in milliseconds
-     * @checkstyle IllegalCatchCheck (20 lines)
-     */
+    // @checkstyle IllegalCatchCheck (20 lines)
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private static long measure(final Callable<String> run) {
         final long start = System.nanoTime();
@@ -778,10 +773,6 @@ final class XMLDocumentTest {
         return System.nanoTime() - start / 1_000_000;
     }
 
-    /**
-     * Generate large XML for tests.
-     * @return Large XML string
-     */
     private static String large() {
         return IntStream.range(0, 100).mapToObj(
             i -> StringUtils.join(

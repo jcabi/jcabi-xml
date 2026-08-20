@@ -4,7 +4,6 @@
  */
 package com.jcabi.xml;
 
-import com.jcabi.log.Logger;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +16,7 @@ import org.w3c.dom.Node;
  * <p>This wrapper is our internal implementation of a {@link List}. The only
  * purpose of this wrapper is to throw our own custom exception when the client
  * is trying to access an element that is absent in the list. Such a custom
- * exception ({@link ListWrapper.NodeNotFoundException})
+ * exception ({@link NodeNotFoundException})
  * includes detailed information about
  * the original document. Thus, such an incorrect list-access operation will
  * lead to an exception that contains all the details inside (not just a simple
@@ -39,11 +38,11 @@ import org.w3c.dom.Node;
  * throw runtime exceptions if being called.
  *
  * <p>The method {@link #get(int)} throws
- * {@link ListWrapper.NodeNotFoundException}
+ * {@link NodeNotFoundException}
  * if such an element doesn't exist in the list.
  *
  * <p>The method {@link #subList(int, int)}
- * throws {@link ListWrapper.NodeNotFoundException}
+ * throws {@link NodeNotFoundException}
  * when either
  * {@code start} or {@code end} is bigger than the size of the list. In all
  * other cases of illegal method call (start is less than zero, end is
@@ -128,7 +127,7 @@ final class ListWrapper<T> implements List<T> {
     @Override
     public T get(final int index) {
         if (index >= this.size()) {
-            throw new ListWrapper.NodeNotFoundException(
+            throw new NodeNotFoundException(
                 String.format(
                     "Index (%d) is out of bounds (size=%d)",
                     index, this.size()
@@ -213,7 +212,7 @@ final class ListWrapper<T> implements List<T> {
     @Override
     public List<T> subList(final int start, final int end) {
         if (start >= this.size()) {
-            throw new ListWrapper.NodeNotFoundException(
+            throw new NodeNotFoundException(
                 String.format(
                     "Start of subList (%d) is out of bounds (size=%d)",
                     start, this.size()
@@ -223,7 +222,7 @@ final class ListWrapper<T> implements List<T> {
             );
         }
         if (end >= this.size()) {
-            throw new ListWrapper.NodeNotFoundException(
+            throw new NodeNotFoundException(
                 String.format(
                     "End of subList (%d) is out of bounds (size=%d)",
                     end, this.size()
@@ -243,57 +242,5 @@ final class ListWrapper<T> implements List<T> {
     @Override
     public <E> E[] toArray(final E[] array) {
         return this.original.toArray(array);
-    }
-
-    /**
-     * Node not found in XmlDocument.
-     * @since 0.1
-     */
-    private static final class NodeNotFoundException
-        extends IndexOutOfBoundsException {
-
-        /**
-         * Serialization marker.
-         */
-        private static final long serialVersionUID = 0x7526FA78EEDAC470L;
-
-        /**
-         * Public ctor.
-         * @param message Error message
-         * @param node The XML with error
-         * @param query The query in XPath
-         */
-        NodeNotFoundException(final String message, final Node node,
-            final CharSequence query) {
-            super(
-                Logger.format(
-                    "XPath '%s' not found in '%[text]s': %s",
-                    ListWrapper.NodeNotFoundException.escapeUnicode(query),
-                    ListWrapper.NodeNotFoundException.escapeUnicode(
-                        new XMLDocument(node).toString()
-                    ),
-                    message
-                )
-            );
-        }
-
-        /**
-         * Escape unicode characters.
-         * @param input Input string
-         * @return Escaped output
-         */
-        private static String escapeUnicode(final CharSequence input) {
-            final int length = input.length();
-            final StringBuilder output = new StringBuilder(length);
-            for (int index = 0; index < length; index += 1) {
-                final char character = input.charAt(index);
-                if (character < 32 || character > 0x7F) {
-                    output.append(String.format("\\u%X", (int) character));
-                } else {
-                    output.append(character);
-                }
-            }
-            return output.toString();
-        }
     }
 }
