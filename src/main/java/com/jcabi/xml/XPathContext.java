@@ -194,6 +194,11 @@ public final class XPathContext implements NamespaceContext {
         return new XPathContext(this.map, list);
     }
 
+    /**
+     * Get namespaces as map.
+     * @param namespaces The namespaces
+     * @return Namespaces as map
+     */
     private static Map<String, String> namespacesAsMap(
         final Object... namespaces) {
         final ConcurrentMap<String, String> map =

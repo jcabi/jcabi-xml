@@ -5,8 +5,10 @@
 package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -50,7 +52,7 @@ final class DomParser {
      * @param txt The XML in text (in UTF-8)
      */
     DomParser(final DocumentBuilderFactory fct, final String txt) {
-        this(fct, new BytesSource(txt));
+        this(fct, new DomParser.BytesSource(txt));
     }
 
     /**
@@ -65,7 +67,7 @@ final class DomParser {
      * @param bytes The XML in bytes
      */
     DomParser(final DocumentBuilderFactory fct, final byte[] bytes) {
-        this(fct, new BytesSource(bytes));
+        this(fct, new DomParser.BytesSource(bytes));
     }
 
     /**
@@ -80,7 +82,7 @@ final class DomParser {
      * @param file The XML as a file
      */
     DomParser(final DocumentBuilderFactory fct, final File file) {
-        this(fct, new FileSource(file));
+        this(fct, new DomParser.FileSource(file));
     }
 
     /**
@@ -133,5 +135,96 @@ final class DomParser {
             );
         }
         return doc;
+    }
+
+    /**
+     * Source of XML.
+     * @since 0.32
+     */
+    private interface DocSource {
+
+        /**
+         * Parse XML by the builder.
+         * @param builder The builder to use during parsing
+         * @return The document
+         * @throws IOException If fails.
+         * @throws SAXException If fails.
+         */
+        Document apply(DocumentBuilder builder) throws IOException, SAXException;
+
+        /**
+         * The length of the source.
+         * @return The length
+         */
+        long length();
+    }
+
+    /**
+     * File source of XML from a file.
+     * @since 0.32
+     */
+    private static class FileSource implements DocSource {
+
+        /**
+         * The file.
+         */
+        private final File file;
+
+        /**
+         * Public ctor.
+         * @param file The file
+         */
+        FileSource(final File file) {
+            this.file = file;
+        }
+
+        @Override
+        public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
+            return builder.parse(this.file);
+        }
+
+        @Override
+        public long length() {
+            return this.file.length();
+        }
+    }
+
+    /**
+     * Bytes source of XML.
+     * @since 0.32
+     */
+    private static class BytesSource implements DocSource {
+
+        /**
+         * Bytes of the XML.
+         */
+        private final byte[] xml;
+
+        /**
+         * Public ctor.
+         * @param xml Bytes of the XML
+         */
+        BytesSource(final String xml) {
+            this(xml.getBytes(StandardCharsets.UTF_8));
+        }
+
+        /**
+         * Public ctor.
+         * @param xml Bytes of the XML
+         */
+        @SuppressWarnings("PMD.ArrayIsStoredDirectly")
+        BytesSource(final byte[] xml) {
+            this.xml = xml;
+        }
+
+        @Override
+        public Document apply(final DocumentBuilder builder) throws IOException, SAXException {
+            return builder.parse(new ByteArrayInputStream(this.xml));
+        }
+
+        @Override
+        public long length() {
+            return this.xml.length;
+        }
     }
 }

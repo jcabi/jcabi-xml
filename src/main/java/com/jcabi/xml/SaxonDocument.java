@@ -211,10 +211,20 @@ public final class SaxonDocument implements XML {
         );
     }
 
+    /**
+     * Build Saxon XML document node from XML string text.
+     * @param text XML string text
+     * @return Saxon XML document node
+     */
     private static XdmNode node(final String text) {
         return SaxonDocument.node(new StreamSource(new StringReader(text)));
     }
 
+    /**
+     * Build Saxon XML document node from XML source.
+     * @param source XML
+     * @return Saxon XML document node
+     */
     private static XdmNode node(final StreamSource source) {
         try {
             return SaxonDocument.DOC_BUILDER.build(source);
