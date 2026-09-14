@@ -31,7 +31,7 @@ import org.xml.sax.SAXParseException;
 /**
  * Saxon XML document.
  *
- * <p>Objects of this class are immutable, but NOT thread-safe.
+ * <p>Objects of this class are immutable, but NOT thread-safe.</p>
  *
  * @since 0.28
  */
@@ -65,6 +65,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML as string text.
+     *
      * @param text XML document body
      * @since 0.28.0
      */
@@ -74,6 +75,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML as byte array.
+     *
      * @param data XML document body as byte array
      * @since 0.28.1
      */
@@ -83,6 +85,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML saved in a filesystem.
+     *
      * @param path Path to XML file in a filesystem
      * @since 0.28.1
      */
@@ -92,6 +95,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML saved in a filesystem.
+     *
      * @param file XML file in a filesystem
      * @since 0.28.1
      */
@@ -101,6 +105,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML reached by URL.
+     *
      * @param url URL of XML document
      * @throws IOException If fails.
      * @since 0.28.1
@@ -111,6 +116,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML reached by URI.
+     *
      * @param uri URI of XML document
      * @throws IOException If fails.
      * @since 0.28.1
@@ -121,6 +127,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from XML as input stream.
+     *
      * @param stream Input stream with XML document
      * @since 0.28.1
      */
@@ -130,6 +137,7 @@ public final class SaxonDocument implements XML {
 
     /**
      * Public constructor from Saxon XML document node.
+     *
      * @param xml Saxon XML document node
      * @since 0.28.0
      */
@@ -212,7 +220,9 @@ public final class SaxonDocument implements XML {
     }
 
     private static XdmNode node(final String text) {
-        return SaxonDocument.node(new StreamSource(new StringReader(text)));
+        try (StringReader reader = new StringReader(text)) {
+            return SaxonDocument.node(new StreamSource(reader));
+        }
     }
 
     private static XdmNode node(final StreamSource source) {

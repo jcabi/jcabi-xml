@@ -5,6 +5,7 @@
 
 /**
  * XML Parsing and Transforming.
+ *
  * @since 0.1
  */
 package com.jcabi.xml;

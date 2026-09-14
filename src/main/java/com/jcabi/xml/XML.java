@@ -14,7 +14,7 @@ import org.xml.sax.SAXParseException;
 /**
  * XML document.
  *
- * <p>Set of convenient XML manipulations:
+ * <p>Set of convenient XML manipulations:</p>
  *
  * <pre> XML xml = new XMLDocument(content);
  * for (XML employee : xml.nodes("//Employee")) {
@@ -23,11 +23,11 @@ import org.xml.sax.SAXParseException;
  * }</pre>
  *
  * <p>You can always get DOM node out of this abstraction using {@link #inner()}
- * or {@link #deepCopy()} methods.
+ * or {@link #deepCopy()} methods.</p>
  *
- * <p>{@code toString()} must produce a full XML.
+ * <p>{@code toString()} must produce a full XML.</p>
  *
- * <p>Implementation of this interface must be immutable and thread-safe.
+ * <p>Implementation of this interface must be immutable and thread-safe.</p>
  *
  * <p>In most cases, you can use the {@link XMLDocument} implementation. It
  * implements all required features and will be sufficient for most practical tasks.
@@ -36,7 +36,7 @@ import org.xml.sax.SAXParseException;
  * XPath 1.0. If you require XPath 2.0 support and beyond, you can use the Saxon
  * implementation of {@link XML} - {@link SaxonDocument}. It is based on the Saxon
  * library and supports XPath 2.0 and higher.
- * You can read more about Java XPath versioning problems in the following threads:
+ * You can read more about Java XPath versioning problems in the following threads:</p>
  * <ul>
  * <li><a href="https://stackoverflow.com/questions/6624149/xpath-2-0-for-java-possible">xpath 2.0 for java possible</a></li>
  * <li><a href="https://stackoverflow.com/questions/5802895/does-jdk-6-support-all-features-of-xpath-2-0/5803028#5803028">does JDK 6 support all features of XPath 2.0?</a></li>
@@ -54,7 +54,7 @@ public interface XML {
      * <p>The XPath query should point to text elements or attributes in the
      * XML document. If any nodes of different types (elements, comments, etc.)
      * are found in result node list -
-     * a {@link RuntimeException} will be thrown.
+     * a {@link RuntimeException} will be thrown.</p>
      *
      * <p>Alternatively, the XPath query can be a function or expression that
      * returns a single value instead of pointing to a set of nodes. In this
@@ -63,20 +63,20 @@ public interface XML {
      * a String, it will be converted to a String representation and returned as
      * such. For example, a document containing three &lt;a&gt; elements,
      * the input query "count(//a)", will return a singleton List with a single
-     * string value "3".
+     * string value "3".</p>
      *
      * <p>This is a convenient method, which is used (according to our
      * experience) in 95% of all cases. Usually you don't need to get anything
      * else but a text value of some node or an attribute. And in most cases
      * you are interested to get just the first value
      * (use {@code xpath(..).get(0)}). But when/if you need to get more than
-     * just a plain text - use {@link #nodes(String)}.
+     * just a plain text - use {@link #nodes(String)}.</p>
      *
      * <p>The {@link List} returned will throw {@link IndexOutOfBoundsException}
-     * if you try to access a node which wasn't found by this XPath query.
+     * if you try to access a node which wasn't found by this XPath query.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not a valid XPath expression.
+     * passed is not a valid XPath expression.</p>
      *
      * @param query The XPath query
      * @return The list of string values (texts) or single function result
@@ -87,10 +87,10 @@ public interface XML {
      * Retrieve DOM nodes from the XML response.
      *
      * <p>The {@link List} returned will throw {@link IndexOutOfBoundsException}
-     * if you try to access a node which wasn't found by this XPath query.
+     * if you try to access a node which wasn't found by this XPath query.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not a valid XPath expression.
+     * passed is not a valid XPath expression.</p>
      *
      * @param query The XPath query
      * @return Collection of DOM nodes
@@ -100,7 +100,7 @@ public interface XML {
     /**
      * Register additional namespace prefix for XPath.
      *
-     * <p>For example:
+     * <p>For example:</p>
      *
      * <pre>
      * String name = new XMLDocument("...")
@@ -112,10 +112,10 @@ public interface XML {
      *
      * <p>A number of standard namespaces are registered by default in
      * instances of XML. Their
-     * full list is in {@link XMLDocument#XMLDocument(String)}.
+     * full list is in {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>If a namespace prefix is already registered an
-     * {@link IllegalArgumentException} will be thrown.
+     * {@link IllegalArgumentException} will be thrown.</p>
      *
      * @param prefix The XPath prefix to register
      * @param uri Namespace URI
@@ -128,7 +128,7 @@ public interface XML {
      *
      * <p>The existing context (inside this object) and the new one provided
      * will be merged together. The existing context will have higher
-     * priority.
+     * priority.</p>
      *
      * @param context The context to append
      * @return A new XML document, with a merged context on board
@@ -138,6 +138,7 @@ public interface XML {
     /**
      * Retrieve DOM node, represented by this wrapper.
      * This method works exactly the same as {@link #deepCopy()}.
+     *
      * @return Deep copy of the inner DOM node
      * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
      */
@@ -148,6 +149,7 @@ public interface XML {
      * Retrieve DOM node, represented by this wrapper.
      * Pay attention that this method returns inner node, not a deep copy.
      * It means that any changes to the returned node will affect the original XML.
+     *
      * @return Inner node
      */
     Node inner();
@@ -155,6 +157,7 @@ public interface XML {
     /**
      * Retrieve a deep copy of the DOM node, represented by this wrapper.
      * Might be expensive in terms of performance.
+     *
      * @return Deep copy of the node
      */
     Node deepCopy();
@@ -173,6 +176,7 @@ public interface XML {
 
     /**
      * Validate this XML against the provided XSD schema.
+     *
      * @param xsd The Schema
      * @return List of errors found
      * @since 0.31.0

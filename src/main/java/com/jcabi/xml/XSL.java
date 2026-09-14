@@ -7,7 +7,7 @@ package com.jcabi.xml;
 /**
  * XSL stylesheet.
  *
- * <p>Implementation of this interface must be immutable and thread-safe.
+ * <p>Implementation of this interface must be immutable and thread-safe.</p>
  *
  * @see XSLDocument
  * @since 0.4
@@ -17,6 +17,7 @@ public interface XSL {
 
     /**
      * Transform XML to another one.
+     *
      * @param xml Source XML document
      * @return Result document
      */
@@ -24,6 +25,7 @@ public interface XSL {
 
     /**
      * Transform XML into text.
+     *
      * @param xml Source XML document
      * @return Result text
      * @since 0.11
@@ -32,6 +34,7 @@ public interface XSL {
 
     /**
      * With this sources.
+     *
      * @param src Sources
      * @return New XSL document
      */
@@ -39,6 +42,7 @@ public interface XSL {
 
     /**
      * With this parameter.
+     *
      * @param name Name of XSL parameter
      * @param value Value of XSL parameter
      * @return New XSL document

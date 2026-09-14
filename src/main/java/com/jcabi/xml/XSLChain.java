@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Chain of {@link XSL} stylesheets.
+ *
  * @since 0.12
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */
@@ -24,6 +25,7 @@ public final class XSLChain implements XSL {
 
     /**
      * Public ctor.
+     *
      * @param shts Sheets
      * @since 0.22
      */
@@ -33,6 +35,7 @@ public final class XSLChain implements XSL {
 
     /**
      * Public ctor.
+     *
      * @param shts Sheets
      */
     public XSLChain(final Collection<XSL> shts) {
@@ -41,6 +44,7 @@ public final class XSLChain implements XSL {
 
     /**
      * Private ctor.
+     *
      * @param shts Sheets
      */
     private XSLChain(final List<XSL> shts) {

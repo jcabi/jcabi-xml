@@ -10,9 +10,17 @@ import org.w3c.dom.ls.LSResourceResolver;
 /**
  * {@link LSResourceResolver} implementation
  * supporting classpath lookups.
+ *
  * @since 0.1
  */
 public final class ClasspathResolver implements LSResourceResolver {
+
+    /**
+     * Ctor.
+     */
+    public ClasspathResolver() {
+        // nothing to do
+    }
 
     @Override
     public LSInput resolveResource(

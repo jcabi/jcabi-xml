@@ -20,12 +20,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test of XML features with Xerces.
+ *
  * @since 0.1
  */
 public final class XercesSampleTest {
 
     /**
      * XSDDocument can validate XML against its schema.
+     *
      * @throws Exception If fails
      */
     @Test

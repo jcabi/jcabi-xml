@@ -49,6 +49,7 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Test case for {@link XMLDocument}.
+ *
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (20 lines)
  */
@@ -724,6 +725,7 @@ final class XMLDocumentTest {
 
     /**
      * This test is disabled because it is a performance test that might be flaky.
+     *
      * @param temp Temporary directory
      * @throws IOException If something goes wrong.
      */

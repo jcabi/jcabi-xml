@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XSLChain}.
+ *
  * @since 0.12
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
  */

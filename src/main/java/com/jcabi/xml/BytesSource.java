@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Bytes source of XML.
+ *
  * @since 0.32
  */
 class BytesSource implements DocSource {
@@ -24,6 +25,7 @@ class BytesSource implements DocSource {
 
     /**
      * Public ctor.
+     *
      * @param xml Bytes of the XML
      */
     BytesSource(final String xml) {
@@ -32,6 +34,7 @@ class BytesSource implements DocSource {
 
     /**
      * Public ctor.
+     *
      * @param xml Bytes of the XML
      */
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")

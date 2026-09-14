@@ -53,7 +53,7 @@ import org.xml.sax.SAXParseException;
 /**
  * Implementation of {@link XML}.
  *
- * <p>Objects of this class are immutable and thread-safe.
+ * <p>Objects of this class are immutable and thread-safe.</p>
  *
  * @since 0.1
  * @checkstyle ClassFanOutComplexity (500 lines)
@@ -87,10 +87,10 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
+     * passed is not in XML format.</p>
      *
      * @param source Source of XML document
      */
@@ -103,7 +103,7 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, for convenience, including:
+     * number of namespaces, for convenience, including:</p>
      *
      * <pre> xhtml: http://www.w3.org/1999/xhtml
      * xs: http://www.w3.org/2001/XMLSchema
@@ -112,7 +112,7 @@ public final class XMLDocument implements XML {
      * svg: http://www.w3.org/2000/svg</pre>
      *
      * <p>In future versions we will add more namespaces (submit a ticket if
-     * you need more of them defined here).
+     * you need more of them defined here).</p>
      *
      * @param text XML document body
      */
@@ -125,7 +125,7 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, for convenience, including:
+     * number of namespaces, for convenience, including:</p>
      *
      * <pre> xhtml: http://www.w3.org/1999/xhtml
      * xs: http://www.w3.org/2001/XMLSchema
@@ -134,7 +134,7 @@ public final class XMLDocument implements XML {
      * svg: http://www.w3.org/2000/svg</pre>
      *
      * <p>In future versions we will add more namespaces (submit a ticket if
-     * you need more of them defined here).
+     * you need more of them defined here).</p>
      *
      * @param data The XML body
      */
@@ -147,10 +147,10 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
+     * passed is not in XML format.</p>
      *
      * @param file XML file
      * @throws FileNotFoundException In case of I/O problems
@@ -164,10 +164,10 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
+     * passed is not in XML format.</p>
      *
      * @param file XML file
      * @throws FileNotFoundException In case of I/O problems
@@ -181,13 +181,13 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
+     * passed is not in XML format.</p>
      *
      * <p>The provided input stream will be closed automatically after
-     * getting data from it.
+     * getting data from it.</p>
      *
      * @param stream The input stream, which will be closed automatically
      * @throws IOException In case of I/O problem
@@ -201,10 +201,10 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
+     * passed is not in XML format.</p>
      *
      * @param url The URL to load from
      * @throws IOException In case of I/O problems
@@ -218,10 +218,10 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>An {@link IllegalArgumentException} is thrown if the parameter
-     * passed is not in XML format.
+     * passed is not in XML format.</p>
      *
      * @param uri The URI to load from
      * @throws IOException In case of I/O problems
@@ -235,7 +235,7 @@ public final class XMLDocument implements XML {
      *
      * <p>The object is created with a default implementation of
      * {@link NamespaceContext}, which already defines a
-     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.
+     * number of namespaces, see {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * @param node DOM source
      * @since 0.2
@@ -246,6 +246,7 @@ public final class XMLDocument implements XML {
 
     /**
      * Private ctor.
+     *
      * @param cache The source
      * @param context Namespace context
      * @param leaf Is it a leaf node?
@@ -262,6 +263,7 @@ public final class XMLDocument implements XML {
 
     /**
      * Factory method, to avoid checked exceptions.
+     *
      * @param file The path of the XML
      * @return XML
      * @since 0.35.0
@@ -277,6 +279,7 @@ public final class XMLDocument implements XML {
 
     /**
      * Factory method, to avoid checked exceptions.
+     *
      * @param file The path of the XML
      * @return XML
      * @since 0.35.0
@@ -292,6 +295,7 @@ public final class XMLDocument implements XML {
 
     /**
      * Factory method, to avoid checked exceptions.
+     *
      * @param uri The URI of the XML
      * @return XML
      * @since 0.35.0
@@ -307,6 +311,7 @@ public final class XMLDocument implements XML {
 
     /**
      * Factory method, to avoid checked exceptions.
+     *
      * @param url The URL of the XML
      * @return XML
      * @since 0.35.0
@@ -322,6 +327,7 @@ public final class XMLDocument implements XML {
 
     /**
      * Factory method, to avoid checked exceptions.
+     *
      * @param stream The input stream with the XML
      * @return XML
      * @since 0.35.0
@@ -359,6 +365,7 @@ public final class XMLDocument implements XML {
     /**
      * Retrieve DOM node, represented by this wrapper.
      * This method works exactly the same as {@link #deepCopy()}.
+     *
      * @return Deep copy of the inner DOM node
      * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
      * @checkstyle NoJavadocForOverriddenMethodsCheck (5 lines)
@@ -474,10 +481,10 @@ public final class XMLDocument implements XML {
     public Collection<SAXParseException> validate(final XML xsd) {
         synchronized (XMLDocument.class) {
             final Validator validator;
-            try {
+            try (StringReader reader = new StringReader(xsd.toString())) {
                 validator = SchemaFactory
                     .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-                    .newSchema(new StreamSource(new StringReader(xsd.toString())))
+                    .newSchema(new StreamSource(reader))
                     .newValidator();
             } catch (final SAXException ex) {
                 throw new IllegalStateException(

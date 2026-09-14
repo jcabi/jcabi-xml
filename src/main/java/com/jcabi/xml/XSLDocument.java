@@ -40,7 +40,7 @@ import org.w3c.dom.Document;
 /**
  * Implementation of {@link XSL}.
  *
- * <p>Objects of this class are immutable and thread-safe.
+ * <p>Objects of this class are immutable and thread-safe.</p>
  *
  * @since 0.4
  * @checkstyle ClassFanOutComplexityCheck (500 lines)
@@ -54,7 +54,7 @@ public final class XSLDocument implements XSL {
      *
      * <p>This will NOT remove
      * existing indentation between Element nodes currently introduced by the
-     * constructor of {@link XMLDocument}. For example:
+     * constructor of {@link XMLDocument}. For example:</p>
      *
      * <pre>
      * {@code
@@ -63,7 +63,7 @@ public final class XSLDocument implements XSL {
      *    </a>}
      * </pre>
      *
-     * <p>becomes
+     * <p>becomes</p>
      *
      * <pre>
      * {@code
@@ -114,6 +114,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * System ID (base).
+     *
      * @since 0.20
      */
     private final transient String sid;
@@ -131,6 +132,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XML as a source.
+     *
      * @param src XSL document body
      */
     public XSLDocument(final XML src) {
@@ -139,6 +141,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XML as a source.
+     *
      * @param src XSL document body
      * @param base SystemId/Base
      * @since 0.20
@@ -149,6 +152,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from URL.
+     *
      * @param url Location of document
      * @throws IOException If fails to read
      * @since 0.7.4
@@ -159,6 +163,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from URL with alternative SystemId.
+     *
      * @param url Location of document
      * @param base SystemId/Base
      * @throws IOException If fails to read
@@ -170,6 +175,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from file.
+     *
      * @param file Location of document
      * @throws IOException If fails to read
      * @since 0.21
@@ -180,6 +186,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from file  with alternative SystemId.
+     *
      * @param file Location of document
      * @param base SystemId/Base
      * @since 0.26.0
@@ -190,6 +197,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from file.
+     *
      * @param file Location of document
      * @throws IOException If fails to read
      * @since 0.21
@@ -200,6 +208,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from file with custom SystemId.
+     *
      * @param file Location of document
      * @param base SystemId/Base
      * @throws IOException If fails to read
@@ -211,6 +220,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from URI.
+     *
      * @param uri Location of document
      * @throws IOException If fails to read
      * @since 0.15
@@ -221,6 +231,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from URI.
+     *
      * @param uri Location of document
      * @param base SystemId/Base
      * @throws IOException If fails to read
@@ -232,6 +243,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as an input stream.
+     *
      * @param stream XSL input stream
      */
     public XSLDocument(final InputStream stream) {
@@ -240,6 +252,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as an input stream.
+     *
      * @param stream XSL input stream
      * @param base SystemId/Base
      * @since 0.20
@@ -250,6 +263,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as a string.
+     *
      * @param src XML document body
      */
     public XSLDocument(final String src) {
@@ -258,6 +272,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as a string.
+     *
      * @param src XML document body
      * @param base SystemId/Base
      * @since 0.20
@@ -268,6 +283,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as a string.
+     *
      * @param src XML document body
      * @param srcs Sources
      * @since 0.9
@@ -278,6 +294,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as a string.
+     *
      * @param src XML document body
      * @param srcs Sources
      * @param base SystemId/Base
@@ -290,6 +307,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as a string.
+     *
      * @param src XML document body
      * @param srcs Sources
      * @param map Map of XSL params
@@ -302,6 +320,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Public ctor, from XSL as a string.
+     *
      * @param src XML document body
      * @param srcs Sources
      * @param map Map of XSL params
@@ -319,6 +338,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Private ctor that carries a pre-compiled stylesheet into a new instance.
+     *
      * @param src XSL document body
      * @param srcs Sources
      * @param map Map of XSL params
@@ -359,7 +379,7 @@ public final class XSLDocument implements XSL {
      *
      * <p>This factory method is useful when you need to create
      * an instance of XSL stylesheet as a static final variable. In this
-     * case you can't catch an exception but this method can help, for example:
+     * case you can't catch an exception but this method can help, for example:</p>
      *
      * <pre> class Foo {
      *   private static final XSL STYLESHEET = XSLDocument.make(
@@ -377,6 +397,7 @@ public final class XSLDocument implements XSL {
 
     /**
      * Make an instance of XSL stylesheet without I/O exceptions.
+     *
      * @param url URL with content
      * @return XSL stylesheet
      * @see #make(InputStream)
@@ -496,10 +517,8 @@ public final class XSLDocument implements XSL {
         factory.setErrorListener(errors);
         factory.setURIResolver(sources);
         final Templates tmpl;
-        try {
-            tmpl = factory.newTemplates(
-                new StreamSource(new StringReader(xsl), sid)
-            );
+        try (StringReader reader = new StringReader(xsl)) {
+            tmpl = factory.newTemplates(new StreamSource(reader, sid));
         } catch (final TransformerConfigurationException ex) {
             throw new IllegalArgumentException(
                 String.format(

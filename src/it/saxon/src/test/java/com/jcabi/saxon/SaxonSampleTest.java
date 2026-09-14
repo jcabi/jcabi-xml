@@ -20,12 +20,14 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test of XML features with Saxon.
+ *
  * @since 0.1
  */
 public final class SaxonSampleTest {
 
     /**
      * XSDDocument can validate XML against its schema, in multiple threads.
+     *
      * @throws Exception If fails
      */
     @Test
@@ -78,6 +80,7 @@ public final class SaxonSampleTest {
 
     /**
      * XSDDocument can validate XML against its schema, in multiple threads.
+     *
      * @throws Exception If fails
      */
     @Test

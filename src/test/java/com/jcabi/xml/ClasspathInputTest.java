@@ -12,6 +12,7 @@ import org.w3c.dom.ls.LSInput;
 
 /**
  * Test case for {@link ClasspathInput}.
+ *
  * @since 0.17.3
  */
 @SuppressWarnings("PMD.UnnecessaryLocalRule")

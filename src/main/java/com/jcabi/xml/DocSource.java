@@ -11,12 +11,14 @@ import org.xml.sax.SAXException;
 
 /**
  * Source of XML.
+ *
  * @since 0.32
  */
 interface DocSource {
 
     /**
      * Parse XML by the builder.
+     *
      * @param builder The builder to use during parsing
      * @return The document
      * @throws IOException If fails.
@@ -26,6 +28,7 @@ interface DocSource {
 
     /**
      * The length of the source.
+     *
      * @return The length
      */
     long length();

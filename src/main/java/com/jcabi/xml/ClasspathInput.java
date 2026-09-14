@@ -14,6 +14,7 @@ import org.w3c.dom.ls.LSInput;
 
 /**
  * {@link LSInput} implementation used by {@link ClasspathResolver}.
+ *
  * @since 0.1
  */
 final class ClasspathInput implements LSInput {
@@ -45,6 +46,7 @@ final class ClasspathInput implements LSInput {
 
     /**
      * Constructor.
+     *
      * @param pubid Public id
      * @param sysid System id
      */
@@ -54,6 +56,7 @@ final class ClasspathInput implements LSInput {
 
     /**
      * Constructor.
+     *
      * @param pubid Public id
      * @param sysid System id
      * @param enc Encoding to use when reading the resource

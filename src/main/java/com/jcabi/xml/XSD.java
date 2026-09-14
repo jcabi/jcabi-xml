@@ -11,7 +11,7 @@ import org.xml.sax.SAXParseException;
 /**
  * XSD schema.
  *
- * <p>Implementation of this interface must be immutable and thread-safe.
+ * <p>Implementation of this interface must be immutable and thread-safe.</p>
  *
  * @see XSDDocument
  * @since 0.5
@@ -27,6 +27,7 @@ public interface XSD {
 
     /**
      * Validate XML.
+     *
      * @param xml Source XML document
      * @return Collection of problems found (empty if no problems)
      */

@@ -6,6 +6,7 @@ package com.jcabi.saxon;
 
 /**
  * Sample class.
+ *
  * @since 0.1
  */
 final class SaxonSample {

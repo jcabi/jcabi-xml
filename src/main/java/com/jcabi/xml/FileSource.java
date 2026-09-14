@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 
 /**
  * File source of XML from a file.
+ *
  * @since 0.32
  */
 class FileSource implements DocSource {
@@ -23,6 +24,7 @@ class FileSource implements DocSource {
 
     /**
      * Public ctor.
+     *
      * @param file The file
      */
     FileSource(final File file) {

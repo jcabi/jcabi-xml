@@ -6,6 +6,7 @@ package com.jcabi.xerces;
 
 /**
  * Sample class for Xerces testing.
+ *
  * @since 0.1
  */
 final class XercesSample {

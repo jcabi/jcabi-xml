@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test of FileSources.
+ *
  * @since 0.18
  */
 final class FileSourcesTest {

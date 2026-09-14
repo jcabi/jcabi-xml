@@ -23,7 +23,7 @@ import org.xml.sax.SAXParseException;
  * doesn't validate against externally provided XSD schema or internally
  * specified schema locations.
  *
- * <p>Objects of this class are immutable and thread-safe.
+ * <p>Objects of this class are immutable and thread-safe.</p>
  *
  * @since 0.7
  * @checkstyle AbbreviationAsWordInNameCheck (5 lines)
@@ -38,6 +38,7 @@ public final class StrictXML implements XML {
 
     /**
      * Public ctor.
+     *
      * @param xml XML document
      */
     public StrictXML(final XML xml) {
@@ -46,6 +47,7 @@ public final class StrictXML implements XML {
 
     /**
      * Public ctor.
+     *
      * @param xml XML document
      * @param resolver Custom resolver
      * @since 0.19
@@ -56,6 +58,7 @@ public final class StrictXML implements XML {
 
     /**
      * Public ctor.
+     *
      * @param xml XML document
      * @param schema XSD schema
      */
@@ -65,6 +68,7 @@ public final class StrictXML implements XML {
 
     /**
      * Private ctor.
+     *
      * @param xml XML Document
      * @param errs XML Document errors function
      */
@@ -98,6 +102,7 @@ public final class StrictXML implements XML {
 
     /**
      * Default ctor.
+     *
      * @param xml XML supplier
      */
     private StrictXML(final Scalar<XML> xml) {
@@ -132,6 +137,7 @@ public final class StrictXML implements XML {
     /**
      * Retrieve DOM node, represented by this wrapper.
      * This method works exactly the same as {@link #deepCopy()}.
+     *
      * @return Deep copy of the inner DOM node
      * @deprecated Use {@link #inner()} or {@link #deepCopy()} instead.
      * @checkstyle NoJavadocForOverriddenMethodsCheck (5 lines)

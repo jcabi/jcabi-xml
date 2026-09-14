@@ -22,7 +22,7 @@ import org.cactoos.map.MapOf;
 /**
  * Convenient internal implementation of {@link NamespaceContext}.
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @since 0.1
  */
@@ -46,7 +46,7 @@ public final class XPathContext implements NamespaceContext {
      * to see this code and its documentation. That's why all these prefixes
      * and namespaces should be documented in
      * {@link XMLDocument#XMLDocument(String)} ctor. When adding/changing this
-     * list - don't forget to document it there.
+     * list - don't forget to document it there.</p>
      */
     @SuppressWarnings("unchecked")
     public XPathContext() {
@@ -64,6 +64,7 @@ public final class XPathContext implements NamespaceContext {
 
     /**
      * Public ctor with custom namespaces.
+     *
      * @param namespaces List of namespaces
      */
     public XPathContext(final Object... namespaces) {
@@ -75,6 +76,7 @@ public final class XPathContext implements NamespaceContext {
 
     /**
      * Public ctor.
+     *
      * @param old Old map of prefixes and namespaces
      * @param prefix The prefix
      * @param namespace The namespace
@@ -90,6 +92,7 @@ public final class XPathContext implements NamespaceContext {
 
     /**
      * Private ctor.
+     *
      * @param mapping Mapping to set
      * @param ctxs Context to set
      */
@@ -163,6 +166,7 @@ public final class XPathContext implements NamespaceContext {
 
     /**
      * Add new prefix and namespace.
+     *
      * @param prefix The prefix
      * @param namespace The namespace
      * @return New context
@@ -182,6 +186,7 @@ public final class XPathContext implements NamespaceContext {
 
     /**
      * Add new context.
+     *
      * @param context The context to merge into this one
      * @return New context
      */

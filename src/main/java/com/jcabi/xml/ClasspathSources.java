@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Sources in classpath.
+ *
  * @since 0.9
  */
 @EqualsAndHashCode(of = "prefix")
@@ -36,6 +37,7 @@ public final class ClasspathSources implements Sources {
 
     /**
      * Public ctor.
+     *
      * @param type Start with this type
      */
     public ClasspathSources(final Class<?> type) {
@@ -49,6 +51,7 @@ public final class ClasspathSources implements Sources {
 
     /**
      * Public ctor.
+     *
      * @param pfx Classpath prefix
      */
     public ClasspathSources(final String pfx) {

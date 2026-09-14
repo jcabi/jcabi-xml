@@ -18,7 +18,7 @@ import org.xml.sax.SAXParseException;
 /**
  * Implementation of {@link XSD}.
  *
- * <p>Objects of this class are immutable and thread-safe.
+ * <p>Objects of this class are immutable and thread-safe.</p>
  *
  * @since 0.5
  * @deprecated This class is deprecated since 0.31.0. Instead, you can
@@ -38,6 +38,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Public ctor, from XSD as a source.
+     *
      * @param src XSD document body
      */
     public XSDDocument(final XML src) {
@@ -46,6 +47,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Public ctor, from URL.
+     *
      * @param url Location of document
      * @throws IOException If fails to read
      * @since 0.7.4
@@ -56,6 +58,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Public ctor, from file.
+     *
      * @param file Location of document
      * @throws IOException If fails to read
      * @since 0.21
@@ -66,6 +69,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Public ctor, from file.
+     *
      * @param file Location of document
      * @throws IOException If fails to read
      * @since 0.21
@@ -76,6 +80,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Public ctor, from URI.
+     *
      * @param uri Location of document
      * @throws IOException If fails to read
      * @since 0.15
@@ -86,6 +91,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Public ctor, from XSD as an input stream.
+     *
      * @param stream XSD input stream
      */
     public XSDDocument(final InputStream stream) {
@@ -94,6 +100,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Public ctor, from XSD as a string.
+     *
      * @param src XSD document body
      */
     public XSDDocument(final String src) {
@@ -105,7 +112,7 @@ public final class XSDDocument implements XSD {
      *
      * <p>This factory method is useful when you need to create
      * an instance of XSD schema as a static final variable. In this
-     * case you can't catch an exception but this method can help, for example:
+     * case you can't catch an exception but this method can help, for example:</p>
      *
      * <pre> class Foo {
      *   private static final XSD SCHEMA = XSDDocument.make(
@@ -123,6 +130,7 @@ public final class XSDDocument implements XSD {
 
     /**
      * Make an instance of XSD schema without I/O exceptions.
+     *
      * @param url URL with content
      * @return XSD schema
      * @see #make(InputStream)

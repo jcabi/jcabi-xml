@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  * Sources in file system.
  *
  * <p>If you have some resources in files, just configure your
- * XSL with this "sources":
+ * XSL with this "sources":</p>
  *
  * <pre> XSL xsl = new XSLDocument(input).with(
  *   new FileSources("/tmp/my-resources")
@@ -41,6 +41,7 @@ public final class FileSources implements Sources {
 
     /**
      * Public ctor.
+     *
      * @param dir Directory
      */
     public FileSources(final String dir) {
@@ -49,6 +50,7 @@ public final class FileSources implements Sources {
 
     /**
      * Public ctor.
+     *
      * @param dir Directory
      */
     public FileSources(final File dir) {

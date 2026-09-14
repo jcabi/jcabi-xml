@@ -8,6 +8,7 @@ import javax.xml.transform.URIResolver;
 
 /**
  * Sources for XSLT.
+ *
  * @since 0.9
  * @checkstyle InterfaceIsType (500 lines)
  */

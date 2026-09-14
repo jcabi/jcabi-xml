@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link XSLDocument}.
+ *
  * @since 0.1
  * @checkstyle AbbreviationAsWordInNameCheck (10 lines)
  */

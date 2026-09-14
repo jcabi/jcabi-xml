@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 
 /**
  * Test of XML features.
+ *
  * @since 0.1
  */
 public final class UtfTest {

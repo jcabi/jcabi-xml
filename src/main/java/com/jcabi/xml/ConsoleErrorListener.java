@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerException;
 
 /**
  * Error listener to console.
+ *
  * @since 0.22
  */
 final class ConsoleErrorListener implements ErrorListener {
@@ -52,6 +53,7 @@ final class ConsoleErrorListener implements ErrorListener {
 
     /**
      * Return all errors.
+     *
      * @return List of errors accumulated
      */
     Collection<String> summary() {

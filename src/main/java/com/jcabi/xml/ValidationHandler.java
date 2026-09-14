@@ -10,6 +10,7 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Validation error handler.
+ *
  * @since 0.1
  */
 final class ValidationHandler implements ErrorHandler {
@@ -21,6 +22,7 @@ final class ValidationHandler implements ErrorHandler {
 
     /**
      * Constructor.
+     *
      * @param errs Collection of errors
      */
     ValidationHandler(final Collection<SAXParseException> errs) {

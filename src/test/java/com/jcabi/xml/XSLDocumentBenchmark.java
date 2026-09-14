@@ -18,7 +18,7 @@ import org.openjdk.jmh.annotations.Warmup;
 /**
  * JMH benchmark for {@link XSLDocument#transform(XML)}.
  *
- * <p>Three scenarios:
+ * <p>Three scenarios:</p>
  * <ul>
  * <li>{@link #reuseInstance} — same {@link XSLDocument} reused every call</li>
  * <li>{@link #withParamEachCall} — new instance via {@code .with()} each call</li>
@@ -68,7 +68,15 @@ public class XSLDocumentBenchmark {
     );
 
     /**
+     * Ctor.
+     */
+    public XSLDocumentBenchmark() {
+        // nothing to do
+    }
+
+    /**
      * Same {@link XSLDocument} instance reused on every call.
+     *
      * @return Transformed XML
      */
     @Benchmark
@@ -78,6 +86,7 @@ public class XSLDocumentBenchmark {
 
     /**
      * New {@link XSLDocument} via {@code .with("step", n)} on every call.
+     *
      * @return Transformed XML
      */
     @Benchmark
@@ -89,6 +98,7 @@ public class XSLDocumentBenchmark {
 
     /**
      * Brand-new {@link XSLDocument} constructed on every call.
+     *
      * @return Transformed XML
      */
     @Benchmark
@@ -101,6 +111,7 @@ public class XSLDocumentBenchmark {
      * {@link XSLDocument#toString()} on a reused instance.
      * The result is computed once and returned from a
      * {@link org.cactoos.scalar.Sticky} cache on every subsequent call.
+     *
      * @return Formatted XSL string
      */
     @Benchmark

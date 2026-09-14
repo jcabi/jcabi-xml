@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test of ClasspathSources.
+ *
  * @since 0.18
  */
 final class ClasspathSourcesTest {

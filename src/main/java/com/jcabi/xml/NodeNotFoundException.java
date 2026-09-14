@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 
 /**
  * Node not found in XmlDocument.
+ *
  * @since 0.1
  */
 final class NodeNotFoundException
@@ -21,6 +22,7 @@ final class NodeNotFoundException
 
     /**
      * Public ctor.
+     *
      * @param message Error message
      * @param node The XML with error
      * @param query The query in XPath

@@ -20,7 +20,7 @@ import org.w3c.dom.Node;
  * includes detailed information about
  * the original document. Thus, such an incorrect list-access operation will
  * lead to an exception that contains all the details inside (not just a simple
- * error message). For example:
+ * error message). For example:</p>
  *
  * <pre> String name = new XMLDocument("...")
  *   .xpath("/document/name/text()")
@@ -31,15 +31,15 @@ import org.w3c.dom.Node;
  * a detailed report to the user of the problem (including a full content of
  * the XML document) we're returning {@link ListWrapper} from
  * {@link XMLDocument#xpath(String)}. The only method that we implement
- * for this purpose is {@link #get(int)}.
+ * for this purpose is {@link #get(int)}.</p>
  *
  * <p>{@link ListWrapper} is an unmodifiable list, that's why
  * the majority of inherited method are not implemented and
- * throw runtime exceptions if being called.
+ * throw runtime exceptions if being called.</p>
  *
  * <p>The method {@link #get(int)} throws
  * {@link NodeNotFoundException}
- * if such an element doesn't exist in the list.
+ * if such an element doesn't exist in the list.</p>
  *
  * <p>The method {@link #subList(int, int)}
  * throws {@link NodeNotFoundException}
@@ -48,9 +48,9 @@ import org.w3c.dom.Node;
  * other cases of illegal method call (start is less than zero, end is
  * less than zero, or start is bigger than end) a standard
  * {@link IndexOutOfBoundsException} is thrown (by the encapsulated
- * implementation of {@link List}).
+ * implementation of {@link List}).</p>
  *
- * <p>The class is immutable and thread-safe.
+ * <p>The class is immutable and thread-safe.</p>
  *
  * @param <T> Time of items
  * @since 0.1
@@ -74,6 +74,7 @@ final class ListWrapper<T> implements List<T> {
 
     /**
      * Public ctor.
+     *
      * @param list Original list
      * @param node The XML
      * @param addr Address

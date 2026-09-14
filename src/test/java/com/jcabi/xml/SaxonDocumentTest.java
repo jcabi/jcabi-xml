@@ -21,6 +21,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Test case for {@link SaxonDocument}.
+ *
  * @since 0.28
  */
 final class SaxonDocumentTest {

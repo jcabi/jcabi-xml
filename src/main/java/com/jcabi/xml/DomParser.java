@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 /**
  * Convenient parser of XML to DOM.
  *
- * <p>Objects of this class are immutable and thread-safe.
+ * <p>Objects of this class are immutable and thread-safe.</p>
  *
  * @since 0.1
  */
@@ -42,9 +42,9 @@ final class DomParser {
      * <p>An {@link IllegalArgumentException} may be thrown if the parameter
      * passed is not in XML format. It doesn't perform a strict validation
      * and is not guaranteed that an exception will be thrown whenever
-     * the parameter is not XML.
+     * the parameter is not XML.</p>
      *
-     * <p>It is assumed that the text is in UTF-8.
+     * <p>It is assumed that the text is in UTF-8.</p>
      *
      * @param fct Document builder factory to use
      * @param txt The XML in text (in UTF-8)
@@ -59,7 +59,7 @@ final class DomParser {
      * <p>An {@link IllegalArgumentException} may be thrown if the parameter
      * passed is not in XML format. It doesn't perform a strict validation
      * and is not guaranteed that an exception will be thrown whenever
-     * the parameter is not XML.
+     * the parameter is not XML.</p>
      *
      * @param fct Document builder factory to use
      * @param bytes The XML in bytes
@@ -74,7 +74,7 @@ final class DomParser {
      * <p>An {@link IllegalArgumentException} may be thrown if the parameter
      * passed is not in XML format. It doesn't perform a strict validation
      * and is not guaranteed that an exception will be thrown whenever
-     * the parameter is not XML.
+     * the parameter is not XML.</p>
      *
      * @param fct Document builder factory to use
      * @param file The XML as a file
@@ -85,6 +85,7 @@ final class DomParser {
 
     /**
      * Private ctor.
+     *
      * @param factory Document builder factory to use
      * @param source Source of XML
      */
@@ -95,6 +96,7 @@ final class DomParser {
 
     /**
      * Get the document body.
+     *
      * @return The document
      */
     Document document() {

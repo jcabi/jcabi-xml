@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * Represent a given resource (InputStream, URL/URI location content, File)
  * as a string. UTF-8 encoding is used.
  *
- * <p>Objects of this class are immutable and thread-safe.
+ * <p>Objects of this class are immutable and thread-safe.</p>
  *
  * @since 0.1
  */
@@ -37,7 +37,7 @@ final class TextResource {
      * Public constructor, represent an InputStream as a text resource.
      *
      * <p>The provided input stream will be closed automatically after
-     * getting data from it.
+     * getting data from it.</p>
      *
      * @param stream Stream to represent as text
      */
@@ -47,19 +47,17 @@ final class TextResource {
 
     /**
      * Public constructor, represent a File as a text resource.
+     *
      * @param file File to represent as text
      * @throws IOException If file not found
      */
     TextResource(final File file) throws IOException {
-        this(
-            TextResource.readAsString(
-                new BufferedInputStream(Files.newInputStream(file.toPath()))
-            )
-        );
+        this(TextResource.readAsString(file));
     }
 
     /**
      * Public constructor, represent a URL location as a text resource.
+     *
      * @param url URL to represent as text
      * @throws IOException If an IO problem occurs.
      */
@@ -69,6 +67,7 @@ final class TextResource {
 
     /**
      * Public constructor, represent a URI location as a text resource.
+     *
      * @param uri URI to represent as text
      * @throws IOException If an IO problem occurs.
      */
@@ -78,6 +77,7 @@ final class TextResource {
 
     /**
      * Private constructor, used for initializing the field text content.
+     *
      * @param text The text content
      */
     private TextResource(final String text) {
@@ -103,9 +103,19 @@ final class TextResource {
         return writer.toString();
     }
 
+    private static String readAsString(final File file) throws IOException {
+        try (
+            InputStream stream = new BufferedInputStream(
+                Files.newInputStream(file.toPath())
+            )
+        ) {
+            return TextResource.readAsString(stream);
+        }
+    }
+
     private static String readAsString(final URL url) throws IOException {
-        return TextResource.readAsString(
-            new BufferedInputStream(url.openStream())
-        );
+        try (InputStream stream = new BufferedInputStream(url.openStream())) {
+            return TextResource.readAsString(stream);
+        }
     }
 }
