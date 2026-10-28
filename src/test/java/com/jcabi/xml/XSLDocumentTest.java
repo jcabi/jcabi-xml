@@ -197,9 +197,62 @@ final class XSLDocumentTest {
                 ).with(new ClasspathSources()).transform(new XMLDocument("<zz1/>"))
             ).getLocalizedMessage(),
             Matchers.allOf(
+                Matchers.containsString("oopsie..."),
                 Matchers.containsString("Processing terminated by xsl:message"),
                 Matchers.containsString("by xsl:message at line 1 in foo")
             )
+        );
+    }
+
+    @Test
+    void includesTerminatingMessageWhenApplyingToText() {
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> new XSLDocument(
+                    StringUtils.join(
+                        "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                        " version='2.0'><xsl:template match='/'>",
+                        "<xsl:message terminate='yes'><reason>Cannot process ",
+                        "<item>this item</item></reason></xsl:message>",
+                        "</xsl:template></xsl:stylesheet>"
+                    )
+                ).applyTo(new XMLDocument("<input/>"))
+            ).getMessage(),
+            Matchers.containsString("Cannot process this item")
+        );
+    }
+
+    @Test
+    void continuesAfterNonterminatingMessage() {
+        MatcherAssert.assertThat(
+            new XSLDocument(
+                StringUtils.join(
+                    "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                    " version='2.0'><xsl:output method='text'/><xsl:template match='/'>",
+                    "<xsl:message>Informational message</xsl:message>Result",
+                    "</xsl:template></xsl:stylesheet>"
+                )
+            ).applyTo(new XMLDocument("<input/>")),
+            Matchers.equalTo("Result")
+        );
+    }
+
+    @Test
+    void retainsTransformationFailureWithoutMessageDocument() {
+        MatcherAssert.assertThat(
+            Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> new XSLDocument(
+                    StringUtils.join(
+                        "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                        " version='2.0'><xsl:template match='/'>",
+                        "<xsl:value-of select='1 idiv number(/input/@divisor)'/>",
+                        "</xsl:template></xsl:stylesheet>"
+                    )
+                ).applyTo(new XMLDocument("<input divisor='0'/>"))
+            ).getMessage(),
+            Matchers.containsString("Integer division by zero")
         );
     }
 
