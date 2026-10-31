@@ -146,6 +146,11 @@ public final class SaxonDocument implements XML {
     }
 
     @Override
+    public String toString() {
+        return this.xdm.toString();
+    }
+
+    @Override
     public List<String> xpath(final String query) {
         try {
             final XPathSelector selector = SaxonDocument.XPATH_COMPILER.compile(query).load();

@@ -123,6 +123,17 @@ final class SaxonDocumentTest {
         );
     }
 
+    @Test
+    void printsItselfAsParsableXml() {
+        MatcherAssert.assertThat(
+            "SaxonDocument doesn't print itself as XML that can be parsed back",
+            new XMLDocument(
+                new SaxonDocument("<doc><item id='x7'>Bq9</item></doc>").toString()
+            ).xpath("/doc/item[@id='x7']/text()"),
+            Matchers.contains("Bq9")
+        );
+    }
+
     private static Path xmlFile(final Path temp) throws IOException {
         final Path xml = temp.resolve("test.xml");
         Files.write(xml, SaxonDocumentTest.DEFAULT_XML.getBytes(StandardCharsets.UTF_8));
