@@ -451,6 +451,10 @@ public final class XSLDocument implements XSL {
             if (!summary.toString().equals(ex.getMessageAndLocation())) {
                 summary.append("; ").append(ex.getMessageAndLocation());
             }
+            final String message = new SaxonError(ex).message();
+            if (!message.isEmpty()) {
+                summary.append("; ").append(message);
+            }
             throw new IllegalArgumentException(
                 String.format(
                     "Failed to transform by %s: %s",
