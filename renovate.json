@@ -5,5 +5,7 @@
   ],
   "ignoreDeps": [
     "xml-apis:xml-apis"
-  ]
+  ],
+  "automerge": true,
+  "platformAutomerge": false
 }
