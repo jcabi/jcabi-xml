@@ -189,7 +189,7 @@ public final class XMLDocument implements XML {
      * <p>The bytes read from the stream are decoded as UTF-8 regardless of
      * any XML prolog encoding declaration; callers that need a different
      * charset must decode the stream themselves and use
-     * {@link XMLDocument#XMLDocument(String)}.
+     * {@link XMLDocument#XMLDocument(String)}.</p>
      *
      * <p>The provided input stream will be closed automatically after
      * getting data from it.</p>
@@ -212,7 +212,7 @@ public final class XMLDocument implements XML {
      * passed is not in XML format.</p>
      *
      * <p>The resource at the URL is decoded as UTF-8 regardless of any XML
-     * prolog encoding declaration or HTTP {@code Content-Type} charset.
+     * prolog encoding declaration or HTTP {@code Content-Type} charset.</p>
      *
      * @param url The URL to load from
      * @throws IOException In case of I/O problems
@@ -232,7 +232,7 @@ public final class XMLDocument implements XML {
      * passed is not in XML format.</p>
      *
      * <p>The resource at the URI is decoded as UTF-8 regardless of any XML
-     * prolog encoding declaration.
+     * prolog encoding declaration.</p>
      *
      * @param uri The URI to load from
      * @throws IOException In case of I/O problems
