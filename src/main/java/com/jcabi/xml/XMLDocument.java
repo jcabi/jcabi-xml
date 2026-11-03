@@ -361,7 +361,9 @@ public final class XMLDocument implements XML {
     public boolean equals(final Object another) {
         final boolean eql;
         if (another instanceof XML) {
-            eql = this.toString().equals(another.toString());
+            eql = XMLDocument.asString(XMLDocument.trimmed(this.deepCopy())).equals(
+                XMLDocument.asString(XMLDocument.trimmed(((XML) another).deepCopy()))
+            );
         } else {
             eql = false;
         }
@@ -625,6 +627,26 @@ public final class XMLDocument implements XML {
             );
         }
         return writer.toString();
+    }
+
+    private static Node trimmed(final Node node) {
+        final NodeList kids = node.getChildNodes();
+        boolean elements = false;
+        for (int idx = 0; idx < kids.getLength(); ++idx) {
+            if (kids.item(idx).getNodeType() == Node.ELEMENT_NODE) {
+                elements = true;
+            }
+        }
+        for (int idx = kids.getLength() - 1; idx >= 0; --idx) {
+            final Node kid = kids.item(idx);
+            if (elements && kid.getNodeType() == Node.TEXT_NODE
+                && kid.getTextContent().matches("\\s*")) {
+                node.removeChild(kid);
+            } else {
+                XMLDocument.trimmed(kid);
+            }
+        }
+        return node;
     }
 
     private static Node transform(final Source source) {
