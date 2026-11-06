@@ -77,16 +77,16 @@ public final class XPathContext implements NamespaceContext {
     /**
      * Public ctor.
      *
-     * @param old Old map of prefixes and namespaces
+     * @param old Old context, with its prefixes and merged contexts
      * @param prefix The prefix
      * @param namespace The namespace
      */
     @SuppressWarnings("unchecked")
-    private XPathContext(final Map<String, String> old,
+    private XPathContext(final XPathContext old,
         final String prefix, final Object namespace) {
         this(
-            new MapOf<String, String>(old, new MapEntry<>(prefix, namespace.toString())),
-            new ArrayList<>(0)
+            new MapOf<String, String>(old.map, new MapEntry<>(prefix, namespace.toString())),
+            old.contexts
         );
     }
 
@@ -181,7 +181,7 @@ public final class XPathContext implements NamespaceContext {
                 )
             );
         }
-        return new XPathContext(this.map, prefix, namespace);
+        return new XPathContext(this, prefix, namespace);
     }
 
     /**
