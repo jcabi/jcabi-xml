@@ -189,6 +189,7 @@ public final class XSLDocument implements XSL {
      *
      * @param file Location of document
      * @param base SystemId/Base
+     * @throws IOException If fails to read
      * @since 0.26.0
      */
     public XSLDocument(final File file, final String base) throws IOException {
