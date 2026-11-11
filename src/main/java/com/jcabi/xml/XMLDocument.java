@@ -372,7 +372,7 @@ public final class XMLDocument implements XML {
 
     @Override
     public int hashCode() {
-        return this.cache.hashCode();
+        return XMLDocument.asString(XMLDocument.trimmed(this.deepCopy())).hashCode();
     }
 
     /**
