@@ -66,9 +66,16 @@ public final class ClasspathSources implements Sources {
             String.format(ClasspathSources.PATTERN, this.prefix, href)
         );
         if (stream == null) {
-            final InputStream fallback = this.getClass().getResourceAsStream(
-                String.format(ClasspathSources.PATTERN, base, href)
-            );
+            InputStream fallback = null;
+            if (base != null) {
+                fallback = this.getClass().getResourceAsStream(
+                    String.format(
+                        ClasspathSources.PATTERN,
+                        base.substring(0, base.lastIndexOf('/') + 1),
+                        href
+                    )
+                );
+            }
             if (fallback == null) {
                 throw new TransformerException(
                     String.format(
