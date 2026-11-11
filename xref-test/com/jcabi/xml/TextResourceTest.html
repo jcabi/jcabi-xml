@@ -33,7 +33,7 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>      @Test
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">void</strong> readsStreamAsText() {
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>          <strong class="jxr_keyword">final</strong> String text = <span class="jxr_string">"Blah!\u20ac\u2122"</span>;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>          <strong class="jxr_keyword">final</strong> String text = <span class="jxr_string">"Blah!€™"</span>;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>          <strong class="jxr_keyword">final</strong> InputStream stream = <strong class="jxr_keyword">new</strong> ByteArrayInputStream(
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>              text.getBytes(StandardCharsets.UTF_8)
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>          );
@@ -46,7 +46,7 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      @Test
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">void</strong> readsFileAsText() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">final</strong> String text = <span class="jxr_string">"&lt;a xmlns='urn:foo'&gt;&lt;b&gt;\u0433!&lt;/b&gt;&lt;/a&gt;"</span>;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">final</strong> String text = <span class="jxr_string">"&lt;a xmlns='urn:foo'&gt;&lt;b&gt;г!&lt;/b&gt;&lt;/a&gt;"</span>;
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          <strong class="jxr_keyword">final</strong> File file = Files.createTempDirectory(<span class="jxr_string">""</span>)
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>              .resolve(<span class="jxr_string">"dummy.xml"</span>).toFile();
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">new</strong> LengthOf(<strong class="jxr_keyword">new</strong> TeeInput(text, file)).value();
@@ -56,8 +56,7 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>              Matchers.is(text)
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          );
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      }
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  }
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  }
 </pre>
 <hr/>
 <div id="footer">© 2012–2026 <a href="https://www.jcabi.com">jcabi.com</a></div>
