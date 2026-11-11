@@ -33,3 +33,4 @@ jobs:
             **/*.g4
             **/*.properties
             **/*.groovy
+            **/*.toml
