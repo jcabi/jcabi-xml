@@ -464,6 +464,9 @@ public final class XSLDocument implements XSL {
                 ex
             );
         }
+        errors.verify(
+            String.format("Failed to transform by %s", trans.getClass().getName())
+        );
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(
                 this,
