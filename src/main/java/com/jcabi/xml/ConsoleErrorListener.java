@@ -59,4 +59,19 @@ final class ConsoleErrorListener implements ErrorListener {
     Collection<String> summary() {
         return Collections.unmodifiableCollection(this.errors);
     }
+
+    /**
+     * Throw if any error or warning has been accumulated.
+     *
+     * @param operation Description of the operation that produced them
+     */
+    void verify(final String operation) {
+        if (!this.errors.isEmpty()) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "%s: %s", operation, String.join("; ", this.errors)
+                )
+            );
+        }
+    }
 }

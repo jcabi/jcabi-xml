@@ -298,20 +298,46 @@ final class XSLDocumentTest {
     }
 
     @Test
-    void catchesSaxonWarnings() {
-        Assertions.assertDoesNotThrow(
-            () -> new XSLDocument(
-                StringUtils.join(
-                    " <xsl:stylesheet",
-                    "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
-                    "  version='2.0'>",
-                    "<xsl:template match='a'></xsl:template>",
-                    "<xsl:template match='a'></xsl:template>",
-                    "</xsl:stylesheet>"
-                ),
-                "https://example.com/hello.xsl"
-            ).transform(new XMLDocument("<x><a/></x>")),
-            "XSLDocument must not propagate Saxon's duplicate-template warning"
+    void rejectsAmbiguousTemplateMatch() {
+        MatcherAssert.assertThat(
+            "XSLDocument must not swallow Saxon's ambiguous rule match warning",
+            Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> new XSLDocument(
+                    StringUtils.join(
+                        " <xsl:stylesheet",
+                        "  xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                        "  version='2.0'>",
+                        "<xsl:template match='a'></xsl:template>",
+                        "<xsl:template match='a'></xsl:template>",
+                        "</xsl:stylesheet>"
+                    ),
+                    "https://example.com/hello.xsl"
+                ).transform(new XMLDocument("<x><a/></x>"))
+            ).getMessage(),
+            Matchers.containsString("Ambiguous rule match")
+        );
+    }
+
+    @Test
+    void rejectsWarningsDuringTransformation() {
+        MatcherAssert.assertThat(
+            "XSLDocument must not swallow Saxon warnings raised during transformation",
+            Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> new XSLDocument(
+                    StringUtils.join(
+                        "<xsl:stylesheet",
+                        " xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                        " version='2.0'>",
+                        "<xsl:template match='w[xs:integer(@v) = 1]'",
+                        " xmlns:xs='http://www.w3.org/2001/XMLSchema'>",
+                        "<y/></xsl:template>",
+                        "</xsl:stylesheet>"
+                    )
+                ).transform(new XMLDocument("<w v='qx'/>"))
+            ).getMessage(),
+            Matchers.containsString("qx")
         );
     }
 
