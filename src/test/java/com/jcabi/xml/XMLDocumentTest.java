@@ -569,6 +569,21 @@ final class XMLDocumentTest {
     }
 
     @Test
+    void keepsMergedNamespacesAfterRegisteringNewOne() {
+        final XML merged = new XMLDocument(
+            StringUtils.join(
+                "<r xmlns:old='urn:old' xmlns:fresh='urn:fresh'>",
+                "<old:v>before</old:v><fresh:v>after</fresh:v></r>"
+            )
+        ).merge(new XPathContext("urn:old"));
+        MatcherAssert.assertThat(
+            "Namespace from the merged context must survive registerNs()",
+            merged.registerNs("fresh", "urn:fresh").xpath("/r/ns1:v/text()"),
+            Matchers.contains("before")
+        );
+    }
+
+    @Test
     void stripsUnnecessaryWhiteSpacesWhileParsing() {
         MatcherAssert.assertThat(
             "Two XML documents are equal to each other",
