@@ -812,6 +812,15 @@ final class XMLDocumentTest {
         );
     }
 
+    @Test
+    void hashesEqualDocumentsIdentically() {
+        MatcherAssert.assertThat(
+            "Equal documents must have equal hash codes",
+            new XMLDocument("<root><v>one</v></root>").hashCode(),
+            Matchers.equalTo(new XMLDocument("<root><v>one</v></root>").hashCode())
+        );
+    }
+
     // @checkstyle IllegalCatchCheck (20 lines)
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private static long measure(final Callable<String> run) {
