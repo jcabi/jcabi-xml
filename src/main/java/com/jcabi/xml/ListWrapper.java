@@ -212,7 +212,7 @@ final class ListWrapper<T> implements List<T> {
 
     @Override
     public List<T> subList(final int start, final int end) {
-        if (start >= this.size()) {
+        if (start > this.size()) {
             throw new NodeNotFoundException(
                 String.format(
                     "Start of subList (%d) is out of bounds (size=%d)",
@@ -222,7 +222,7 @@ final class ListWrapper<T> implements List<T> {
                 this.xpath
             );
         }
-        if (end >= this.size()) {
+        if (end > this.size()) {
             throw new NodeNotFoundException(
                 String.format(
                     "End of subList (%d) is out of bounds (size=%d)",

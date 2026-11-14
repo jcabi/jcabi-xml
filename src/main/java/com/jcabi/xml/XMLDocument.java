@@ -67,6 +67,11 @@ import org.xml.sax.SAXParseException;
 public final class XMLDocument implements XML {
 
     /**
+     * Does the classpath provide Saxon 10 or later, able to report warnings?
+     */
+    private static final boolean REPORTING = XMLDocument.reporting();
+
+    /**
      * Namespace context to use for {@link #xpath(String)}
      * and {@link #nodes(String)} methods.
      */
@@ -570,6 +575,10 @@ public final class XMLDocument implements XML {
     @SuppressWarnings("unchecked")
     private <T> T fetch(final String query, final Class<T> type) throws XPathExpressionException {
         final XPathFactory factory = XPathFactory.newInstance();
+        final ConsoleErrorListener errors = new ConsoleErrorListener();
+        if (XMLDocument.REPORTING) {
+            new SaxonWarnings(errors).attach(factory);
+        }
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(this.context);
         final QName qname;
@@ -585,9 +594,28 @@ public final class XMLDocument implements XML {
                 )
             );
         }
+        final T found;
         synchronized (this.cache) {
-            return (T) xpath.evaluate(query, this.cache, qname);
+            found = (T) xpath.evaluate(query, this.cache, qname);
         }
+        errors.verify(
+            String.format(
+                "XPath query '%s' produced warnings at %s",
+                query, factory.getClass().getName()
+            )
+        );
+        return found;
+    }
+
+    private static boolean reporting() {
+        boolean found;
+        try {
+            Class.forName("net.sf.saxon.lib.ErrorReporter");
+            found = true;
+        } catch (final ClassNotFoundException ex) {
+            found = false;
+        }
+        return found;
     }
 
     private static String asString(final Node node) {

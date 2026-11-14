@@ -28,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPathFactory;
+import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.cactoos.io.ResourceOf;
@@ -42,6 +44,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -185,6 +189,50 @@ final class XMLDocumentTest {
             )::asList,
             "XMLDocument should not fail on validation in multiple threads with different document and the same XSD"
         );
+    }
+
+    @Test
+    @ResourceLock(Resources.SYSTEM_PROPERTIES)
+    void rejectsXpathThatCompilesWithWarnings() {
+        final String key = String.join(
+            ":", XPathFactory.class.getName(), XPathFactory.DEFAULT_OBJECT_MODEL_URI
+        );
+        System.setProperty(key, XPathFactoryImpl.class.getName());
+        try {
+            MatcherAssert.assertThat(
+                "XMLDocument must not swallow Saxon warnings of an ambiguous XPath",
+                Assertions.assertThrows(
+                    IllegalArgumentException.class,
+                    () -> new XMLDocument(
+                        "<answers><o loc='a'><is loc='b'/></o></answers>"
+                    ).xpath("/answers/o[@loc='a' and is[@loc='b']]/@loc")
+                ).getMessage(),
+                Matchers.containsString("child::is")
+            );
+        } finally {
+            System.clearProperty(key);
+        }
+    }
+
+    @Test
+    @ResourceLock(Resources.SYSTEM_PROPERTIES)
+    void rejectsNodesQueryThatCompilesWithWarnings() {
+        final String key = String.join(
+            ":", XPathFactory.class.getName(), XPathFactory.DEFAULT_OBJECT_MODEL_URI
+        );
+        System.setProperty(key, XPathFactoryImpl.class.getName());
+        try {
+            MatcherAssert.assertThat(
+                "XMLDocument must not swallow Saxon warnings in nodes()",
+                Assertions.assertThrows(
+                    IllegalArgumentException.class,
+                    () -> new XMLDocument("<z f='k'><is/></z>").nodes("/z[@f='k' and is]")
+                ).getMessage(),
+                Matchers.containsString("child::is")
+            );
+        } finally {
+            System.clearProperty(key);
+        }
     }
 
     @Test

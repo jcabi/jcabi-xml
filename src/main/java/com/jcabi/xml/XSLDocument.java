@@ -189,6 +189,7 @@ public final class XSLDocument implements XSL {
      *
      * @param file Location of document
      * @param base SystemId/Base
+     * @throws IOException If fails to read
      * @since 0.26.0
      */
     public XSLDocument(final File file, final String base) throws IOException {
@@ -464,6 +465,9 @@ public final class XSLDocument implements XSL {
                 ex
             );
         }
+        errors.verify(
+            String.format("Failed to transform by %s", trans.getClass().getName())
+        );
         if (Logger.isTraceEnabled(this)) {
             Logger.trace(
                 this,
