@@ -113,7 +113,8 @@ public final class XPathContext implements NamespaceContext {
         if (namespace == null) {
             for (final NamespaceContext ctx : this.contexts) {
                 namespace = ctx.getNamespaceURI(prefix);
-                if (namespace != null) {
+                if (namespace != null
+                    && !XMLConstants.NULL_NS_URI.equals(namespace)) {
                     break;
                 }
             }

@@ -103,4 +103,35 @@ final class XPathContextTest {
             Matchers.equalTo(XMLConstants.NULL_NS_URI)
         );
     }
+
+    @Test
+    void resolvesPrefixAcrossMergedContexts() {
+        final NamespaceContext ctx = new XPathContext()
+            .merge(new XPathContext().add("other", "urn:other"))
+            .merge(new XPathContext().add("target", "urn:target"));
+        MatcherAssert.assertThat(
+            "the prefix bound by the second merged context must resolve",
+            ctx.getNamespaceURI("target"),
+            Matchers.equalTo("urn:target")
+        );
+        MatcherAssert.assertThat(
+            "the prefix bound by the first merged context must still resolve",
+            ctx.getNamespaceURI("other"),
+            Matchers.equalTo("urn:other")
+        );
+    }
+
+    @Test
+    void queriesXmlThroughMergedContexts() {
+        final XPathContext ctx = new XPathContext()
+            .merge(new XPathContext().add("other", "urn:other"))
+            .merge(new XPathContext().add("target", "urn:target"));
+        MatcherAssert.assertThat(
+            "an XPath query must resolve a prefix bound by a later context",
+            new XMLDocument("<r xmlns='urn:target'>value</r>")
+                .merge(ctx)
+                .xpath("/target:r/text()"),
+            Matchers.hasItem("value")
+        );
+    }
 }
