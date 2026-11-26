@@ -5,14 +5,13 @@
 package com.jcabi.xml;
 
 import com.jcabi.log.Logger;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -433,9 +432,9 @@ public final class XSLDocument implements XSL {
 
     @Override
     public String applyTo(final XML xml) {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        this.transformInto(xml, new StreamResult(baos));
-        return baos.toString(StandardCharsets.UTF_8);
+        final StringWriter text = new StringWriter();
+        this.transformInto(xml, new StreamResult(text));
+        return text.toString();
     }
 
     private void transformInto(final XML xml, final Result result) {

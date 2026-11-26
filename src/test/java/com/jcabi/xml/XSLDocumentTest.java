@@ -115,6 +115,23 @@ final class XSLDocumentTest {
     }
 
     @Test
+    void preservesCharactersWhenOutputEncodingIsNotUtfEight() {
+        final XSL xsl = new XSLDocument(
+            StringUtils.join(
+                "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
+                " version='2.0'><xsl:output method='text' encoding='ISO-8859-1'/>",
+                "<xsl:template match='/'>&#233;</xsl:template>",
+                "</xsl:stylesheet>"
+            )
+        );
+        MatcherAssert.assertThat(
+            "text output must keep characters from the stylesheet",
+            xsl.applyTo(new XMLDocument("<r/>")),
+            Matchers.equalTo("é")
+        );
+    }
+
+    @Test
     void transformsIntoText() {
         final XSL xsl = new XSLDocument(
             StringUtils.join(
