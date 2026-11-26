@@ -120,14 +120,14 @@ final class XSLDocumentTest {
             StringUtils.join(
                 "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'",
                 " version='2.0'><xsl:output method='text' encoding='ISO-8859-1'/>",
-                "<xsl:template match='/'>caf&#233;</xsl:template>",
+                "<xsl:template match='/'>&#233;</xsl:template>",
                 "</xsl:stylesheet>"
             )
         );
         MatcherAssert.assertThat(
             "text output must keep characters from the stylesheet",
             xsl.applyTo(new XMLDocument("<r/>")),
-            Matchers.equalTo("café")
+            Matchers.equalTo("é")
         );
     }
 
